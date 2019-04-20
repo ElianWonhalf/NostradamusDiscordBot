@@ -3,45 +3,24 @@ const db = require('./db');
 
 const Role = {};
 
-Role.names = {
-    // french level
-    'beginner': 'Débutant',
-    'intermediate': 'Intermédiaire',
-    'advanced': 'Avancé',
-    'native': 'Francophone Natif',
-
-    // french level alts
-    'débutant': 'Débutant',
-    'debutant': 'Débutant',
-    'débutante': 'Débutant',
-    'debutante': 'Débutant',
-    'intermédiaire': 'Intermédiaire',
-    'intermediaire': 'Intermédiaire',
-    'avancé': 'Avancé',
-    'avance': 'Avancé',
-    'avancée': 'Avancé',
-    'avancee': 'Avancé',
-    'natif': 'Francophone Natif',
+// general roles mapping ( discord role name -> [ role name variants ] )
+Role.aliases = {
+    // french levels
+    'Débutant': ['beginner', 'débutant', 'debutant', 'débutante', 'debutante'],
+    'Intermédiaire': ['intermediate', 'intermédiaire', 'intermediaire'],
+    'Avancé': ['advanced', 'avancé', 'avance', 'avancée', 'avancee'],
+    'Francophone Natif': ['native', 'natif'],
+    // others
+    'États-Unis': ['united states of america', 'united states', 'america', 'usa', 'us',
+                   'états-unis', 'etats-unis', 'états unis', 'etats unis'],
+    'Royaume-Uni': ['united kingdom', 'uk']
 };
 
-Role.frenchLevelNames = {
-    // french level
-    'beginner': Role.names.beginner,
-    'débutant': Role.names.beginner,
-    'debutant': Role.names.beginner,
-    'débutante': Role.names.beginner,
-    'debutante': Role.names.beginner,
-    'intermediate': Role.names.intermediate,
-    'intermédiaire': Role.names.intermediate,
-    'intermediaire': Role.names.intermediate,
-    'advanced': Role.names.advanced,
-    'avancé': Role.names.advanced,
-    'avance': Role.names.advanced,
-    'avancée': Role.names.advanced,
-    'avancee': Role.names.advanced,
-    'native': Role.names.native,
-    'natif': Role.names.native,
-};
+// general roles reverse mapping ( role name variant -> discord role name )
+Role.names = {};
+for (let [role, aliases] of Object.entries(Role.aliases)) {
+    for (let alias of aliases) Role.names[alias] = role
+}
 
 Role.frenchLevelRoles = [
     Role.names.beginner,
@@ -50,6 +29,11 @@ Role.frenchLevelRoles = [
     Role.names.native
 ];
 
+Role.frenchLevelNames = {};
+Object.entries(Role.names)
+    .filter(([k,v]) => Role.frenchLevelRoles.includes(v))
+    .reduce((obj, [k, v]) => { obj[k] = v; return obj; }, frenchLevelNames);
+
 Role.languages = [];
 Role.languagesFriendly = [];
 Role.countries = [];
@@ -57,6 +41,9 @@ Role.countriesFriendly = [];
 Role.NO_COUNTRY = 'SANS PAYS';
 Role.NO_LANGUAGE = 'SANS LANGUE';
 Role.alts = {};
+
+// possible names for each role
+Role.alts = Object.assign(Role.alts, Role.names);
 
 const init = () => {
     db.query('SELECT * FROM languages').on('result', function(row) {
@@ -91,7 +78,6 @@ const init = () => {
 };
 
 init();
-
 
 Role.add = (english, french, type) => {
 	db.query('SET NAMES utf8');
@@ -132,30 +118,5 @@ Role.isCountryRole = (role) => {
 Role.createRole = (guild, name) => {
     return guild.createRole({ name: name, permissions: [] });
 };
-
-// possible names for each role
-Role.alts = Object.assign(Role.alts, {
-    'debutant': Role.names.beginner,
-    'débutant': Role.names.beginner,
-    'debutante': Role.names.beginner,
-    'débutante': Role.names.beginner,
-    'intermediaire': Role.names.intermediate,
-    'intermédiaire': Role.names.intermediate,
-    'avancé': Role.names.advanced,
-    'avancée': Role.names.advanced,
-    'natif': Role.names.native,
-    'français': Role.names.native,
-    'usa': 'États-Unis',
-    'united states': Role.names.usa,
-    'united states of america': Role.names.usa,
-    'us': Role.names.usa,
-    'america': Role.names.usa,
-    'uk': 'Royaume-Uni',
-    'united kingdom': Role.names.uk,
-    'etats-unis': Role.names.usa,
-    'états-unis': Role.names.usa,
-    'états unis': Role.names.usa,
-    'etats unis': Role.names.usa,
-});
 
 module.exports = Role;
