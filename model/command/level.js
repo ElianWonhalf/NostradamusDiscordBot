@@ -50,6 +50,10 @@ levels[Guild.levelRoles.beginner.toLowerCase()] = Guild.levelRolesIds.beginner;
  * @param {Array} args
  */
 module.exports = async (message, args) => {
+    if (message.guild === null || message.channel.id !== Config.channels.welcome) {
+        return;
+    }
+
     const member = Guild.getMemberFromMessage(message);
     const level = args.join(' ').toLowerCase().trim();
 
