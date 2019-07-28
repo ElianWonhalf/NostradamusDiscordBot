@@ -15,14 +15,19 @@ const ModerationLog = {
         const canLogNow = lastLogDateIsNull || elapsedTimeSinceLastLog >= ModerationLog.auditLogFetchInterval;
 
         ModerationLog.membersWhoLeft[member.id] = null;
+        debug(`Detected member leaving: ${member.user.username}`);
 
         if (!canLogNow && ModerationLog.searchAuditLogTimeout === null) {
+            debug('Cannot log now, and no timeout set; setting a timeout');
             ModerationLog.searchAuditLogTimeout = setTimeout(
                 ModerationLog.doLog,
                 ModerationLog.auditLogFetchInterval - elapsedTimeSinceLastLog
             );
         } else if (canLogNow) {
+            debug('Can log now');
             ModerationLog.doLog();
+        } else {
+            debug('Cannot log now, and a timeout is set');
         }
 
         ModerationLog.memberLeftDate = nowDate;
@@ -33,21 +38,27 @@ const ModerationLog = {
 
         ModerationLog.searchAuditLogTimeout = null;
 
+        debug(`Starting moderation logging; memberIds.length = ${memberIds.length}`);
         if (memberIds.length > 0) {
             const auditLogs = await Guild.discordGuild.fetchAuditLogs({
                 after: ModerationLog.lastFetchedAuditLogId,
             });
 
             ModerationLog.lastFetchedAuditLogId = auditLogs.entries.first().id;
+            debug(`${auditLogs.entries.size} entr${auditLogs.entries.size > 1 ? 'ies' : 'y'} in the audit log before filtering`);
 
-            auditLogs.entries.filter(entry => {
+            const entries = auditLogs.entries.filter(entry => {
                 const userTarget = entry.targetType === 'USER';
                 const kickOrBan = entry.action === 'MEMBER_KICK' || entry.action === 'MEMBER_BAN_ADD';
                 const inList = entry.target !== undefined && memberIds.indexOf(entry.target.id) > -1;
                 const notAuto = entry.reason === null || entry.reason.match('[AUTO]') === null;
 
                 return userTarget && kickOrBan && inList && notAuto;
-            }).map(entry => {
+            });
+
+            debug(`${entries.size} entr${auditLogs.entries.size > 1 ? 'ies' : 'y'} in the audit log after filtering`);
+
+            entries.forEach(entry => {
                 if (ModerationLog.membersWhoLeft[entry.target.id] === null) {
                     let log = `Membre <@${entry.target.id}> ${entry.target.username}#${entry.target.discriminator}`;
 

@@ -1,4 +1,7 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
+const Dotenv = require('dotenv');
+
+Dotenv.config();
 
 const mainProcess = () => {
     const ChildProcess = require('child_process');
@@ -48,6 +51,7 @@ const botProcess = () => {
     const SemiBlacklist = require('./model/semi-blacklist');
     const ModerationLog = require('./model/moderation-log');
     const DM = require('./model/dm');
+    const callerId = require('caller-id');
 
     const crashRecover = (exception) => {
         Logger.exception(exception);
@@ -57,7 +61,21 @@ const botProcess = () => {
     process.on('uncaughtException', crashRecover);
 
     let bot = new Discord.Client();
+
     global.bot = bot;
+    global.debug = (message) => {
+        if (process.env.NOSTRADAMUS_DEBUG_ENABLED === '1') {
+            const caller = callerId.getData();
+            const prefix = `${caller.filePath}:${caller.lineNumber}`;
+
+            if (typeof message === 'string') {
+                Logger.info(`${prefix} | ${message}`);
+            } else {
+                Logger.info(prefix);
+                Logger.debug(message);
+            }
+        }
+    };
 
     bot.on('error', crashRecover);
 

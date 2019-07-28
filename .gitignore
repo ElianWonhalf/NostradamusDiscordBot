@@ -6,3 +6,4 @@ config.json*
 !config.json.sample
 semi-blacklist.json*
 !semi-blacklist.json.sample
+.env
