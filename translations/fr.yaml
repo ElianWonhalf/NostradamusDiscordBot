@@ -2,10 +2,8 @@ learntLanguage:
   english: "anglais"
   french: "français"
 
-event:
-  guildMemberAdd:
-    welcomeMessage: "**Bienvenue sur le serveur Discord %%, %% !\nPour pouvoir écrire dans les autres salons, veuillez suivre ces instructions.**\n\nPour commencer, il faut que tu précises ton niveau en %% en tapant dans le chat la commande `%%` suivie de ton niveau. Les niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`. Par exemple: `%% intermédiaire`"
-
+bot:
+  welcomeMessage: "**Bienvenue sur le serveur Discord %%, %% !\nPour pouvoir écrire dans les autres salons, veuillez suivre ces instructions.**\n\nPour commencer, il faut que tu précises ton niveau en %% en tapant dans le chat la commande `%%` suivie de ton niveau. Les niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`. Par exemple: `%% intermédiaire`"
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."

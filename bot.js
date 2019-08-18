@@ -86,7 +86,7 @@ const botProcess = () => {
     bot.on('guildMemberAdd', (member) => {
         Guild.welcomeChannel.send(
             trans(
-                'event.guildMemberAdd.welcomeMessage',
+                'bot.welcomeMessage',
                 [
                     Guild.discordGuild.name,
                     member.user,

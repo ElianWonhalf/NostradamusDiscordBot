@@ -33,7 +33,7 @@ const translateKeysInString = (value, language) => {
  */
 const replaceVariablesInString = (value, variables, language) => {
     variables.forEach(variable => {
-        value = translateKeysInString(variable, language);
+        variable = translateKeysInString(variable, language);
         value = value.replace(/%%/, variable);
     });
 
@@ -47,7 +47,7 @@ const replaceVariablesInString = (value, variables, language) => {
  * @returns {string}
  */
 global.trans = (keyPath, variables, forcedLanguage) => {
-    variables = variables === undefined ? [] : variables;
+    variables = variables === undefined ? [] : variables.map(variable => variable.toString());
 
     const key = keyPath.split('.');
     const decidedLanguage = forcedLanguage === undefined ? Config.botLanguage.split(',') : forcedLanguage.split(',');

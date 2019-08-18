@@ -24,7 +24,7 @@ const MemberRolesFlow = {
             setTimeout(() => Guild.clearWelcomeMessagesForMember(member), 5000);
             member.addRole(Config.roles.officialMember);
 
-            reply = trans('model.memberRolesFlow.validatedDM', [Config.channels.beginner]);
+            reply = trans('model.memberRolesFlow.validatedDM', [`<#${Config.channels.beginner}>`]);
 
             member.user.send(reply).catch(exception => {
                 Logger.error(exception.toString())

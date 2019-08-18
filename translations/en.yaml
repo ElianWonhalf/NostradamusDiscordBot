@@ -2,10 +2,8 @@ learntLanguage:
   english: "english"
   french: "french"
 
-event:
-  guildMemberAdd:
-    welcomeMessage: "**Welcome to the %% Discord server, %%!\nTo be able to send messages in the other channels, please follow these instructions.**\n\nFor starters, you need to specify your proficiency in %% by typing the command `%%` in the chat followed by your level. The available levels are `beginner`, `intermediate`, `advanced` and `native`. For example: `%% intermediate`"
-
+bot:
+  welcomeMessage: "**Welcome to the %% Discord server, %%!\nTo be able to send messages in the other channels, please follow these instructions.**\n\nFor starters, you need to specify your proficiency in %% by typing the command `%%` in the chat followed by your level. The available levels are `beginner`, `intermediate`, `advanced` and `native`. For example: `%% intermediate`"
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
