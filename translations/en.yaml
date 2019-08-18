@@ -66,8 +66,8 @@ model:
     modList:
       answer: "There are currently %% moderators:\n\n"
     outLoudReading:
-      alertsOn: "You will now be pinged when there's an out-loud reading."
-      alertsOff: "You will no longer be pinged when there's an out-loud reading."
+      alertsOn: "You will now be pinged when there's a reading."
+      alertsOff: "You will no longer be pinged when there's a reading."
     reload:
       answer: "OK, I'm rebooting now."
     report:
