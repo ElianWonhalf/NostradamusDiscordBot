@@ -7,35 +7,25 @@ const Guild = require('../guild');
 module.exports = async (message) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (Guild.isMemberMod(member)) {
         let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
-        let answer = '';
+        let certaintySentence;
+        let answer;
         let userId = 'ID';
-        let warnMessageEn = ``;
-        let warnMessageFr = ``;
-
-        warnMessageEn += `trolling on the ${Guild.discordGuild.name} server. `;
-        warnMessageEn += `If you do not change your behavior, you will be banned.`;
-
-        warnMessageFr += `troll sur le serveur ${Guild.discordGuild.name}. `;
-        warnMessageFr += `Si vous ne changez pas de comportement, vous serez banni.`;
+        let warnMessageEn = trans('model.command.warntroll.warnMessage', [Guild.discordGuild.name], 'en');
+        let warnMessageFr = trans('model.command.warntroll.warnMessage', [Guild.discordGuild.name], 'fr');
 
         if (foundMembers.length > 0) {
             if (!certain) {
-                answer = `I'm not sure about who you want to warn, but guess it's ${foundMembers[0]}. If that's not correct, please change the ID in the command below accordingly.`;
+                certaintySentence = trans('model.command.warntroll.memberGuessed', [foundMembers[0]], 'en');
             }
 
             userId = foundMembers[0].user.id;
         } else {
-            answer += `I didn't understand who you wanted to warn, so I will just write "<@ID>" in the command below.`
+            certaintySentence = trans('model.command.warntroll.memberNotGuessed', [], 'en');
         }
 
-        answer += `\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n`;
+        answer = trans('model.command.warntroll.answer', [certaintySentence], 'en');
         answer += `\`\`\`${Config.warnCommand.replace('%id', userId).replace('%reason', warnMessageEn)}\`\`\``;
         answer += `\`\`\`${Config.warnCommand.replace('%id', userId).replace('%reason', warnMessageFr)}\`\`\``;
 

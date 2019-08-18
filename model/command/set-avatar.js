@@ -8,16 +8,11 @@ const Guild = require('../guild');
 module.exports = async (message, args) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (Guild.isMemberMod(member)) {
         global.bot.user.setAvatar(args.join(' ')).then(() => {
-            message.reply('my avatar has been changed!')
+            message.reply(trans('model.command.setAvatar.success', [], 'en'))
         }).catch((error) => {
-            message.reply('there has been an error changing my avatar. Check the logs for more details.');
+            message.reply(trans('model.command.setAvatar.error', [], 'en'));
             Logger.exception(error);
         });
     }

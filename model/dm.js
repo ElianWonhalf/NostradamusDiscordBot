@@ -29,7 +29,7 @@ const SemiBlacklist = {
     parseMessage: async (message, isCommand) => {
         if (message.guild === null && !isCommand && SemiBlacklist.ignoredUserDMs.indexOf(message.author.id) < 0) {
             Guild.botChannel.send(
-                `${message.author} sent a DM:\n\n${message.content}`,
+                trans('model.dm.notification', [message.author, message.content], 'en'),
                 {
                     files: message.attachments.map(messageAttachment => {
                         return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);

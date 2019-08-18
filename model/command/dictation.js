@@ -7,18 +7,13 @@ const Guild = require('../guild');
 module.exports = async (message) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (member.roles.has(Config.roles.dictation)) {
         member.removeRole(Config.roles.dictation).then(() => {
-            message.reply('you will no longer be pinged when there\'s a dictation.');
+            message.reply(`\n${trans('model.command.dictation.alertsOff')}`);
         });
     } else {
         member.addRole(Config.roles.dictation).then(() => {
-            message.reply('you will now be pinged when there\'s a dictation.');
+            message.reply(`\n${trans('model.command.dictation.alertsOn')}`);
         });
     }
 };

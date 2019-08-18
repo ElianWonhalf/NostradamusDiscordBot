@@ -15,11 +15,6 @@ module.exports = async (message, args) => {
     const member = message.member;
     const country = args.join(' ').toLowerCase().trim();
 
-    if (member === null) {
-        message.reply('sorry, an error happened, please contact the mods and give them your level in ' + Config.learntLanguage.english + ', your native language, and your country.');
-        return;
-    }
-
     if (country !== '') {
         const rolesToRemove = member.roles.array().filter(role => {
             return Country.getRoleNameList().indexOf(role.name) > -1 || role.id === Config.roles.noCountry
@@ -33,7 +28,7 @@ module.exports = async (message, args) => {
         }
 
         if (role === null) {
-            Guild.botChannel.send(`Country tag request by ${member}: ${country}\n${message.url}`);
+            Guild.botChannel.send(trans('model.command.country.request', [member, country], 'en'), Guild.messageToEmbed(message));
             role = Config.roles.noCountry;
         }
 
@@ -45,11 +40,6 @@ module.exports = async (message, args) => {
             MemberRolesFlow.answerWithNextStep(message, member);
         });
     } else {
-        let reply = '\n';
-
-        reply += '\nYou need to enter in a country. The command `!country` alone does not tell me which country you currently live in. For example: `!country United States`';
-        reply += '\nIl faut que tu spécifies un pays. La commande `!country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `!country France`';
-
-        message.reply(reply);
+        message.reply(`\n${trans('model.command.country.missingArgument', [Config.prefix, Config.prefix])}`);
     }
 };

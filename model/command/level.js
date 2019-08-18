@@ -54,13 +54,8 @@ module.exports = async (message, args) => {
         return;
     }
 
-    const member = Guild.getMemberFromMessage(message);
+    const member = message.member;
     const level = args.join(' ').toLowerCase().trim();
-
-    if (member === null) {
-        message.reply('sorry, an error happened, please contact the mods and give them your level in ' + Config.learntLanguage.english + ', your native language, and your country.');
-        return;
-    }
 
     const rolesToRemove = member.roles.array().filter(
         role => Object.values(Guild.levelRoles).indexOf(role.name) > -1
@@ -77,16 +72,12 @@ module.exports = async (message, args) => {
             MemberRolesFlow.answerWithNextStep(message, member);
         });
     } else {
-        let reply = '\n';
+        const levelCommand = Config.prefix + Config.levelCommand;
 
         if (level === '') {
-            reply += '\nYou need to enter in a level. The command `' + Config.prefix + Config.levelCommand + '` alone does not tell me which level you are. For example: `' + Config.prefix + Config.levelCommand + ' beginner`';
-            reply += '\nIl faut que tu spécifies un niveau. La commande `' + Config.prefix + Config.levelCommand + '` seule ne me permet pas de savoir quel est ton niveau en français. Par exemple : `' + Config.prefix + Config.levelCommand + ' débutant`';
+            message.reply(`\n${trans('model.command.level.missingArgument', [levelCommand, levelCommand])}`);
         } else {
-            reply += '\nThat level is not valid. Maybe you mispelled something? The levels are `beginner`, `intermediate`, `advanced` and `native`.';
-            reply += '\nCe niveau n\'est pas valide. Peut-être que tu as fait une faute de frappe ? Les différents niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`.';
+            message.reply(`\n${trans('model.command.level.invalidLevel')}`);
         }
-
-        message.reply(reply);
     }
 };

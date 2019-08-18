@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Config = require('../config.json');
+const Guild = require('./guild');
 let commandAliases = {
     'reboot': 'reload',
 
@@ -14,6 +15,8 @@ let commandAliases = {
     'rep': 'report',
 
     'miniclass': 'mini-class',
+    'miniclasse': 'mini-class',
+    'mini-classe': 'mini-class',
 
     'loadroles': 'load-roles',
 
@@ -79,12 +82,18 @@ const Command = {
             const command = content.shift().toLowerCase();
 
             if (Command.isValid(command)) {
-                isCommand = true;
+                const member = Guild.getMemberFromMessage(message);
 
-                if (commandAliases.hasOwnProperty(command)) {
-                    (require('./command/' + commandAliases[command].toLowerCase() + '.js'))(message, content);
+                if (member === null) {
+                    message.reply(`\n${trans('model.command.notOnServer')}`);
                 } else {
-                    (require('./command/' + command + '.js'))(message, content);
+                    isCommand = true;
+
+                    if (commandAliases.hasOwnProperty(command)) {
+                        (require('./command/' + commandAliases[command].toLowerCase() + '.js'))(message, content);
+                    } else {
+                        (require('./command/' + command + '.js'))(message, content);
+                    }
                 }
             }
         }

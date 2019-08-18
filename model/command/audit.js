@@ -7,18 +7,7 @@ const Country = require('../country');
  * @param {Message} message
  */
 module.exports = (message) => {
-    let member;
-
-    if (message.guild === null) {
-        member = Guild.discordGuild.member(message.author);
-
-        if (member === null) {
-            message.reply('sorry, you do not seem to be on the server.');
-            return;
-        }
-    } else {
-        member = message.member;
-    }
+    const member = Guild.getMemberFromMessage(message);
 
     if (Guild.isMemberMod(member)) {
         let answer = '\n';
@@ -27,28 +16,28 @@ module.exports = (message) => {
         const countriesList = Country.list.map(country => country.role);
         const rolesList = Guild.discordGuild.roles.array().map(role => role.name);
 
-        answer += `I found ${languagesList.length} languages and ${countriesList.length} countries in the DB.\n`;
-        answer += `I found ${rolesList.length} roles on the server (knowing that there are not only languages and countries in there).\n\n`;
+        answer += trans('model.command.audit.totalLanguagesAndCountriesInDB', [languagesList.length, countriesList.length], 'en');
+        answer += trans('model.command.audit.totalRolesOnServer', [rolesList.length], 'en');
 
         const languagesWithoutRoles = languagesList.filter(language => rolesList.indexOf(language) < 0);
         const countriesWithoutRoles = countriesList.filter(country => rolesList.indexOf(country) < 0);
 
-        answer += `I found ${languagesWithoutRoles.length} language${languagesWithoutRoles.length === 1 ? '' : 's'} that are in the DB but don't have any role assigned`;
+        answer += trans('model.command.audit.languagesInDbWithoutRole', [languagesWithoutRoles.length], 'en');
         if (languagesWithoutRoles.length > 0) {
-            answer += `:\n\n${languagesWithoutRoles.join(', ')}`;
+            answer += `\n\n${languagesWithoutRoles.join(', ')}`;
         }
 
-        answer += `\nI found ${countriesWithoutRoles.length} countr${countriesWithoutRoles.length === 1 ? 'y' : 'ies'} that are in the DB but don't have any role assigned`;
+        answer += trans('model.command.audit.countriesInDbWithoutRole', [countriesWithoutRoles.length], 'en');
         if (countriesWithoutRoles.length > 0) {
-            answer += `:\n\n${countriesWithoutRoles.join(', ')}`;
+            answer += `\n\n${countriesWithoutRoles.join(', ')}`;
         }
 
         const mergedDBEntries = languagesList + countriesList + Config.notCountryOrLanguageRoles;
         const rolesWithoutDBEntry = rolesList.filter(role => mergedDBEntries.indexOf(role) < 0);
 
-        answer += `\n\nI found ${rolesWithoutDBEntry.length} role${rolesWithoutDBEntry.length === 1 ? '' : 's'} that don't have any DB entry assigned`;
+        answer += trans('model.command.audit.rolesWithoutDbEntry', [rolesWithoutDBEntry.length], 'en');
         if (rolesWithoutDBEntry.length > 0) {
-            answer += `:\n\n${rolesWithoutDBEntry.join(', ')}`;
+            answer += `\n\n${rolesWithoutDBEntry.join(', ')}`;
         }
 
         message.reply(answer);

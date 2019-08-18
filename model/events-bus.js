@@ -37,9 +37,7 @@ const EventsBus = {
         }
 
         if (EventsBus.subscribers.hasOwnProperty(event)) {
-            for (let callbackKey in EventsBus.subscribers[event]) {
-                EventsBus.subscribers[event][callbackKey](data);
-            }
+            EventsBus.subscribers[event].forEach(callback => callback(data));
         }
     }
 };

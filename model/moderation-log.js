@@ -1,3 +1,4 @@
+const Config = require('../config.json');
 const Guild = require('./guild');
 
 const ModerationLog = {
@@ -6,6 +7,7 @@ const ModerationLog = {
     searchAuditLogTimeout: null,
     membersWhoLeft: {},
     lastFetchedAuditLogId: null,
+    language: Config.botLanguage.split(',')[0],
 
     processMemberRemove: (member) => {
         const nowDate = new Date();
@@ -53,6 +55,13 @@ const ModerationLog = {
                 const inList = entry.target !== undefined && memberIds.indexOf(entry.target.id) > -1;
                 const notAuto = entry.reason === null || entry.reason.match('[AUTO]') === null;
 
+                if (inList && (!userTarget || !kickOrBan || !notAuto)) {
+                    debug(`Removed entry corresponding to user`);
+                    debug(`userTarget: ${userTarget ? 'true' : 'false'}`);
+                    debug(`kickOrBan: ${kickOrBan ? 'true' : 'false'}`);
+                    debug(`notAuto: ${notAuto ? 'true' : 'false'}`);
+                }
+
                 return userTarget && kickOrBan && inList && notAuto;
             });
 
@@ -60,26 +69,33 @@ const ModerationLog = {
 
             entries.forEach(entry => {
                 if (ModerationLog.membersWhoLeft[entry.target.id] === null) {
-                    let log = `Membre <@${entry.target.id}> ${entry.target.username}#${entry.target.discriminator}`;
+                    const member = trans(
+                        'model.moderationLog.member',
+                        [`<@${entry.target.id}> ${entry.target.username}#${entry.target.discriminator}`],
+                        ModerationLog.language
+                    );
+
+                    let action = '';
+                    let reason = '';
 
                     switch (entry.action) {
                         case 'MEMBER_KICK':
-                            log = `${log} expulsé`;
+                            action = trans('model.moderationLog.kicked', [], ModerationLog.language);
                             break;
 
                         case 'MEMBER_BAN_ADD':
-                            log = `${log} banni`;
+                            action = trans('model.moderationLog.banned', [], ModerationLog.language);
                             break;
                     }
 
                     if (entry.reason !== null) {
-                        const reason = entry.reason.replace(/https?:\/\/[^\s.]+\.[^\s]+/g, '[CENSORED LINK]');
-                        log = `${log} pour la raison suivante : ${reason}`;
+                        reason = entry.reason.replace(/https?:\/\/[^\s.]+\.[^\s]+/g, '[CENSORED LINK]');
+                        reason = trans('model.moderationLog.reason', [reason], ModerationLog.language);
                     } else {
-                        Guild.modLogChannel.send(`Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like "Oh à propos de @machin, il a été ban parce que [RAISON]." please? Thank you ♥ !\nhttps://i.discord.fr/lQRn.gif`);
+                        Guild.modLogChannel.send(trans('model.moderationLog.missingReason'));
                     }
 
-                    ModerationLog.membersWhoLeft[entry.target.id] = log;
+                    ModerationLog.membersWhoLeft[entry.target.id] = `${member} ${action} ${reason}`;
                 }
             });
 

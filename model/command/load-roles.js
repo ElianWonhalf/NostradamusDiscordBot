@@ -10,24 +10,19 @@ const Country = require('../country');
 module.exports = async (message, args) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (Guild.isMemberMod(member)) {
         const dryRun = args[0] === 'dry';
-        let amoutRolesCreated = 0;
+        let amountRolesCreated = 0;
 
         for (let i = 0; i < Language.list.length; i++) {
             if (!message.guild.roles.find(role => role.name === Language.list[i].role)) {
-                amoutRolesCreated++;
+                amountRolesCreated++;
 
                 if (dryRun) {
-                    message.reply(`would create role ${Language.list[i].role}`);
+                    message.reply(trans('model.command.loadRoles.dryRoleCreation', [Language.list[i].role], 'en'));
                 } else {
                     Guild.createRole(Language.list[i].role)
-                        .then(role => message.reply(`created role ${role}`))
+                        .then(role => message.reply(trans('model.command.loadRoles.roleCreation', [role], 'en')))
                         .catch(Logger.exception)
                 }
             }
@@ -35,18 +30,18 @@ module.exports = async (message, args) => {
 
         for (let i = 0; i < Country.list.length; i++) {
             if (!message.guild.roles.find(role => role.name === Country.list[i].role)) {
-                amoutRolesCreated++;
+                amountRolesCreated++;
 
                 if (dryRun) {
-                    message.reply(`would create role ${Country.list[i].role}`);
+                    message.reply(trans('model.command.loadRoles.dryRoleCreation', [Country.list[i].role], 'en'));
                 } else {
                     Guild.createRole(Country.list[i].role)
-                    .then(role => message.reply(`created role ${role}`))
+                    .then(role => message.reply(trans('model.command.loadRoles.dryRoleCreation', [role], 'en')))
                     .catch(Logger.exception)
                 }
             }
         }
 
-        message.reply(`found ${amoutRolesCreated} role${amoutRolesCreated > 1 ? 's' : ''} that need to be created`);
+        message.reply(trans('model.command.loadRoles.count', [amountRolesCreated], 'en'));
     }
 };

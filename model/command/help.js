@@ -14,7 +14,7 @@ module.exports = async (message) => {
 
     if (!member.roles.has(Config.roles.officialMember)) {
         Guild.botChannel.send(
-            `${member} semble avoir besoin d'aide dans <#${Config.channels.welcome}>.\n${message.url}`
+            trans('model.command.help.notice', [member, `<#${Config.channels.welcome}>`, message.url], 'en')
         );
         MemberRolesFlow.answerWithNextStep(message, member);
     }

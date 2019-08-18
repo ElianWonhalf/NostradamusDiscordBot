@@ -7,13 +7,8 @@ const Guild = require('../guild');
 module.exports = async (message) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (Guild.isMemberMod(member)) {
-        await message.reply('OK, I\'m rebooting now.');
+        await message.reply(trans('model.command.reload.answer', [], 'en'));
         Logger.notice('Reboot asked');
     }
 };

@@ -43,30 +43,14 @@ const mainProcess = () => {
 
 const botProcess = () => {
     const Discord = require('discord.js');
-    const Config = require('./config.json');
-    const Guild = require('./model/guild');
-    const Language = require('./model/language');
-    const Country = require('./model/country');
-    const Command = require('./model/command');
-    const SemiBlacklist = require('./model/semi-blacklist');
-    const ModerationLog = require('./model/moderation-log');
-    const DM = require('./model/dm');
-    const callerId = require('caller-id');
+    const CallerId = require('caller-id');
 
-    const crashRecover = (exception) => {
-        Logger.exception(exception);
-        Logger.notice('Need reboot');
-    };
-
-    process.on('uncaughtException', crashRecover);
-
-    let bot = new Discord.Client();
-
-    global.bot = bot;
+    global.bot = new Discord.Client();
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG_ENABLED === '1') {
-            const caller = callerId.getData();
-            const prefix = `${caller.filePath}:${caller.lineNumber}`;
+            const caller = CallerId.getData();
+            const path = caller.filePath.substr(caller.filePath.toLowerCase().indexOf('/nostradamus/') + 13);
+            const prefix = `${path}:${caller.lineNumber}`;
 
             if (typeof message === 'string') {
                 Logger.info(`${prefix} | ${message}`);
@@ -77,19 +61,41 @@ const botProcess = () => {
         }
     };
 
+    require('./model/translator');
+
+    const Config = require('./config.json');
+    const Guild = require('./model/guild');
+    const Language = require('./model/language');
+    const Country = require('./model/country');
+    const Command = require('./model/command');
+    const SemiBlacklist = require('./model/semi-blacklist');
+    const ModerationLog = require('./model/moderation-log');
+    const DM = require('./model/dm');
+
+    const crashRecover = (exception) => {
+        Logger.exception(exception);
+        Logger.notice('Need reboot');
+    };
+
+    process.on('uncaughtException', crashRecover);
     bot.on('error', crashRecover);
 
     /**
      * @param {GuildMember} member
      */
     bot.on('guildMemberAdd', (member) => {
-        let englishMessage = `**Welcome to the ${Guild.discordGuild.name} Discord server, ${member.user}!\nTo be able to send messages in the other channels, please follow these instructions.**`;
-        let frenchMessage = `**Bienvenue sur le serveur Discord ${Guild.discordGuild.name}, ${member.user} !\nPour pouvoir écrire dans les autres salons, veuillez suivre ces instructions.**`;
-
-        englishMessage += '\n\nFor starters, you need to specify your proficiency in ' + Config.learntLanguage.english + ' by typing the command `' + Config.prefix + Config.levelCommand + '` in the chat followed by your level. The available levels are `beginner`, `intermediate`, `advanced` and `native`. For example: `' + Config.prefix + Config.levelCommand + ' intermediate`';
-        frenchMessage += '\n\nPour commencer, il faut que tu précises ton niveau en ' + Config.learntLanguage.french + ' en tapant dans le chat la commande `' + Config.prefix + Config.levelCommand + '` suivie de ton niveau. Les niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`. Par exemple: `' + Config.prefix + Config.levelCommand + ' intermédiaire`';
-
-        Guild.welcomeChannel.send(englishMessage + '\n\n' + frenchMessage);
+        Guild.welcomeChannel.send(
+            trans(
+                'event.guildMemberAdd.welcomeMessage',
+                [
+                    Guild.discordGuild.name,
+                    member.user,
+                    `%${Config.learntLanguage}%`,
+                    Config.prefix + Config.levelCommand,
+                    Config.prefix + Config.levelCommand
+                ]
+            )
+        );
     });
 
     /**

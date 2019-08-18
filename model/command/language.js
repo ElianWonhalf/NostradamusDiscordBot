@@ -15,11 +15,6 @@ module.exports = async (message, args) => {
     const member = message.member;
     const language = args.join(' ').toLowerCase().trim();
 
-    if (member === null) {
-        message.reply('sorry, an error happened, please contact the mods and give them your level in ' + Config.learntLanguage.english + ', your native language, and your country.');
-        return;
-    }
-
     if (language !== '') {
         const roleName = Language.getRoleNameFromString(language);
         let role = null;
@@ -33,7 +28,7 @@ module.exports = async (message, args) => {
         });
 
         if (role === null) {
-            Guild.botChannel.send(`Language tag request by ${member}: ${language}\n${message.url}`);
+            Guild.botChannel.send(trans('model.command.language.request', [member, language], 'en'), Guild.messageToEmbed(message));
             role = Config.roles.noLanguage;
             rolesToRemove = rolesToRemove.filter(role => role.id !== Config.roles.noLanguage);
         } else if (role.id === Config.roles.native) {
@@ -50,11 +45,6 @@ module.exports = async (message, args) => {
             MemberRolesFlow.answerWithNextStep(message, member);
         });
     } else {
-        let reply = '\n';
-
-        reply += '\nYou need to enter in a language. The command `!language` alone does not tell me what is your native language. For example: `!language English`';
-        reply += '\nIl faut que tu spécifies une langue. La commande `!language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `!language Anglais`';
-
-        message.reply(reply);
+        message.reply(`\n${trans('model.command.language.missingArgument', [Config.prefix, Config.prefix])}`);
     }
 };

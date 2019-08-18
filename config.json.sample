@@ -10,6 +10,7 @@
     },
     "guild": "",
     "admin": "",
+    "botLanguage": "en,fr",
     "roles": {
         "mod": "",
         "officialMember": "",
@@ -37,10 +38,7 @@
         "learntLanguage": ""
     },
     "levelCommand": "",
-    "learntLanguage": {
-        "french": "",
-        "english": ""
-    },
+    "learntLanguage": "learntLanguage.",
     "disabledCommands": [],
     "notCountryOrLanguageRoles": []
 }

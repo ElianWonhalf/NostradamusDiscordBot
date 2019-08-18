@@ -1,0 +1,59 @@
+learntLanguage:
+  english: "anglais"
+  french: "français"
+
+event:
+  guildMemberAdd:
+    welcomeMessage: "**Bienvenue sur le serveur Discord %%, %% !\nPour pouvoir écrire dans les autres salons, veuillez suivre ces instructions.**\n\nPour commencer, il faut que tu précises ton niveau en %% en tapant dans le chat la commande `%%` suivie de ton niveau. Les niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`. Par exemple: `%% intermédiaire`"
+
+model:
+  command:
+    notOnServer: "désolé, tu ne sembles pas être sur le serveur."
+    anonymous:
+      publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"
+      firstStep: "Est-ce que je devrais parler français ou anglais ? (clique sur la bonne réaction ci-dessous)\n\n:one: Anglais\n:two: Français"
+      secondStep: "À qui veux-tu envoyer ton message anonyme ? (clique sur la bonne réaction ci-dessous)\n\n:one: À l'admin\n:two: Aux modos"
+      thirdStep: "Pigé ! Tu peux maintenant écrire ton message. Je n'enverrai cependant que le premier ! Assure-toi de dire tout ce que tu as à dire en un seul message. Aussi, les destinataires ne seront pas capables de te répondre étant donné que c'est anonyme. Si tu as besoin d'une réponse, tu devrais expliquer dans ton message comment ils peuvent te répondre, sachant qu'ils ne savent pas qui tu es. Tu as trente minutes pour l'écrire :) ."
+      fourthStepNoMessage: "On dirait que tu n'as envoyé aucun message. Demande d'envoi de message anonyme annulée. Tu peux réessayer quand tu veux en envoyant la commande `%%anonymous`."
+      fourthStepSuccess: "Ton message anonyme a été envoyé avec succès !"
+      fourthStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
+    committee:
+      answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :\n\n"
+    country:
+      missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
+    dictation:
+      alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
+      alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
+    games:
+      alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
+      alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
+    language:
+      missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
+    level:
+      missingArgument: "Il faut que tu spécifies un niveau. La commande `%%` seule ne me permet pas de savoir quel est ton niveau. Par exemple : `%% débutant`"
+      invalidLevel: "Ce niveau n'est pas valide. Peut-être que tu as fait une faute de frappe ? Les différents niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`."
+    miniClass:
+      alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
+      alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
+    modList:
+      answer: "Il y a en ce moment %% modérateurs :\n\n"
+    outLoudReading:
+      alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
+      alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
+    report:
+      onlyOnServer: "désolé, cette commande ne peut être exécutée que sur le serveur."
+    tutors:
+      answer: "Il y a en ce moment %% tuteurs :\n\n"
+    warntroll:
+      warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
+  memberRolesFlow:
+    validatedDM: "Tu peux maintenant poster sur les autres canaux :D ! Si tu te rends compte que ce n'est pas le cas, contacte un modérateur.\nSi tu te sens perdu, tu peux dire bonjour dans %%."
+    levelStepMessage: "Il faut maintenant que tu précises ton niveau en %% en tapant la commande `%%` suivie de ton niveau. Les niveaux sont débutant, intermédiaire, avancé et natif. Par exemple: `%% intermediaire`"
+    nativeLanguageStepMessage: "Il faut maintenant que tu précises ta langue natale en tapant la commande `%%language` suivie de ta langue. Par exemple: `%%language french`"
+    countryStepMessage: "Il faut maintenant que tu précises le pays dans lequel tu vis en tapant la commande `%%country` suivie du pays. Par exemple: `%%country France`. Tu as le droit - si tu ne veux pas dévoiler cette information - de taper la commande `%%country Pays inconnu`."
+  moderationLog:
+    member: "Membre %%"
+    kicked: "expulsé"
+    banned: "banni"
+    reason: "pour la raison suivante : %%"
+    missingReason: "Hé @everyone, je viens de poster une entrée dans le journal de modération public qui n'a pas de raison. Rappelez-vous de **TOUJOURS** saisir une raison quand vous kickez ou bannissez quelqu'un ! Est-ce que quelqu'un peut aller dans le journal de modération public et fournir une raison, genre \"Oh à propos de @machin, il a été ban parce que [RAISON].\" SVP? Merci ♥ !"

@@ -9,11 +9,6 @@ const Language = require('../language');
 module.exports = async (message, args) => {
     const member = Guild.getMemberFromMessage(message);
 
-    if (member === null) {
-        message.reply('sorry, you do not seem to be on the server.');
-        return;
-    }
-
     if (Guild.isMemberMod(member)) {
         args = args.join(' ').split('|');
 
@@ -23,21 +18,21 @@ module.exports = async (message, args) => {
         if (!message.guild.roles.find(guildRole => guildRole.name === role)) {
             Guild.createRole(role)
                 .then(roleInstance => {
-                    message.reply(`new role added in Discord: ${roleInstance}`);
+                    message.reply(trans('model.command.addLanguage.discordRoleAddSuccess', [roleInstance], 'en'));
 
                     // then add to database
                     Language.add(friendly, role).then(() => {
-                        message.reply(`new role added in the database: ${role}`);
+                        message.reply(trans('model.command.addLanguage.databaseRoleAddSuccess', [role], 'en'));
                     }).catch(error => {
                         Logger.exception(error);
-                        message.reply(`new role couldn't be added in the database: ${role}`);
+                        message.reply(trans('model.command.addLanguage.databaseRoleAddError', [role], 'en'));
                     });
                 }).catch(error => {
                     Logger.exception(error);
-                    message.reply(`new role couldn't be added in Discord: ${role}`);
+                    message.reply(trans('model.command.addLanguage.discordRoleAddError', [role], 'en'));
                 });
         } else {
-            message.channel.send(`The role ${role} already exists.`);
+            message.channel.send(trans('model.command.addLanguage.alreadyExists', [role], 'en'));
         }
     }
 };
