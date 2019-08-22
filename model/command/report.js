@@ -4,24 +4,27 @@ const Guild = require('../guild');
 /**
  * @param {Message} message
  */
-module.exports = async (message) => {
-    if (message.guild === null) {
-        message.reply(`\n${trans('model.command.report.onlyOnServer')}`);
-        return;
+module.exports = {
+    aliases: ['rp', 'rep'],
+    process: async (message) => {
+        if (message.guild === null) {
+            message.reply(`\n${trans('model.command.report.onlyOnServer')}`);
+            return;
+        }
+
+        message.delete().catch(Logger.exception);
+        const member = message.member;
+        let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
+
+        foundMembers = foundMembers
+            .map(member => `${member} (\`${member.user.username}#${member.user.discriminator}\`${member.nickname !== null ? ` aka \`${member.nickname}\`` : ``})`)
+            .join(', ');
+
+        const certaintySentence = certain ? trans('model.command.report.reportedMembersCertain', [foundMembers], 'en') : (foundMembers.length > 0 ? trans('model.command.report.reportedMembersGuessed', [foundMembers], 'en') : ``);
+
+        Guild.automodChannel.send(
+            trans('model.command.report.report', [member, certaintySentence, message.url], 'en'),
+            Guild.messageToEmbed(message)
+        );
     }
-
-    message.delete().catch(Logger.exception);
-    const member = message.member;
-    let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
-
-    foundMembers = foundMembers
-        .map(member => `${member} (\`${member.user.username}#${member.user.discriminator}\`${member.nickname !== null ? ` aka \`${member.nickname}\`` : ``})`)
-        .join(', ');
-
-    const certaintySentence = certain ? trans('model.command.report.reportedMembersCertain', [foundMembers], 'en') : (foundMembers.length > 0 ? trans('model.command.report.reportedMembersGuessed', [foundMembers], 'en') : ``);
-
-    Guild.automodChannel.send(
-        trans('model.command.report.report', [member, certaintySentence, message.url], 'en'),
-        Guild.messageToEmbed(message)
-    );
 };

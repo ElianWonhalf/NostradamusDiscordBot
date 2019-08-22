@@ -49,35 +49,38 @@ levels[Guild.levelRoles.beginner.toLowerCase()] = Guild.levelRolesIds.beginner;
  * @param {Message} message
  * @param {Array} args
  */
-module.exports = async (message, args) => {
-    if (message.guild === null || message.channel.id !== Config.channels.welcome) {
-        return;
-    }
-
-    const member = message.member;
-    const level = args.join(' ').toLowerCase().trim();
-
-    const rolesToRemove = member.roles.array().filter(
-        role => Object.values(Guild.levelRoles).indexOf(role.name) > -1
-    );
-
-    if (levels.hasOwnProperty(level)) {
-        const role = levels[level];
-
-        if (rolesToRemove.length > 0) {
-            await member.removeRoles(rolesToRemove);
+module.exports = {
+    aliases: ['rank', Config.levelCommand],
+    process: async (message, args) => {
+        if (message.guild === null || message.channel.id !== Config.channels.welcome) {
+            return;
         }
 
-        member.addRole(role).then((member) => {
-            MemberRolesFlow.answerWithNextStep(message, member);
-        });
-    } else {
-        const levelCommand = Config.prefix + Config.levelCommand;
+        const member = message.member;
+        const level = args.join(' ').toLowerCase().trim();
 
-        if (level === '') {
-            message.reply(`\n${trans('model.command.level.missingArgument', [levelCommand, levelCommand])}`);
+        const rolesToRemove = member.roles.array().filter(
+            role => Object.values(Guild.levelRoles).indexOf(role.name) > -1
+        );
+
+        if (levels.hasOwnProperty(level)) {
+            const role = levels[level];
+
+            if (rolesToRemove.length > 0) {
+                await member.removeRoles(rolesToRemove);
+            }
+
+            member.addRole(role).then((member) => {
+                MemberRolesFlow.answerWithNextStep(message, member);
+            });
         } else {
-            message.reply(`\n${trans('model.command.level.invalidLevel')}`);
+            const levelCommand = Config.prefix + Config.levelCommand;
+
+            if (level === '') {
+                message.reply(`\n${trans('model.command.level.missingArgument', [levelCommand, levelCommand])}`);
+            } else {
+                message.reply(`\n${trans('model.command.level.invalidLevel')}`);
+            }
         }
     }
 };

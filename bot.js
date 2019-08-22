@@ -106,6 +106,8 @@ const botProcess = () => {
         ModerationLog.processMemberRemove(member);
     });
 
+    Command.init();
+
     /**
      * @param {Message} message
      */

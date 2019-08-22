@@ -95,27 +95,30 @@ const secondStep = async (collection) => {
 /**
  * @param {Message} message
  */
-module.exports = async (message) => {
-    member = Guild.getMemberFromMessage(message);
-    channel = message.channel;
+module.exports = {
+    aliases: [],
+    process: async (message) => {
+        member = Guild.getMemberFromMessage(message);
+        channel = message.channel;
 
-    if (message.guild !== null) {
-        message.reply(`\n${trans('model.command.anonymous.publicWarn')}`);
-    } else {
-        EventsBus.dispatch('member.ignoreDMStart', member);
+        if (message.guild !== null) {
+            message.reply(`\n${trans('model.command.anonymous.publicWarn')}`);
+        } else {
+            EventsBus.dispatch('member.ignoreDMStart', member);
 
-        const filter = (reaction, user) => {
-            const emoji = reaction.emoji.name;
-            return (emoji === EmojiCharacters[1] || emoji === EmojiCharacters[2]) && user.id === member.user.id;
-        };
+            const filter = (reaction, user) => {
+                const emoji = reaction.emoji.name;
+                return (emoji === EmojiCharacters[1] || emoji === EmojiCharacters[2]) && user.id === member.user.id;
+            };
 
-        /** {Message} firstStepMessage */
-        const firstStepMessage = await channel.send(trans('model.command.anonymous.firstStep'));
+            /** {Message} firstStepMessage */
+            const firstStepMessage = await channel.send(trans('model.command.anonymous.firstStep'));
 
-        // 5 minutes
-        firstStepMessage.awaitReactions(filter, { time: 300000, max: 1 }).then(secondStep).catch(Logger.exception);
+            // 5 minutes
+            firstStepMessage.awaitReactions(filter, { time: 300000, max: 1 }).then(secondStep).catch(Logger.exception);
 
-        await firstStepMessage.react(EmojiCharacters[1]);
-        await firstStepMessage.react(EmojiCharacters[2]);
+            await firstStepMessage.react(EmojiCharacters[1]);
+            await firstStepMessage.react(EmojiCharacters[2]);
+        }
     }
 };

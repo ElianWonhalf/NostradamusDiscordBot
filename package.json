@@ -1,6 +1,6 @@
 {
   "name": "nostradamus",
-  "version": "3.10.0",
+  "version": "3.11.0",
   "description": "Nostradamus bot for French Discord server",
   "main": "bot.js",
   "scripts": {
