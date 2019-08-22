@@ -81,7 +81,10 @@ const Guild = {
 
     kickInactiveNewMembers: () => {
         Guild.discordGuild.members.filter(member => {
-            return ((Date.now() - member.joinedTimestamp) >= 3 * 24 * 60 * 60 * 1000) && member.roles.size < 2;
+            const threeDaysElapsed = ((Date.now() - member.joinedTimestamp) >= 3 * 24 * 60 * 60 * 1000);
+            const isOfficial = member.roles.has(Config.roles.officialMember);
+
+            return !member.user.bot && threeDaysElapsed && !isOfficial;
         }).array().forEach(member => member.kick('[AUTO] Did not self assign roles'));
     },
 
