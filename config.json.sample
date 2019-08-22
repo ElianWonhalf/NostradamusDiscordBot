@@ -10,6 +10,7 @@
     },
     "guild": "",
     "admin": "",
+    "testAccount": "",
     "botLanguage": "en,fr",
     "roles": {
         "mod": "",

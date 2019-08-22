@@ -45,11 +45,16 @@ const botProcess = () => {
     const Discord = require('discord.js');
     const CallerId = require('caller-id');
 
+    global.testMode = process.env.NOSTRADAMUS_TEST === '1';
     global.bot = new Discord.Client();
     global.debug = (message) => {
-        if (process.env.NOSTRADAMUS_DEBUG_ENABLED === '1') {
+        if (process.env.NOSTRADAMUS_DEBUG === '1') {
             const caller = CallerId.getData();
-            const path = caller.filePath.substr(caller.filePath.toLowerCase().indexOf('/nostradamus/') + 13);
+            const path = caller.filePath.substr(
+                caller.filePath.toLowerCase().indexOf('/nostradamus/') + 13
+            ).substr(
+                caller.filePath.toLowerCase().indexOf('/shakespeare/') + 13
+            );
             const prefix = `${path}:${caller.lineNumber}`;
 
             if (typeof message === 'string') {
@@ -84,26 +89,30 @@ const botProcess = () => {
      * @param {GuildMember} member
      */
     bot.on('guildMemberAdd', (member) => {
-        Guild.welcomeChannel.send(
-            trans(
-                'bot.welcomeMessage',
-                [
-                    Guild.discordGuild.name,
-                    member.user,
-                    `%${Config.learntLanguage}%`,
-                    Config.prefix + Config.levelCommand,
-                    Config.prefix + Config.levelCommand
-                ]
-            )
-        );
+        if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
+            Guild.welcomeChannel.send(
+                trans(
+                    'bot.welcomeMessage',
+                    [
+                        Guild.discordGuild.name,
+                        member.user,
+                        `%${Config.learntLanguage}%`,
+                        Config.prefix + Config.levelCommand,
+                        Config.prefix + Config.levelCommand
+                    ]
+                )
+            );
+        }
     });
 
     /**
      * @param {GuildMember} member
      */
     bot.on('guildMemberRemove', async (member) => {
-        Guild.clearWelcomeMessagesForMember(member);
-        ModerationLog.processMemberRemove(member);
+        if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
+            Guild.clearWelcomeMessagesForMember(member);
+            ModerationLog.processMemberRemove(member);
+        }
     });
 
     Command.init();
@@ -112,15 +121,17 @@ const botProcess = () => {
      * @param {Message} message
      */
     bot.on('message', (message) => {
-        SemiBlacklist.parseMessage(message);
+        if (!testMode && message.author.id !== Config.testAccount || testMode && message.author.id === Config.testAccount) {
+            SemiBlacklist.parseMessage(message);
 
-        if (message.channel.id === Config.channels.welcome) {
-            Guild.addMessageFromWelcomeToMap(message);
-        }
+            if (message.channel.id === Config.channels.welcome) {
+                Guild.addMessageFromWelcomeToMap(message);
+            }
 
-        if (!message.author.bot) {
-            const isCommand = Command.parseMessage(message);
-            DM.parseMessage(message, isCommand);
+            if (!message.author.bot) {
+                const isCommand = Command.parseMessage(message);
+                DM.parseMessage(message, isCommand);
+            }
         }
     });
 
