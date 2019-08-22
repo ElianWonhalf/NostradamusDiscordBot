@@ -57,8 +57,8 @@ const Country = {
 
                 db.query('SET NAMES utf8');
                 db.query(
-                    `UPDATE countries SET aliases = IF(aliases IS NULL, ?, CONCAT(aliases, ',', ?)) WHERE role = ?`,
-                    [alias, alias, role],
+                    `UPDATE countries SET aliases = IF(aliases IS NULL, ?, CONCAT(aliases, ',', ?)) WHERE role = ? OR friendly = ?`,
+                    [alias, alias, role, role],
                     (error) => {
                         error ? reject(error) : resolve();
                     }

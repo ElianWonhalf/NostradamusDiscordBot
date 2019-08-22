@@ -15,7 +15,7 @@ module.exports = async (message, args) => {
         const alias = args[0];
         const role = args[1];
 
-        if (message.guild.roles.find(guildRole => guildRole.name === role)) {
+        if (Country.getRoleNameFromString(role) !== null) {
             Country.addAlias(alias, role).then(() => {
                 message.reply(trans('model.command.addCountryAlias.success', [role], 'en'));
             }).catch(error => {
