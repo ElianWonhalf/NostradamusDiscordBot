@@ -53,13 +53,22 @@ const ModerationLog = {
                 const userTarget = entry.targetType === 'USER';
                 const kickOrBan = entry.action === 'MEMBER_KICK' || entry.action === 'MEMBER_BAN_ADD';
                 const inList = entry.target !== undefined && memberIds.indexOf(entry.target.id) > -1;
-                const notAuto = entry.reason === null || entry.reason.match('[AUTO]') === null;
+                const notAuto = entry.reason === null || entry.reason.indexOf('[AUTO]') < 0;
 
                 if (inList && (!userTarget || !kickOrBan || !notAuto)) {
                     debug(`Removed entry corresponding to user`);
+
                     debug(`userTarget: ${userTarget ? 'true' : 'false'}`);
+                    debug(`entry.targetType: ${entry.targetType}`);
+
                     debug(`kickOrBan: ${kickOrBan ? 'true' : 'false'}`);
+                    debug(`entry.action: ${entry.action}`);
+
                     debug(`notAuto: ${notAuto ? 'true' : 'false'}`);
+                    debug(`entry.reason: ${entry.reason}`);
+                    if (entry.reason !== null) {
+                        debug(`entry.reason.indexOf('[AUTO]'): ${entry.reason.indexOf('[AUTO]')}`);
+                    }
                 }
 
                 return userTarget && kickOrBan && inList && notAuto;

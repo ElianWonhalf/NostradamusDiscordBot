@@ -47,7 +47,9 @@ const replaceVariablesInString = (value, variables, language) => {
  * @returns {string}
  */
 global.trans = (keyPath, variables, forcedLanguage) => {
-    variables = variables === undefined ? [] : variables.map(variable => variable.toString());
+    variables = variables === undefined ? [] : variables.map(variable => {
+        return variable === undefined ? '' : variable.toString();
+    });
 
     const key = keyPath.split('.');
     const decidedLanguage = forcedLanguage === undefined ? Config.botLanguage.split(',') : forcedLanguage.split(',');

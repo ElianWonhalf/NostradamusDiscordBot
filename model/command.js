@@ -43,6 +43,10 @@ let commandAliases = {
 
     'addcountry': 'add-country',
 
+    'addlanguagealias': 'add-language-alias',
+
+    'addcountryalias': 'add-country-alias',
+
     'setavatar': 'set-avatar',
 
     'dictee': 'dictation',

@@ -142,7 +142,7 @@ const botProcess = () => {
         } catch (error) {
             Logger.exception(error);
         }
-        Logger.info(`${Language.list.length} languages initialised.`);
+        Logger.info(`${Language.getRoleNameList().length} languages initialised.`);
 
         Logger.info('--------');
 
@@ -152,7 +152,7 @@ const botProcess = () => {
         } catch (error) {
             Logger.exception(error);
         }
-        Logger.info(`${Country.list.length} countries initialised.`);
+        Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
 
         Logger.info('--------');
 

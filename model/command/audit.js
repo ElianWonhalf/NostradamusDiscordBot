@@ -12,8 +12,8 @@ module.exports = (message) => {
     if (Guild.isMemberMod(member)) {
         let answer = '\n';
 
-        const languagesList = Language.list.map(language => language.role);
-        const countriesList = Country.list.map(country => country.role);
+        const languagesList = Language.getRoleNameList();
+        const countriesList = Country.getRoleNameList();
         const rolesList = Guild.discordGuild.roles.array().map(role => role.name);
 
         answer += trans('model.command.audit.totalLanguagesAndCountriesInDB', [languagesList.length, countriesList.length], 'en');

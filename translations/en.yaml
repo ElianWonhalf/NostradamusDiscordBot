@@ -13,12 +13,20 @@ model:
       discordRoleAddError: "new role couldn't be added in Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
+    addCountryAlias:
+      doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
+      success: "The alias has been successfully added!"
+      error: "The alias could not be added! Check the log for more info."
     addLanguage:
       discordRoleAddSuccess: "new role added in Discord: %%"
       databaseRoleAddSuccess: "new role added in the database: %%"
       discordRoleAddError: "new role couldn't be added in Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
+    addLanguageAlias:
+      doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
+      success: "The alias has been successfully added!"
+      error: "The alias could not be added! Check the log for more info."
     anonymous:
       publicWarn: "to submit an anonymous request, write this command in my DMs!"
       firstStep: "Should I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French"
@@ -100,4 +108,4 @@ model:
     reason: "for the following reason : %%"
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh à propos de @machin, il a été ban parce que [RAISON].\" please? Thank you ♥ !"
   semiBlacklist:
-    triggered: "Semi-blacklist triggered by %% in %\n%%"
+    triggered: "Semi-blacklist triggered by %% in %%\n%%"
