@@ -76,6 +76,7 @@ const botProcess = () => {
     const SemiBlacklist = require('./model/semi-blacklist');
     const ModerationLog = require('./model/moderation-log');
     const DM = require('./model/dm');
+    const MemberRolesFlow = require('./model/member-roles-flow');
 
     const crashRecover = (exception) => {
         Logger.exception(exception);
@@ -94,11 +95,9 @@ const botProcess = () => {
                 trans(
                     'bot.welcomeMessage',
                     [
-                        Guild.discordGuild.name,
                         member.user,
-                        `%${Config.learntLanguage}%`,
-                        Config.prefix + Config.levelCommand,
-                        Config.prefix + Config.levelCommand
+                        Guild.discordGuild.name,
+                        `%${Config.learntLanguage}%`
                     ]
                 )
             );
@@ -121,14 +120,15 @@ const botProcess = () => {
      * @param {Message} message
      */
     bot.on('message', (message) => {
-        if (!testMode && message.author.id !== Config.testAccount || testMode && message.author.id === Config.testAccount) {
+        if (!testMode && message.author.id !== Config.testAccount || testMode && (message.author.id === Config.testAccount || message.author.bot)) {
             SemiBlacklist.parseMessage(message);
 
             if (message.channel.id === Config.channels.welcome) {
                 Guild.addMessageFromWelcomeToMap(message);
-            }
-
-            if (!message.author.bot) {
+                if (!message.author.bot) {
+                    MemberRolesFlow.parse(message);
+                }
+            } else if (!message.author.bot) {
                 const isCommand = Command.parseMessage(message);
                 DM.parseMessage(message, isCommand);
             }

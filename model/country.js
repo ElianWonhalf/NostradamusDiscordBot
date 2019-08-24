@@ -77,6 +77,13 @@ const Country = {
     },
 
     /**
+     * @returns {Array}
+     */
+    getRoleAliasesList: () => {
+        return Array.from(new Set(Object.keys(Country.list)));
+    },
+
+    /**
      * @param {string} string
      * @returns {string|null}
      */

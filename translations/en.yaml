@@ -3,7 +3,7 @@ learntLanguage:
   french: "french"
 
 bot:
-  welcomeMessage: "**Welcome to the %% Discord server, %%!\nTo be able to send messages in the other channels, please follow these instructions.**\n\nFor starters, you need to specify your proficiency in %% by typing the command `%%` in the chat followed by your level. The available levels are `beginner`, `intermediate`, `advanced` and `native`. For example: `%% intermediate`"
+  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I am here to help you accessing the server. Are you a %% native?"
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -97,10 +97,11 @@ model:
   dm:
     notification: "%% sent a DM:\n\n%%"
   memberRolesFlow:
-    validatedDM: "You can now post on the other channels :D ! If that's not the case, call a moderator.\nIf you feel lost, you can say hi in %%."
-    levelStepMessage: "You now need to specify your proficiency in %% by typing the command `%%` followed by your level. The available levels are beginner, intermediate, advanced and native. For example: `%% intermediate`"
-    nativeLanguageStepMessage: "You now need to specify your native language by typing the command `%%language` followed by your language. For example: `%%language english`"
-    countryStepMessage: "You now need to specify the country you're currently living in by typing the command `%%country` followed by the country. For example: `%%country United States`. You have the right to - if you do not want to give away that information - type the command `%%country Unknown country`."
+    isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are a %% native? Just answer with yes or no :) ."
+    levelStepMessage: "Alright! What's your level of proficiency in %% then? Are you a beginner, intermediate, or more advanced?"
+    levelStepConfusedMessage: "I'm sorry I'm not sure I understood correctly. Can you please tell me again what is your level of proficiency in %%? Just answer with beginner, intermediate, or advanced."
+    endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
+    validatedMessage: "Welcome %%!"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"

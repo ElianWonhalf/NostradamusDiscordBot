@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "**Bienvenue sur le serveur Discord %%, %% !\nPour pouvoir écrire dans les autres salons, veuillez suivre ces instructions.**\n\nPour commencer, il faut que tu précises ton niveau en %% en tapant dans le chat la commande `%%` suivie de ton niveau. Les niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`. Par exemple: `%% intermédiaire`"
+  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Je suis un robot, et je suis ici pour t'aider à accéder au serveur. Est-ce que \"%%\" est ta langue natale ?"
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
@@ -45,10 +45,12 @@ model:
     warntroll:
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
   memberRolesFlow:
-    validatedDM: "Tu peux maintenant poster sur les autres canaux :D ! Si tu te rends compte que ce n'est pas le cas, contacte un modérateur.\nSi tu te sens perdu, tu peux dire bonjour dans %%."
-    levelStepMessage: "Il faut maintenant que tu précises ton niveau en %% en tapant la commande `%%` suivie de ton niveau. Les niveaux sont débutant, intermédiaire, avancé et natif. Par exemple: `%% intermediaire`"
-    nativeLanguageStepMessage: "Il faut maintenant que tu précises ta langue natale en tapant la commande `%%language` suivie de ta langue. Par exemple: `%%language french`"
-    countryStepMessage: "Il faut maintenant que tu précises le pays dans lequel tu vis en tapant la commande `%%country` suivie du pays. Par exemple: `%%country France`. Tu as le droit - si tu ne veux pas dévoiler cette information - de taper la commande `%%country Pays inconnu`."
+    isNativeStepConfusedMessage: "Je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire si \"%%\" est ta langue natale ? Tu n'as qu'à répondre par oui ou par non :) ."
+    levelStepMessage: "Ok ! Quel est ton niveau en %% dans ce cas ? Es-tu un débutant, intermédiaire, ou plutôt avancé ?"
+    levelStepConfusedMessage: "Je suis désolé je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire quel est ton niveau en %%? Tu n'as qu'à répondre débutant, intermédiaire, ou avancé."
+    additionalRolesString: "Je te rajoute également %%. "
+    endMessage: "Super! Je te rajoute le(s) rôle(s) %% alors. Dans quinze secondes, ce channel va disparaître et tu auras accès au reste du serveur."
+    validatedMessage: "Bienvenue %% !"
   moderationLog:
     member: "Membre %%"
     kicked: "expulsé"

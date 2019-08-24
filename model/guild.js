@@ -50,6 +50,9 @@ const Guild = {
     /** {TextChannel} */
     automodChannel: null,
 
+    /** {TextChannel} */
+    beginnerChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -61,6 +64,7 @@ const Guild = {
         Guild.modLogChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.modLog);
         Guild.botChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.bot);
         Guild.automodChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.automod);
+        Guild.beginnerChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.beginner);
 
         // First delete old welcome messages and kick inactive new members
         await Guild.deleteOldWelcomeMessages();

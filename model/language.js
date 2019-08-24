@@ -77,6 +77,13 @@ const Language = {
     },
 
     /**
+     * @returns {Array}
+     */
+    getRoleAliasesList: () => {
+        return Array.from(new Set(Object.keys(Language.list)));
+    },
+
+    /**
      * @param {string} string
      * @returns {string|null}
      */
