@@ -7,15 +7,15 @@ const Guild = require('../guild');
 module.exports = {
     aliases: ['game', 'jeu', 'jeux'],
     process: async (message) => {
-        const member = Guild.getMemberFromMessage(message);
+        const member = await Guild.getMemberFromMessage(message);
 
         if (member.roles.has(Config.roles.games)) {
             member.removeRole(Config.roles.games).then(() => {
-                message.reply(`\n${trans('model.command.games.alertsOff')}`);
+                message.reply(trans('model.command.games.alertsOff'));
             });
         } else {
             member.addRole(Config.roles.games).then(() => {
-                message.reply(`\n${trans('model.command.games.alertsOn')}`);
+                message.reply(trans('model.command.games.alertsOn'));
             });
         }
     }

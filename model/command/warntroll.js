@@ -7,7 +7,7 @@ const Guild = require('../guild');
 module.exports = {
     aliases: [],
     process: async (message) => {
-        const member = Guild.getMemberFromMessage(message);
+        const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
             let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);

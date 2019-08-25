@@ -16,9 +16,11 @@ model:
       fourthStepSuccess: "Ton message anonyme a été envoyé avec succès !"
       fourthStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
     committee:
-      answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :\n\n"
+      answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
     country:
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
+      added: ":ywansheep: C'est bon, je t'ai ajouté le rôle \"%%\" !"
+      removed: ":ywansheep: C'est bon, je t'ai retiré le rôle \"%%\" !"
     dictation:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
@@ -27,6 +29,8 @@ model:
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
     language:
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
+      added: ":ywansheep: C'est bon, je t'ai ajouté le rôle \"%%\" !"
+      removed: ":ywansheep: C'est bon, je t'ai retiré le rôle \"%%\" !"
     level:
       missingArgument: "Il faut que tu spécifies un niveau. La commande `%%` seule ne me permet pas de savoir quel est ton niveau. Par exemple : `%% débutant`"
       invalidLevel: "Ce niveau n'est pas valide. Peut-être que tu as fait une faute de frappe ? Les différents niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`."
@@ -34,14 +38,14 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
     modList:
-      answer: "Il y a en ce moment %% modérateurs :\n\n"
+      answer: "Il y a en ce moment %% modérateurs :"
     outLoudReading:
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
     report:
       onlyOnServer: "désolé, cette commande ne peut être exécutée que sur le serveur."
     tutors:
-      answer: "Il y a en ce moment %% tuteurs :\n\n"
+      answer: "Il y a en ce moment %% tuteurs :"
     warntroll:
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
   memberRolesFlow:

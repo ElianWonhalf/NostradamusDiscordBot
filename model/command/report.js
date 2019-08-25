@@ -8,12 +8,12 @@ module.exports = {
     aliases: ['rp', 'rep'],
     process: async (message) => {
         if (message.guild === null) {
-            message.reply(`\n${trans('model.command.report.onlyOnServer')}`);
+            message.reply(trans('model.command.report.onlyOnServer'));
             return;
         }
 
         message.delete().catch(Logger.exception);
-        const member = message.member;
+        const member = await Guild.getMemberFromMessage(message);
         let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
 
         foundMembers = foundMembers

@@ -119,16 +119,20 @@ const botProcess = () => {
     /**
      * @param {Message} message
      */
-    bot.on('message', (message) => {
-        if (!testMode && message.author.id !== Config.testAccount || testMode && (message.author.id === Config.testAccount || message.author.bot)) {
+    bot.on('message', async (message) => {
+        const user = message.author;
+
+        if (!testMode && user.id !== Config.testAccount || testMode && (user.id === Config.testAccount || user.bot)) {
             SemiBlacklist.parseMessage(message);
 
             if (message.channel.id === Config.channels.welcome) {
+                const member = await Guild.discordGuild.fetchMember(user, false);
+
                 Guild.addMessageFromWelcomeToMap(message);
-                if (!message.author.bot) {
+                if (!user.bot && !member.roles.has(Config.roles.officialMember)) {
                     MemberRolesFlow.parse(message);
                 }
-            } else if (!message.author.bot) {
+            } else if (!user.bot) {
                 const isCommand = Command.parseMessage(message);
                 DM.parseMessage(message, isCommand);
             }

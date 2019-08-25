@@ -24,6 +24,8 @@ const STRINGS_THAT_MEAN_YES = [
     'ya',
     'yep',
     'yup',
+    'eyup',
+    'eeyup',
     'yip',
     'yay',
     'true',
@@ -87,6 +89,10 @@ const LEVELS = {
     'intermediate': Guild.levelRolesIds.intermediate,
     'intermedate': Guild.levelRolesIds.intermediate,
     'intermediat': Guild.levelRolesIds.intermediate,
+    'intermediere': Guild.levelRolesIds.intermediate,
+    'intermédière': Guild.levelRolesIds.intermediate,
+    'inter': Guild.levelRolesIds.intermediate,
+    'moyen': Guild.levelRolesIds.intermediate,
 
     // Beginner
     'débutant': Guild.levelRolesIds.beginner,
@@ -98,6 +104,9 @@ const LEVELS = {
     'beginne': Guild.levelRolesIds.beginner,
     'beginn': Guild.levelRolesIds.beginner,
     'begin': Guild.levelRolesIds.beginner,
+    'start': Guild.levelRolesIds.beginner,
+    'started': Guild.levelRolesIds.beginner,
+    'starting': Guild.levelRolesIds.beginner,
 };
 
 LEVELS[Guild.levelRoles.native.toLowerCase()] = Guild.levelRolesIds.native;
@@ -123,7 +132,7 @@ const MemberRolesFlow = {
      * @param {Message} message
      */
     parse: async (message) => {
-        let member = message.member;
+        let member = await Guild.getMemberFromMessage(message);
         const nextStepIndex = MemberRolesFlow.getNextStepForMember(member, true);
         let intendedRoleAdded = null;
         const additionalRolesAdded = [];
@@ -196,7 +205,7 @@ const MemberRolesFlow = {
 
         if (nextStep !== null) {
             const callback = 'get' + nextStep.substr(0, 1).toUpperCase() + nextStep.substr(1) + 'StepMessage';
-            message.reply(`\n\n${MemberRolesFlow[callback](confused)}`);
+            message.reply(MemberRolesFlow[callback](confused));
         } else {
             setTimeout(async () => {
                 await member.addRole(Config.roles.officialMember);
@@ -207,9 +216,7 @@ const MemberRolesFlow = {
             const roles = member.roles.array().filter(role => role.name !== '@everyone').map(role => role.name);
             const rolesString = `"${roles.join('", "')}"`;
 
-            message.reply(
-                `\n\n${trans('model.memberRolesFlow.endMessage', [rolesString])}`
-            );
+            message.reply(trans('model.memberRolesFlow.endMessage', [rolesString]));
         }
     },
 

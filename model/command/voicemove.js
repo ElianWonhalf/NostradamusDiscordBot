@@ -5,8 +5,8 @@ const Guild = require('../guild');
  */
 module.exports = {
     aliases: [],
-    process: (message) => {
-        const member = Guild.getMemberFromMessage(message);
+    process: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
             Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {

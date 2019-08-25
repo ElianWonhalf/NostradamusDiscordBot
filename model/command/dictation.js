@@ -7,15 +7,15 @@ const Guild = require('../guild');
 module.exports = {
     aliases: ['dictee', 'dictée'],
     process: async (message) => {
-        const member = Guild.getMemberFromMessage(message);
+        const member = await Guild.getMemberFromMessage(message);
 
         if (member.roles.has(Config.roles.dictation)) {
             member.removeRole(Config.roles.dictation).then(() => {
-                message.reply(`\n${trans('model.command.dictation.alertsOff')}`);
+                message.reply(trans('model.command.dictation.alertsOff'));
             });
         } else {
             member.addRole(Config.roles.dictation).then(() => {
-                message.reply(`\n${trans('model.command.dictation.alertsOn')}`);
+                message.reply(trans('model.command.dictation.alertsOn'));
             });
         }
     }

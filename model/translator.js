@@ -79,7 +79,7 @@ global.trans = (keyPath, variables, forcedLanguage) => {
 
         if (typeof value === 'string') {
             if (finalTranslation.length > 0) {
-                finalTranslation += '\n:arrow_up: **EN ====== FR** :arrow_down:\n';
+                finalTranslation += ' / ';
             }
 
             value = replaceVariablesInString(value, variables, language);

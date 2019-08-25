@@ -12,7 +12,7 @@ module.exports = {
             return;
         }
 
-        const member = message.member;
+        const member = await Guild.getMemberFromMessage(message);
 
         if (!member.roles.has(Config.roles.officialMember)) {
             Guild.botChannel.send(

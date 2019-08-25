@@ -24,7 +24,7 @@ const Command = {
      * @param {Message} message
      * @returns {boolean}
      */
-    parseMessage: (message) => {
+    parseMessage: async (message) => {
         let isCommand = false;
 
         if (message.content.toLowerCase().substr(0, Config.prefix.length) === Config.prefix) {
@@ -32,10 +32,10 @@ const Command = {
             const calledCommand = content.shift().toLowerCase();
 
             if (Command.isValid(calledCommand)) {
-                const member = Guild.getMemberFromMessage(message);
+                const member = await Guild.getMemberFromMessage(message);
 
                 if (member === null) {
-                    message.reply(`\n${trans('model.command.notOnServer')}`);
+                    message.reply(trans('model.command.notOnServer'));
                 } else {
                     let commandName = calledCommand;
                     isCommand = true;

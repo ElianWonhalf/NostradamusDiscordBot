@@ -14,7 +14,7 @@ module.exports = {
             return;
         }
 
-        const member = message.member;
+        const member = await Guild.getMemberFromMessage(message);
         const language = args.join(' ').toLowerCase().trim();
 
         if (language !== '') {
@@ -47,7 +47,7 @@ module.exports = {
                 MemberRolesFlow.answerWithNextStep(message, member);
             });
         } else {
-            message.reply(`\n${trans('model.command.language.missingArgument', [Config.prefix, Config.prefix])}`);
+            message.reply(trans('model.command.language.missingArgument', [Config.prefix, Config.prefix]));
         }
     }
 };

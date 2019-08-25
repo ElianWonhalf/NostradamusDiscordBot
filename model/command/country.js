@@ -14,7 +14,7 @@ module.exports = {
             return;
         }
 
-        const member = message.member;
+        const member = await Guild.getMemberFromMessage(message);
         const country = args.join(' ').toLowerCase().trim();
 
         if (country !== '') {
@@ -31,18 +31,19 @@ module.exports = {
 
             if (role === null) {
                 Guild.botChannel.send(trans('model.command.country.request', [member, country], 'en'), Guild.messageToEmbed(message));
-                role = Config.roles.noCountry;
             }
 
             if (rolesToRemove.length > 0) {
                 await member.removeRoles(rolesToRemove);
             }
 
-            member.addRole(role).then(member => {
-                MemberRolesFlow.answerWithNextStep(message, member);
-            });
+            if (role !== null && !rolesToRemove.has(role.id)) {
+                member.addRole(role).then(member => {
+                    MemberRolesFlow.answerWithNextStep(message, member);
+                });
+            }
         } else {
-            message.reply(`\n${trans('model.command.country.missingArgument', [Config.prefix, Config.prefix])}`);
+            message.reply(trans('model.command.country.missingArgument', [Config.prefix, Config.prefix]));
         }
     }
 };

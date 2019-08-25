@@ -8,7 +8,7 @@ const Guild = require('../guild');
 module.exports = {
     aliases: ['setavatar'],
     process: async (message, args) => {
-        const member = Guild.getMemberFromMessage(message);
+        const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
             global.bot.user.setAvatar(args.join(' ')).then(() => {

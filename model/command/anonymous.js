@@ -98,11 +98,11 @@ const secondStep = async (collection) => {
 module.exports = {
     aliases: [],
     process: async (message) => {
-        member = Guild.getMemberFromMessage(message);
+        member = await Guild.getMemberFromMessage(message);
         channel = message.channel;
 
         if (message.guild !== null) {
-            message.reply(`\n${trans('model.command.anonymous.publicWarn')}`);
+            message.reply(trans('model.command.anonymous.publicWarn'));
         } else {
             EventsBus.dispatch('member.ignoreDMStart', member);
 

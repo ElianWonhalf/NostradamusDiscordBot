@@ -12,6 +12,6 @@ module.exports = {
             member => (member.nickname !== null ? member.nickname : member.user.username) + '#' + member.user.discriminator
         );
 
-        message.reply(`\n${trans('model.command.tutors.answer', [list.length])}${list.join('\n')}`);
+        message.reply(`${trans('model.command.tutors.answer', [list.length])}\n\n${list.join('\n')}`);
     }
 };

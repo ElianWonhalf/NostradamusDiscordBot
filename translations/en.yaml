@@ -3,7 +3,7 @@ learntLanguage:
   french: "french"
 
 bot:
-  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I am here to help you accessing the server. Are you a %% native?"
+  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a %% native?"
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -44,7 +44,7 @@ model:
       countriesInDbWithoutRole: "\nI found ${countriesWithoutRoles.length} country(ies) that are in the DB but don't have any role assigned"
       rolesWithoutDbEntry: "\n\nI found ${rolesWithoutDBEntry.length} role(s) that don't have any DB entry assigned"
     committee:
-      answer: "There are currently %% member(s) in the Decision Committee:\n\n"
+      answer: "There are currently %% member(s) in the Decision Committee:"
     country:
       request: "Country tag request by %%: %%"
       missingArgument: "You need to enter in a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
@@ -70,7 +70,7 @@ model:
       alertsOn: "You will now be pinged when there's a mini class."
       alertsOff: "You will no longer be pinged when there's a mini class."
     modList:
-      answer: "There are currently %% moderators:\n\n"
+      answer: "There are currently %% moderators:"
     outLoudReading:
       alertsOn: "You will now be pinged when a reading is being held."
       alertsOff: "You will no longer be pinged when a reading is being held."
@@ -85,7 +85,7 @@ model:
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
     tutors:
-      answer: "There are currently %% tutors:\n\n"
+      answer: "There are currently %% tutors:"
     voicemove:
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll make the members follow you."

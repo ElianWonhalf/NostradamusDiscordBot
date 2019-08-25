@@ -11,7 +11,7 @@
     "guild": "",
     "admin": "",
     "testAccount": "",
-    "botLanguage": "en,fr",
+    "botLanguage": "fr,en",
     "roles": {
         "mod": "",
         "officialMember": "",

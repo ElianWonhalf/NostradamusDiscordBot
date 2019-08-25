@@ -133,13 +133,13 @@ const Guild = {
      * @param message
      * @returns {GuildMember|null}
      */
-    getMemberFromMessage: (message) => {
-        let member;
+    getMemberFromMessage: async (message) => {
+        let member = null;
 
-        if (message.guild === null) {
-            member = Guild.discordGuild.member(message.author);
-        } else {
-            member = message.member;
+        try {
+            member = await Guild.discordGuild.fetchMember(message.author, false);
+        } catch (exception) {
+            Logger.error(exception.toString());
         }
 
         return member;
@@ -204,8 +204,8 @@ const Guild = {
      * @param {Message} message
      * @returns {Discord.RichEmbed}
      */
-    messageToEmbed: (message) => {
-        const member = message.member;
+    messageToEmbed: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
 
         return new Discord.RichEmbed()
