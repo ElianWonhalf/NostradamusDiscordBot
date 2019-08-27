@@ -207,15 +207,20 @@ const MemberRolesFlow = {
             const callback = 'get' + nextStep.substr(0, 1).toUpperCase() + nextStep.substr(1) + 'StepMessage';
             message.reply(MemberRolesFlow[callback](confused));
         } else {
+            let welcomeChannel = Guild.welcomeChannel;
+
             setTimeout(async () => {
                 await member.addRole(Config.roles.officialMember);
+                welcomeChannel.permissionOverwrites.get(member.user.id).delete();
                 Guild.clearWelcomeMessagesForMember(member);
+
                 Guild.beginnerChannel.send(trans('model.memberRolesFlow.validatedMessage', [member]));
             }, 15000);
 
             const roles = member.roles.array().filter(role => role.name !== '@everyone').map(role => role.name);
             const rolesString = `"${roles.join('", "')}"`;
 
+            welcomeChannel = await welcomeChannel.overwritePermissions(member, {SEND_MESSAGES: false});
             message.reply(trans('model.memberRolesFlow.endMessage', [rolesString]));
         }
     },
