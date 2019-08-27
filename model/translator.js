@@ -41,6 +41,8 @@ const replaceVariablesInString = (value, variables, language) => {
 };
 
 /**
+ * A trans-friendly function.
+ *
  * @param {string} keyPath
  * @param {Array} [variables]
  * @param {string} [forcedLanguage]
