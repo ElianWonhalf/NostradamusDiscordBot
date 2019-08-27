@@ -31,9 +31,6 @@ model:
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
       added: ":ywansheep: C'est bon, je t'ai ajouté le rôle \"%%\" !"
       removed: ":ywansheep: C'est bon, je t'ai retiré le rôle \"%%\" !"
-    level:
-      missingArgument: "Il faut que tu spécifies un niveau. La commande `%%` seule ne me permet pas de savoir quel est ton niveau. Par exemple : `%% débutant`"
-      invalidLevel: "Ce niveau n'est pas valide. Peut-être que tu as fait une faute de frappe ? Les différents niveaux sont `débutant`, `intermédiaire`, `avancé` et `natif`."
     miniClass:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."

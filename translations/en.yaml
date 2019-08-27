@@ -59,9 +59,6 @@ model:
     language:
       request: "Language tag requested by %%: %%"
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
-    level:
-      missingArgument: "You need to enter a level. The command `%%` alone does not tell me what your level is. For example: `%% beginner`"
-      invalidLevel: "The level you provided is invalid. Did you spell it right? The levels are `beginner`, `intermediate`, `advanced`, and `native`."
     loadRoles:
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
