@@ -1,9 +1,9 @@
 learntLanguage:
-  english: "english"
-  french: "french"
+  english: "English"
+  french: "French"
 
 bot:
-  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a %% native?"
+  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a native %% speaker?"
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -99,7 +99,7 @@ model:
   memberRolesFlow:
     isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are a %% native? Just answer with yes or no :) ."
     levelStepMessage: "Alright! What's your level of proficiency in %% then? Are you a beginner, intermediate, or more advanced?"
-    levelStepConfusedMessage: "I'm sorry I'm not sure I understood correctly. Can you please tell me again what is your level of proficiency in %%? Just answer with beginner, intermediate, or advanced."
+    levelStepConfusedMessage: "I'm sorry I'm not sure I understood correctly. Can you please tell me again what your level of proficiency in %% is? Just answer with beginner, intermediate, or advanced."
     endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
     validatedMessage: "Welcome %%!"
   moderationLog:
