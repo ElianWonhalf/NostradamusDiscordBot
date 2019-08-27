@@ -3,14 +3,14 @@ learntLanguage:
   french: "French"
 
 bot:
-  welcomeMessage: "Hello %% and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a native %% speaker?"
+  welcomeMessage: "Hello %%, and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a native %% speaker?"
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
     addCountry:
-      discordRoleAddSuccess: "new role added in Discord: %%"
+      discordRoleAddSuccess: "new role added on Discord: %%"
       databaseRoleAddSuccess: "new role added in the database: %%"
-      discordRoleAddError: "new role couldn't be added in Discord: %%"
+      discordRoleAddError: "new role couldn't be added on Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
     addCountryAlias:
@@ -18,9 +18,9 @@ model:
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
     addLanguage:
-      discordRoleAddSuccess: "new role added in Discord: %%"
+      discordRoleAddSuccess: "new role added on Discord: %%"
       databaseRoleAddSuccess: "new role added in the database: %%"
-      discordRoleAddError: "new role couldn't be added in Discord: %%"
+      discordRoleAddError: "new role couldn't be added on Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
     addLanguageAlias:
@@ -28,58 +28,58 @@ model:
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
     anonymous:
-      publicWarn: "to submit an anonymous request, write this command in my DMs!"
+      publicWarn: "to submit an anonymous request, send this command as a direct message!"
       firstStep: "Should I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French"
-      secondStep: "Who do you want to send your anonymous message to? (click on the right reaction below)\n\n:one: To the admin\n:two: To the mods"
-      thirdStep: "Gotcha! You can now write your message. I will only send the first one though! Make sure to say all you have to say in only one message. Also, the recipients will not be able to answer you since it's anonymous. If you need an answer, you should explain in your message how they can answer you, knowing that they won't know who you are. You have thirty minutes to write it :) ."
-      fourthStepNoMessage: "It seems that you didn't send any message. Anonymous message request cancelled. You can try again anytime by sending the command `%%anonymous`."
+      secondStep: "To whom do you want to send your anonymous message? (click on the right reaction below)\n\n:one: To the admin\n:two: To the mods"
+      thirdStep: "Gotcha! You can now write your message. I will only send the first one, though, so make sure to put everything in one message. Also, the recipients will not be able to respond since it's anonymous. If you need an answer, you should explain how they can reply in your message, keeping in mind that they don't know who you are. You have thirty minutes to write it :)."
+      fourthStepNoMessage: "It seems that you didn't send a message. Your anonymous message request has been cancelled. You can try again anytime by sending the command `%%anonymous`."
       anonymousMessageWrapper: "Someone sent an anonymous message:\n\n%%"
-      fourthStepSuccess: "Your message have been successfully and anonymously sent!"
-      fourthStepErrorNotice: "An anonymous message could not be sent! Please contact Lily so she can check the logs!"
-      fourthStepErrorAnswer: "There was a problem sending your message and we are aware of it. Please try again later."
+      fourthStepSuccess: "Your anonymous message has been successfully sent!"
+      fourthStepErrorNotice: "The anonymous message could not be sent! Please contact Lily so she can check the logs!"
+      fourthStepErrorAnswer: "Your message could not be sent due to a known issue that we are working on. Please try again later."
     audit:
-      totalLanguagesAndCountriesInDB: "I found %% languages and %% countries in the DB.\n"
-      totalRolesOnServer: "I found %% roles on the server (knowing that there are not only languages and countries in there).\n\n"
-      languagesInDbWithoutRole: "I found %% language(s) that are in the DB but don't have any role assigned"
-      countriesInDbWithoutRole: "\nI found ${countriesWithoutRoles.length} country(ies) that are in the DB but don't have any role assigned"
-      rolesWithoutDbEntry: "\n\nI found ${rolesWithoutDBEntry.length} role(s) that don't have any DB entry assigned"
+      totalLanguagesAndCountriesInDB: "I've found %% languages, and %% countries in the DB.\n"
+      totalRolesOnServer: "I've found %% roles on the server (knowing that there are not just languages and countries in there).\n\n"
+      languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
+      countriesInDbWithoutRole: "\nI've found ${countriesWithoutRoles.length} country(-ies) in the DB that don't have any roles assigned"
+      rolesWithoutDbEntry: "\n\nI've found ${rolesWithoutDBEntry.length} role(s) that don't have a DB entry assigned"
     committee:
-      answer: "There are currently %% member(s) in the Decision Committee:"
+      answer: "There is/are currently %% member(s) in the Decision Committee:"
     country:
-      request: "Country tag request by %%: %%"
-      missingArgument: "You need to enter in a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
+      request: "Country tag requested by %%: %%"
+      missingArgument: "You need to enter a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
     dictation:
-      alertsOn: "You will now be pinged when there's a dictation."
-      alertsOff: "You will no longer be pinged when there's a dictation."
+      alertsOn: "You will now be notified when there's a dictation."
+      alertsOff: "You will now no longer be notified when there's a dictation."
     games:
-      alertsOn: "You will now be pinged when there's a game."
-      alertsOff: "You will no longer be pinged when there's a game."
+      alertsOn: "You will now be notified when there's a game."
+      alertsOff: "You will now no longer be notified when there's a game."
     help:
-      notice: "%% seems to be needing help in %%.\n%%"
+      notice: "%% seems to need help in %%.\n%%"
     language:
-      request: "Language tag request by %%: %%"
-      missingArgument: "You need to enter in a language. The command `%%language` alone does not tell me what is your native language. For example: `%%language English`"
+      request: "Language tag requested by %%: %%"
+      missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
     level:
-      missingArgument: "You need to enter in a level. The command `%%` alone does not tell me which level you are. For example: `%% beginner`"
-      invalidLevel: "That level is not valid. Maybe you mispelled something? The levels are `beginner`, `intermediate`, `advanced` and `native`."
+      missingArgument: "You need to enter a level. The command `%%` alone does not tell me what your level is. For example: `%% beginner`"
+      invalidLevel: "The level you provided is invalid. Did you spell it right? The levels are `beginner`, `intermediate`, `advanced`, and `native`."
     loadRoles:
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
       count: "found %% role(s) that need to be created"
     miniClass:
-      alertsOn: "You will now be pinged when there's a mini class."
-      alertsOff: "You will no longer be pinged when there's a mini class."
+      alertsOn: "You will now be notified when there's a mini class."
+      alertsOff: "You will now no longer be notified when there's a mini class."
     modList:
       answer: "There are currently %% moderators:"
     outLoudReading:
-      alertsOn: "You will now be pinged when a reading is being held."
-      alertsOff: "You will no longer be pinged when a reading is being held."
+      alertsOn: "You will now be notified when a reading is being held."
+      alertsOff: "You will now no longer be notified when a reading is being held."
     reload:
       answer: "OK, I'm rebooting now."
     report:
       onlyOnServer: "sorry, this command can only be executed on the server."
       reportedMembersCertain: "\n\nThe reported members are: %%"
-      reportedMembersGuessed: "\n\nI'm not sure about who was reported, but here is a guess: %%"
+      reportedMembersGuessed: "\n\nI'm not sure who was reported, but here is a guess: %%"
       report: "@everyone, %% made a report.%%\n%%"
     setAvatar:
       success: "my avatar has been changed!"
@@ -88,25 +88,25 @@ model:
       answer: "There are currently %% tutors:"
     voicemove:
       timeout: "sorry, too slow!"
-      ready: "you can connect to another channel and I'll make the members follow you."
+      ready: "you can connect to another channel and I'll move the members for you."
     warntroll:
       warnMessage: "trolling on the %% server. If you do not change your behavior, you will be banned."
-      memberGuessed: "I'm not sure about who you want to warn, but guess it's %%. If that's not correct, please change the ID in the command below accordingly."
-      memberNotGuessed: "I didn't understand who you wanted to warn, so I will just write \"<@ID>\" in the command below."
+      memberGuessed: "I'm not sure whom you want to warn, but I guess it's %%. If that's not correct, please change the ID in the command below accordingly."
+      memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
   dm:
     notification: "%% sent a DM:\n\n%%"
   memberRolesFlow:
     isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are a %% native? Just answer with yes or no :) ."
-    levelStepMessage: "Alright! What's your level of proficiency in %% then? Are you a beginner, intermediate, or more advanced?"
-    levelStepConfusedMessage: "I'm sorry I'm not sure I understood correctly. Can you please tell me again what your level of proficiency in %% is? Just answer with beginner, intermediate, or advanced."
+    levelStepMessage: "Alright! So what's your level of proficiency in %%? Are you a beginner, intermediate, or more advanced?"
+    levelStepConfusedMessage: "I'm sorry. I'm not sure I understood correctly. Can you please tell me again what your level of proficiency in %% is? Just answer with beginner, intermediate, or advanced."
     endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
     validatedMessage: "Welcome %%!"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"
     banned: "banned"
-    reason: "for the following reason : %%"
-    missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh à propos de @machin, il a été ban parce que [RAISON].\" please? Thank you ♥ !"
+    reason: "for the following reason: %%"
+    missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
   semiBlacklist:
     triggered: "Semi-blacklist triggered by %% in %%\n%%"
