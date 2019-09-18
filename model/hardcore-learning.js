@@ -7,6 +7,7 @@ const Guild = require('./guild');
 const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/t?client=webapp&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&ie=UTF-8&oe=UTF-8&otf=2&ssel=0&tsel=0&kc=1&sl=auto&tl=en&';
 const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
 const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 5;
+const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
 
 const HardcoreLearning = {
     rightLanguageCounter: 0,
@@ -17,7 +18,12 @@ const HardcoreLearning = {
      * @param {Message} message
      */
     addMessage: async (message) => {
-        const content = message.content;
+        const content = message.cleanContent;
+
+        if (content.length < MINIMUM_CHARACTERS_TO_TRANSLATE) {
+            return;
+        }
+
         const tk = await GoogleTranslateToken.get(content);
         const url = `${GOOGLE_TRANSLATE_URL}q=${encodeURIComponent(content)}&tk=${tk.value}`;
 
