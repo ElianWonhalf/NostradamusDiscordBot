@@ -22,8 +22,6 @@ const HardcoreLearning = {
         const url = `${GOOGLE_TRANSLATE_URL}q=${encodeURIComponent(content)}&tk=${tk.value}`;
 
         got(url, {json: true}).then(result => {
-            debug(result.body);
-
             if (result.body !== null) {
                 let lastMessageWasRight;
 
