@@ -122,6 +122,12 @@ const botProcess = () => {
     bot.on('message', async (message) => {
         const user = message.author;
 
+        if (message.channel.id === Config.channels.roles) {
+            setTimeout(() => {
+                message.delete().catch(exception => Logger.error(exception.toString()));
+            }, 60000);
+        }
+
         if (!testMode && user.id !== Config.testAccount || testMode && (user.id === Config.testAccount || user.bot)) {
             SemiBlacklist.parseMessage(message);
 

@@ -10,7 +10,7 @@ const MemberRolesFlow = require('../member-roles-flow');
 module.exports = {
     aliases: ['pays'],
     process: async (message, args) => {
-        if (message.guild === null || message.channel.id !== Config.channels.welcome) {
+        if (message.guild === null || message.channel.id !== Config.channels.roles) {
             return;
         }
 
@@ -18,8 +18,8 @@ module.exports = {
         const country = args.join(' ').toLowerCase().trim();
 
         if (country !== '') {
-            const rolesToRemove = member.roles.array().filter(role => {
-                return Country.getRoleNameList().indexOf(role.name) > -1 || role.id === Config.roles.noCountry
+            const rolesToRemove = member.roles.filter(role => {
+                return Country.getRoleNameList().indexOf(role.name) > -1;
             });
             const roleName = Country.getRoleNameFromString(country);
 
@@ -29,21 +29,28 @@ module.exports = {
                 role = Guild.getRoleByName(roleName);
             }
 
-            if (role === null) {
-                Guild.botChannel.send(trans('model.command.country.request', [member, country], 'en'), Guild.messageToEmbed(message));
+            if (rolesToRemove.size > 0) {
+                await member.removeRoles(rolesToRemove.array());
             }
 
-            if (rolesToRemove.length > 0) {
-                await member.removeRoles(rolesToRemove);
-            }
-
-            if (role !== null && !rolesToRemove.has(role.id)) {
-                member.addRole(role).then(member => {
-                    MemberRolesFlow.answerWithNextStep(message, member);
-                });
+            if (role !== null) {
+                if (!rolesToRemove.has(role.id)) {
+                    member.addRole(role);
+                    message.reply(trans('model.command.country.added', [role.name]));
+                } else {
+                    message.reply(trans('model.command.country.removed', [role.name]));
+                }
+            } else {
+                message.reply(trans('model.command.country.missingRole'));
+                Guild.botChannel.send(
+                    trans('model.command.country.request', [member, country], 'en'),
+                    await Guild.messageToEmbed(message)
+                );
             }
         } else {
-            message.reply(trans('model.command.country.missingArgument', [Config.prefix, Config.prefix]));
+            message.reply(
+                trans('model.command.country.missingArgument', [Config.prefix, Config.prefix])
+            );
         }
     }
 };

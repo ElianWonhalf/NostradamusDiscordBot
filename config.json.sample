@@ -37,7 +37,8 @@
         "automod": "",
         "bot": "",
         "beginner": "",
-        "learntLanguage": ""
+        "learntLanguage": "",
+        "roles": ""
     },
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",

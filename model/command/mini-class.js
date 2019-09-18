@@ -5,7 +5,7 @@ const Guild = require('../guild');
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['miniclass', 'miniclasse', 'mini-classe'],
+    aliases: ['miniclass', 'miniclasse', 'mini-classe', 'minicours', 'mini-cours'],
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 

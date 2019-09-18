@@ -1,3 +1,4 @@
+const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const Language = require('../language');
@@ -10,7 +11,7 @@ const MemberRolesFlow = require('../member-roles-flow');
 module.exports = {
     aliases: ['langue', 'langage'],
     process: async (message, args) => {
-        if (message.guild === null || message.channel.id !== Config.channels.welcome) {
+        if (message.guild === null || message.channel.id !== Config.channels.roles) {
             return;
         }
 
@@ -18,36 +19,57 @@ module.exports = {
         const language = args.join(' ').toLowerCase().trim();
 
         if (language !== '') {
+            if (Guild.isMemberNative(member)) {
+                message.reply(
+                    trans('model.command.language.callMods', [`%${Config.learntLanguage}%`])
+                );
+
+                return;
+            }
+
+            let rolesToRemove = member.roles.filter(role => {
+                return Language.getRoleNameList().indexOf(role.name) > -1;
+            });
             const roleName = Language.getRoleNameFromString(language);
+
             let role = null;
 
             if (roleName !== null) {
                 role = Guild.getRoleByName(roleName);
             }
 
-            let rolesToRemove = member.roles.array().filter(role => {
-                return Language.getRoleNameList().indexOf(role.name) > -1 || role.id === Config.roles.noLanguage;
-            });
+            if (role !== null && role.id === Config.roles.native) {
+                message.reply(
+                    trans('model.command.language.illegal', [`%${Config.learntLanguage}%`])
+                );
 
-            if (role === null) {
-                Guild.botChannel.send(trans('model.command.language.request', [member, language], 'en'), Guild.messageToEmbed(message));
-                role = Config.roles.noLanguage;
-                rolesToRemove = rolesToRemove.filter(role => role.id !== Config.roles.noLanguage);
-            } else if (role.id === Config.roles.native) {
-                rolesToRemove = rolesToRemove.concat(member.roles.array().filter(
-                    role => Object.values(Guild.levelRoles).indexOf(role.name) > -1
-                ));
+                return;
             }
 
-            if (rolesToRemove.length > 0) {
+            if (rolesToRemove.size > 0) {
                 await member.removeRoles(rolesToRemove);
             }
 
-            member.addRole(role).then(member => {
-                MemberRolesFlow.answerWithNextStep(message, member);
-            });
+            if (role !== null) {
+                if (!rolesToRemove.has(role.id)) {
+                    member.addRole(role);
+                    message.reply(trans('model.command.language.added', [role.name]));
+                } else {
+                    message.reply(trans('model.command.language.removed', [role.name]));
+                }
+            } else {
+                message.reply(
+                    trans('model.command.language.missingRole')
+                );
+                Guild.botChannel.send(
+                    trans('model.command.language.request', [member, language], 'en'),
+                    await Guild.messageToEmbed(message)
+                );
+            }
         } else {
-            message.reply(trans('model.command.language.missingArgument', [Config.prefix, Config.prefix]));
+            message.reply(
+                trans('model.command.language.missingArgument', [Config.prefix, Config.prefix])
+            );
         }
     }
 };

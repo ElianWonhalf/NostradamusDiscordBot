@@ -24,7 +24,7 @@ module.exports = {
 
         Guild.automodChannel.send(
             trans('model.command.report.report', [member, certaintySentence, message.url], 'en'),
-            Guild.messageToEmbed(message)
+            await Guild.messageToEmbed(message)
         );
     }
 };

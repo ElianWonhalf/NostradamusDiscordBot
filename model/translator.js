@@ -41,6 +41,23 @@ const replaceVariablesInString = (value, variables, language) => {
 };
 
 /**
+ * @param {string} value
+ */
+const replaceEmojisInString = (value) => {
+    Array.from(new Set(value.match(/:[^\s:]+:/g))).forEach(foundEmoji => {
+        foundEmoji = foundEmoji.replace(/:([^:]+):/, '$1');
+
+        const emojiInstance = bot.emojis.find(emoji => emoji.name === foundEmoji);
+
+        if (emojiInstance !== null) {
+            value = value.replace(new RegExp(`:${foundEmoji}:`, 'g'), emojiInstance.toString());
+        }
+    });
+
+    return value;
+};
+
+/**
  * A trans-friendly function.
  *
  * @param {string} keyPath
@@ -92,7 +109,7 @@ global.trans = (keyPath, variables, forcedLanguage) => {
         }
     }
 
-    finalTranslation = finalTranslation.length > 0 ? finalTranslation : key;
+    finalTranslation = finalTranslation.length > 0 ? replaceEmojisInString(finalTranslation) : key;
 
     return finalTranslation;
 };

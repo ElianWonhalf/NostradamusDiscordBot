@@ -93,6 +93,7 @@ const LEVELS = {
     'intermédière': Guild.levelRolesIds.intermediate,
     'inter': Guild.levelRolesIds.intermediate,
     'moyen': Guild.levelRolesIds.intermediate,
+    'internediate': Guild.levelRolesIds.intermediate,
 
     // Beginner
     'débutant': Guild.levelRolesIds.beginner,
@@ -107,6 +108,8 @@ const LEVELS = {
     'start': Guild.levelRolesIds.beginner,
     'started': Guild.levelRolesIds.beginner,
     'starting': Guild.levelRolesIds.beginner,
+    'zero': Guild.levelRolesIds.beginner,
+    'begginer': Guild.levelRolesIds.beginner,
 };
 
 LEVELS[Guild.levelRoles.native.toLowerCase()] = Guild.levelRolesIds.native;
@@ -138,8 +141,8 @@ const MemberRolesFlow = {
         const additionalRolesAdded = [];
 
         if (nextStepIndex < 1) {
-            const isNative = wordsInString(STRINGS_THAT_MEAN_YES, message.content) !== undefined;
-            const isNotNative = wordsInString(STRINGS_THAT_MEAN_NO, message.content) !== undefined;
+            const isNotNative = wordsInString(STRINGS_THAT_MEAN_YES, message.content) !== undefined;
+            const isNative = wordsInString(STRINGS_THAT_MEAN_NO, message.content) !== undefined;
             const confused = isNative === isNotNative;
 
             if (!confused) {
@@ -214,7 +217,9 @@ const MemberRolesFlow = {
                 welcomeChannel.permissionOverwrites.get(member.user.id).delete();
                 Guild.clearWelcomeMessagesForMember(member);
 
-                Guild.beginnerChannel.send(trans('model.memberRolesFlow.validatedMessage', [member]));
+                Guild.beginnerChannel.send(
+                    trans('model.memberRolesFlow.validatedMessage', [member, Guild.rolesChannel.toString()])
+                );
             }, 15000);
 
             const roles = member.roles.array().filter(role => role.name !== '@everyone').map(role => role.name);

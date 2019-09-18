@@ -3,7 +3,7 @@ learntLanguage:
   french: "French"
 
 bot:
-  welcomeMessage: "Hello %%, and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you a native %% speaker?"
+  welcomeMessage: "Hello %%, and welcome to the %% server! I am a robot, and I'm here to help you access the server. Are you here to learn %%? Answer \"no\" if you're a native speaker."
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -48,6 +48,9 @@ model:
     country:
       request: "Country tag requested by %%: %%"
       missingArgument: "You need to enter a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
+      added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
+      removed: ":ywansheep: All good, I **removed** the role \"%%\" from your profile !"
+      missingRole: "That role doesn't seem to exist :ChatSoif: . Maybe you mispelled it? Anyways, I told the mods about it."
     dictation:
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
@@ -59,6 +62,11 @@ model:
     language:
       request: "Language tag requested by %%: %%"
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
+      added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
+      removed: ":ywansheep: All good, I **removed** the role \"%%\" from your profile !"
+      missingRole: "That role doesn't seem to exist :ChatSoif: . Maybe you mispelled it? Anyways, I told the mods about it."
+      illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
+      callMods: ":lilybongo: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
     loadRoles:
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
@@ -98,7 +106,7 @@ model:
     levelStepMessage: "Alright! So what's your level of proficiency in %%? Are you a beginner, intermediate, or more advanced?"
     levelStepConfusedMessage: "I'm sorry. I'm not sure I understood correctly. Can you please tell me again what your level of proficiency in %% is? Just answer with beginner, intermediate, or advanced."
     endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
-    validatedMessage: "Welcome %%!"
+    validatedMessage: "Welcome %%! You can go over to the channel %% to grab some more roles!"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"

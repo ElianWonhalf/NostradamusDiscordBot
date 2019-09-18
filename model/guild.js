@@ -53,6 +53,9 @@ const Guild = {
     /** {TextChannel} */
     beginnerChannel: null,
 
+    /** {TextChannel} */
+    rolesChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -65,6 +68,7 @@ const Guild = {
         Guild.botChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.bot);
         Guild.automodChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.automod);
         Guild.beginnerChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.beginner);
+        Guild.rolesChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.roles);
 
         // First delete old welcome messages and kick inactive new members
         await Guild.deleteOldWelcomeMessages();
@@ -197,7 +201,9 @@ const Guild = {
      * @returns {Role|null}
      */
     getRoleByName: (roleName) => {
-        return Guild.discordGuild.roles.find(role => role.name.toLowerCase() === roleName.toLowerCase());
+        return roleName === undefined || roleName === null ? null : Guild.discordGuild.roles.find(
+            role => role.name.toLowerCase() === roleName.toLowerCase()
+        );
     },
 
     /**

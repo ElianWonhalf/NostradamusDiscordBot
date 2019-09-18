@@ -21,7 +21,7 @@ const SemiBlacklist = {
             if (triggered) {
                 Guild.automodChannel.send(
                     trans('model.semiBlacklist.triggered', [message.author, message.channel, message.url], 'en'),
-                    Guild.messageToEmbed(message)
+                    await Guild.messageToEmbed(message)
                 )
             }
         }

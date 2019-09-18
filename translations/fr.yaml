@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Je suis un robot, et je suis ici pour t'aider à accéder au serveur. Est-ce que \"%%\" est ta langue natale ?"
+  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Je suis un robot, et je suis ici pour t'aider à accéder au serveur. Est-ce que tu es ici pour apprendre le %% ? Réponds \"non\" si c'est ta langue natale."
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
@@ -19,8 +19,9 @@ model:
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
     country:
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
-      added: ":ywansheep: C'est bon, je t'ai ajouté le rôle \"%%\" !"
-      removed: ":ywansheep: C'est bon, je t'ai retiré le rôle \"%%\" !"
+      added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
+      removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
+      missingRole: "Ce rôle ne semble pas exister :ChatSoif: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
     dictation:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
@@ -29,8 +30,11 @@ model:
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
     language:
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
-      added: ":ywansheep: C'est bon, je t'ai ajouté le rôle \"%%\" !"
-      removed: ":ywansheep: C'est bon, je t'ai retiré le rôle \"%%\" !"
+      added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
+      removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
+      missingRole: "Ce rôle ne semble pas exister :ChatSoif: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
+      illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
+      callMods: ":lilybongo: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     miniClass:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
@@ -51,7 +55,7 @@ model:
     levelStepConfusedMessage: "Je suis désolé je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire quel est ton niveau en %%? Tu n'as qu'à répondre débutant, intermédiaire, ou avancé."
     additionalRolesString: "Je te rajoute également %%. "
     endMessage: "Super! Je te rajoute le(s) rôle(s) %% alors. Dans quinze secondes, ce channel va disparaître et tu auras accès au reste du serveur."
-    validatedMessage: "Bienvenue %% !"
+    validatedMessage: "Bienvenue %% ! Tu peux aller faire un tour dans le channel %% pour choper d'autres rôles !"
   moderationLog:
     member: "Membre %%"
     kicked: "expulsé"
