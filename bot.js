@@ -23,6 +23,7 @@ const mainProcess = () => {
 
             if (die) {
                 Logger.info('Asked to kill');
+                botProcess.kill('SIGHUP');
                 process.exit(0);
             }
 
@@ -38,8 +39,10 @@ const mainProcess = () => {
         subprocess.on('close', (code) => {
             Logger.error(`Bot subprocess exited with code ${code}`);
 
-            botProcess = ChildProcess.spawn(process.argv[0], [process.argv[1], 'bot', '--reboot']);
-            bindProcess(botProcess);
+            if (code !== 0) {
+                botProcess = ChildProcess.spawn(process.argv[0], [process.argv[1], 'bot', '--reboot']);
+                bindProcess(botProcess);
+            }
         });
     };
 
