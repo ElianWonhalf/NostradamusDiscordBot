@@ -13,12 +13,18 @@ const mainProcess = () => {
 
     const stdLog = (callback) => {
         return (data) => {
+            const die = data.toString().toLowerCase().indexOf('killnostrapls') > -1;
             const reboot = data.toString().toLowerCase().indexOf('reboot') > -1
                 || data.toString().toLowerCase().indexOf('econnreset') > -1
                 || data.toString().toLowerCase().indexOf('etimedout') > -1;
 
             data = data.toString().replace(/\n$/, '').split('\n');
             data.map(datum => callback('|-- ' + datum));
+
+            if (die) {
+                Logger.info('Asked to kill');
+                process.exit(0);
+            }
 
             if (reboot) {
                 botProcess.kill();
@@ -77,6 +83,7 @@ const botProcess = () => {
     const ModerationLog = require('./model/moderation-log');
     const DM = require('./model/dm');
     const MemberRolesFlow = require('./model/member-roles-flow');
+    const HardcoreLearning = require('./model/hardcore-learning');
 
     const crashRecover = (exception) => {
         Logger.exception(exception);
@@ -139,8 +146,12 @@ const botProcess = () => {
                     MemberRolesFlow.parse(message);
                 }
             } else if (!user.bot) {
-                const isCommand = Command.parseMessage(message);
+                const isCommand = await Command.parseMessage(message);
                 DM.parseMessage(message, isCommand);
+
+                if (!isCommand && message.channel.id === Config.channels.beginner) {
+                    HardcoreLearning.addMessage(message);
+                }
             }
         }
     });

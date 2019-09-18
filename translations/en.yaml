@@ -101,6 +101,8 @@ model:
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
   dm:
     notification: "%% sent a DM:\n\n%%"
+  hardcoreLearning:
+    warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
   memberRolesFlow:
     isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are a %% native? Just answer with yes or no :) ."
     levelStepMessage: "Alright! So what's your level of proficiency in %%? Are you a beginner, intermediate, or more advanced?"

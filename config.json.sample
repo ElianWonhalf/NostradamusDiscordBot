@@ -42,6 +42,7 @@
     },
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",
+    "learntLanguagePrefix": "",
     "disabledCommands": [],
     "notCountryOrLanguageRoles": []
 }
