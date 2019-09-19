@@ -57,9 +57,13 @@ const HardcoreLearning = {
         if (HardcoreLearning.wrongLanguageCounter < MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING) {
             if (lastMessageWasRight) {
                 HardcoreLearning.wrongLanguageCounter--;
+
+                if (HardcoreLearning.wrongLanguageCounter < 0) {
+                    HardcoreLearning.wrongLanguageCounter = 0;
+                }
             }
 
-            debug('Not enough wrong messages to warn *yet*.');
+            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 1})`);
             return;
         }
 
