@@ -150,9 +150,10 @@ const botProcess = () => {
                 }
             } else if (!user.bot) {
                 const isCommand = await Command.parseMessage(message);
+                const watchedChannels = [Config.channels.beginner, Config.channels.learntLanguage];
                 DM.parseMessage(message, isCommand);
 
-                if (!isCommand && message.channel.id === Config.channels.beginner) {
+                if (!isCommand && watchedChannels.indexOf(message.channel.id) > -1) {
                     HardcoreLearning.addMessage(message);
                 }
             }

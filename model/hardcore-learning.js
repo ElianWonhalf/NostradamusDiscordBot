@@ -10,8 +10,8 @@ const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 5;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
 
 const HardcoreLearning = {
-    rightLanguageCounter: 0,
-    wrongLanguageCounter: 0,
+    rightLanguageCounter: {},
+    wrongLanguageCounter: {},
     alreadyWarned: false,
 
     /**
@@ -27,18 +27,23 @@ const HardcoreLearning = {
         const tk = await GoogleTranslateToken.get(content);
         const url = `${GOOGLE_TRANSLATE_URL}q=${encodeURIComponent(content)}&tk=${tk.value}`;
 
+        if (!HardcoreLearning.wrongLanguageCounter.hasOwnProperty(message.channel.id)) {
+            HardcoreLearning.wrongLanguageCounter[message.channel.id] = 0;
+            HardcoreLearning.rightLanguageCounter[message.channel.id] = 0;
+        }
+
         got(url, {json: true}).then(result => {
             if (result.body !== null) {
                 let lastMessageWasRight;
 
                 if (result.body[1] === Config.learntLanguagePrefix) {
                     if (HardcoreLearning.alreadyWarned) {
-                        HardcoreLearning.rightLanguageCounter++;
+                        HardcoreLearning.rightLanguageCounter[message.channel.id]++;
                     }
 
                     lastMessageWasRight = true;
                 } else {
-                    HardcoreLearning.wrongLanguageCounter++;
+                    HardcoreLearning.wrongLanguageCounter[message.channel.id]++;
 
                     lastMessageWasRight = false;
                 }
@@ -54,16 +59,16 @@ const HardcoreLearning = {
      * @param {boolean} lastMessageWasRight
      */
     watchCounters: (message, lastMessageWasRight) => {
-        if (HardcoreLearning.wrongLanguageCounter < MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING) {
+        if (HardcoreLearning.wrongLanguageCounter[message.channel.id] < MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING) {
             if (lastMessageWasRight) {
-                HardcoreLearning.wrongLanguageCounter--;
+                HardcoreLearning.wrongLanguageCounter[message.channel.id]--;
 
-                if (HardcoreLearning.wrongLanguageCounter < 0) {
-                    HardcoreLearning.wrongLanguageCounter = 0;
+                if (HardcoreLearning.wrongLanguageCounter[message.channel.id] < 0) {
+                    HardcoreLearning.wrongLanguageCounter[message.channel.id] = 0;
                 }
             }
 
-            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 1})`);
+            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter[message.channel.id]} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 1})`);
             return;
         }
 
@@ -77,15 +82,21 @@ const HardcoreLearning = {
             message.react(emoji);
         }
 
-        if (HardcoreLearning.rightLanguageCounter >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
+        if (HardcoreLearning.rightLanguageCounter[message.channel.id] >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
             HardcoreLearning.reset();
         }
     },
 
     reset: () => {
         debug('Happy reset!');
-        HardcoreLearning.wrongLanguageCounter = 0;
-        HardcoreLearning.rightLanguageCounter = 0;
+
+        for (let channel in HardcoreLearning.wrongLanguageCounter) {
+            if (HardcoreLearning.wrongLanguageCounter.hasOwnProperty(channel)) {
+                HardcoreLearning.wrongLanguageCounter[channel] = 0;
+                HardcoreLearning.rightLanguageCounter[channel] = 0;
+            }
+        }
+
         HardcoreLearning.alreadyWarned = false;
     }
 };
