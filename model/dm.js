@@ -35,7 +35,15 @@ const SemiBlacklist = {
                         return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);
                     })
                 }
-            ).catch(Logger.exception);
+            ).then(() => {
+                const emoji = bot.emojis.find(emoji => emoji.name === 'sondagepour');
+                message.react(emoji);
+            }).catch((exception) => {
+                const emoji = bot.emojis.find(emoji => emoji.name === 'sondagecontre');
+
+                message.react(emoji);
+                Logger.exception(exception);
+            });
         }
     },
 };
