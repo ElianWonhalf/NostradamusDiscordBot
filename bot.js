@@ -13,7 +13,7 @@ const mainProcess = () => {
 
     const stdLog = (callback) => {
         return (data) => {
-            const die = data.toString().toLowerCase().indexOf('killnostrapls') > -1;
+            const wantToDie = data.toString().toLowerCase().indexOf('killnostrapls') > -1;
             const reboot = data.toString().toLowerCase().indexOf('reboot') > -1
                 || data.toString().toLowerCase().indexOf('econnreset') > -1
                 || data.toString().toLowerCase().indexOf('etimedout') > -1;
@@ -21,7 +21,7 @@ const mainProcess = () => {
             data = data.toString().replace(/\n$/, '').split('\n');
             data.map(datum => callback('|-- ' + datum));
 
-            if (die) {
+            if (wantToDie) {
                 Logger.info('Asked to kill');
                 botProcess.kill('SIGHUP');
                 process.exit(0);
@@ -87,6 +87,7 @@ const botProcess = () => {
     const DM = require('./model/dm');
     const MemberRolesFlow = require('./model/member-roles-flow');
     const HardcoreLearning = require('./model/hardcore-learning');
+    const WatchedMember = require('./model/watched-member');
 
     const crashRecover = (exception) => {
         Logger.exception(exception);
@@ -195,6 +196,7 @@ const botProcess = () => {
         Logger.info('--------');
 
         DM.init();
+        WatchedMember.init();
 
         if (process.argv[3] === '--reboot') {
             Guild.botChannel.send('I\'m back :) .');

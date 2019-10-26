@@ -85,7 +85,8 @@ const LEVELS = {
     'intermédaire': Guild.levelRolesIds.intermediate,
     'intermedaire': Guild.levelRolesIds.intermediate,
     'intermediair': Guild.levelRolesIds.intermediate,
-    'intermediai': Guild.levelRolesIds.intermediate,
+    'intermedia': Guild.levelRolesIds.intermediate,
+    'intermédia': Guild.levelRolesIds.intermediate,
     'intermediate': Guild.levelRolesIds.intermediate,
     'intermedate': Guild.levelRolesIds.intermediate,
     'intermediat': Guild.levelRolesIds.intermediate,
@@ -110,6 +111,7 @@ const LEVELS = {
     'starting': Guild.levelRolesIds.beginner,
     'zero': Guild.levelRolesIds.beginner,
     'begginer': Guild.levelRolesIds.beginner,
+    'not good': Guild.levelRolesIds.beginner,
 };
 
 LEVELS[Guild.levelRoles.native.toLowerCase()] = Guild.levelRolesIds.native;
@@ -180,7 +182,7 @@ const MemberRolesFlow = {
         if (foundLanguage !== undefined) {
             const languageRole = Guild.getRoleByName(Language.getRoleNameFromString(foundLanguage));
 
-            if (!member.roles.has(languageRole)) {
+            if (!member.roles.has(languageRole) && languageRole.id !== Config.roles.native) {
                 additionalRolesAdded.push(languageRole);
             }
         }
@@ -212,13 +214,14 @@ const MemberRolesFlow = {
         } else {
             let welcomeChannel = Guild.welcomeChannel;
 
+            // TODO: delete timeout if member leaves the server before it's finished
             setTimeout(async () => {
                 await member.addRole(Config.roles.officialMember);
                 welcomeChannel.permissionOverwrites.get(member.user.id).delete();
                 Guild.clearWelcomeMessagesForMember(member);
 
-                Guild.beginnerChannel.send(
-                    trans('model.memberRolesFlow.validatedMessage', [member, Guild.rolesChannel.toString()])
+                Guild.rolesChannel.send(
+                    trans('model.memberRolesFlow.validatedMessage', [member])
                 );
             }, 15000);
 

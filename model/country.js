@@ -21,7 +21,7 @@ const Country = {
                     });
                 }
             }).on('error', (error) => {
-                reject('Error loading countries: ' + error);
+                reject(`Error loading countries: ${error}`);
             }).on('end', resolve);
         });
     },

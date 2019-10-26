@@ -10,6 +10,9 @@ module.exports = {
         const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
+            const emoji = bot.emojis.find(emoji => emoji.name === 'ywansheep');
+
+            await message.react(emoji);
             Logger.notice('killnostrapls');
         }
     }

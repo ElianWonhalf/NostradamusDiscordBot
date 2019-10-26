@@ -21,7 +21,7 @@ const Language = {
                     });
                 }
             }).on('error', (error) => {
-                reject('Error loading languages: ' + error);
+                reject(`Error loading languages: ${error}`);
             }).on('end', resolve);
         });
     },

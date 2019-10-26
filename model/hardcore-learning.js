@@ -4,7 +4,7 @@ const GoogleTranslateToken = require('./google-translate-token');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
-const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/t?client=webapp&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&ie=UTF-8&oe=UTF-8&otf=2&ssel=0&tsel=0&kc=1&sl=auto&tl=en&';
+const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/single?client=webapp&sl=auto&tl=en&ie=UTF-8&oe=UTF-8&dt=gt&ssel=0&tsel=0&kc=1&';
 const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
 const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 5;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
@@ -18,7 +18,7 @@ const HardcoreLearning = {
      * @param {Message} message
      */
     addMessage: async (message) => {
-        const content = message.cleanContent;
+        const content = message.cleanContent.replace(/\s?<:[^:]+:\d+>/g, '');
 
         if (content.length < MINIMUM_CHARACTERS_TO_TRANSLATE) {
             return;
@@ -36,7 +36,7 @@ const HardcoreLearning = {
             if (result.body !== null) {
                 let lastMessageWasRight;
 
-                if (result.body[1] === Config.learntLanguagePrefix) {
+                if (result.body[2] === Config.learntLanguagePrefix) {
                     if (HardcoreLearning.alreadyWarned) {
                         HardcoreLearning.rightLanguageCounter[message.channel.id]++;
                     }
@@ -48,7 +48,7 @@ const HardcoreLearning = {
                     lastMessageWasRight = false;
                 }
 
-                debug(`lastMessageWasRight: ${lastMessageWasRight ? 'true' : 'false'}`);
+                debug(`lastMessageWasRight: ${lastMessageWasRight ? 'true' : 'false'} (detected: ${result.body[2]})`);
                 HardcoreLearning.watchCounters(message, lastMessageWasRight);
             }
         }).catch(Logger.exception);
@@ -68,12 +68,12 @@ const HardcoreLearning = {
                 }
             }
 
-            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter[message.channel.id]} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 1})`);
+            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter[message.channel.id]} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING})`);
             return;
         }
 
         if (!HardcoreLearning.alreadyWarned) {
-            Guild.beginnerChannel.send(
+            message.channel.send(
                 trans('model.hardcoreLearning.warning', [`%${Config.learntLanguage}%`, `%${Config.learntLanguage}%`])
             );
             HardcoreLearning.alreadyWarned = true;

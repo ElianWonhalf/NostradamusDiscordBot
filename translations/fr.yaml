@@ -52,12 +52,12 @@ model:
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
   memberRolesFlow:
-    isNativeStepConfusedMessage: "Je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire si \"%%\" est ta langue natale ? Tu n'as qu'à répondre par oui ou par non :) ."
+    isNativeStepConfusedMessage: "Je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire si tu es ici pour apprendre le %% ? Tu n'as qu'à répondre par oui ou par non :) ."
     levelStepMessage: "Ok ! Quel est ton niveau en %% dans ce cas ? Es-tu un débutant, intermédiaire, ou plutôt avancé ?"
     levelStepConfusedMessage: "Je suis désolé je ne suis pas sûr d'avoir bien compris. Peux-tu s'il te plaît me dire quel est ton niveau en %%? Tu n'as qu'à répondre débutant, intermédiaire, ou avancé."
     additionalRolesString: "Je te rajoute également %%. "
     endMessage: "Super! Je te rajoute le(s) rôle(s) %% alors. Dans quinze secondes, ce channel va disparaître et tu auras accès au reste du serveur."
-    validatedMessage: "Bienvenue %% ! Tu peux aller faire un tour dans le channel %% pour choper d'autres rôles !"
+    validatedMessage: "Bienvenue %% !"
   moderationLog:
     member: "Membre %%"
     kicked: "expulsé"

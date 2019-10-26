@@ -91,6 +91,9 @@ model:
       error: "there has been an error changing my avatar. Check the logs for more details."
     tutors:
       answer: "There are currently %% tutors:"
+    unwatch:
+      success: "%% is not anymore in the watched member list :relieved: ."
+      error: "I don't... Wha- Who?"
     voicemove:
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll move the members for you."
@@ -99,16 +102,20 @@ model:
       memberGuessed: "I'm not sure whom you want to warn, but I guess it's %%. If that's not correct, please change the ID in the command below accordingly."
       memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
+    watch:
+      success: "%% is now in the watched member list :eyes: ."
+      alreadyWatched: "%% is already in the watched member list :arrete: ."
+      error: "I don't... Wha- Who?"
   dm:
     notification: "%% sent a DM:\n\n%%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
   memberRolesFlow:
-    isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are a %% native? Just answer with yes or no :) ."
+    isNativeStepConfusedMessage: "I'm not sure I understood correctly. Can you please tell me again if you are here to learn %%? Just answer with yes or no :) ."
     levelStepMessage: "Alright! So what's your level of proficiency in %%? Are you a beginner, intermediate, or more advanced?"
     levelStepConfusedMessage: "I'm sorry. I'm not sure I understood correctly. Can you please tell me again what your level of proficiency in %% is? Just answer with beginner, intermediate, or advanced."
     endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
-    validatedMessage: "Welcome %%! You can go over to the channel %% to grab some more roles!"
+    validatedMessage: "Welcome %%!"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"
@@ -117,3 +124,6 @@ model:
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
   semiBlacklist:
     triggered: "Semi-blacklist triggered by %% in %%\n%%"
+  watchedMember:
+    joinedVocal: "Just joined vocal channel %%"
+    leftVocal: "Just left vocal channel %%"
