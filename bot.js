@@ -82,7 +82,7 @@ const botProcess = () => {
     const Language = require('./model/language');
     const Country = require('./model/country');
     const Command = require('./model/command');
-    const SemiBlacklist = require('./model/semi-blacklist');
+    const Blacklist = require('./model/blacklist');
     const ModerationLog = require('./model/moderation-log');
     const DM = require('./model/dm');
     const MemberRolesFlow = require('./model/member-roles-flow');
@@ -140,7 +140,7 @@ const botProcess = () => {
         }
 
         if (!testMode && user.id !== Config.testAccount || testMode && (user.id === Config.testAccount || user.bot)) {
-            SemiBlacklist.parseMessage(message);
+            Blacklist.parseMessage(message);
 
             if (message.channel.id === Config.channels.welcome) {
                 const member = await Guild.discordGuild.fetchMember(user, false);
@@ -162,6 +162,45 @@ const botProcess = () => {
     });
 
     bot.on('voiceStateUpdate', Guild.voiceStateUpdateHandler);
+
+    bot.on('presenceUpdate', (oldMember, newMember) => {
+        const newHasGame = newMember.presence.game !== null;
+        const oldHasGame = oldMember.presence.game !== null;
+        const hasCustomStatus = newHasGame && newMember.presence.game.type === 4;
+        const differentCustomStatus = oldHasGame && newHasGame && oldMember.presence.game.state !== newMember.presence.game.state;
+
+        if (hasCustomStatus && differentCustomStatus) {
+            const state = newMember.presence.game.state === null ? '' : newMember.presence.game.state;
+
+            Guild.serverLogChannel.send(
+                trans(
+                    'model.guild.customStatusUpdate',
+                    [newMember.toString(), state],
+                    'en'
+                )
+            );
+
+            if (Blacklist.isSemiTriggered(state)) {
+                Guild.botChannel.send(
+                    trans(
+                        'model.guild.customStatusSemiBlacklist',
+                        [newMember.toString(), state],
+                        'en'
+                    )
+                )
+            }
+
+            if (Blacklist.isFullTriggered(state)) {
+                Guild.botChannel.send(
+                    trans(
+                        'model.guild.customStatusFullBlacklist',
+                        [newMember.toString(), state],
+                        'en'
+                    )
+                )
+            }
+        }
+    });
 
     bot.on('ready', async () => {
         Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);

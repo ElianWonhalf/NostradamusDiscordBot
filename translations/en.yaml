@@ -43,6 +43,11 @@ model:
       languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
       countriesInDbWithoutRole: "\nI've found ${countriesWithoutRoles.length} country(-ies) in the DB that don't have any roles assigned"
       rolesWithoutDbEntry: "\n\nI've found ${rolesWithoutDBEntry.length} role(s) that don't have a DB entry assigned"
+    checkCustomStatuses:
+      introduction: "%% members currently have a custom status set."
+      customStatus: "%%: %%"
+      semiBlacklistHeading: ":thonkfr: The following triggered the **semi** blacklist:"
+      fullBlacklistHeading: ":ban: The following triggered the **full** blacklist:"
     committee:
       answer: "There is/are currently %% member(s) in the Decision Committee:"
     country:
@@ -108,6 +113,10 @@ model:
       error: "I don't... Wha- Who?"
   dm:
     notification: "%% sent a DM:\n\n%%"
+  guild:
+    customStatusUpdate: "%% updated their custom status to: %%"
+    customStatusSemiBlacklist: ":thonkfr: %% updated their custom status and it triggered the **semi** blacklist: %%"
+    customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
   memberRolesFlow:
@@ -122,8 +131,9 @@ model:
     banned: "banned"
     reason: "for the following reason: %%"
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
-  semiBlacklist:
-    triggered: "Semi-blacklist triggered by %% in %%\n%%"
+  blacklist:
+    semi:
+      triggered: "Semi-blacklist triggered by %% in %%\n%%"
   watchedMember:
     joinedVocal: "Just joined vocal channel %%"
     leftVocal: "Just left vocal channel %%"

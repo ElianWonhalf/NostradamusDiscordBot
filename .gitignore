@@ -4,6 +4,6 @@ node_modules
 deploy.sh
 config.json*
 !config.json.sample
-semi-blacklist.json*
-!semi-blacklist.json.sample
+blacklist.json*
+!blacklist.json.sample
 .env

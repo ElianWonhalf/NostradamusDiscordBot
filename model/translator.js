@@ -67,7 +67,7 @@ const replaceEmojisInString = (value) => {
  */
 global.trans = (keyPath, variables, forcedLanguage) => {
     variables = variables === undefined ? [] : variables.map(variable => {
-        return variable === undefined ? '' : variable.toString();
+        return variable === undefined || variable === null ? '' : variable.toString();
     });
 
     const key = keyPath.split('.');
