@@ -62,6 +62,8 @@ model:
     games:
       alertsOn: "You will now be notified when there's a game."
       alertsOff: "You will now no longer be notified when there's a game."
+    getCustomStatuses:
+      introduction: "%% members currently have a custom status set, and have a text in it."
     help:
       notice: "%% seems to need help in %%.\n%%"
     language:
@@ -114,7 +116,7 @@ model:
   dm:
     notification: "%% sent a DM:\n\n%%"
   guild:
-    customStatusUpdate: "%% updated their custom status to: %%"
+    customStatusUpdate: ":statut: %% updated their custom status to: %%"
     customStatusSemiBlacklist: ":thonkfr: %% updated their custom status and it triggered the **semi** blacklist: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
   hardcoreLearning:
