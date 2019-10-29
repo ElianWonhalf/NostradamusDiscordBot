@@ -164,6 +164,10 @@ const botProcess = () => {
     bot.on('voiceStateUpdate', Guild.voiceStateUpdateHandler);
 
     bot.on('presenceUpdate', (oldMember, newMember) => {
+        if (Guild.isMemberMod(oldMember)) {
+            return;
+        }
+
         const newHasGame = newMember.presence.game !== null;
         const oldHasGame = oldMember.presence.game !== null;
         const hasCustomStatus = newHasGame && newMember.presence.game.type === 4;
