@@ -6,13 +6,24 @@ const Guild = require('./guild');
 
 const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/single?client=webapp&sl=auto&tl=en&ie=UTF-8&oe=UTF-8&dt=gt&ssel=0&tsel=0&kc=1&';
 const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
-const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 5;
+const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 4;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
+
+/**
+ * @param {Snowflake} channelId
+ */
+const resetChannel = (channelId) => {
+    if (HardcoreLearning.wrongLanguageCounter.hasOwnProperty(channelId)) {
+        HardcoreLearning.wrongLanguageCounter[channelId] = 0;
+        HardcoreLearning.rightLanguageCounter[channelId] = 0;
+        HardcoreLearning.alreadyWarned[channelId] = false;
+    }
+};
 
 const HardcoreLearning = {
     rightLanguageCounter: {},
     wrongLanguageCounter: {},
-    alreadyWarned: false,
+    alreadyWarned: {},
 
     /**
      * @param {Message} message
@@ -30,6 +41,7 @@ const HardcoreLearning = {
         if (!HardcoreLearning.wrongLanguageCounter.hasOwnProperty(message.channel.id)) {
             HardcoreLearning.wrongLanguageCounter[message.channel.id] = 0;
             HardcoreLearning.rightLanguageCounter[message.channel.id] = 0;
+            HardcoreLearning.alreadyWarned[message.channel.id] = false;
         }
 
         got(url, {json: true}).then(result => {
@@ -37,7 +49,7 @@ const HardcoreLearning = {
                 let lastMessageWasRight;
 
                 if (result.body[2] === Config.learntLanguagePrefix) {
-                    if (HardcoreLearning.alreadyWarned) {
+                    if (HardcoreLearning.alreadyWarned[message.channel.id]) {
                         HardcoreLearning.rightLanguageCounter[message.channel.id]++;
                     }
 
@@ -72,32 +84,35 @@ const HardcoreLearning = {
             return;
         }
 
-        if (!HardcoreLearning.alreadyWarned) {
+        if (!HardcoreLearning.alreadyWarned[message.channel.id]) {
             message.channel.send(
                 trans('model.hardcoreLearning.warning', [`%${Config.learntLanguage}%`, `%${Config.learntLanguage}%`])
             );
-            HardcoreLearning.alreadyWarned = true;
+            HardcoreLearning.alreadyWarned[message.channel.id] = true;
         } else if (!lastMessageWasRight) {
             const emoji = bot.emojis.find(emoji => emoji.name === 'roocop');
             message.react(emoji);
         }
 
         if (HardcoreLearning.rightLanguageCounter[message.channel.id] >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
-            HardcoreLearning.reset();
+            HardcoreLearning.reset(message.channel);
         }
     },
 
-    reset: () => {
-        debug('Happy reset!');
+    /**
+     * @param {TextChannel} [channel]
+     */
+    reset: (channel) => {
+        if (channel === undefined){
+            debug('Happy reset!');
 
-        for (let channel in HardcoreLearning.wrongLanguageCounter) {
-            if (HardcoreLearning.wrongLanguageCounter.hasOwnProperty(channel)) {
-                HardcoreLearning.wrongLanguageCounter[channel] = 0;
-                HardcoreLearning.rightLanguageCounter[channel] = 0;
+            for (let channelId in HardcoreLearning.wrongLanguageCounter) {
+                resetChannel(channelId);
             }
+        } else {
+            debug(`Happy reset for channel ${channel.name}`);
+            resetChannel(channel.id);
         }
-
-        HardcoreLearning.alreadyWarned = false;
     }
 };
 
