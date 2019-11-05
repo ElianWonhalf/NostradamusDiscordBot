@@ -9,6 +9,66 @@ const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
 const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 4;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
 
+const STRINGS_THAT_MEAN_SORRY = {
+    'fr': [
+        'désolé%',
+        'pardon%',
+        'excuse%',
+    ],
+    'en': [
+        'sorry',
+        'excuse%',
+        'apologi%'
+    ]
+};
+
+const STRINGS_THAT_SHOW_NEGATIVE_SENTENCE = {
+    'fr': [
+        'non',
+        'ne',
+        'pas',
+        'jamais'
+    ],
+    'en': [
+        'no',
+        'not',
+        'never',
+        '%n\'t'
+    ]
+};
+
+/**
+ * @param {string} term
+ * @returns {string}
+ */
+const formatTerm = (term) => {
+    return `(^|\\s)${term.replace(/%/g, '[^\\s]*').toLowerCase()}(\\s|$)`;
+};
+
+/**
+ * @param {string} string
+ * @returns {boolean}
+ */
+const stringSeemsNegative = (string) => {
+    const negativeStrings = STRINGS_THAT_SHOW_NEGATIVE_SENTENCE[Config.learntLanguagePrefix].map(formatTerm);
+
+    return negativeStrings.some(negativeString => {
+        return string.toLowerCase().match(new RegExp(negativeString)) !== null
+    });
+};
+
+/**
+ * @param {string} string
+ * @returns {boolean}
+ */
+const stringSeemsSorry = (string) => {
+    const sorryStrings = STRINGS_THAT_MEAN_SORRY[Config.learntLanguagePrefix].map(formatTerm);
+
+    return sorryStrings.some(sorryString => {
+        return string.toLowerCase().match(new RegExp(sorryString)) !== null
+    });
+};
+
 /**
  * @param {Snowflake} channelId
  */
@@ -60,7 +120,10 @@ const HardcoreLearning = {
                     lastMessageWasRight = false;
                 }
 
-                debug(`lastMessageWasRight: ${lastMessageWasRight ? 'true' : 'false'} (detected: ${result.body[2]})`);
+                if (!lastMessageWasRight) {
+                    debug(`lastMessageWasRight: false (detected: ${result.body[2]})`);
+                }
+
                 HardcoreLearning.watchCounters(message, lastMessageWasRight);
             }
         }).catch(Logger.exception);
@@ -80,11 +143,20 @@ const HardcoreLearning = {
                 }
             }
 
-            debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter[message.channel.id]} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING})`);
+            if (!lastMessageWasRight) {
+                debug(`Not enough wrong messages to warn *yet*. (${HardcoreLearning.wrongLanguageCounter[message.channel.id]} / ${MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING})`);
+            }
+
             return;
         }
 
-        if (!HardcoreLearning.alreadyWarned[message.channel.id]) {
+        const alreadyWarned = HardcoreLearning.alreadyWarned[message.channel.id];
+        const sorryMessage = stringSeemsSorry(message.cleanContent);
+        const negativeMessage = stringSeemsNegative(message.cleanContent);
+        const apologiesAccepted = alreadyWarned && lastMessageWasRight && sorryMessage && !negativeMessage;
+        const rightLanguageCounter = HardcoreLearning.rightLanguageCounter[message.channel.id];
+
+        if (!alreadyWarned) {
             message.channel.send(
                 trans('model.hardcoreLearning.warning', [`%${Config.learntLanguage}%`, `%${Config.learntLanguage}%`])
             );
@@ -94,7 +166,10 @@ const HardcoreLearning = {
             message.react(emoji);
         }
 
-        if (HardcoreLearning.rightLanguageCounter[message.channel.id] >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
+        if (apologiesAccepted || rightLanguageCounter >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
+            const emoji = bot.emojis.find(emoji => emoji.name === 'blobpats');
+
+            message.react(emoji);
             HardcoreLearning.reset(message.channel);
         }
     },
