@@ -85,6 +85,8 @@ const LEVELS = {
     'intermédaire': Guild.levelRolesIds.intermediate,
     'intermedaire': Guild.levelRolesIds.intermediate,
     'intermediair': Guild.levelRolesIds.intermediate,
+    'intermediai': Guild.levelRolesIds.intermediate,
+    'intermédiai': Guild.levelRolesIds.intermediate,
     'intermedia': Guild.levelRolesIds.intermediate,
     'intermédia': Guild.levelRolesIds.intermediate,
     'intermediate': Guild.levelRolesIds.intermediate,
@@ -94,6 +96,7 @@ const LEVELS = {
     'intermédière': Guild.levelRolesIds.intermediate,
     'inter': Guild.levelRolesIds.intermediate,
     'moyen': Guild.levelRolesIds.intermediate,
+    'moyenne': Guild.levelRolesIds.intermediate,
     'internediate': Guild.levelRolesIds.intermediate,
 
     // Beginner
@@ -112,6 +115,8 @@ const LEVELS = {
     'zero': Guild.levelRolesIds.beginner,
     'begginer': Guild.levelRolesIds.beginner,
     'not good': Guild.levelRolesIds.beginner,
+    'noob': Guild.levelRolesIds.beginner,
+    'n00b': Guild.levelRolesIds.beginner,
 };
 
 LEVELS[Guild.levelRoles.native.toLowerCase()] = Guild.levelRolesIds.native;
