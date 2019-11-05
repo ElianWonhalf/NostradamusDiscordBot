@@ -78,16 +78,8 @@ const botProcess = () => {
     require('./model/translator');
 
     const Config = require('./config.json');
-    const Guild = require('./model/guild');
-    const Language = require('./model/language');
-    const Country = require('./model/country');
     const Command = require('./model/command');
-    const Blacklist = require('./model/blacklist');
-    const ModerationLog = require('./model/moderation-log');
-    const DM = require('./model/dm');
-    const MemberRolesFlow = require('./model/member-roles-flow');
-    const HardcoreLearning = require('./model/hardcore-learning');
-    const WatchedMember = require('./model/watched-member');
+    const fs = require('fs');
 
     const crashRecover = (exception) => {
         Logger.exception(exception);
@@ -97,154 +89,14 @@ const botProcess = () => {
     process.on('uncaughtException', crashRecover);
     bot.on('error', crashRecover);
 
-    /**
-     * @param {GuildMember} member
-     */
-    bot.on('guildMemberAdd', (member) => {
-        if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-            Guild.welcomeChannel.send(
-                trans(
-                    'bot.welcomeMessage',
-                    [
-                        member.user,
-                        Guild.discordGuild.name,
-                        `%${Config.learntLanguage}%`
-                    ]
-                )
-            );
-        }
-    });
-
-    /**
-     * @param {GuildMember} member
-     */
-    bot.on('guildMemberRemove', async (member) => {
-        if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-            Guild.clearWelcomeMessagesForMember(member);
-            ModerationLog.processMemberRemove(member);
-        }
-    });
-
     Command.init();
 
-    /**
-     * @param {Message} message
-     */
-    bot.on('message', async (message) => {
-        const user = message.author;
-
-        if (message.channel.id === Config.channels.roles) {
-            setTimeout(() => {
-                message.delete().catch(exception => Logger.error(exception.toString()));
-            }, 60000);
-        }
-
-        if (!testMode && user.id !== Config.testAccount || testMode && (user.id === Config.testAccount || user.bot)) {
-            Blacklist.parseMessage(message);
-
-            if (message.channel.id === Config.channels.welcome) {
-                const member = await Guild.discordGuild.fetchMember(user, false);
-
-                Guild.addMessageFromWelcomeToMap(message);
-                if (!user.bot && !member.roles.has(Config.roles.officialMember)) {
-                    MemberRolesFlow.parse(message);
-                }
-            } else if (!user.bot) {
-                const isCommand = await Command.parseMessage(message);
-                const watchedChannels = [Config.channels.beginner, Config.channels.learntLanguage];
-                DM.parseMessage(message, isCommand);
-
-                if (!isCommand && watchedChannels.indexOf(message.channel.id) > -1) {
-                    HardcoreLearning.addMessage(message);
-                }
-            }
-        }
-    });
-
-    bot.on('voiceStateUpdate', Guild.voiceStateUpdateHandler);
-
-    bot.on('presenceUpdate', (oldMember, newMember) => {
-        if (Guild.isMemberMod(oldMember)) {
-            return;
-        }
-
-        const newHasGame = newMember.presence.game !== null;
-        const oldHasGame = oldMember.presence.game !== null;
-        const hasCustomStatus = newHasGame && newMember.presence.game.type === 4;
-        const differentCustomStatus = oldHasGame && newHasGame && oldMember.presence.game.state !== newMember.presence.game.state;
-
-        if (hasCustomStatus && differentCustomStatus) {
-            const state = newMember.presence.game.state === null ? '' : newMember.presence.game.state;
-
-            Guild.serverLogChannel.send(
-                trans(
-                    'model.guild.customStatusUpdate',
-                    [newMember.toString(), state],
-                    'en'
-                )
-            );
-
-            if (Blacklist.isSemiTriggered(state)) {
-                Guild.botChannel.send(
-                    trans(
-                        'model.guild.customStatusSemiBlacklist',
-                        [newMember.toString(), state],
-                        'en'
-                    )
-                )
-            }
-
-            if (Blacklist.isFullTriggered(state)) {
-                Guild.botChannel.send(
-                    trans(
-                        'model.guild.customStatusFullBlacklist',
-                        [newMember.toString(), state],
-                        'en'
-                    )
-                )
-            }
-        }
-    });
-
-    bot.on('ready', async () => {
-        Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
-
-        Logger.info('--------');
-
-        Logger.info('Syncing guilds...');
-        bot.syncGuilds();
-        await Guild.init(bot);
-        Logger.info('Guilds synced. Serving in ' + Guild.discordGuild.name);
-
-        Logger.info('--------');
-
-        Logger.info('Initialising languages...');
-        try {
-            await Language.init();
-        } catch (error) {
-            Logger.exception(error);
-        }
-        Logger.info(`${Language.getRoleNameList().length} languages initialised.`);
-
-        Logger.info('--------');
-
-        Logger.info('Initialising countries...');
-        try {
-            await Country.init();
-        } catch (error) {
-            Logger.exception(error);
-        }
-        Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
-
-        Logger.info('--------');
-
-        DM.init();
-        WatchedMember.init();
-
-        if (process.argv[3] === '--reboot') {
-            Guild.botChannel.send('I\'m back :) .');
-        }
-    });
+    fs.readdirSync('./event/bot/')
+        .filter(filename => filename.endsWith('.js'))
+        .map(filename => filename.substr(0, filename.length - 3))
+        .forEach(filename => {
+            bot.on(filename, require(`./event/bot/${filename}`));
+        });
 
     Logger.info('--------');
 
