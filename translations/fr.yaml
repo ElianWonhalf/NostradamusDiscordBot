@@ -43,6 +43,9 @@ model:
     outLoudReading:
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
+    reply:
+      calisse: "ah ben calisse"
+      tabarnak: "ah ben tabarnak"
     report:
       onlyOnServer: "désolé, cette commande ne peut être exécutée que sur le serveur."
     tutors:
