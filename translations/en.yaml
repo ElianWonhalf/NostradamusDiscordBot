@@ -46,7 +46,7 @@ model:
     checkCustomStatuses:
       introduction: "%% members currently have a custom status set."
       customStatus: "%%: %%"
-      semiBlacklistHeading: ":thonkfr: The following triggered the **semi** blacklist:"
+      semiBlacklistHeading: ":roocop: The following triggered the **semi** blacklist:"
       fullBlacklistHeading: ":ban: The following triggered the **full** blacklist:"
     committee:
       answer: "There is/are currently %% member(s) in the Decision Committee:"
@@ -55,7 +55,7 @@ model:
       missingArgument: "You need to enter a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
       added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
       removed: ":ywansheep: All good, I **removed** the role \"%%\" from your profile !"
-      missingRole: "That role doesn't seem to exist :ChatSoif: . Maybe you mispelled it? Anyways, I told the mods about it."
+      missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
     dictation:
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
@@ -71,9 +71,9 @@ model:
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
       added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
       removed: ":ywansheep: All good, I **removed** the role \"%%\" from your profile !"
-      missingRole: "That role doesn't seem to exist :ChatSoif: . Maybe you mispelled it? Anyways, I told the mods about it."
+      missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
-      callMods: ":lilybongo: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
+      callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
     loadRoles:
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
@@ -111,13 +111,13 @@ model:
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
     watch:
       success: "%% is now in the watched member list :eyes: ."
-      alreadyWatched: "%% is already in the watched member list :arrete: ."
+      alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
       error: "I don't... Wha- Who?"
   dm:
     notification: "%% sent a DM:\n\n%%"
   guild:
-    customStatusUpdate: ":statut: %% updated their custom status to: %%"
-    customStatusSemiBlacklist: ":thonkfr: %% updated their custom status and it triggered the **semi** blacklist: %%"
+    customStatusUpdate: ":status: %% updated their custom status to: %%"
+    customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"

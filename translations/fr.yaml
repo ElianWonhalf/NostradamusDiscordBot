@@ -21,7 +21,7 @@ model:
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
       added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
       removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
-      missingRole: "Ce rôle ne semble pas exister :ChatSoif: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
+      missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
     dictation:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
@@ -32,9 +32,9 @@ model:
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
       added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
       removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
-      missingRole: "Ce rôle ne semble pas exister :ChatSoif: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
+      missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
       illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
-      callMods: ":lilybongo: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
+      callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     miniClass:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
