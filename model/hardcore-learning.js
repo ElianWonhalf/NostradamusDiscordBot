@@ -12,6 +12,9 @@ const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
 const STRINGS_THAT_MEAN_SORRY = {
     'fr': [
         'désolé%',
+        'désole%',
+        'repend%',
+        'repent%',
         'pardon%',
         'excuse%',
     ],
