@@ -25,7 +25,6 @@ module.exports = async (message) => {
         if (message.channel.id === Config.channels.welcome) {
             const member = await Guild.discordGuild.fetchMember(user, false);
 
-            Guild.addMessageFromWelcomeToMap(message);
             if (!user.bot && !member.roles.has(Config.roles.officialMember)) {
                 MemberRolesFlow.parse(message);
             }

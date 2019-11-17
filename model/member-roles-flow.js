@@ -223,7 +223,6 @@ const MemberRolesFlow = {
             setTimeout(async () => {
                 await member.addRole(Config.roles.officialMember);
                 welcomeChannel.permissionOverwrites.get(member.user.id).delete();
-                Guild.clearWelcomeMessagesForMember(member);
 
                 Guild.rolesChannel.send(
                     trans('model.memberRolesFlow.validatedMessage', [member])
