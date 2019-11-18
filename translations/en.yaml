@@ -78,6 +78,9 @@ model:
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
       count: "found %% role(s) that need to be created"
+    logs:
+      channelOn: "You now have access to the member flow logging channel."
+      channelOff: "You no longer have access to the member flow logging channel."
     miniClass:
       alertsOn: "You will now be notified when there's a mini class."
       alertsOff: "You will now no longer be notified when there's a mini class."

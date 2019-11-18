@@ -35,6 +35,9 @@ model:
       missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
       illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
+    logs:
+      channelOn: "Tu as maintenant accès au canal des logs d'arrivée et de départ des membres."
+      channelOff: "Tu n'as plus accès au canal des logs d'arrivée et de départ des membres."
     miniClass:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
