@@ -127,6 +127,8 @@ model:
     levelStepConfusedMessage: "I'm sorry. I'm not sure I understood correctly. **Can you please tell me again what your level of proficiency in %% is?** Just answer with beginner, intermediate, or advanced."
     endMessage: "Perfect! I added the role(s) %% to your profile. In fifteen seconds, this channel will disappear and you will have access to the rest of the server."
     validatedMessage: "Welcome %%!"
+    logTitle: "Member validated"
+    logFooter: "ID: %%"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"

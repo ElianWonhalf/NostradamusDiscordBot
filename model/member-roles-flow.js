@@ -1,4 +1,5 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
+const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 const Country = require('./country');
@@ -227,6 +228,17 @@ const MemberRolesFlow = {
                 Guild.rolesChannel.send(
                     trans('model.memberRolesFlow.validatedMessage', [member])
                 );
+
+                const logEmbed = new Discord.RichEmbed();
+
+                logEmbed.setColor('#ffb8e6');
+                logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL);
+                logEmbed.setDescription(`${member} ${member.displayName}#${member.user.discriminator}`);
+                logEmbed.setThumbnail(member.user.displayAvatarURL);
+                logEmbed.setFooter(trans('model.memberRolesFlow.logFooter', [member.id], 'en'));
+                logEmbed.setTimestamp(new Date());
+
+                Guild.memberFlowLogChannel.send(logEmbed);
             }, 15000);
 
             const roles = member.roles.array().filter(role => role.name !== '@everyone').map(role => role.name);
