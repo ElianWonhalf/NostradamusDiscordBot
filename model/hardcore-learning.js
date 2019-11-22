@@ -2,12 +2,15 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const got = require('got');
 const GoogleTranslateToken = require('./google-translate-token');
 const Config = require('../config.json');
-const Guild = require('./guild');
 
 const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/single?client=webapp&sl=auto&tl=en&ie=UTF-8&oe=UTF-8&dt=gt&ssel=0&tsel=0&kc=1&';
 const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
 const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 4;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
+
+const LANGUAGES_THAT_IN_FACT_ARE_FR = [
+    'co'
+];
 
 const STRINGS_THAT_MEAN_SORRY = {
     'fr': [
@@ -110,8 +113,13 @@ const HardcoreLearning = {
         got(url, {json: true}).then(result => {
             if (result.body !== null) {
                 let lastMessageWasRight;
+                let detectedLanguage = result.body[2];
 
-                if (result.body[2] === Config.learntLanguagePrefix) {
+                if (LANGUAGES_THAT_IN_FACT_ARE_FR.indexOf(detectedLanguage) > -1) {
+                    detectedLanguage = 'fr';
+                }
+
+                if (detectedLanguage === Config.learntLanguagePrefix) {
                     if (HardcoreLearning.alreadyWarned[message.channel.id]) {
                         HardcoreLearning.rightLanguageCounter[message.channel.id]++;
                     }
@@ -124,7 +132,7 @@ const HardcoreLearning = {
                 }
 
                 if (!lastMessageWasRight) {
-                    debug(`lastMessageWasRight: false (detected: ${result.body[2]})`);
+                    debug(`lastMessageWasRight: false (detected: ${detectedLanguage})`);
                 }
 
                 HardcoreLearning.watchCounters(message, lastMessageWasRight);
