@@ -12,11 +12,11 @@ module.exports = {
         if (Guild.isMemberMod(member)) {
             const result = Guild.findDesignatedMemberInMessage(message);
 
-            if (result.foundMembers.count > 0) {
+            if (result.foundMembers.length > 0) {
             	message.channel.send(result.foundMembers[0]);
             	message.channel.send(result.foundMembers[0].id);
         	} else {
-        		message.reply(trans('model.command.getMemberId.notFound'));
+        		message.reply(trans('model.command.getMemberId.notFound', [], 'en'));
 			}
         }
     }
