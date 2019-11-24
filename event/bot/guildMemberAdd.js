@@ -12,6 +12,7 @@ module.exports = (member) => {
                 [
                     member.user,
                     Guild.discordGuild.name,
+                    `%${Config.learntLanguage}%`,
                     `%${Config.learntLanguage}%`
                 ]
             )
