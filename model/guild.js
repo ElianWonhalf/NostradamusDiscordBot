@@ -224,11 +224,17 @@ const Guild = {
             const memberList = message.guild.members.array();
 
             certain = false;
-            memberList.map(member => {
+            memberList.forEach(member => {
                 const nickname = member.nickname !== null ? `${member.nickname.toLowerCase()}#${member.user.discriminator}` : '';
                 const username = `${member.user.username.toLowerCase()}#${member.user.discriminator}`;
+                const content = message.cleanContent.toLowerCase().split(' ').splice(1).join(' ');
 
-                if (nickname.indexOf(message.content) > -1 || username.indexOf(message.content) > -1) {
+                const contentInNickname = nickname !== '' ? nickname.indexOf(content) > -1 : false;
+                const contentInUsername = username.indexOf(content) > -1;
+                const nicknameInContent = nickname !== '' ? content.indexOf(nickname) > -1 : false;
+                const usernameInContent = content.indexOf(username) > -1;
+
+                if (contentInNickname || contentInUsername || nicknameInContent || usernameInContent) {
                     foundMembers.push(member);
                 }
             });
