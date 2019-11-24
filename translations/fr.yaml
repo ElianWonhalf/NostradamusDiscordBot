@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Je suis un robot, et je suis ici pour t'aider à accéder au serveur. **Est-ce que tu es ici pour apprendre le %% ?** Réponds \"non\" si c'est ta langue natale."
+  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Je suis un robot, et je suis ici pour t'aider à accéder au serveur. **Est-ce que tu es ici pour apprendre le %% ?** Si c'est ta langue natale, réponds \"non\"."
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
