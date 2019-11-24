@@ -15,13 +15,9 @@ module.exports = {
             if (result.foundMembers.count > 0) {
             	message.channel.send(result.foundMembers[0]);
             	message.channel.send(result.foundMembers[0].id);
-
-        	}
-
-        	else {
-        		message.reply(trans('model.command.getMemberId.notFound'))
-        		
-        	}
+        	} else {
+        		message.reply(trans('model.command.getMemberId.notFound'));
+			}
         }
     }
 };
