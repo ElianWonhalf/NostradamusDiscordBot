@@ -64,6 +64,8 @@ model:
       alertsOff: "You will now no longer be notified when there's a game."
     getCustomStatuses:
       introduction: "%% members currently have a custom status set, and have a text in it."
+    getMemberId:
+      notFound: "I... Have no idea who that could be, sorry."
     help:
       notice: "%% seems to need help in %%.\n%%"
     language:

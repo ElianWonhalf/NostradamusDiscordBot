@@ -28,6 +28,8 @@ model:
     games:
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
+    getMemberId:
+      notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     language:
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
       added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
