@@ -25,6 +25,8 @@ model:
     dictation:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
+    dmReply:
+      notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     games:
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."

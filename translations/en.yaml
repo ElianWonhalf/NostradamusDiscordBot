@@ -59,6 +59,8 @@ model:
     dictation:
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
+    dmReply:
+      notFound: "I... Have no idea who that could be, sorry."
     games:
       alertsOn: "You will now be notified when there's a game."
       alertsOff: "You will now no longer be notified when there's a game."
