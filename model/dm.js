@@ -1,5 +1,6 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
+const Config = require('../config.json');
 const EventBus = require('./events-bus');
 const Guild = require('./guild');
 
@@ -28,9 +29,15 @@ const SemiBlacklist = {
      */
     parseMessage: async (message, isCommand) => {
         if (message.guild === null && !isCommand && SemiBlacklist.ignoredUserDMs.indexOf(message.author.id) < 0) {
+            const embed = await Guild.messageToEmbed(message);
+
+            embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
+            embed.setTimestamp(message.createdTimestamp);
+
             Guild.botChannel.send(
-                trans('model.dm.notification', [message.author, message.content], 'en'),
+                trans('model.dm.notification', [message.author], 'en'),
                 {
+                    embed: embed,
                     files: message.attachments.map(messageAttachment => {
                         return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);
                     })

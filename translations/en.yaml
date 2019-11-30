@@ -121,7 +121,7 @@ model:
       alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
       error: "I don't... Wha- Who?"
   dm:
-    notification: "%% sent a DM:\n\n%%"
+    notification: "%% sent a DM:"
   guild:
     customStatusUpdate: ":status: %% updated their custom status to: %%"
     customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
