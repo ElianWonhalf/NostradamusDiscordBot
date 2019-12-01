@@ -1,4 +1,5 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
+const Discord = require('discord.js');
 const Guild = require('../guild');
 
 /**
