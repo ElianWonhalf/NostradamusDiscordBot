@@ -19,6 +19,7 @@ module.exports = {
 					const embed = await Guild.messageToEmbed(message);
 
 					embed.setDescription(answer);
+					embed.setTimestamp(message.createdTimestamp);
 
 					bot.users.get(recipientId).send({
 	    				embed: embed,

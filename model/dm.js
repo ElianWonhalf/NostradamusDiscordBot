@@ -32,7 +32,6 @@ const SemiBlacklist = {
             const embed = await Guild.messageToEmbed(message);
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
-            embed.setTimestamp(message.createdTimestamp);
 
             Guild.botChannel.send(
                 trans('model.dm.notification', [message.author], 'en'),
