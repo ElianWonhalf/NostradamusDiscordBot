@@ -9,7 +9,7 @@ const ModerationLog = {
     lastFetchedAuditLogId: null,
     language: Config.botLanguage.split(',')[0],
 
-    processMemberRemove: (member, forceLogNow) => {
+    processMemberRemove: (user, forceLogNow) => {
         forceLogNow = forceLogNow || false;
 
         const nowDate = new Date();
@@ -18,8 +18,8 @@ const ModerationLog = {
         const elapsedTimeSinceLastLog = lastLogDateIsNull ? 0 : nowTime - ModerationLog.memberLeftDate.getTime();
         const canLogNow = lastLogDateIsNull || elapsedTimeSinceLastLog >= ModerationLog.auditLogFetchInterval;
 
-        ModerationLog.membersWhoLeft[member.id] = null;
-        debug(`Detected member leaving: ${member.user.username}`);
+        ModerationLog.membersWhoLeft[user.id] = null;
+        debug(`Detected member leaving: ${user.username}`);
 
         if (!forceLogNow && !canLogNow && ModerationLog.searchAuditLogTimeout === null) {
             debug('Cannot log now, and no timeout set; setting a timeout');

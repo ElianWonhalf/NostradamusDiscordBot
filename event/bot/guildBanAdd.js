@@ -2,10 +2,11 @@ const Config = require('../../config.json');
 const ModerationLog = require('../../model/moderation-log');
 
 /**
- * @param {GuildMember} member
+ * @param {Guild} guild
+ * @param {User} user
  */
-module.exports = async (member) => {
-    if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-        ModerationLog.processMemberRemove(member, true);
+module.exports = async (guild, user) => {
+    if (!testMode && user.id !== Config.testAccount || testMode && user.id === Config.testAccount) {
+        ModerationLog.processMemberRemove(user, true);
     }
 };
