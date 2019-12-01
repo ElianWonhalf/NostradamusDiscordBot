@@ -26,6 +26,7 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
     dmReply:
+      noMessage: "N'oublie pas d'ajouter ton message, sinon j'ai rien à envoyer !"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     games:
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."

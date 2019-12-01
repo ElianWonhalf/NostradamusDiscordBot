@@ -43,10 +43,10 @@ const SemiBlacklist = {
                     })
                 }
             ).then(() => {
-                const emoji = bot.emojis.find(emoji => emoji.name === 'sondagepour');
+                const emoji = bot.emojis.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);
             }).catch((exception) => {
-                const emoji = bot.emojis.find(emoji => emoji.name === 'sondagecontre');
+                const emoji = bot.emojis.find(emoji => emoji.name === 'pollno');
 
                 message.react(emoji);
                 Logger.exception(exception);
