@@ -8,7 +8,7 @@ module.exports = {
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        if (Guild.isMemberMod(member) || Guild.isMemberTutor(member)) {
+        if (member.hasPermission('MOVE_MEMBERS')) {
             Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {
                 Guild.removeMemberFromVoiceStateUpdateWatcher(member.id);
                 message.reply(trans('model.command.voicemove.timeout', [], 'en'));
