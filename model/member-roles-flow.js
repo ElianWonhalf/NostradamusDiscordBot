@@ -130,6 +130,19 @@ LEVELS[Guild.levelRoles.beginner.toLowerCase()] = Guild.levelRolesIds.beginner;
  * @param {String} string
  * @returns {String|undefined}
  */
+const wordCountInString = (words, string) => {
+    string = string.toLowerCase();
+
+    return words.reduce((count, word) => {
+        return string.match(new RegExp(`\\b${word}\\b`)) !== null ? count + 1 : count;
+    }, 0);
+};
+
+/**
+ * @param {Array} words
+ * @param {String} string
+ * @returns {String|undefined}
+ */
 const wordsInString = (words, string) => {
     string = string.toLowerCase();
 
@@ -149,8 +162,8 @@ const MemberRolesFlow = {
         const additionalRolesAdded = [];
 
         if (nextStepIndex < 1) {
-            const isNotNative = wordsInString(STRINGS_THAT_MEAN_YES, message.content) !== undefined;
-            const isNative = wordsInString(STRINGS_THAT_MEAN_NO, message.content) !== undefined;
+            const isNotNative = wordCountInString(STRINGS_THAT_MEAN_YES, message.content) > 0;
+            const isNative = wordCountInString(STRINGS_THAT_MEAN_NO, message.content) > 0;
             const confused = isNative === isNotNative;
 
             if (!confused) {
@@ -159,9 +172,11 @@ const MemberRolesFlow = {
                 );
             }
         } else {
-            const foundLevel = wordsInString(Object.keys(LEVELS), message.content);
+            const foundLevelCount = wordCountInString(Object.keys(LEVELS), message.content);
 
-            if (foundLevel !== undefined) {
+            if (foundLevelCount === 1) {
+                const foundLevel = wordsInString(Object.keys(LEVELS), message.content);
+
                 intendedRoleAdded = Guild.discordGuild.roles.get(LEVELS[foundLevel]);
                 member = await member.removeRole(Config.roles.unknownLevel);
             }
