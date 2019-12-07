@@ -128,7 +128,7 @@ LEVELS[Guild.levelRoles.beginner.toLowerCase()] = Guild.levelRolesIds.beginner;
 /**
  * @param {Array} words
  * @param {String} string
- * @returns {String|undefined}
+ * @returns {int}
  */
 const wordCountInString = (words, string) => {
     string = string.toLowerCase();
