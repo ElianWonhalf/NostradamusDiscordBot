@@ -1,3 +1,5 @@
+const EventEmitter = require('events');
+
 const Config = require('../config.json');
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Language = require('./language');
@@ -7,6 +9,8 @@ const Discord = require('discord.js');
 const SECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 const Guild = {
+    events: new EventEmitter(),
+
     /** {Object} */
     levelRolesIds: {
         native: Config.roles.native,
