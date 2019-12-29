@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const Config = require('../../config.json');
 const EmojiCharacters = require('../../emoji-characters.json');
 const Guild = require('../guild');
-const EventsBus = require('../events-bus');
 
 let member = null;
 let channel = null;
@@ -25,7 +24,7 @@ const fourthStep = async (collection) => {
 
     if (message === null) {
         channel.send(trans('model.command.anonymous.fourthStepNoMessage', [Config.prefix], language));
-        EventsBus.dispatch('member.ignoreDMEnd', member);
+        Guild.events.emit('member.ignoreDMEnd', member);
     } else {
         let recipientChannel = Guild.anonymousMessagesChannel;
 
@@ -42,19 +41,19 @@ const fourthStep = async (collection) => {
             }
         ).then(() => {
             channel.send(trans('model.command.anonymous.fourthStepSuccess', [], language));
-            EventsBus.dispatch('member.ignoreDMEnd', member);
+            Guild.events.emit('member.ignoreDMEnd', member);
         }).catch((exception) => {
             Logger.exception(exception);
             Guild.botChannel.send(trans('model.command.anonymous.fourthStepErrorNotice', [], 'en'));
             channel.send(trans('model.command.anonymous.fourthStepErrorAnswer', [], language));
-            EventsBus.dispatch('member.ignoreDMEnd', member);
+            Guild.events.emit('member.ignoreDMEnd', member);
         });
     }
 };
 
 const thirdStep = async (collection) => {
     if (collection.size < 1) {
-        EventsBus.dispatch('member.ignoreDMEnd', member);
+        Guild.events.emit('member.ignoreDMEnd', member);
         return;
     }
 
@@ -72,7 +71,7 @@ const thirdStep = async (collection) => {
 
 const secondStep = async (collection) => {
     if (collection.size < 1) {
-        EventsBus.dispatch('member.ignoreDMEnd', member);
+        Guild.events.emit('member.ignoreDMEnd', member);
         return;
     }
 
@@ -104,7 +103,7 @@ module.exports = {
         if (message.guild !== null) {
             message.reply(trans('model.command.anonymous.publicWarn'));
         } else {
-            EventsBus.dispatch('member.ignoreDMStart', member);
+            Guild.events.emit('member.ignoreDMStart', member);
 
             const filter = (reaction, user) => {
                 const emoji = reaction.emoji.name;

@@ -1,25 +1,21 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
-const EventBus = require('./events-bus');
 const Guild = require('./guild');
 
 const SemiBlacklist = {
     ignoredUserDMs: [],
 
     init: () => {
-        EventBus.subscribe('member.ignoreDMStart', (member) => {
-            if (SemiBlacklist.ignoredUserDMs.indexOf(member.user.id) < 0) {
+        Guild.events.on('member.ignoreDMStart', (member) => {
+            if (!SemiBlacklist.ignoredUserDMs.includes(member.user.id)) {
                 SemiBlacklist.ignoredUserDMs.push(member.user.id);
             }
         });
 
-        EventBus.subscribe('member.ignoreDMEnd', (member) => {
-            if (SemiBlacklist.ignoredUserDMs.indexOf(member.user.id) > -1) {
-                SemiBlacklist.ignoredUserDMs = SemiBlacklist.ignoredUserDMs.filter(
-                    id => id !== member.user.id
-                );
-            }
+        Guild.events.on('member.ignoreDMEnd', (member) => {
+            const idx = SemiBlacklist.ignoredUserDMs.findIndex(id => id === member.user.id);
+            if (idx >= 0) SemiBlacklist.ignoredUserDMs.splice(idx, 1);
         });
     },
 
@@ -28,7 +24,7 @@ const SemiBlacklist = {
      * @param {boolean} isCommand
      */
     parseMessage: async (message, isCommand) => {
-        if (message.guild === null && !isCommand && SemiBlacklist.ignoredUserDMs.indexOf(message.author.id) < 0) {
+        if (message.guild === null && !isCommand && !SemiBlacklist.ignoredUserDMs.includes(message.author.id)) {
             const embed = await Guild.messageToEmbed(message);
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
