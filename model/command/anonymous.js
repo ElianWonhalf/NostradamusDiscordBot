@@ -15,6 +15,9 @@ const ADMIN = 'admin';
 const MOD = 'mod';
 let recipient = null;
 
+/**
+ * @param {Collection<Snowflake, Message>} collection
+ */
 const fourthStep = async (collection) => {
     let message = null;
 
@@ -51,6 +54,9 @@ const fourthStep = async (collection) => {
     }
 };
 
+/**
+ * @param {Collection<Snowflake, MessageReaction>} collection
+ */
 const thirdStep = async (collection) => {
     if (collection.size < 1) {
         Guild.events.emit('member.ignoreDMEnd', member);
@@ -69,6 +75,9 @@ const thirdStep = async (collection) => {
     channel.awaitMessages(filter, { time: 1800000, max: 1 }).then(fourthStep).catch(Logger.exception);
 };
 
+/**
+ * @param {Collection<Snowflake, MessageReaction>} collection
+ */
 const secondStep = async (collection) => {
     if (collection.size < 1) {
         Guild.events.emit('member.ignoreDMEnd', member);
