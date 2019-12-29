@@ -6,6 +6,6 @@ const ModerationLog = require('../../model/moderation-log');
  */
 module.exports = async (member) => {
     if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-        ModerationLog.processMemberRemove(member);
+        ModerationLog.processMemberRemove(await bot.fetchUser(member.id));
     }
 };
