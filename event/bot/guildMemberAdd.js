@@ -1,12 +1,13 @@
 const Config = require('../../config.json');
 const Guild = require('../../model/guild');
+const MemberRolesFlow = require('../../model/member-roles-flow');
 
 /**
  * @param {GuildMember} member
  */
-module.exports = (member) => {
-    if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-        Guild.welcomeChannel.send(
+module.exports = async (member) => {
+    if (!testMode && member.id !== Config.testAccount || testMode && member.id === Config.testAccount) {
+        const message = await Guild.welcomeChannel.send(
             trans(
                 'bot.welcomeMessage',
                 [
@@ -17,5 +18,7 @@ module.exports = (member) => {
                 ]
             )
         );
+
+        MemberRolesFlow.introduction(message, member);
     }
 };

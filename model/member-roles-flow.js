@@ -2,327 +2,162 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
-const Country = require('./country');
-const Language = require('./language');
 
-const STEPS = [
-    'isNative',
-    'level'
-];
+const awaitReactions = async (message, expectedEmojis, expectedUserId, callback) => {
+    for (const expectedEmoji of expectedEmojis) {
+        const emoji = bot.emojis.find(emoji => emoji.name === expectedEmoji);
+        await message.react(emoji || expectedEmoji);
+    }
 
-const STRINGS_THAT_MEAN_YES = [
-    'ye',
-    'yee',
-    'yes',
-    'yeah',
-    'yea',
-    'ui',
-    'oui',
-    'ouip',
-    'ouai',
-    'ouais',
-    'ouaip',
-    'ya',
-    'yep',
-    'yup',
-    'eyup',
-    'eeyup',
-    'yip',
-    'yay',
-    'true',
-    'vrai',
-    'si'
-];
+    // 5 minutes
+    const collector = new Discord.ReactionCollector(
+        message,
+        (reaction, user) => {
+            return expectedEmojis.includes(reaction.emoji.name) && user.id === expectedUserId;
+        },
+        { time: 300000, max: 1 }
+    );
 
-const STRINGS_THAT_MEAN_NO = [
-    'no',
-    'noo',
-    'noes',
-    'noe',
-    'non',
-    'na',
-    'nu',
-    'niu',
-    'nyu',
-    'nuu',
-    'niuu',
-    'nyuu',
-    'nuuu',
-    'niuuu',
-    'nyuuu',
-    'nan',
-    'naan',
-    'nope',
-    'nop',
-    'nay',
-    '0',
-    'false',
-    'faux',
-    'nah',
-    'meh'
-];
+    collector.once('end', async (reactions) => {
+        if (reactions.size > 0) {
+            const messageReaction = reactions.first();
+            const users = await messageReaction.fetchUsers();
 
-const LEVELS = {
-    // Native
-    'natif': Guild.levelRolesIds.native,
-    'native': Guild.levelRolesIds.native,
-    'nativ': Guild.levelRolesIds.native,
-    'natife': Guild.levelRolesIds.native,
-
-    // Advanced
-    'avancé': Guild.levelRolesIds.advanced,
-    'avance': Guild.levelRolesIds.advanced,
-    'advanced': Guild.levelRolesIds.advanced,
-    'advance': Guild.levelRolesIds.advanced,
-    'avanc': Guild.levelRolesIds.advanced,
-    'adanced': Guild.levelRolesIds.advanced,
-    'adance': Guild.levelRolesIds.advanced,
-    'expert': Guild.levelRolesIds.advanced,
-    'awesome': Guild.levelRolesIds.advanced,
-
-    // Intermediate
-    'intermédiaire': Guild.levelRolesIds.intermediate,
-    'intermediaire': Guild.levelRolesIds.intermediate,
-    'intermédaire': Guild.levelRolesIds.intermediate,
-    'intermedaire': Guild.levelRolesIds.intermediate,
-    'intermediair': Guild.levelRolesIds.intermediate,
-    'intermediai': Guild.levelRolesIds.intermediate,
-    'intermédiai': Guild.levelRolesIds.intermediate,
-    'intermedia': Guild.levelRolesIds.intermediate,
-    'intermédia': Guild.levelRolesIds.intermediate,
-    'intermediate': Guild.levelRolesIds.intermediate,
-    'intermedate': Guild.levelRolesIds.intermediate,
-    'intermediat': Guild.levelRolesIds.intermediate,
-    'intermediere': Guild.levelRolesIds.intermediate,
-    'intermédière': Guild.levelRolesIds.intermediate,
-    'inter': Guild.levelRolesIds.intermediate,
-    'moyen': Guild.levelRolesIds.intermediate,
-    'moyenne': Guild.levelRolesIds.intermediate,
-    'internediate': Guild.levelRolesIds.intermediate,
-
-    // Beginner
-    'débutant': Guild.levelRolesIds.beginner,
-    'debutant': Guild.levelRolesIds.beginner,
-    'débutante': Guild.levelRolesIds.beginner,
-    'debutante': Guild.levelRolesIds.beginner,
-    'beginner': Guild.levelRolesIds.beginner,
-    'beginer': Guild.levelRolesIds.beginner,
-    'beginne': Guild.levelRolesIds.beginner,
-    'beginn': Guild.levelRolesIds.beginner,
-    'begin': Guild.levelRolesIds.beginner,
-    'start': Guild.levelRolesIds.beginner,
-    'started': Guild.levelRolesIds.beginner,
-    'starting': Guild.levelRolesIds.beginner,
-    'zero': Guild.levelRolesIds.beginner,
-    'begginer': Guild.levelRolesIds.beginner,
-    'not good': Guild.levelRolesIds.beginner,
-    'noob': Guild.levelRolesIds.beginner,
-    'n00b': Guild.levelRolesIds.beginner,
-};
-
-LEVELS[Guild.levelRoles.native.toLowerCase()] = Guild.levelRolesIds.native;
-LEVELS[Guild.levelRoles.advanced.toLowerCase()] = Guild.levelRolesIds.advanced;
-LEVELS[Guild.levelRoles.intermediate.toLowerCase()] = Guild.levelRolesIds.intermediate;
-LEVELS[Guild.levelRoles.beginner.toLowerCase()] = Guild.levelRolesIds.beginner;
-
-/**
- * @param {Array} words
- * @param {String} string
- * @returns {int}
- */
-const wordCountInString = (words, string) => {
-    string = string.toLowerCase();
-
-    return words.reduce((count, word) => {
-        return string.match(new RegExp(`\\b${word}\\b`)) !== null ? count + 1 : count;
-    }, 0);
-};
-
-/**
- * @param {Array} words
- * @param {String} string
- * @returns {String|undefined}
- */
-const wordsInString = (words, string) => {
-    string = string.toLowerCase();
-
-    return words.find(word => {
-        return string.match(new RegExp(`\\b${word}\\b`)) !== null;
+            users.delete(bot.user.id);
+            callback(messageReaction, await Guild.discordGuild.fetchMember(users.first()));
+        }
     });
+
+    Guild.addMemberReactionCollector(expectedUserId, collector);
 };
 
 const MemberRolesFlow = {
+    introduction: (message, member) => {
+        awaitReactions(message, ['afrench'], member.id, MemberRolesFlow.start);
+    },
+
+    /**
+     * @param {MessageReaction} messageReaction
+     * @param {GuildMember} member
+     */
+    start: async (messageReaction, member) => {
+        const reply = await Guild.welcomeChannel.send(trans('model.memberRolesFlow.start', [member]));
+        await awaitReactions(reply, ['👍', '👎'], member.id, MemberRolesFlow.isNativeStep);
+    },
+
+    /**
+     * @param {MessageReaction} messageReaction
+     * @param {GuildMember} member
+     */
+    isNativeStep: async (messageReaction, member) => {
+        const nativeEmojiName = '👍';
+        const notNativeEmojiName = '👎';
+
+        switch (messageReaction.emoji.name) {
+            case nativeEmojiName:
+                await member.addRole(Config.roles.native);
+                MemberRolesFlow.welcomeMember(member);
+                break;
+
+            case notNativeEmojiName:
+                await member.addRole(Config.roles.unknownLevel);
+                MemberRolesFlow.levelStepMessage(member);
+                break;
+
+            default:
+                Logger.error('THIS SHOULD NOT HAPPEN, WE HAVE TO TELL ANDY D: !');
+                break;
+        }
+    },
+
+    /**
+     * @param {GuildMember} member
+     */
+    levelStepMessage: async (member) => {
+        const reply = await Guild.welcomeChannel.send(
+            trans(
+                'model.memberRolesFlow.levelStep',
+                [
+                    ['model.memberRolesFlow.levelStepTitle', [member, [Config.learntLanguage]]],
+                    ['model.memberRolesFlow.levelStepBeginner'],
+                    ['model.memberRolesFlow.levelStepIntermediate'],
+                    ['model.memberRolesFlow.levelStepAdvanced'],
+                ]
+            )
+        );
+
+        await awaitReactions(reply, ['🥚', '🐣', '🐥'], member.id, MemberRolesFlow.levelStep);
+    },
+
+    /**
+     * @param {MessageReaction} messageReaction
+     * @param {GuildMember} member
+     */
+    levelStep: async (messageReaction, member) => {
+        const beginnerEmojiName = '🥚';
+        const intermediateEmojiName = '🐣';
+        const advancedEmojiName = '🐥';
+
+        await member.removeRole(Config.roles.unknownLevel);
+
+        switch (messageReaction.emoji.name) {
+            case beginnerEmojiName:
+                await member.addRole(Config.roles.beginner);
+                break;
+
+            case intermediateEmojiName:
+                await member.addRole(Config.roles.intermediate);
+                break;
+
+            case advancedEmojiName:
+                await member.addRole(Config.roles.advanced);
+                break;
+
+            default:
+                Logger.error('THIS SHOULD NOT HAPPEN, WE HAVE TO TELL ANDY D: !');
+                break;
+        }
+
+        MemberRolesFlow.welcomeMember(member);
+    },
+
     /**
      * @param {Message} message
      */
     parse: async (message) => {
-        let member = await Guild.getMemberFromMessage(message);
-        const nextStepIndex = MemberRolesFlow.getNextStepForMember(member, true);
-        let intendedRoleAdded = null;
-        const additionalRolesAdded = [];
+        /** {GuildMember} member */
+        const member = await Guild.getMemberFromMessage(message);
 
-        if (nextStepIndex < 1) {
-            const isNotNative = wordCountInString(STRINGS_THAT_MEAN_YES, message.content) > 0;
-            const isNative = wordCountInString(STRINGS_THAT_MEAN_NO, message.content) > 0;
-            const confused = isNative === isNotNative;
-
-            if (!confused) {
-                intendedRoleAdded = Guild.discordGuild.roles.get(
-                    isNative ? Config.roles.native : Config.roles.unknownLevel
-                );
-            }
-        } else {
-            const foundLevelCount = wordCountInString(Object.keys(LEVELS), message.content);
-
-            if (foundLevelCount === 1) {
-                const foundLevel = wordsInString(Object.keys(LEVELS), message.content);
-
-                intendedRoleAdded = Guild.discordGuild.roles.get(LEVELS[foundLevel]);
-                member = await member.removeRole(Config.roles.unknownLevel);
+        if (member !== null && !member.roles.has(Config.roles.officialMember)) {
+            if (member.roles.has(Config.roles.unknownLevel)) {
+                MemberRolesFlow.levelStepMessage(await Guild.getMemberFromMessage(message));
+            } else {
+                MemberRolesFlow.startMessage(await Guild.getMemberFromMessage(message));
             }
         }
+    },
 
-        if (intendedRoleAdded !== null && !member.roles.has(intendedRoleAdded)) {
-            member = await member.addRole(intendedRoleAdded);
-        }
+    /**
+     * @param {GuildMember} member
+     */
+    welcomeMember: async (member) => {
+        await member.addRole(Config.roles.officialMember);
 
-        const countries = Country.getRoleAliasesList();
-        const languages = Language.getRoleAliasesList();
-
-        const foundCountry = wordsInString(countries, message.content);
-        const foundLanguage = wordsInString(languages, message.content);
-
-        if (foundCountry !== undefined) {
-            const countryRole = Guild.getRoleByName(Country.getRoleNameFromString(foundCountry));
-
-            if (!member.roles.has(countryRole)) {
-                additionalRolesAdded.push(countryRole);
-            }
-        }
-
-        if (foundLanguage !== undefined) {
-            const languageRole = Guild.getRoleByName(Language.getRoleNameFromString(foundLanguage));
-
-            if (!member.roles.has(languageRole) && languageRole.id !== Config.roles.native) {
-                additionalRolesAdded.push(languageRole);
-            }
-        }
-
-        if (additionalRolesAdded.length > 0) {
-            member = await member.addRoles(additionalRolesAdded);
-        }
-
-        MemberRolesFlow.answerWithNextStep(
-            message,
-            member,
-            nextStepIndex === MemberRolesFlow.getNextStepForMember(member, true)
+        Guild.rolesChannel.send(
+            trans('model.memberRolesFlow.validatedMessage', [member])
         );
-    },
 
-    /**
-     * @param {Message} message
-     * @param {GuildMember} member
-     * @param {boolean} [confused]
-     */
-    answerWithNextStep: async (message, member, confused) => {
-        confused = confused || false;
+        const logEmbed = new Discord.RichEmbed();
 
-        const nextStep = MemberRolesFlow.getNextStepForMember(member);
+        logEmbed.setColor('#ffb8e6');
+        logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL);
+        logEmbed.setDescription(`${member} ${member.displayName}#${member.user.discriminator}`);
+        logEmbed.setThumbnail(member.user.displayAvatarURL);
+        logEmbed.setFooter(trans('model.memberRolesFlow.logFooter', [member.id], 'en'));
+        logEmbed.setTimestamp(new Date());
 
-        if (nextStep !== null) {
-            const callback = 'get' + nextStep.substr(0, 1).toUpperCase() + nextStep.substr(1) + 'StepMessage';
-            message.reply(MemberRolesFlow[callback](confused));
-        } else {
-            let welcomeChannel = Guild.welcomeChannel;
-
-            // TODO: delete timeout if member leaves the server before it's finished
-            setTimeout(async () => {
-                await member.addRole(Config.roles.officialMember);
-                welcomeChannel.permissionOverwrites.get(member.user.id).delete();
-
-                Guild.rolesChannel.send(
-                    trans('model.memberRolesFlow.validatedMessage', [member])
-                );
-
-                const logEmbed = new Discord.RichEmbed();
-
-                logEmbed.setColor('#ffb8e6');
-                logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL);
-                logEmbed.setDescription(`${member} ${member.displayName}#${member.user.discriminator}`);
-                logEmbed.setThumbnail(member.user.displayAvatarURL);
-                logEmbed.setFooter(trans('model.memberRolesFlow.logFooter', [member.id], 'en'));
-                logEmbed.setTimestamp(new Date());
-
-                Guild.memberFlowLogChannel.send(logEmbed);
-            }, 15000);
-
-            const roles = member.roles.array().filter(role => role.name !== '@everyone').map(role => role.name);
-            const rolesString = `"${roles.join('", "')}"`;
-
-            welcomeChannel = await welcomeChannel.overwritePermissions(member, {SEND_MESSAGES: false});
-            message.reply(trans('model.memberRolesFlow.endMessage', [rolesString]));
-        }
-    },
-
-    /**
-     * @param {GuildMember} member
-     * @param {boolean} [useStepIndex]
-     * @returns {string}
-     */
-    getNextStepForMember: (member, useStepIndex) => {
-        useStepIndex = useStepIndex || false;
-
-        let nextStep = null;
-
-        for (let i = 0; i < STEPS.length && nextStep === null; i++) {
-            const step = STEPS[i];
-            const callback = 'is' + step.substr(0, 1).toUpperCase() + step.substr(1) + 'Needed';
-
-            if (MemberRolesFlow[callback](member)) {
-                nextStep = useStepIndex ? i : step;
-            }
-        }
-
-        return nextStep;
-    },
-
-    /**
-     * @param {GuildMember} member
-     * @returns {boolean}
-     */
-    isIsNativeNeeded: (member) => {
-        return !Guild.memberHasLevelRole(member) && !member.roles.has(Config.roles.unknownLevel);
-    },
-
-    /**
-     * @param {GuildMember} member
-     * @returns {boolean}
-     */
-    isLevelNeeded: (member) => {
-        return !Guild.memberHasLevelRole(member) && member.roles.has(Config.roles.unknownLevel);
-    },
-
-    /**
-     * @param {boolean} confused
-     * @returns {string}
-     */
-    getIsNativeStepMessage: (confused) => {
-        return trans(
-            `model.memberRolesFlow.isNativeStep${confused ? 'Confused' : ''}Message`,
-            [`%${Config.learntLanguage}%`]
-        );
-    },
-
-    /**
-     * @param {boolean} confused
-     * @returns {string}
-     */
-    getLevelStepMessage: (confused) => {
-        return trans(
-            `model.memberRolesFlow.levelStep${confused ? 'Confused' : ''}Message`,
-            [`%${Config.learntLanguage}%`]
-        );
-    },
+        Guild.memberFlowLogChannel.send(logEmbed);
+    }
 };
 
 module.exports = MemberRolesFlow;

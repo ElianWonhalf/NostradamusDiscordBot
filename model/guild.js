@@ -33,6 +33,9 @@ const Guild = {
     /** {Object} */
     voiceMoveMembers: {},
 
+    /** {Object} */
+    reactionCollectors: {},
+
     /** {TextChannel} */
     welcomeChannel: null,
 
@@ -92,6 +95,28 @@ const Guild = {
 
             return !member.user.bot && threeDaysElapsed && !isOfficial;
         }).array().forEach(member => member.kick('[AUTO] Did not self assign roles'));
+    },
+
+    /**
+     * @param {Snowflake} snowflake
+     * @param {ReactionCollector} collector
+     */
+    addMemberReactionCollector: (snowflake, collector) => {
+        if (!Guild.reactionCollectors.hasOwnProperty(snowflake)) {
+            Guild.reactionCollectors[snowflake] = [];
+        }
+
+        Guild.reactionCollectors[snowflake].push(collector);
+    },
+
+    /**
+     * @param {Snowflake} snowflake
+     */
+    stopMemberReactionCollectors: (snowflake) => {
+        if (Guild.reactionCollectors.hasOwnProperty(snowflake)) {
+            Guild.reactionCollectors[snowflake].forEach(collector => collector.stop());
+            delete Guild.reactionCollectors[snowflake];
+        }
     },
 
     /**
