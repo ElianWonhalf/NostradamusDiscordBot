@@ -233,13 +233,15 @@ const Guild = {
                 const username = `${member.user.username.toLowerCase()}#${member.user.discriminator}`;
                 const content = message.cleanContent.toLowerCase().split(' ').splice(1).join(' ');
 
-                const contentInNickname = nickname !== '' ? nickname.indexOf(content) > -1 : false;
-                const contentInUsername = username.indexOf(content) > -1;
-                const nicknameInContent = nickname !== '' ? content.indexOf(nickname) > -1 : false;
-                const usernameInContent = content.indexOf(username) > -1;
+                if (content.length > 0) {
+                    const contentInNickname = nickname !== '' ? nickname.indexOf(content) > -1 : false;
+                    const contentInUsername = username.indexOf(content) > -1;
+                    const nicknameInContent = nickname !== '' ? content.indexOf(nickname) > -1 : false;
+                    const usernameInContent = content.indexOf(username) > -1;
 
-                if (contentInNickname || contentInUsername || nicknameInContent || usernameInContent) {
-                    foundMembers.push(member);
+                    if (contentInNickname || contentInUsername || nicknameInContent || usernameInContent) {
+                        foundMembers.push(member);
+                    }
                 }
             });
         }
