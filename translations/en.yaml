@@ -94,6 +94,8 @@ model:
     outLoudReading:
       alertsOn: "You will now be notified when a reading is being held."
       alertsOff: "You will now no longer be notified when a reading is being held."
+    quotes:
+      answer: ":pollno: << >>\n:pollno: 《 》\n:pollno: « »\n:pollyes: \" \""
     reload:
       answer: "OK, I'm rebooting now."
     report:

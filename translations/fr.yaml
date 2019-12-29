@@ -51,6 +51,8 @@ model:
     outLoudReading:
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
+    quotes:
+      answer: ":pollno: << >>\n:pollno: 《 》\n:pollyes: \" \"\n:pollyes: « »"
     reply:
       calisse: "ah ben calisse"
       tabarnak: "ah ben tabarnak"
