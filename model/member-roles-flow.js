@@ -33,7 +33,7 @@ const awaitReactions = async (message, expectedEmojis, expectedUserId, callback)
 
 const MemberRolesFlow = {
     introduction: (message, member) => {
-        awaitReactions(message, ['afrench'], member.id, MemberRolesFlow.start);
+        awaitReactions(message, ['alogo'], member.id, MemberRolesFlow.start);
     },
 
     /**
@@ -132,7 +132,7 @@ const MemberRolesFlow = {
             if (member.roles.has(Config.roles.unknownLevel)) {
                 MemberRolesFlow.levelStepMessage(await Guild.getMemberFromMessage(message));
             } else {
-                MemberRolesFlow.startMessage(await Guild.getMemberFromMessage(message));
+                MemberRolesFlow.start(null, await Guild.getMemberFromMessage(message));
             }
         }
     },
