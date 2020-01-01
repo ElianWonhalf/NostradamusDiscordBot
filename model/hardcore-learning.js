@@ -169,7 +169,7 @@ const HardcoreLearning = {
 
         if (!alreadyWarned) {
             message.channel.send(
-                trans('model.hardcoreLearning.warning', [`%${Config.learntLanguage}%`, `%${Config.learntLanguage}%`])
+                trans('model.hardcoreLearning.warning', [[Config.learntLanguage], [Config.learntLanguage]])
             );
             HardcoreLearning.alreadyWarned[message.channel.id] = true;
         } else if (!lastMessageWasRight) {
