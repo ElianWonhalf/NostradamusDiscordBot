@@ -2,6 +2,8 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
+const memeURL = 'https://cdn.discordapp.com/attachments/445022429819961344/661313083200897036/497331af-69a6-4007-8411-2b6af7eb6c95.png';
+const fiveMinutes = 300000;
 
 const awaitReactions = async (message, expectedEmojis, expectedUserId, callback) => {
     for (const expectedEmoji of expectedEmojis) {
@@ -9,13 +11,12 @@ const awaitReactions = async (message, expectedEmojis, expectedUserId, callback)
         await message.react(emoji || expectedEmoji);
     }
 
-    // 5 minutes
     const collector = new Discord.ReactionCollector(
         message,
         (reaction, user) => {
             return expectedEmojis.includes(reaction.emoji.name) && user.id === expectedUserId;
         },
-        { time: 300000, max: 1 }
+        { time: fiveMinutes, max: 1 }
     );
 
     collector.once('end', async (reactions) => {
@@ -32,6 +33,8 @@ const awaitReactions = async (message, expectedEmojis, expectedUserId, callback)
 };
 
 const MemberRolesFlow = {
+    canPostMeme: true,
+
     introduction: (message, member) => {
         awaitReactions(message, ['alogo'], member.id, MemberRolesFlow.start);
     },
@@ -129,6 +132,23 @@ const MemberRolesFlow = {
         const member = await Guild.getMemberFromMessage(message);
 
         if (member !== null && !member.roles.has(Config.roles.officialMember)) {
+            Guild.stopMemberReactionCollectors(member.id);
+
+            const options = MemberRolesFlow.canPostMeme ? { file: memeURL } : null;
+
+            await message.reply(
+                trans('model.memberRolesFlow.noSpeakOnlyAnswer'),
+                options
+            );
+
+            if (options !== null) {
+                MemberRolesFlow.canPostMeme = false;
+
+                setTimeout(() => {
+                    MemberRolesFlow.canPostMeme = true;
+                }, fiveMinutes);
+            }
+
             if (member.roles.has(Config.roles.unknownLevel)) {
                 MemberRolesFlow.levelStepMessage(await Guild.getMemberFromMessage(message));
             } else {

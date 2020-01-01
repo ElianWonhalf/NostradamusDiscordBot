@@ -3,7 +3,7 @@ learntLanguage:
   french: "French"
 
 bot:
-  welcomeMessage: "Hello %% and welcome to the %% server! React to this message with :afrench:, like I just did! This will be our main method of interaction :) ."
+  welcomeMessage: "Hello %% and welcome to the %% server! React to this message with :alogo:, like I just did! This will be our main method of interaction :) ."
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -132,6 +132,7 @@ model:
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
   memberRolesFlow:
+    noSpeakOnlyAnswer: "Alas, I cannot fathom the complexity of human language :pensive: . But fear not, for you need only react to the upcoming message :) !"
     start: "Ok %%, first things first, let's talk about your proficiency. Are you a native French speaker?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
     levelStepTitle: "Ok %%! What is your level in %%?"

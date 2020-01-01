@@ -1,8 +1,6 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const Language = require('../language');
-const MemberRolesFlow = require('../member-roles-flow');
 
 /**
  * @param {Message} message
@@ -21,7 +19,7 @@ module.exports = {
         if (language !== '') {
             if (Guild.isMemberNative(member)) {
                 message.reply(
-                    trans('model.command.language.callMods', [`%${Config.learntLanguage}%`])
+                    trans('model.command.language.callMods', [[Config.learntLanguage]])
                 );
 
                 return;
@@ -40,7 +38,7 @@ module.exports = {
 
             if (role !== null && role.id === Config.roles.native) {
                 message.reply(
-                    trans('model.command.language.illegal', [`%${Config.learntLanguage}%`])
+                    trans('model.command.language.illegal', [[Config.learntLanguage]])
                 );
 
                 return;
