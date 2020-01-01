@@ -17,11 +17,11 @@ module.exports = {
                 content.shift();
             }
 
-            channel.send(content.join(' ')).then(() => {
-                message.react(bot.emojis.find(emoji => emoji.name === 'pollyes'));
-            }).catch((error) => {
+            channel.send(content.join(' ')).then(async () => {
+                await message.react(bot.emojis.find(emoji => emoji.name === 'pollyes'));
+            }).catch(async (error) => {
                 Logger.error(error.toString());
-                message.react(bot.emojis.find(emoji => emoji.name === 'pollno'));
+                await message.react(bot.emojis.find(emoji => emoji.name === 'pollno'));
             });
         }
     }
