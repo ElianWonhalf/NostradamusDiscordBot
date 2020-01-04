@@ -6,7 +6,7 @@ const Guild = require('../guild');
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['send'],
+    aliases: [],
     process: async (message, content) => {
         const member = await Guild.getMemberFromMessage(message);
 
