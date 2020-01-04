@@ -133,7 +133,7 @@ model:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
   memberRolesFlow:
     noSpeakOnlyAnswer: "Alas, I cannot fathom the complexity of human language :pensive: . But fear not, for you need only react to the upcoming message :) !"
-    start: "Ok %%, first things first, let's talk about your proficiency. Are you a native French speaker?"
+    start: "Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
     levelStepTitle: "Ok %%! What is your level in %%?"
     levelStepBeginner: "Beginner"

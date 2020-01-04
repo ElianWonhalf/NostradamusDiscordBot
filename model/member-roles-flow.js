@@ -44,7 +44,10 @@ const MemberRolesFlow = {
      * @param {GuildMember} member
      */
     start: async (messageReaction, member) => {
-        const reply = await Guild.welcomeChannel.send(trans('model.memberRolesFlow.start', [member]));
+        const reply = await Guild.welcomeChannel.send(trans(
+            'model.memberRolesFlow.start',
+            [member, [Config.learntLanguage]]
+        ));
         await awaitReactions(reply, ['👍', '👎'], member.id, MemberRolesFlow.isNativeStep);
     },
 

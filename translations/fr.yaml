@@ -66,7 +66,7 @@ model:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
   memberRolesFlow:
     noSpeakOnlyAnswer: "Hélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu cliques sur l'une des réactions du message ci-dessous :) !"
-    start: "Ok %%, pour commencer, parlons de ton niveau. Est-ce que le français est ta langue maternelle ?"
+    start: "Ok %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
     levelStepTitle: "Ok %%! Quel est ton niveau en %% ?"
     levelStepBeginner: "Débutant"
