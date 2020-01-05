@@ -41,8 +41,8 @@ model:
       totalLanguagesAndCountriesInDB: "I've found %% languages, and %% countries in the DB.\n"
       totalRolesOnServer: "I've found %% roles on the server (knowing that there are not just languages and countries in there).\n\n"
       languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
-      countriesInDbWithoutRole: "\nI've found ${countriesWithoutRoles.length} country(-ies) in the DB that don't have any roles assigned"
-      rolesWithoutDbEntry: "\n\nI've found ${rolesWithoutDBEntry.length} role(s) that don't have a DB entry assigned"
+      countriesInDbWithoutRole: "\nI've found %% country(-ies) in the DB that don't have any roles assigned"
+      rolesWithoutDbEntry: "\n\nI've found %% role(s) that don't have a DB entry assigned"
     checkCustomStatuses:
       introduction: "%% members currently have a custom status set."
       customStatus: "%%: %%"
