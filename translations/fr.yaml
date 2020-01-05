@@ -62,6 +62,9 @@ model:
       answer: "Il y a en ce moment %% tuteurs :"
     warntroll:
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
+  commandCategory:
+    moderation: "Modération"
+    bot_customization: "Personnalisation du bot"
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
   memberRolesFlow:

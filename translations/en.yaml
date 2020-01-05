@@ -123,6 +123,9 @@ model:
       success: "%% is now in the watched member list :eyes: ."
       alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
       error: "I don't... Wha- Who?"
+  commandCategory:
+    moderation: "Moderation"
+    bot_customization: "Bot customization"
   dm:
     notification: "%% sent a DM:"
   guild:
