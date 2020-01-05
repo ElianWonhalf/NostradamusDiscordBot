@@ -1,11 +1,10 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
 
 /**
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['getmemberid', 'memberid', 'gmid'],
+    aliases: ['getmemberid', 'getuserid', 'memberid', 'userid', 'gmid', 'guid'],
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
