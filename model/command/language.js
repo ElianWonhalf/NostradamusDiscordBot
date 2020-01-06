@@ -1,6 +1,7 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const Language = require('../language');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
@@ -8,6 +9,7 @@ const Language = require('../language');
  */
 module.exports = {
     aliases: ['langue', 'langage'],
+    category: CommandCategory.ROLE,
     process: async (message, args) => {
         if (message.guild === null || message.channel.id !== Config.channels.roles) {
             return;

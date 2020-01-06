@@ -1,10 +1,12 @@
 const Guild = require('../guild');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.MODERATION,
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 

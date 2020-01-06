@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const Config = require('../../config.json');
 const EmojiCharacters = require('../../emoji-characters.json');
 const Guild = require('../guild');
+const CommandCategory = require('../command-category');
 
 let member = null;
 let channel = null;
@@ -105,6 +106,7 @@ const secondStep = async (collection) => {
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.MODERATION,
     process: async (message) => {
         member = await Guild.getMemberFromMessage(message);
         channel = message.channel;

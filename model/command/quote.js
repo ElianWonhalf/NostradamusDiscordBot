@@ -1,12 +1,14 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Guild = require('../guild');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.BOT_MANAGEMENT,
     process: async (message, content) => {
         const member = await Guild.getMemberFromMessage(message);
 
