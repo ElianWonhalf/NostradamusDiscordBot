@@ -64,6 +64,7 @@ model:
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
   commandCategory:
     moderation: "Modération"
+    administration: "Administration"
     bot_management: "Gestion du bot"
     fun: "divertissement"
     info: "info"
