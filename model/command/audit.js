@@ -2,12 +2,14 @@ const Config = require('../../config.json');
 const Guild = require('../guild');
 const Language = require('../language');
 const Country = require('../country');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.INFO,
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 

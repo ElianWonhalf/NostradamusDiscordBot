@@ -1,6 +1,7 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
 const Language = require('../language');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
@@ -8,6 +9,7 @@ const Language = require('../language');
  */
 module.exports = {
     aliases: ['addlanguage'],
+    category: CommandCategory.ADMINISTRATION,
     process: async (message, args) => {
         const member = await Guild.getMemberFromMessage(message);
 

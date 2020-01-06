@@ -2,6 +2,7 @@ const Config = require('../../config.json');
 const Guild = require('../guild');
 const Country = require('../country');
 const MemberRolesFlow = require('../member-roles-flow');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
@@ -9,6 +10,7 @@ const MemberRolesFlow = require('../member-roles-flow');
  */
 module.exports = {
     aliases: ['pays'],
+    category: CommandCategory.ROLE,
     process: async (message, args) => {
         if (message.guild === null || message.channel.id !== Config.channels.roles) {
             return;

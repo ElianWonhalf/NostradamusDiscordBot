@@ -1,10 +1,12 @@
 const Config = require('../../config.json');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: ['tuteur', 'tuteurs', 'tutor'],
+    category: CommandCategory.INFO,
     process: async (message) => {
         let list = message.guild.members.filter(
             member => member.roles.has(Config.roles.tutor)

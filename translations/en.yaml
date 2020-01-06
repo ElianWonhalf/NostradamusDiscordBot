@@ -125,7 +125,8 @@ model:
       error: "I don't... Wha- Who?"
   commandCategory:
     moderation: "Moderation"
-    bot_customization: "Bot customization"
+    bot_management: "Bot management"
+    
   dm:
     notification: "%% sent a DM:"
   guild:

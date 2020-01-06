@@ -1,12 +1,14 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const MemberRolesFlow = require('../member-roles-flow');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.INFO,
     process: async (message) => {
         if (message.guild === null || message.channel.id !== Config.channels.welcome) {
             return;

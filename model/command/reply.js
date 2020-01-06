@@ -1,8 +1,11 @@
+const CommandCategory = require('../command-category');
+
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: [],
+    category: CommandCategory.FUN,
     process: async (message) => {
         message.channel.send(
             trans(

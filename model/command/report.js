@@ -1,11 +1,13 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
  */
 module.exports = {
     aliases: ['rp', 'rep'],
+    category: CommandCategory.MODERATION,
     process: async (message) => {
         if (message.guild === null) {
             message.reply(trans('model.command.report.onlyOnServer'));

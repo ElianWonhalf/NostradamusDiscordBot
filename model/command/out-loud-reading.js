@@ -1,5 +1,6 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
+const CommandCategory = require('../command-category');
 
 /**
  * @param {Message} message
@@ -19,6 +20,7 @@ module.exports = {
         'lecturevoixhaute',
         'lecture-voix-haute'
     ],
+    category: CommandCategory.ROLE,
 
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
