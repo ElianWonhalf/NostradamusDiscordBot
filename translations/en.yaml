@@ -156,10 +156,10 @@ model:
       ready: "you can connect to another channel and I'll move the members for you."
     warntroll:
       description: "Provides instructions to warn a troll"
-      warnMessage: "trolling on the %% server. If you do not change your behavior, you will be banned."
+      warnMessage: "trolling on the %% server. If you do not change your behaviour, you will be banned."
       memberGuessed: "I'm not sure whom you want to warn, but I guess it's %%. If that's not correct, please change the ID in the command below accordingly."
       memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
-      answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
+      answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mod channels.\n"
     watch:
       description: "Add a member to the watched list"
       success: "%% is now in the watched member list :eyes: ."
