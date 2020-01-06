@@ -59,14 +59,14 @@ model:
       description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
     country:
-      description:
+      description: "Set current country"
       request: "Country tag requested by %%: %%"
       missingArgument: "You need to enter a country. The command `%%country` alone does not tell me which country you currently live in. For example: `%%country United States`"
       added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
       removed: ":ywansheep: All good, I **removed** the role \"%%\" from your profile !"
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
     dictation:
-      description:
+      description: "To be notified when a dictation is held"
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
     dmReply:
@@ -74,24 +74,24 @@ model:
       noMessage: "Don't forget to add your message, or else I'll have nothing to send!"
       notFound: "I... Have no idea who that could be, sorry."
     edit:
-      description:
+      description: "Edit a message sent by the bot"
     games:
-      description:
+      description: "To be notified when a game is held"
       alertsOn: "You will now be notified when there's a game."
       alertsOff: "You will now no longer be notified when there's a game."
     getCustomStatuses:
       description: "Lists all currently set custom statuses"
       introduction: "%% members currently have a custom status set, and have a text in it."
-    getMemberId: "Provides the ID of the specified member."
-      description:
+    getMemberId:
+      description: "Provides the ID of the specified member."
       notFound: "I... Have no idea who that could be, sorry."
     help:
       description: "Provides a list of commands"
       notice: "%% seems to need help in %%.\n%%"
     kill:
-      description:
+      description: "Kills the bot process"
     language:
-      description:
+      description: "Set native language"
       request: "Language tag requested by %%: %%"
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
       added: ":ywansheep: All good, I **added** the role \"%%\" to your profile !"
@@ -105,29 +105,29 @@ model:
       roleCreation: "created role %%"
       count: "found %% role(s) that need to be created"
     logs:
-      description:
+      description: "Gives access to the member flow logging channel"
       channelOn: "You now have access to the member flow logging channel."
       channelOff: "You no longer have access to the member flow logging channel."
     miniClass:
-      description:
+      description: "To be notified when a mini class is held"
       alertsOn: "You will now be notified when there's a mini class."
       alertsOff: "You will now no longer be notified when there's a mini class."
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
     outLoudReading:
-      description:
+      description: "To be notified when a reading is being held"
       alertsOn: "You will now be notified when a reading is being held."
       alertsOff: "You will now no longer be notified when a reading is being held."
     post:
-      description:
+      description: "Sends a message to the server from the bot"
     quote:
-      description:
+      description: "Creates a quote of a member"
     quotes:
       description: "Shows what quotation marks are acceptable to use"
       answer: ":pollno: << >>\n:pollno: 《 》\n:pollno: « »\n:pollyes: \" \""
     reload:
-      description:
+      description: "Reboots the bot"
       answer: "OK, I'm rebooting now."
     reply:
       description: "Tabarnak"
@@ -138,9 +138,9 @@ model:
       reportedMembersGuessed: "\n\nI'm not sure who was reported, but here is a guess: %%"
       report: "@everyone, %% made a report.%%\n%%"
     resetHardcoreLearning:
-      description:
+      description: "Resets the counter of messages in the incorrect language to 0"
     setAvatar:
-      description:
+      description: "Set the bot avatar"
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
     tutors:
