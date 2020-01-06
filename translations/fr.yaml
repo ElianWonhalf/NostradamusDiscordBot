@@ -111,7 +111,7 @@ model:
     unwatch:
       description: "Retire un membre de la liste des membres surveillés"
     voicemove:
-      description: "Bouge tous les membres d'un channel vocal à un autre"
+      description: "Déplace tous les membres d'un channel vocal à un autre"
     warntroll:
       description: "Donne des instructions pour avertir un troll"
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
