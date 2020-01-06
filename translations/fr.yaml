@@ -8,15 +8,15 @@ model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
     addCountry:
-      description: "Ajoute un nouveau rôle de pays."
+      description: "Ajoute un nouveau rôle de pays"
     addCountryAlias:
-      description: "Ajoute un nouveau alias à un rôle de pays existant."
+      description: "Ajoute un nouvel alias à un rôle de pays existant"
     addLanguage:
-      description: "Ajoute un nouveau rôle de langue."
+      description: "Ajoute un nouveau rôle de langue"
     addLanguageAlias:
-      description: "Ajoute un nouveau alias à un rôle de langue existant."
+      description: "Ajoute un nouvel alias à un rôle de langue existant"
     anonymous:
-      description: "Envoie un message anonyme à l'équipe de modération."
+      description: "Envoie un message anonyme à l'équipe de modération"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"
       firstStep: "Est-ce que je devrais parler français ou anglais ? (clique sur la bonne réaction ci-dessous)\n\n:one: Anglais\n:two: Français"
       secondStep: "À qui veux-tu envoyer ton message anonyme ? (clique sur la bonne réaction ci-dessous)\n\n:one: À l'admin\n:two: Aux modos"
@@ -25,11 +25,11 @@ model:
       fourthStepSuccess: "Ton message anonyme a été envoyé avec succès !"
       fourthStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
     audit:
-      description: "Vérifie s'il y a un écart entre le serveur et la base de données."
+      description: "Vérifie s'il y a un écart entre le serveur et la base de données"
     checkCustomStatuses:
-      description: "Trouve les statuts personnalisés contenant des termes blacklistés."
+      description: "Trouve les statuts personnalisés contenant des termes blacklistés"
     committee:
-      description: "Liste les membres actuels du comité."
+      description: "Liste les membres actuels du comité"
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
     country:
       description:
@@ -42,7 +42,7 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
       alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
     dmReply:
-      description: "Permet aux Modos de répondre aux Messages Privés envoyés au bot."
+      description: "Permet aux Modos de répondre aux Messages Privés envoyés au bot"
       noMessage: "N'oublie pas d'ajouter ton message, sinon j'ai rien à envoyer !"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     edit:
@@ -52,12 +52,12 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
     getCustomStatuses:
-      description: "Liste tous les status personnalisés actuellement en place."
+      description: "Liste tous les status personnalisés actuellement en place"
     getMemberId:
-      description: "Donne l'ID du membre spécifié."
+      description: "Donne l'ID du membre spécifié"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     help:
-      description: "Donne une liste de commandes."
+      description: "Donne une liste de commandes"
     kill:
       description:
     language:
@@ -69,7 +69,7 @@ model:
       illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     loadRoles:
-      description: "Ajoute des rôles au serveur de la base de données."
+      description: "Ajoute des rôles au serveur depuis la base de données"
     logs:
       description:
       channelOn: "Tu as maintenant accès au canal des logs d'arrivée et de départ des membres."
@@ -79,7 +79,7 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
       alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
     modList:
-      description: "Liste les membres actuels de l'équipe de modération."
+      description: "Liste les membres actuels de l'équipe de modération"
       answer: "Il y a en ce moment %% modérateurs :"
     outLoudReading:
       description:
@@ -90,33 +90,33 @@ model:
     quote:
       description:
     quotes:
-      description: "Montre quels guillemets on peut utiliser."
+      description: "Montre quels guillemets on peut utiliser"
       answer: ":pollno: << >>\n:pollno: 《 》\n:pollyes: \" \"\n:pollyes: « »"
     reload:
       description:
     reply:
-      description: "Calisse."
+      description: "Calisse"
       calisse: "ah ben calisse"
       tabarnak: "ah ben tabarnak"
     report:
-      description: "Envoie un rapport urgent mais privé à l'équipe de modération."
+      description: "Envoie un rapport urgent mais privé à l'équipe de modération"
       onlyOnServer: "désolé, cette commande ne peut être exécutée que sur le serveur."
     resetHardcoreLearning:
       description:
     setAvatar:
       description:
     tutors:
-      description: "Liste les tuteurs actuels."
+      description: "Liste les tuteurs actuels"
       answer: "Il y a en ce moment %% tuteurs :"
     unwatch:
-      description: "Retire un membre de la liste des membres surveillés."
+      description: "Retire un membre de la liste des membres surveillés"
     voicemove:
-      description: "Bouge tous les membres d'un channel vocal à un autre."
+      description: "Bouge tous les membres d'un channel vocal à un autre"
     warntroll:
-      description: "Donne des instructions pour avertir un troll."
+      description: "Donne des instructions pour avertir un troll"
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
     watch:
-      description: "Ajoute un membre à la liste des membres surveillés."
+      description: "Ajoute un membre à la liste des membres surveillés"
   commandCategory:
     moderation: "Modération"
     administration: "Administration"
