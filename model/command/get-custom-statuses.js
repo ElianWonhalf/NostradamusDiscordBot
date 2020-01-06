@@ -1,7 +1,5 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../guild');
-const Blacklist = require('../blacklist');
 const CommandCategory = require('../command-category');
 
 /**

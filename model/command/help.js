@@ -1,6 +1,5 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
-const MemberRolesFlow = require('../member-roles-flow');
 const CommandCategory = require('../command-category');
 
 /**
@@ -20,7 +19,6 @@ module.exports = {
             Guild.botChannel.send(
                 trans('model.command.help.notice', [member, `<#${Config.channels.welcome}>`, message.url], 'en')
             );
-            MemberRolesFlow.answerWithNextStep(message, member);
         }
     }
 };
