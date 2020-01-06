@@ -8,31 +8,31 @@ model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
     addCountry:
-      description: "Adds a new country role."
+      description: "Adds a new country role"
       discordRoleAddSuccess: "new role added on Discord: %%"
       databaseRoleAddSuccess: "new role added in the database: %%"
       discordRoleAddError: "new role couldn't be added on Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
     addCountryAlias:
-      description: "Adds a new alias to an existing country role."
+      description: "Adds a new alias to an existing country role"
       doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
     addLanguage:
-      description: "Adds a new language role."
+      description: "Adds a new language role"
       discordRoleAddSuccess: "new role added on Discord: %%"
       databaseRoleAddSuccess: "new role added in the database: %%"
       discordRoleAddError: "new role couldn't be added on Discord: %%"
       databaseRoleAddError: "new role couldn't be added in the database: %%"
       alreadyExists: "The role %% already exists."
     addLanguageAlias:
-      description: "Adds a new alias to an existing language role."
+      description: "Adds a new alias to an existing language role"
       doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
     anonymous:
-      description: "Allows members to send anonymous messages to the moderation team."
+      description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
       firstStep: "Should I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French"
       secondStep: "To whom do you want to send your anonymous message? (click on the right reaction below)\n\n:one: To the admin\n:two: To the mods"
@@ -43,20 +43,20 @@ model:
       fourthStepErrorNotice: "The anonymous message could not be sent! Please contact Lily so she can check the logs!"
       fourthStepErrorAnswer: "Your message could not be sent due to a known issue that we are working on. Please try again later."
     audit:
-      description: "Checks for disparity between the server and database."
+      description: "Checks for disparity between the server and database"
       totalLanguagesAndCountriesInDB: "I've found %% languages, and %% countries in the DB.\n"
       totalRolesOnServer: "I've found %% roles on the server (knowing that there are not just languages and countries in there).\n\n"
       languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
       countriesInDbWithoutRole: "\nI've found %% country(-ies) in the DB that don't have any roles assigned"
       rolesWithoutDbEntry: "\n\nI've found %% role(s) that don't have a DB entry assigned"
     checkCustomStatuses:
-      description: "Searches for blacklisted terms in members' custom messages."
+      description: "Searches for blacklisted terms in members' custom messages"
       introduction: "%% members currently have a custom status set."
       customStatus: "%%: %%"
       semiBlacklistHeading: ":roocop: The following triggered the **semi** blacklist:"
       fullBlacklistHeading: ":ban: The following triggered the **full** blacklist:"
     committee:
-      description: "Lists the current committee members."
+      description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
     country:
       description:
@@ -70,7 +70,7 @@ model:
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
     dmReply:
-      description: "Allows Moderators to respond to Direct Messages sent through the bot."
+      description: "Allows Moderators to respond to Direct Messages sent through the bot"
       noMessage: "Don't forget to add your message, or else I'll have nothing to send!"
       notFound: "I... Have no idea who that could be, sorry."
     edit:
@@ -86,7 +86,7 @@ model:
       description:
       notFound: "I... Have no idea who that could be, sorry."
     help:
-      description: "Provides a list of commands."
+      description: "Provides a list of commands"
       notice: "%% seems to need help in %%.\n%%"
     kill:
       description:
@@ -100,7 +100,7 @@ model:
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
     loadRoles:
-      description: "Adds roles to server from database."
+      description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
       roleCreation: "created role %%"
       count: "found %% role(s) that need to be created"
@@ -113,7 +113,7 @@ model:
       alertsOn: "You will now be notified when there's a mini class."
       alertsOff: "You will now no longer be notified when there's a mini class."
     modList:
-      description: "Lists the current members of the moderation team."
+      description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
     outLoudReading:
       description:
@@ -124,15 +124,15 @@ model:
     quote:
       description:
     quotes:
-      description: "Shows what quotation marks are acceptable to use."
+      description: "Shows what quotation marks are acceptable to use"
       answer: ":pollno: << >>\n:pollno: 《 》\n:pollno: « »\n:pollyes: \" \""
     reload:
       description:
       answer: "OK, I'm rebooting now."
     reply:
-      description: "Tabarnak."
+      description: "Tabarnak"
     report:
-      description: "Send an urgent but private report to the moderation team."
+      description: "Send an urgent but private report to the moderation team"
       onlyOnServer: "sorry, this command can only be executed on the server."
       reportedMembersCertain: "\n\nThe reported members are: %%"
       reportedMembersGuessed: "\n\nI'm not sure who was reported, but here is a guess: %%"
@@ -144,24 +144,24 @@ model:
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
     tutors:
-      description: "Lists the current tutors."
+      description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
     unwatch:
-      description: "Remove a member from the watched list."
+      description: "Remove a member from the watched list"
       success: "%% is no longer in the watched member list :relieved: ."
       error: "I don't... Wha- Who?"
     voicemove:
-      description: "Move all members of one voice chat to another."
+      description: "Move all members of one voice chat to another"
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll move the members for you."
     warntroll:
-      description: "Provides instructions to warn a troll."
+      description: "Provides instructions to warn a troll"
       warnMessage: "trolling on the %% server. If you do not change your behavior, you will be banned."
       memberGuessed: "I'm not sure whom you want to warn, but I guess it's %%. If that's not correct, please change the ID in the command below accordingly."
       memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mods channels.\n"
     watch:
-      description: "Add a member to the watched list."
+      description: "Add a member to the watched list"
       success: "%% is now in the watched member list :eyes: ."
       alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
       error: "I don't... Wha- Who?"
