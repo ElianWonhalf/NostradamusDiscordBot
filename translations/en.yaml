@@ -125,7 +125,12 @@ model:
       error: "I don't... Wha- Who?"
   commandCategory:
     moderation: "Moderation"
-    bot_management: "Bot management"
+    administration: "Administration"
+    bot_management: "Gestion du bot"
+    fun: "divertissement"
+    info: "info"
+    role: "rôle"
+    misc: "misc"
     
   dm:
     notification: "%% sent a DM:"
