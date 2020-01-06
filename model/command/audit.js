@@ -9,7 +9,7 @@ const CommandCategory = require('../command-category');
  */
 module.exports = {
     aliases: [],
-    category: CommandCategory.INFO,
+    category: CommandCategory.ADMINISTRATION,
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
