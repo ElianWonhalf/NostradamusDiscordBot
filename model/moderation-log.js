@@ -84,9 +84,15 @@ const ModerationLog = {
                 if (ModerationLog.membersWhoLeft[entry.target.id] === null) {
                     const member = trans(
                         'model.moderationLog.member',
-                        [`<@${entry.target.id}> ${entry.target.username}#${entry.target.discriminator}`],
+                        [`<@${entry.target.id}>`],
                         ModerationLog.language
                     );
+
+                    const embed = new Discord.RichEmbed()
+                        .setAuthor(
+                            `${entry.target.username}#${entry.target.discriminator}`,
+                            entry.target.displayAvatarURL
+                        );
 
                     let action = '';
                     let reason = '';
@@ -94,10 +100,12 @@ const ModerationLog = {
                     switch (entry.action) {
                         case 'MEMBER_KICK':
                             action = trans('model.moderationLog.kicked', [], ModerationLog.language);
+                            embed.setColor(0xFC8403); // orange
                             break;
 
                         case 'MEMBER_BAN_ADD':
                             action = trans('model.moderationLog.banned', [], ModerationLog.language);
+                            embed.setColor(0xFF0000); // red
                             break;
                     }
 
@@ -108,7 +116,8 @@ const ModerationLog = {
                         Guild.modLogChannel.send(trans('model.moderationLog.missingReason'));
                     }
 
-                    ModerationLog.membersWhoLeft[entry.target.id] = `${member} ${action} ${reason}`;
+                    embed.setDescription(`${member} ${action} ${reason}`);
+                    ModerationLog.membersWhoLeft[entry.target.id] = embed;
                 }
             });
 

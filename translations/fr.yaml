@@ -82,7 +82,7 @@ model:
       description: "Liste les membres actuels de l'équipe de modération"
       answer: "Il y a en ce moment %% modérateurs :"
     outLoudReading:
-      description: "Pour être mentionné quand il y a une lecture à haute voix"
+      description: "Pour être mentionné quand il y a une lecture à voix haute"
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
     post:
