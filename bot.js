@@ -60,9 +60,9 @@ const botProcess = () => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {
             const caller = CallerId.getData();
             const path = caller.filePath.substr(
-                caller.filePath.toLowerCase().indexOf('/nostradamus/') + 13
+                caller.filePath.toLowerCase().indexOf('/nostradamus/') + 7
             ).substr(
-                caller.filePath.toLowerCase().indexOf('/shakespeare/') + 13
+                caller.filePath.toLowerCase().indexOf('/shakespeare/') + 7
             );
             const prefix = `${path}:${caller.lineNumber}`;
 
