@@ -8,10 +8,11 @@ const CommandCategory = {
     MISC: 'misc'
 };
 
+const categories = Object.values(CommandCategory);
 CommandCategory.translations = {};
 
-for (const commandCategory of Object.values(CommandCategory)) {
-    CommandCategory.translations[commandCategory] = trans(`model.commandCategory.${commandCategory}`);
+for (const category of categories) {
+    CommandCategory.translations[category] = trans(`model.commandCategory.${category}`);
 }
 
 module.exports = CommandCategory;
