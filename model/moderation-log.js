@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
@@ -88,11 +89,10 @@ const ModerationLog = {
                         ModerationLog.language
                     );
 
-                    const embed = new Discord.RichEmbed()
-                        .setAuthor(
-                            `${entry.target.username}#${entry.target.discriminator}`,
-                            entry.target.displayAvatarURL
-                        );
+                    const embed = new Discord.RichEmbed().setAuthor(
+                        `${entry.target.username}#${entry.target.discriminator}`,
+                        entry.target.displayAvatarURL
+                    );
 
                     let action = '';
                     let reason = '';
