@@ -39,7 +39,8 @@
         "bot": "",
         "beginner": "",
         "learntLanguage": "",
-        "roles": ""
+        "roles": "",
+        "starboard": ""
     },
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",

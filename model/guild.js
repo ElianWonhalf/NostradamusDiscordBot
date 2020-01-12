@@ -66,6 +66,9 @@ const Guild = {
     /** {TextChannel} */
     rolesChannel: null,
 
+    /** {TextChannel} */
+    starboardChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -81,6 +84,7 @@ const Guild = {
         Guild.automodChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.automod);
         Guild.beginnerChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.beginner);
         Guild.rolesChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.roles);
+        Guild.starboardChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.starboard);
 
         Guild.kickInactiveNewMembers();
         setInterval(() => {
