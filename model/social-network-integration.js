@@ -16,10 +16,12 @@ postOn[TWITTER] = (message) => {
 
 const SocialNetworkIntegration = {
     handleMessage: async (message) => {
+        const emoji = bot.emojis.find(emoji => emoji.name === REACTION);
+
         if (message.channel.id === Config.channels.starboard && message.author.bot) {
-            await message.react(bot.emojis.find(emoji => emoji.name === REACTION));
+            await message.react(emoji);
         } else if (message.channel.id === Config.channels.announcements) {
-            await message.react(bot.emojis.find(emoji => emoji.name === REACTION));
+            await message.react(emoji);
         }
     },
 
