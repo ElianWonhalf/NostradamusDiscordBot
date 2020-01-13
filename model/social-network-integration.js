@@ -1,7 +1,7 @@
 const Config = require('../config.json');
 const Guild = require('./guild');
 
-const REACTION = 'alogo';
+const REACTION = 'share';
 const TWITTER = 'twitter';
 const socialMedia = [TWITTER];
 const postOn = {};
@@ -17,6 +17,8 @@ postOn[TWITTER] = (message) => {
 const SocialNetworkIntegration = {
     handleMessage: async (message) => {
         if (message.channel.id === Config.channels.starboard && message.author.bot) {
+            await message.react(bot.emojis.find(emoji => emoji.name === REACTION));
+        } else if (message.channel.id === Config.channels.announcements) {
             await message.react(bot.emojis.find(emoji => emoji.name === REACTION));
         }
     },
