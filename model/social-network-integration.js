@@ -1,5 +1,6 @@
 const Config = require('../config.json');
 const Guild = require('./guild');
+const TwitterUtils = require('./twitter-utils');
 
 const REACTION = 'share';
 const TWITTER = 'twitter';
@@ -9,9 +10,10 @@ const postOn = {};
 /**
  * @param {Message} message
  */
-postOn[TWITTER] = (message) => {
-    // @TODO, should be easy, lol
-    console.log('Post on twitter, yo');
+postOn[TWITTER] = async (message) => {
+    if (Config.socialMedia.twitter.apiKey !== '') {
+        TwitterUtils.postMessage(message);
+    }
 };
 
 const SocialNetworkIntegration = {
