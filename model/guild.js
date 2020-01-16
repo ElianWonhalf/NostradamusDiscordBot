@@ -6,8 +6,6 @@ const Language = require('./language');
 const Country = require('./country');
 const Discord = require('discord.js');
 
-const SECONDS_IN_DAY = 24 * 60 * 60 * 1000;
-
 const Guild = {
     events: new EventEmitter(),
 
@@ -97,12 +95,7 @@ const Guild = {
     },
 
     kickInactiveNewMembers: () => {
-        Guild.discordGuild.members.filter(member => {
-            const threeDaysElapsed = ((Date.now() - member.joinedTimestamp) >= 3 * 24 * SECONDS_IN_DAY);
-            const isOfficial = member.roles.has(Config.roles.officialMember);
-
-            return !member.user.bot && threeDaysElapsed && !isOfficial;
-        }).array().forEach(member => member.kick('[AUTO] Did not self assign roles'));
+        Guild.discordGuild.pruneMembers(7);
     },
 
     /**
