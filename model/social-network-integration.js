@@ -33,7 +33,13 @@ const SocialNetworkIntegration = {
      */
     handleReaction: async (reaction, user) => {
         if (Guild.isMemberMod(await Guild.discordGuild.fetchMember(user)) && reaction.emoji.name === REACTION) {
-            SocialNetworkIntegration.postOnSocialMedia(reaction.message);
+            const modReactions = reaction.users.filter(
+                async user => Guild.isMemberMod(await Guild.discordGuild.fetchMember(user))
+            ).size;
+
+            if (modReactions < 2) {
+                SocialNetworkIntegration.postOnSocialMedia(reaction.message);
+            }
         }
     },
 
