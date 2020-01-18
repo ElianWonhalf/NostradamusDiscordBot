@@ -166,15 +166,24 @@ const HardcoreLearning = {
         const negativeMessage = stringSeemsNegative(message.cleanContent);
         const apologiesAccepted = alreadyWarned && lastMessageWasRight && sorryMessage && !negativeMessage;
         const rightLanguageCounter = HardcoreLearning.rightLanguageCounter[message.channel.id];
+        const wrongLanguageCounter = HardcoreLearning.wrongLanguageCounter[message.channel.id];
 
         if (!alreadyWarned) {
             message.channel.send(
-                trans('model.hardcoreLearning.warning', [[Config.learntLanguage], [Config.learntLanguage]])
+                trans(
+                    'model.hardcoreLearning.warning',
+                    [[Config.learntLanguage], [Config.learntLanguage]],
+                    Config.learntLanguagePrefix
+                )
             );
             HardcoreLearning.alreadyWarned[message.channel.id] = true;
         } else if (!lastMessageWasRight) {
             const emoji = bot.emojis.find(emoji => emoji.name === 'roocop');
             message.react(emoji);
+
+            if (wrongLanguageCounter > MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 4) {
+                message.channel.send(trans('model.hardcoreLearning.secondWarning', [], Config.learntLanguagePrefix));
+            }
         }
 
         if (apologiesAccepted || rightLanguageCounter >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {

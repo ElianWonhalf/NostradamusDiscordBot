@@ -127,6 +127,7 @@ model:
     misc: "misc"
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
+    secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"
   memberRolesFlow:
     noSpeakOnlyAnswer: "Hélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu cliques sur l'une des réactions du message ci-dessous :) !"
     start: "Ok %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
