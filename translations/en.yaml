@@ -182,6 +182,7 @@ model:
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
+    secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
   memberRolesFlow:
     noSpeakOnlyAnswer: "Alas, I cannot fathom the complexity of human language :pensive: . But fear not, for you need only react to the upcoming message :) !"
     start: "Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
