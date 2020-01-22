@@ -6,7 +6,7 @@ const CommandCategory = require('../command-category');
  */
 module.exports = {
     aliases: ['guillemets'],
-    category: CommandCategory.MISC,
+    category: CommandCategory.RESOURCE,
     process: async (message) => {
         message.channel.send(trans('model.command.quotes.answer', [], Config.learntLanguagePrefix));
     }

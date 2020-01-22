@@ -5,7 +5,7 @@ const CommandCategory = {
     FUN: 'fun',
     INFO: 'info',
     ROLE: 'role',
-    MISC: 'misc'
+    RESOURCE: 'resource'
 };
 
 const categories = Object.values(CommandCategory);

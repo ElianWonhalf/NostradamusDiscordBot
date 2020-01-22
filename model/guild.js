@@ -91,11 +91,13 @@ const Guild = {
         Guild.kickInactiveNewMembers();
         setInterval(() => {
             Guild.kickInactiveNewMembers();
-        }, 60 * 60);
+        }, 60 * 60 * 1000);
     },
 
-    kickInactiveNewMembers: () => {
-        Guild.discordGuild.pruneMembers(7);
+    kickInactiveNewMembers: async () => {
+        if (await Guild.discordGuild.pruneMembers(7, true) > 0) {
+            Guild.discordGuild.pruneMembers(7);
+        }
     },
 
     /**

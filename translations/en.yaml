@@ -169,10 +169,10 @@ model:
     moderation: "Moderation"
     administration: "Administration"
     bot_management: "Gestion du bot"
-    fun: "divertissement"
-    info: "info"
-    role: "rôle"
-    misc: "misc"
+    fun: "Fun"
+    info: "Info"
+    role: "Role"
+    resource: "Resource"
     
   dm:
     notification: "%% sent a DM:"
