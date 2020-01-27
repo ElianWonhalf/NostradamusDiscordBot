@@ -34,8 +34,8 @@ model:
     country:
       description: "Pour définir ton pays actuel"
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
-      added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
-      removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
+      added: ":eowynsheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
+      removed: ":eowynsheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
       missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
     dictation:
       description: "Pour être mentionné quand il y a une dictée"
@@ -63,8 +63,8 @@ model:
     language:
       description: "Pour définir ta langue natale"
       missingArgument: "Il faut que tu spécifies une langue. La commande `%%language` seule ne me permet pas de savoir quelle est ta langue natale. Par exemple : `%%language Anglais`"
-      added: ":ywansheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
-      removed: ":ywansheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
+      added: ":eowynsheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
+      removed: ":eowynsheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
       missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
       illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
