@@ -12,7 +12,7 @@ module.exports = {
         const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
-            const emoji = bot.emojis.find(emoji => emoji.name === 'ywansheep');
+            const emoji = bot.emojis.find(emoji => emoji.name === 'eowynsheep');
 
             HardcoreLearning.reset();
             message.react(emoji);
