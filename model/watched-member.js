@@ -1,9 +1,10 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
+const Discord = require('discord.js');
 const db = require('./db');
 const Guild = require('./guild');
 
 const DEFAULT_OBJECT = {
-    postedInMetaNotified: false,
+    reason: null,
 };
 
 const WatchedMember = {
@@ -14,47 +15,56 @@ const WatchedMember = {
      * @returns {Promise}
      */
     init: () => {
-        db.query('SELECT id FROM watchedMember WHERE active = 1').on('result', row => {
+        db.query('SELECT id, reason FROM watchedMember WHERE active = 1').on('result', row => {
             WatchedMember.list[row.id] = Object.assign({}, DEFAULT_OBJECT);
+            WatchedMember.list[row.id].reason = row.reason;
         }).on('error', (error) => {
             Logger.error(`Error loading watched members: ${error}`);
-        });
-
-        WatchedMember.bindEvents();
-    },
-
-    bindEvents: () => {
-        bot.on('voiceStateUpdate', (oldMember, newMember) => {
-            if (WatchedMember.isMemberWatched(oldMember.id)) {
-                WatchedMember.voiceStateUpdateHandler(oldMember, newMember);
-            }
         });
     },
 
     voiceStateUpdateHandler: (oldMember, newMember) => {
-        switch (true) {
-            case oldMember.voiceChannelID === null && newMember.voiceChannelID !== null:
-                WatchedMember.logEvent(
-                    newMember,
-                    trans('model.watchedMember.joinedVocal', [newMember.voiceChannel.name], 'en')
-                );
-                break;
+        if (WatchedMember.isMemberWatched(oldMember.id)) {
+            switch (true) {
+                case oldMember.voiceChannelID === null && newMember.voiceChannelID !== null:
+                    WatchedMember.logEvent(
+                        newMember,
+                        trans('model.watchedMember.joinedVocal', [newMember.voiceChannel.name], 'en')
+                    );
+                    break;
 
-            case oldMember.voiceChannelID !== null && newMember.voiceChannelID === null:
-                WatchedMember.logEvent(
-                    newMember,
-                    trans('model.watchedMember.leftVocal', [oldMember.voiceChannel.name], 'en'),
-                    true
-                );
-                break;
+                case oldMember.voiceChannelID !== null && newMember.voiceChannelID === null:
+                    WatchedMember.logEvent(
+                        newMember,
+                        trans('model.watchedMember.leftVocal', [oldMember.voiceChannel.name], 'en'),
+                        true
+                    );
+                    break;
+            }
         }
     },
 
-    logEvent: (member, log, alertFinished) => {
+    /**
+     * @param {GuildMember} member
+     * @param {String} log
+     * @param {boolean} alertFinished
+     * @returns {Promise.<void>}
+     */
+    logEvent: async (member, log, alertFinished) => {
         alertFinished = alertFinished || false;
-        const alertEmoji = alertFinished ? '😌' : '🙀';
 
-        Guild.botChannel.send(`👀 ${member} ${alertEmoji}\n${log}`);
+        const alertEmoji = alertFinished ? '😌' : '🙀';
+        const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
+        const embed = new Discord.RichEmbed()
+            .setAuthor(
+                `${member.user.username}#${member.user.discriminator}${suffix}`,
+                member.user.displayAvatarURL
+            )
+            .setColor(0x00FF00)
+            .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
+            .setFooter(WatchedMember.list[member.id].reason);
+
+        Guild.botChannel.send(embed);
     },
 
     /**
@@ -68,16 +78,40 @@ const WatchedMember = {
 
     /**
      * @param {string} id
+     * @param {string} reason
      * @returns {Promise}
      */
-    add: (id) => {
+    add: (id, reason) => {
         return new Promise((resolve, reject) => {
             WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
+            WatchedMember.list[id].reason = reason;
 
             db.query('SET NAMES utf8');
-            db.query(`INSERT INTO watchedMember (id, active) VALUES (?, ?)`, [id, 1], (error) => {
-                error ? reject(error) : resolve();
-            });
+            db.query(
+                `INSERT INTO watchedMember (id, reason, active) VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE reason = ?, active = ?`,
+                [id, reason, 1, reason, 1],
+                error => error ? reject(error) : resolve()
+            );
+        });
+    },
+
+    /**
+     * @param {string} id
+     * @param {string} reason
+     * @returns {Promise}
+     */
+    edit: (id, reason) => {
+        return new Promise((resolve, reject) => {
+            WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
+            WatchedMember.list[id].reason = reason;
+
+            db.query('SET NAMES utf8');
+            db.query(
+                `UPDATE watchedMember SET reason = ? WHERE id = ?`,
+                [reason, id, 1],
+                error => error ? reject(error) : resolve()
+            );
         });
     },
 
