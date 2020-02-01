@@ -146,10 +146,6 @@ model:
     tutors:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
-    unwatch:
-      description: "Remove a member from the watched list"
-      success: "%% is no longer in the watched member list :relieved: ."
-      error: "I don't... Wha- Who?"
     voicemove:
       description: "Move all members of one voice chat to another"
       timeout: "sorry, too slow!"
@@ -161,10 +157,20 @@ model:
       memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mod channels.\n"
     watch:
-      description: "Add a member to the watched list"
-      success: "%% is now in the watched member list :eyes: ."
-      alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
-      error: "I don't... Wha- Who?"
+      description: "Manage the watched member list"
+      add:
+        success: "%% is now in the watched member list :eyes: ."
+        alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
+        error: "I don't... Wha- Who?"
+        noReason: "You need to specify a reason so we don't forget why I am watching that member :nail_care:"
+      remove:
+        success: "%% is no longer in the watched member list :relieved: ."
+        error: "I don't... Wha- Who?"
+      edit:
+        success: "Successfully edited the reason for %% :eyes: ."
+        redirect: "%% is not in the watched member list yet, let's add them :WinkKitteh: ."
+        error: "I don't... Wha- Who?"
+        noReason: "You need to specify a reason so we don't forget why I am watching that member :nail_care:"
   commandCategory:
     moderation: "Moderation"
     administration: "Administration"
