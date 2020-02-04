@@ -3,8 +3,10 @@ const Discord = require('discord.js');
 const db = require('./db');
 const Guild = require('./guild');
 
+const ONE_HOUR = 60 * 60 * 1000;
 const DEFAULT_OBJECT = {
     reason: null,
+    lastActive: null,
 };
 
 const WatchedMember = {
@@ -21,6 +23,25 @@ const WatchedMember = {
         }).on('error', (error) => {
             Logger.error(`Error loading watched members: ${error}`);
         });
+    },
+
+    messageHandler: async (message) => {
+        if (WatchedMember.isMemberWatched(message.author.id)) {
+            const currentTimestamp = (new Date()).getTime();
+
+            if (WatchedMember.list(message.author.id).lastActive !== null) {
+                const member = await Guild.discordGuild.fetchMember(message.author);
+
+                if (currentTimestamp - WatchedMember.list(message.author.id).lastActive >= ONE_HOUR) {
+                    WatchedMember.logEvent(
+                        member,
+                        trans('model.watchedMember.active', [message.channel], 'en')
+                    );
+                }
+            }
+
+            WatchedMember.list(message.author.id).lastActive = currentTimestamp;
+        }
     },
 
     voiceStateUpdateHandler: (oldMember, newMember) => {
@@ -47,7 +68,7 @@ const WatchedMember = {
     /**
      * @param {GuildMember} member
      * @param {String} log
-     * @param {boolean} alertFinished
+     * @param {boolean} [alertFinished]
      * @returns {Promise.<void>}
      */
     logEvent: async (member, log, alertFinished) => {
