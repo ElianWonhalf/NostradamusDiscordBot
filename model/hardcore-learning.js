@@ -4,7 +4,7 @@ const GoogleTranslateToken = require('./google-translate-token');
 const Config = require('../config.json');
 
 const GOOGLE_TRANSLATE_URL = 'https://translate.google.com/translate_a/single?client=webapp&sl=auto&tl=en&ie=UTF-8&oe=UTF-8&dt=gt&ssel=0&tsel=0&kc=1&';
-const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 7;
+const MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING = 14;
 const RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET = 4;
 const MINIMUM_CHARACTERS_TO_TRANSLATE = 10;
 
@@ -181,7 +181,7 @@ const HardcoreLearning = {
             const emoji = bot.emojis.find(emoji => emoji.name === 'roocop');
             message.react(emoji);
 
-            if (wrongLanguageCounter > MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 4) {
+            if (wrongLanguageCounter > MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 7) {
                 message.channel.send(trans('model.hardcoreLearning.secondWarning', [], Config.learntLanguagePrefix));
             }
         }
