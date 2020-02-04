@@ -179,7 +179,6 @@ model:
     info: "Info"
     role: "Role"
     resource: "Resource"
-    
   dm:
     notification: "%% sent a DM:"
   guild:
@@ -210,5 +209,6 @@ model:
     semi:
       triggered: "Semi-blacklist triggered by %% in %%\n%%"
   watchedMember:
-    joinedVocal: "Just joined vocal channel %%"
-    leftVocal: "Just left vocal channel %%"
+    joinedVocal: "just joined vocal channel %%"
+    leftVocal: "just left vocal channel %%"
+    active: "is now active in channel %%"

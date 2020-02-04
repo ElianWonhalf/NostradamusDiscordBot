@@ -7,6 +7,7 @@ const Command = require('../../model/command');
 const DM = require('../../model/dm');
 const HardcoreLearning = require('../../model/hardcore-learning');
 const SocialNetworkIntegration = require('../../model/social-network-integration');
+const WatchedMember = require('../../model/watched-member');
 
 /**
  * @param {Message} message
@@ -15,6 +16,7 @@ module.exports = async (message) => {
     const user = message.author;
 
     SocialNetworkIntegration.handleMessage(message);
+    WatchedMember.messageHandler(message);
 
     if (message.channel.id === Config.channels.roles) {
         setTimeout(() => {
