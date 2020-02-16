@@ -11,7 +11,7 @@ const DEFAULT_OBJECT = {
 
 const WatchedMember = {
     /** {Array} */
-    list: [],
+    list: {},
 
     /**
      * @returns {Promise}
@@ -28,19 +28,17 @@ const WatchedMember = {
     messageHandler: async (message) => {
         if (WatchedMember.isMemberWatched(message.author.id)) {
             const currentTimestamp = (new Date()).getTime();
+            const lastActiveNull = WatchedMember.list[message.author.id].lastActive === null;
+            const lastActiveTooOld = currentTimestamp - WatchedMember.list[message.author.id].lastActive >= ONE_HOUR;
 
-            if (WatchedMember.list(message.author.id).lastActive !== null) {
-                const member = await Guild.discordGuild.fetchMember(message.author);
-
-                if (currentTimestamp - WatchedMember.list(message.author.id).lastActive >= ONE_HOUR) {
-                    WatchedMember.logEvent(
-                        member,
-                        trans('model.watchedMember.active', [message.channel], 'en')
-                    );
-                }
+            if (lastActiveNull || lastActiveTooOld) {
+                WatchedMember.logEvent(
+                    await Guild.discordGuild.fetchMember(message.author),
+                    trans('model.watchedMember.active', [message.channel], 'en')
+                );
             }
 
-            WatchedMember.list(message.author.id).lastActive = currentTimestamp;
+            WatchedMember.list[message.author.id].lastActive = currentTimestamp;
         }
     },
 
