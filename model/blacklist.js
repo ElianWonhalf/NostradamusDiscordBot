@@ -34,7 +34,7 @@ const Blacklist = {
      * @param {Message} message
      */
     parseMessage: async (message) => {
-        if (message.guild !== null && message.author.id !== bot.user.id) {
+        if (message.guild !== null && !message.author.bot) {
             // Dyno is taking care of the full blacklist for now
             if (Blacklist.isSemiTriggered(message.cleanContent)) {
                 Guild.automodChannel.send(

@@ -9,10 +9,12 @@ const postOn = {};
 
 /**
  * @param {Message} message
+ * @param {String} content
+ * @param {String} image
  */
-postOn[TWITTER] = async (message) => {
+postOn[TWITTER] = async (message, content, image) => {
     if (Config.socialMedia.twitter.apiKey !== '') {
-        TwitterUtils.postMessage(message);
+        TwitterUtils.postMessage(message, content, image);
     }
 };
 
@@ -47,8 +49,22 @@ const SocialNetworkIntegration = {
      * @param {Message} message
      */
     postOnSocialMedia: (message) => {
+        let content = message.cleanContent;
+        let images = message.attachments.array()
+            .filter(attachment => attachment.width !== null)
+            .map(attachment => attachment.url);
+
+        if (message.channel.id === Config.channels.starboard) {
+            const embed = message.embeds[0];
+
+            content = embed.description;
+            images = embed.image !== null ? embed.image.url : null;
+        }
+
+        const image = images.length > 0 ? images[0] : null;
+
         for (const socialMedium of socialMedia) {
-            postOn[socialMedium](message);
+            postOn[socialMedium](message, content, image);
         }
     }
 };
