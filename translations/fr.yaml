@@ -70,7 +70,7 @@ model:
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     langue:
       description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
-      reply: "\nLes difficultés d'une langue dépendent entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
+      reply: "\nLa difficulté d'une langue dépendent entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
     loadRoles:
       description: "Ajoute des rôles au serveur depuis la base de données"
     logs:
