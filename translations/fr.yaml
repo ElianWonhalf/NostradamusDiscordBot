@@ -107,7 +107,7 @@ model:
       description: "Définit la photo de profil du bot"
     trombinoscope:
       description: "Explication du channel trombinoscope"
-      reply: "**Trombine**, c'est de l'argot, ça désigne 'le visage'.\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de 'voir'.\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies."
+      reply: "**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies."
     tutors:
       description: "Liste les tuteurs actuels"
       answer: "Il y a en ce moment %% tuteurs :"
