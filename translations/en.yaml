@@ -99,6 +99,9 @@ model:
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
+    langue:
+      description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
+      reply: "\nLanguage difficulty depends entirely on the languages you already know and your own incentives – like your motivation\n"
     loadRoles:
       description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
