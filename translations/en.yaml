@@ -144,8 +144,8 @@ model:
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
     trombinoscope:
-      description: "Explication du channel trombinoscope"
-      reply: "**Trombine**, en ancien français, désigne le visage. **Scope**, c'est la vision, voir.\nUn **Trombinoscope** c'est quelque chose grâce auquel on peut voir des visages, littéralement. Généralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies."
+      description: "Explanation of the trombinoscope channel"
+      reply: "**Trombine** is a slang term meaning 'face'.\n **-Scope** is a suffix that refers to an instrument used for viewing.\n\n A **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel."
     tutors:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
