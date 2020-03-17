@@ -145,7 +145,7 @@ model:
       error: "there has been an error changing my avatar. Check the logs for more details."
     trombinoscope:
       description: "Explanation of the trombinoscope channel"
-      reply: "\n**Trombine** is a slang term meaning \"face\".\n **-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"
+      reply: "\n**Trombine** is a slang term meaning \"face\".\n**-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"
     tutors:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
