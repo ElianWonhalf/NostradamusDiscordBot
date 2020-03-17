@@ -5,9 +5,9 @@ const CommandCategory = require('../command-category');
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['trombi', 'tromb'],
+    aliases: ['languedifficile', 'hardlanguage', 'languagehard'],
     category: CommandCategory.RESOURCE,
     process: async (message) => {
-        message.channel.send(trans('model.command.trombinoscope.reply'));
+        message.channel.send(trans('model.command.langue.reply'));
     }
 };
