@@ -5,7 +5,7 @@ const CommandCategory = require('../command-category');
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['langue', 'langues'],
+    aliases: ['languehard', 'languedifficile', 'hardlanguage'],
     category: CommandCategory.RESOURCE,
     process: async (message) => {
         message.channel.send(trans('model.command.langue.reply'));
