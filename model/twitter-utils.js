@@ -19,18 +19,18 @@ if (Config.socialMedia.twitter.apiKey !== '') {
 const TwitterUtils = {
     /**
      * @param {Message} message
+     * @param {String} authorName
      * @param {String} content
      * @param {String} image
      * @returns {Promise.<void>}
      */
-    postMessage: async (message, content, image) => {
+    postMessage: async (message, authorName, content, image) => {
         if (Config.socialMedia.twitter.apiKey !== '') {
             image = image || null;
 
-            const member = await Guild.getMemberFromMessage(message);
-            const messageLength = MAX_CHAR_COUNT - member.displayName.length - 45;
+            const messageLength = MAX_CHAR_COUNT - authorName.length - 45;
             const truncatedMessage = content.substr(0, messageLength);
-            const status = member.displayName + ' sur Discord :\n'
+            const status = authorName + ' sur Discord :\n'
                 + truncatedMessage + (truncatedMessage.length !== content.length ? '...' : '')
                 + '\n\nhttps://discord.gg/french';
 

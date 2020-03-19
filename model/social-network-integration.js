@@ -9,12 +9,13 @@ const postOn = {};
 
 /**
  * @param {Message} message
+ * @param {String} authorName
  * @param {String} content
  * @param {String} image
  */
-postOn[TWITTER] = async (message, content, image) => {
+postOn[TWITTER] = async (message, authorName, content, image) => {
     if (Config.socialMedia.twitter.apiKey !== '') {
-        TwitterUtils.postMessage(message, content, image);
+        TwitterUtils.postMessage(message, authorName, content, image);
     }
 };
 
@@ -49,6 +50,7 @@ const SocialNetworkIntegration = {
      * @param {Message} message
      */
     postOnSocialMedia: (message) => {
+        let authorName = message.member.displayName;
         let content = message.cleanContent;
         let images = message.attachments.array()
             .filter(attachment => attachment.width !== null)
@@ -57,6 +59,7 @@ const SocialNetworkIntegration = {
         if (message.channel.id === Config.channels.starboard) {
             const embed = message.embeds[0];
 
+            authorName = embed.author.name;
             content = embed.description;
             images = embed.image !== null ? embed.image.url : null;
         }
@@ -64,7 +67,7 @@ const SocialNetworkIntegration = {
         const image = images.length > 0 ? images[0] : null;
 
         for (const socialMedium of socialMedia) {
-            postOn[socialMedium](message, content, image);
+            postOn[socialMedium](message, authorName, content, image);
         }
     }
 };

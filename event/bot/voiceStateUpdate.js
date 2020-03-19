@@ -18,7 +18,9 @@ module.exports = (oldMember, newMember) => {
                 clearInterval(Guild.voiceMoveMembers[oldMember.id]);
                 delete Guild.voiceMoveMembers[oldMember.id];
 
-                sourceChannel.members.array().forEach(member => member.setVoiceChannel(destChannel));
+                sourceChannel.members.array().filter(member => !member.user.bot).forEach(
+                    member => member.setVoiceChannel(destChannel)
+                );
             }
         }
 
