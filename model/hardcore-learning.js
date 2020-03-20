@@ -102,7 +102,7 @@ const HardcoreLearning = {
         }
 
         const tk = await GoogleTranslateToken.get(content);
-        const url = `${GOOGLE_TRANSLATE_URL}q=${encodeURIComponent(content)}&tk=${tk.value}`;
+        const url = `${GOOGLE_TRANSLATE_URL}q=${encodeURIComponent(content)}&tk=${tk}`;
 
         if (!HardcoreLearning.wrongLanguageCounter.hasOwnProperty(message.channel.id)) {
             HardcoreLearning.wrongLanguageCounter[message.channel.id] = 0;

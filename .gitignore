@@ -7,3 +7,4 @@ config.json*
 blacklist.json*
 !blacklist.json.sample
 .env
+cache
