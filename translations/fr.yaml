@@ -108,6 +108,10 @@ model:
       description: "Remet à 0 le compteur de messages qui ne sont pas dans la bonne langue"
     setAvatar:
       description: "Définit la photo de profil du bot"
+    speak:
+      description: "Faites parler Nostradamus dans le channel vocal dans lequel vous êtes !"
+      format: "Tu dois être connecté dans un channel vocal, entrer un préfixe de langue de deux lettres, puis le texte que tu veux que je dise en vocal."
+      error: "Désolé, j'ai un gros mal de gorge. On dirait que j'ai assez parlé pour aujourd'hui ! Lily, sirop pour la toux s'il te plaît !"
     trombinoscope:
       description: "Explication du channel trombinoscope"
       reply: "\n**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies.\n"

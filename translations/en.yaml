@@ -146,6 +146,10 @@ model:
       description: "Set the bot avatar"
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
+    speak:
+      description: "Make Nostradamus speak in the voice channel you're in!"
+      format: "You have to be connected in a voice channel, enter a two letter language prefix, then the text you want me to say in vocal."
+      error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
     trombinoscope:
       description: "Explanation of the trombinoscope channel"
       reply: "\n**Trombine** is a slang term meaning \"face\".\n**-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"
