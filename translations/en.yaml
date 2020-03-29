@@ -122,6 +122,8 @@ model:
       description: "To be notified when a reading is being held"
       alertsOn: "You will now be notified when a reading is being held."
       alertsOff: "You will now no longer be notified when a reading is being held."
+    panic:
+      description: "Prevents everyone in the server from writing (except mods of course)"
     post:
       description: "Sends a message to the server from the bot"
     quote:
