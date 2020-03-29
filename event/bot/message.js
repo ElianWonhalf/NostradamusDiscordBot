@@ -28,9 +28,9 @@ module.exports = async (message) => {
         Blacklist.parseMessage(message);
 
         if (message.channel.id === Config.channels.welcome) {
-            const member = await Guild.discordGuild.fetchMember(user, false);
+            const member = await Guild.discordGuild.member(user);
 
-            if (!user.bot && !member.roles.has(Config.roles.officialMember)) {
+            if (!user.bot && !member.roles.cache.has(Config.roles.officialMember)) {
                 MemberRolesFlow.parse(message);
             }
         } else if (!user.bot) {

@@ -21,7 +21,7 @@ module.exports = {
             let amountRolesCreated = 0;
 
             for (let i = 0; i < foundLanguageRoles.length; i++) {
-                if (!message.guild.roles.find(role => role.name === foundLanguageRoles[i])) {
+                if (!message.guild.roles.cache.find(role => role.name === foundLanguageRoles[i])) {
                     amountRolesCreated++;
 
                     if (dryRun) {
@@ -35,7 +35,7 @@ module.exports = {
             }
 
             for (let i = 0; i < foundCountryRoles.length; i++) {
-                if (!message.guild.roles.find(role => role.name === foundCountryRoles[i])) {
+                if (!message.guild.roles.cache.find(role => role.name === foundCountryRoles[i])) {
                     amountRolesCreated++;
 
                     if (dryRun) {

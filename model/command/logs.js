@@ -11,12 +11,12 @@ module.exports = {
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        if (member.roles.has(Config.roles.logs)) {
-            member.removeRole(Config.roles.logs).then(() => {
+        if (member.roles.cache.has(Config.roles.logs)) {
+            member.roles.remove(Config.roles.logs).then(() => {
                 message.reply(trans('model.command.logs.channelOff'));
             });
         } else {
-            member.addRole(Config.roles.logs).then(() => {
+            member.roles.add(Config.roles.logs).then(() => {
                 message.reply(trans('model.command.logs.channelOn'));
             });
         }

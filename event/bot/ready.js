@@ -11,7 +11,6 @@ module.exports = async () => {
     Logger.info('--------');
 
     Logger.info('Syncing guilds...');
-    bot.syncGuilds();
     await Guild.init(bot);
     Logger.info('Guilds synced. Serving in ' + Guild.discordGuild.name);
 

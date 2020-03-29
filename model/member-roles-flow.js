@@ -7,7 +7,7 @@ const fiveMinutes = 300000;
 
 const awaitReactions = async (message, expectedEmojis, expectedUserId, callback) => {
     for (const expectedEmoji of expectedEmojis) {
-        const emoji = bot.emojis.find(emoji => emoji.name === expectedEmoji);
+        const emoji = bot.emojis.cache.find(emoji => emoji.name === expectedEmoji);
         await message.react(emoji || expectedEmoji);
     }
 
@@ -22,10 +22,10 @@ const awaitReactions = async (message, expectedEmojis, expectedUserId, callback)
     collector.once('end', async (reactions) => {
         if (reactions.size > 0) {
             const messageReaction = reactions.first();
-            const users = await messageReaction.fetchUsers();
+            const users = await messageReaction.users.fetch();
 
             users.delete(bot.user.id);
-            callback(messageReaction, await Guild.discordGuild.fetchMember(users.first()));
+            callback(messageReaction, await Guild.discordGuild.member(users.first()));
         }
     });
 
@@ -61,12 +61,12 @@ const MemberRolesFlow = {
 
         switch (messageReaction.emoji.name) {
             case nativeEmojiName:
-                await member.addRole(Config.roles.native);
+                await member.roles.add(Config.roles.native);
                 MemberRolesFlow.welcomeMember(member);
                 break;
 
             case notNativeEmojiName:
-                await member.addRole(Config.roles.unknownLevel);
+                await member.roles.add(Config.roles.unknownLevel);
                 MemberRolesFlow.levelStepMessage(member);
                 break;
 
@@ -104,19 +104,19 @@ const MemberRolesFlow = {
         const intermediateEmojiName = '🐣';
         const advancedEmojiName = '🐥';
 
-        await member.removeRole(Config.roles.unknownLevel);
+        await member.roles.remove(Config.roles.unknownLevel);
 
         switch (messageReaction.emoji.name) {
             case beginnerEmojiName:
-                await member.addRole(Config.roles.beginner);
+                await member.roles.add(Config.roles.beginner);
                 break;
 
             case intermediateEmojiName:
-                await member.addRole(Config.roles.intermediate);
+                await member.roles.add(Config.roles.intermediate);
                 break;
 
             case advancedEmojiName:
-                await member.addRole(Config.roles.advanced);
+                await member.roles.add(Config.roles.advanced);
                 break;
 
             default:
@@ -134,7 +134,7 @@ const MemberRolesFlow = {
         /** {GuildMember} member */
         const member = await Guild.getMemberFromMessage(message);
 
-        if (member !== null && !member.roles.has(Config.roles.officialMember)) {
+        if (member !== null && !member.roles.cache.has(Config.roles.officialMember)) {
             Guild.stopMemberReactionCollectors(member.id);
 
             const options = MemberRolesFlow.canPostMeme ? { file: memeURL } : null;
@@ -152,7 +152,7 @@ const MemberRolesFlow = {
                 }, fiveMinutes);
             }
 
-            if (member.roles.has(Config.roles.unknownLevel)) {
+            if (member.roles.cache.has(Config.roles.unknownLevel)) {
                 MemberRolesFlow.levelStepMessage(await Guild.getMemberFromMessage(message));
             } else {
                 MemberRolesFlow.start(null, await Guild.getMemberFromMessage(message));
@@ -164,13 +164,13 @@ const MemberRolesFlow = {
      * @param {GuildMember} member
      */
     welcomeMember: async (member) => {
-        await member.addRole(Config.roles.officialMember);
+        await member.roles.add(Config.roles.officialMember);
 
         Guild.rolesChannel.send(
             trans('model.memberRolesFlow.validatedMessage', [member])
         );
 
-        const logEmbed = new Discord.RichEmbed();
+        const logEmbed = new Discord.MessageEmbed();
 
         logEmbed.setColor('#ffb8e6');
         logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL);

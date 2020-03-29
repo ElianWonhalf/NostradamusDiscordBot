@@ -19,7 +19,7 @@ module.exports = {
             const friendly = args[0];
             const role = args[1];
 
-            if (!message.guild.roles.find(guildRole => guildRole.name === role)) {
+            if (!message.guild.roles.cache.find(guildRole => guildRole.name === role)) {
                 Guild.createRole(role)
                     .then(roleInstance => {
                         message.reply(trans('model.command.addCountry.discordRoleAddSuccess', [roleInstance], 'en'));

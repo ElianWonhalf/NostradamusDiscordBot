@@ -74,19 +74,19 @@ const Guild = {
      * @param {Client} bot
      */
     init: async (bot) => {
-        Guild.discordGuild = bot.guilds.find(guild => guild.id === Config.guild);
-        Guild.welcomeChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.welcome);
-        Guild.publicModLogChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.publicModLog);
-        Guild.anonymousMessagesChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.anonymousMessages);
-        Guild.modLogChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.modLog);
-        Guild.serverLogChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.serverLog);
-        Guild.memberFlowLogChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.memberFlowLog);
-        Guild.botChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.bot);
-        Guild.automodChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.automod);
-        Guild.beginnerChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.beginner);
-        Guild.rolesChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.roles);
-        Guild.starboardChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.starboard);
-        Guild.announcementsChannel = Guild.discordGuild.channels.find(channel => channel.id === Config.channels.announcements);
+        Guild.discordGuild = bot.guilds.cache.find(guild => guild.id === Config.guild);
+        Guild.welcomeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.welcome);
+        Guild.publicModLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.publicModLog);
+        Guild.anonymousMessagesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.anonymousMessages);
+        Guild.modLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.modLog);
+        Guild.serverLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.serverLog);
+        Guild.memberFlowLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.memberFlowLog);
+        Guild.botChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.bot);
+        Guild.automodChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.automod);
+        Guild.beginnerChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.beginner);
+        Guild.rolesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.roles);
+        Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
+        Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
 
         Guild.kickInactiveNewMembers();
         setInterval(() => {
@@ -95,8 +95,8 @@ const Guild = {
     },
 
     kickInactiveNewMembers: async () => {
-        if (await Guild.discordGuild.pruneMembers(7, true) > 0) {
-            Guild.discordGuild.pruneMembers(7);
+        if (await Guild.discordGuild.members.prune({days: 7, dry: true, count: true, reason: ''}) > 0) {
+            Guild.discordGuild.members.prune({days: 7, dry: false, count: false, reason: 'Purging members 😈'});
         }
     },
 
@@ -145,7 +145,7 @@ const Guild = {
         let member = null;
 
         try {
-            member = await Guild.discordGuild.fetchMember(message.author, false);
+            member = await Guild.discordGuild.member(message.author);
         } catch (exception) {
             Logger.error(exception.toString());
         }
@@ -170,41 +170,21 @@ const Guild = {
      * @returns {*}
      */
     isMemberNative: (member) => {
-        return member.roles.has(Config.roles.native);
-    },
-
-    /**
-     * @param {GuildMember} member
-     * @returns {boolean}
-     */
-    memberHasLanguageRole: (member) => {
-        return member.roles.some(role => {
-            return Language.getRoleNameList().indexOf(role.name) > -1 || role.id === Config.roles.noLanguage;
-        });
-    },
-
-    /**
-     * @param {GuildMember} member
-     * @returns {boolean}
-     */
-    memberHasCountryRole: (member) => {
-        return member.roles.some(role => {
-            return Country.getRoleNameList().indexOf(role.name) > -1 || role.id === Config.roles.noCountry;
-        });
+        return member.roles.cache.has(Config.roles.native);
     },
 
     /**
      * @param {GuildMember} member
      */
     isMemberMod: (member) => {
-        return member.roles.has(Config.roles.mod);
+        return member.roles.cache.has(Config.roles.mod);
     },
 
     /**
      * @param {GuildMember} member
      */
     isMemberTutor: (member) => {
-        return member.roles.has(Config.roles.tutor);
+        return member.roles.cache.has(Config.roles.tutor);
     },
 
     /**
@@ -212,20 +192,20 @@ const Guild = {
      * @returns {Role|null}
      */
     getRoleByName: (roleName) => {
-        return roleName === undefined || roleName === null ? null : Guild.discordGuild.roles.find(
+        return roleName === undefined || roleName === null ? null : Guild.discordGuild.roles.cache.find(
             role => role.name.toLowerCase() === roleName.toLowerCase()
         );
     },
 
     /**
      * @param {Message} message
-     * @returns {Discord.RichEmbed}
+     * @returns {Discord.MessageEmbed}
      */
     messageToEmbed: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
 
-        return new Discord.RichEmbed()
+        return new Discord.MessageEmbed()
             .setAuthor(
                 `${message.author.username}#${message.author.discriminator}${suffix}`,
                 message.author.displayAvatarURL
@@ -248,23 +228,24 @@ const Guild = {
             const ids = message.content.match(/[0-9]{18}/);
 
             ids.map(id => {
-                if (message.guild.members.has(id)) {
-                    foundMembers.push(message.guild.members.get(id));
+                if (message.guild.members.cache.has(id)) {
+                    foundMembers.push(message.guild.members.cache.get(id));
                 }
             });
         } else {
-            const memberList = message.guild.members.array();
+            const memberList = message.guild.members.cache.array();
 
             certain = false;
             memberList.forEach(member => {
-                const nickname = member.nickname !== null ? `${member.nickname.toLowerCase()}#${member.user.discriminator}` : '';
+                const hasNickname = member.nickname !== undefined && member.nickname !== null;
+                const nickname = hasNickname ? `${member.nickname.toLowerCase()}#${member.user.discriminator}` : '';
                 const username = `${member.user.username.toLowerCase()}#${member.user.discriminator}`;
                 const content = message.cleanContent.toLowerCase().split(' ').splice(1).join(' ');
 
                 if (content.length > 0) {
-                    const contentInNickname = nickname !== '' ? nickname.indexOf(content) > -1 : false;
+                    const contentInNickname = hasNickname ? nickname.indexOf(content) > -1 : false;
                     const contentInUsername = username.indexOf(content) > -1;
-                    const nicknameInContent = nickname !== '' ? content.indexOf(nickname) > -1 : false;
+                    const nicknameInContent = hasNickname ? content.indexOf(nickname) > -1 : false;
                     const usernameInContent = content.indexOf(username) > -1;
 
                     if (contentInNickname || contentInUsername || nicknameInContent || usernameInContent) {

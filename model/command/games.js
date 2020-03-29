@@ -11,12 +11,12 @@ module.exports = {
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        if (member.roles.has(Config.roles.games)) {
-            member.removeRole(Config.roles.games).then(() => {
+        if (member.roles.cache.has(Config.roles.games)) {
+            member.roles.remove(Config.roles.games).then(() => {
                 message.reply(trans('model.command.games.alertsOff'));
             });
         } else {
-            member.addRole(Config.roles.games).then(() => {
+            member.roles.add(Config.roles.games).then(() => {
                 message.reply(trans('model.command.games.alertsOn'));
             });
         }

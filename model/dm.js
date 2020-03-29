@@ -34,14 +34,14 @@ const SemiBlacklist = {
                 {
                     embed: embed,
                     files: message.attachments.map(messageAttachment => {
-                        return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);
+                        return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
                     })
                 }
             ).then(() => {
-                const emoji = bot.emojis.find(emoji => emoji.name === 'pollyes');
+                const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);
             }).catch((exception) => {
-                const emoji = bot.emojis.find(emoji => emoji.name === 'pollno');
+                const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
 
                 message.react(emoji);
                 Logger.exception(exception);

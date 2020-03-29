@@ -8,10 +8,10 @@ module.exports = {
     aliases: ['comitee', 'commitee', 'comittee', 'committe', 'comite', 'comité'],
     category: CommandCategory.INFO,
     process: async (message) => {
-        let list = message.guild.members.filter(
-            member => member.roles.has(Config.roles.committee)
+        let list = message.guild.members.cache.filter(
+            member => member.roles.cache.has(Config.roles.committee)
         ).map(
-            member => (member.nickname !== null ? member.nickname : member.user.username) + '#' + member.user.discriminator
+            member => member.displayName + '#' + member.user.discriminator
         );
 
         message.reply(`${trans('model.command.committee.answer', [list.length])}\n\n${list.join('\n')}`);

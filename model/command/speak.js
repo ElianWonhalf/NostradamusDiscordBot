@@ -3,7 +3,6 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const VoiceSynthesizer = require('../voice-synthesizer');
-let disconnectTimeout = null;
 
 /**
  * @param {Message} message
@@ -14,37 +13,33 @@ module.exports = {
     process: async (message, args) => {
         const member = await Guild.getMemberFromMessage(message);
         const argsValid = args.length > 1 && args[0].length === 2;
-        const voiceValid = member.voiceChannel !== null;
+        const voiceValid = member.voice.channel !== null;
 
-        if (Guild.isMemberMod(member)) {
+        if (Guild.isMemberTutor(member) || Guild.isMemberMod(member)) {
             if (argsValid && voiceValid) {
                 const language = args.shift();
                 const text = args.join(' ');
 
-                const voiceChannelConnection = bot.voiceConnections.find(connection => {
+                const voiceChannelConnection = bot.voice.connections.find(connection => {
                     return connection.channel.guild.id === Guild.discordGuild.id
                         && connection.status === DiscordJS.Constants.VoiceStatus.CONNECTED
                 });
 
                 VoiceSynthesizer.synthesize(language, text).then(audioFilePath => {
                     const speak = (connection) => {
-                        const streamDispatcher = connection.playFile(audioFilePath);
+                        const streamDispatcher = connection.play(audioFilePath);
 
-                        if (disconnectTimeout !== null) {
-                            clearTimeout(disconnectTimeout);
-                        }
-
-                        streamDispatcher.on('end', () => {
-                            disconnectTimeout = setTimeout(() => {
-                                connection.disconnect();
-                            }, 10000);
+                        streamDispatcher.on('finish', () => {
+                            setTimeout(() => {
+                                connection.channel.leave();
+                            }, 1000);
                         });
                     };
 
-                    if (voiceChannelConnection !== null && voiceChannelConnection.channel.id === member.voiceChannelID) {
+                    if (voiceChannelConnection !== undefined && voiceChannelConnection.channel.id === member.voice.channel.id) {
                         speak(voiceChannelConnection);
                     } else {
-                        member.voiceChannel.join().then(speak).catch(exception => {
+                        member.voice.channel.join().then(speak).catch(exception => {
                             Logger.exception(exception);
                             message.reply(trans('model.command.speak.error'));
                         });

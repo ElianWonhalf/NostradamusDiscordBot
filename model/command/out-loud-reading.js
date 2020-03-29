@@ -25,12 +25,12 @@ module.exports = {
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        if (member.roles.has(Config.roles.outLoudReading)) {
-            member.removeRole(Config.roles.outLoudReading).then(() => {
+        if (member.roles.cache.has(Config.roles.outLoudReading)) {
+            member.roles.remove(Config.roles.outLoudReading).then(() => {
                 message.reply(trans('model.command.outLoudReading.alertsOff'));
             });
         } else {
-            member.addRole(Config.roles.outLoudReading).then(() => {
+            member.roles.add(Config.roles.outLoudReading).then(() => {
                 message.reply(trans('model.command.outLoudReading.alertsOn'));
             });
         }

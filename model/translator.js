@@ -48,9 +48,9 @@ const replaceEmojisInString = (value) => {
     Array.from(new Set(value.match(/:[^\s:]+:/g))).forEach(foundEmoji => {
         foundEmoji = foundEmoji.replace(/:([^:]+):/, '$1');
 
-        const emojiInstance = bot.emojis.find(emoji => emoji.name === foundEmoji);
+        const emojiInstance = bot.emojis.cache.find(emoji => emoji.name === foundEmoji);
 
-        if (emojiInstance !== null) {
+        if (emojiInstance !== undefined) {
             value = value.replace(new RegExp(`:${foundEmoji}:`, 'g'), emojiInstance.toString());
         }
     });

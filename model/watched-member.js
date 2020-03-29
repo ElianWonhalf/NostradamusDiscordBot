@@ -33,7 +33,7 @@ const WatchedMember = {
 
             if (lastActiveNull || lastActiveTooOld) {
                 WatchedMember.logEvent(
-                    await Guild.discordGuild.fetchMember(message.author),
+                    await Guild.discordGuild.member(message.author),
                     trans('model.watchedMember.active', [message.channel], 'en')
                 );
             }
@@ -45,17 +45,17 @@ const WatchedMember = {
     voiceStateUpdateHandler: (oldMember, newMember) => {
         if (WatchedMember.isMemberWatched(oldMember.id)) {
             switch (true) {
-                case oldMember.voiceChannelID === null && newMember.voiceChannelID !== null:
+                case oldMember.voice.channel === null && newMember.voice.channel !== null:
                     WatchedMember.logEvent(
                         newMember,
-                        trans('model.watchedMember.joinedVocal', [newMember.voiceChannel.name], 'en')
+                        trans('model.watchedMember.joinedVocal', [newMember.voice.channel.name], 'en')
                     );
                     break;
 
-                case oldMember.voiceChannelID !== null && newMember.voiceChannelID === null:
+                case oldMember.voice.channel !== null && newMember.voice.channel === null:
                     WatchedMember.logEvent(
                         newMember,
-                        trans('model.watchedMember.leftVocal', [oldMember.voiceChannel.name], 'en'),
+                        trans('model.watchedMember.leftVocal', [oldMember.voice.channel.name], 'en'),
                         true
                     );
                     break;
@@ -74,7 +74,7 @@ const WatchedMember = {
 
         const alertEmoji = alertFinished ? '😌' : '🙀';
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setAuthor(
                 `${member.user.username}#${member.user.discriminator}${suffix}`,
                 member.user.displayAvatarURL
@@ -91,7 +91,8 @@ const WatchedMember = {
      * @returns {boolean}
      */
     isMemberWatched: (id) => {
-        id = bot.resolver.resolveUserID(id);
+        id = bot.users.resolveID(id);
+
         return WatchedMember.list.hasOwnProperty(id);
     },
 

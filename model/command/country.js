@@ -1,7 +1,6 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const Country = require('../country');
-const MemberRolesFlow = require('../member-roles-flow');
 const CommandCategory = require('../command-category');
 
 /**
@@ -20,7 +19,7 @@ module.exports = {
         const country = args.join(' ').toLowerCase().trim();
 
         if (country !== '') {
-            const rolesToRemove = member.roles.filter(role => {
+            const rolesToRemove = member.roles.cache.filter(role => {
                 return Country.getRoleNameList().indexOf(role.name) > -1;
             });
             const roleName = Country.getRoleNameFromString(country);
@@ -32,12 +31,12 @@ module.exports = {
             }
 
             if (rolesToRemove.size > 0) {
-                await member.removeRoles(rolesToRemove.array());
+                await member.roles.remove(rolesToRemove.array());
             }
 
             if (role !== null) {
                 if (!rolesToRemove.has(role.id)) {
-                    member.addRole(role);
+                    member.roles.add(role);
                     message.reply(trans('model.command.country.added', [role.name]));
                 } else {
                     message.reply(trans('model.command.country.removed', [role.name]));

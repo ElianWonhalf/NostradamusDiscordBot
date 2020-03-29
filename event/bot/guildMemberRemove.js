@@ -7,7 +7,7 @@ const Guild = require('../../model/guild');
  */
 module.exports = async (member) => {
     if (!testMode && member.user.id !== Config.testAccount || testMode && member.user.id === Config.testAccount) {
-        member = await bot.fetchUser(member.id);
+        member = await bot.users.fetch(member.id);
 
         Guild.stopMemberReactionCollectors(member.id);
         ModerationLog.processMemberRemove(member);

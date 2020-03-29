@@ -20,10 +20,10 @@ module.exports = {
             }
 
             channel.send(content.join(' ')).then(async () => {
-                await message.react(bot.emojis.find(emoji => emoji.name === 'pollyes'));
+                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
             }).catch(async (error) => {
                 Logger.error(error.toString());
-                await message.react(bot.emojis.find(emoji => emoji.name === 'pollno'));
+                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollno'));
             });
         }
     }
