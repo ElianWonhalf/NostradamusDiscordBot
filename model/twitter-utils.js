@@ -2,7 +2,6 @@ const Twit = require('twit');
 const got = require('got');
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../config.json');
-const Guild = require('./guild');
 const MAX_CHAR_COUNT = 280;
 
 let T = null;
@@ -42,10 +41,10 @@ const TwitterUtils = {
 
             postPromise.then(async () => {
                 Logger.info('✅ Successfully published on Twitter!');
-                await message.react(bot.emojis.find(emoji => emoji.name === 'pollyes'));
+                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
             }).catch(async error => {
                 Logger.exception(error);
-                await message.react(bot.emojis.find(emoji => emoji.name === 'pollno'));
+                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollno'));
             });
         }
     },

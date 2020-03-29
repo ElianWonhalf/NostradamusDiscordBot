@@ -15,7 +15,7 @@ module.exports = {
 
         const member = await Guild.getMemberFromMessage(message);
 
-        if (!member.roles.has(Config.roles.officialMember)) {
+        if (!member.roles.cache.has(Config.roles.officialMember)) {
             Guild.botChannel.send(
                 trans('model.command.help.notice', [member, `<#${Config.channels.welcome}>`, message.url], 'en')
             );

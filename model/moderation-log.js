@@ -56,7 +56,7 @@ const ModerationLog = {
                     ModerationLog.language
                 );
 
-                const embed = new Discord.RichEmbed().setAuthor(
+                const embed = new Discord.MessageEmbed().setAuthor(
                     `${entry.target.username}#${entry.target.discriminator}`,
                     entry.target.displayAvatarURL
                 );

@@ -18,22 +18,22 @@ module.exports = {
 			if (content.length > 0) {
 				const answer = content.join(' ');
 
-				if (bot.users.has(recipientId)) {
+				if (bot.users.cache.has(recipientId)) {
 					const embed = await Guild.messageToEmbed(message);
 
 					embed.setDescription(answer);
 					embed.setTimestamp(message.createdTimestamp);
 
-					bot.users.get(recipientId).send({
+					bot.users.cache.get(recipientId).send({
 	    				embed: embed,
 	    				files: message.attachments.map(messageAttachment => {
-	        				return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);
+	        				return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
 	   					})
 					}).then(() => {
-	                	const emoji = bot.emojis.find(emoji => emoji.name === 'pollyes');
+	                	const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
 	                	message.react(emoji);
 	            	}).catch((exception) => {
-	                	const emoji = bot.emojis.find(emoji => emoji.name === 'pollno');
+	                	const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
 
 	                	message.react(emoji);
 	                	Logger.exception(exception);

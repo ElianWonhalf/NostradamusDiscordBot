@@ -13,12 +13,17 @@ module.exports = {
 
         if (Guild.isMemberMod(member)) {
             let answers = [];
-            const membersWithCustomStatus = Guild.discordGuild.members.filter(member => {
-                return !member.roles.has(Config.roles.mod)
-                    && member.presence.game !== null
-                    && member.presence.game.type === 4
-                    && member.presence.game.state !== null;
-            }).array().map(member => `${member}: ${member.presence.game.state}`);
+            const membersWithCustomStatus = Guild.discordGuild.members.cache.filter(member => {
+                const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
+
+                return !member.roles.cache.has(Config.roles.mod)
+                    && activity !== undefined
+                    && activity.state !== null;
+            }).array().map(member => {
+                const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
+
+                return `${member}: ${activity.state}`
+            });
 
             membersWithCustomStatus.forEach(status => {
                 let foundKey = false;

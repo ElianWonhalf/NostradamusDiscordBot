@@ -33,14 +33,14 @@ const fourthStep = async (collection) => {
         let recipientChannel = Guild.anonymousMessagesChannel;
 
         if (recipient === ADMIN) {
-            recipientChannel = await bot.users.get(Config.admin).createDM();
+            recipientChannel = await bot.users.cache.get(Config.admin).createDM();
         }
 
         recipientChannel.send(
             trans('model.command.anonymous.anonymousMessageWrapper', [message.content], 'en'),
             {
                 files: message.attachments.map(messageAttachment => {
-                    return new Discord.Attachment(messageAttachment.url, messageAttachment.filename);
+                    return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
                 })
             }
         ).then(() => {

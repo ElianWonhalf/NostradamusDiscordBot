@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Config = require('../../config.json');
 const Guild = require('../guild');
 const Blacklist = require('../blacklist');
 const CommandCategory = require('../command-category');
@@ -13,9 +13,14 @@ module.exports = {
         const member = await Guild.getMemberFromMessage(message);
 
         if (Guild.isMemberMod(member)) {
-            const membersWithCustomStatusCount = Guild.discordGuild.members.filter(member => {
-                return member.presence.game !== null && member.presence.game.type === 4;
+            const membersWithCustomStatusCount = Guild.discordGuild.members.cache.filter(member => {
+                const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
+
+                return !member.roles.cache.has(Config.roles.mod)
+                    && activity !== undefined
+                    && activity.state !== null;
             }).size;
+
             let semiBlacklistTriggered = [];
             let fullBlacklistTriggered = [];
             let finalMessage = `${trans(
@@ -24,24 +29,24 @@ module.exports = {
                 'en'
             )}\n\n`;
 
-            Guild.discordGuild.members.array().forEach(member => {
-                const hasGame = member.presence.game !== null;
-                const hasCustomStatusSet = hasGame && member.presence.game.type === 4;
-                const hasCustomStatus = hasCustomStatusSet && member.presence.game.state !== null;
+            Guild.discordGuild.members.cache.array().forEach(member => {
+                const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
+                const hasGame = activity !== undefined;
+                const hasCustomStatusSet = hasGame && activity.state !== null;
 
-                if (hasCustomStatus) {
-                    if (Blacklist.isSemiTriggered(member.presence.game.state)) {
+                if (hasCustomStatusSet) {
+                    if (Blacklist.isSemiTriggered(activity.state)) {
                         semiBlacklistTriggered.push(`   ${trans(
                             'model.command.checkCustomStatuses.customStatus',
-                            [member.toString(), member.presence.game.state],
+                            [member.toString(), activity.state],
                             'en'
                         )}`);
                     }
 
-                    if (Blacklist.isFullTriggered(member.presence.game.state)) {
+                    if (Blacklist.isFullTriggered(activity.state)) {
                         fullBlacklistTriggered.push(`   ${trans(
                             'model.command.checkCustomStatuses.customStatus',
-                            [member.toString(), member.presence.game.state],
+                            [member.toString(), activity.state],
                             'en'
                         )}`);
                     }

@@ -27,7 +27,7 @@ module.exports = {
                 return;
             }
 
-            let rolesToRemove = member.roles.filter(role => {
+            let rolesToRemove = member.roles.cache.filter(role => {
                 return Language.getRoleNameList().indexOf(role.name) > -1;
             });
             const roleName = Language.getRoleNameFromString(language);
@@ -47,12 +47,12 @@ module.exports = {
             }
 
             if (rolesToRemove.size > 0) {
-                await member.removeRoles(rolesToRemove);
+                await member.roles.remove(rolesToRemove);
             }
 
             if (role !== null) {
                 if (!rolesToRemove.has(role.id)) {
-                    member.addRole(role);
+                    member.roles.add(role);
                     message.reply(trans('model.command.language.added', [role.name]));
                 } else {
                     message.reply(trans('model.command.language.removed', [role.name]));

@@ -11,12 +11,12 @@ module.exports = {
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        if (member.roles.has(Config.roles.miniClass)) {
-            member.removeRole(Config.roles.miniClass).then(() => {
+        if (member.roles.cache.has(Config.roles.miniClass)) {
+            member.roles.remove(Config.roles.miniClass).then(() => {
                 message.reply(trans('model.command.miniClass.alertsOff'));
             });
         } else {
-            member.addRole(Config.roles.miniClass).then(() => {
+            member.roles.add(Config.roles.miniClass).then(() => {
                 message.reply(trans('model.command.miniClass.alertsOn'));
             });
         }

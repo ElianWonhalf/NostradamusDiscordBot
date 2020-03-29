@@ -18,7 +18,7 @@ module.exports = {
 
             const languagesList = Language.getRoleNameList();
             const countriesList = Country.getRoleNameList();
-            const rolesList = Guild.discordGuild.roles.array().map(role => role.name);
+            const rolesList = Guild.discordGuild.roles.cache.array().map(role => role.name);
 
             answer += trans('model.command.audit.totalLanguagesAndCountriesInDB', [languagesList.length, countriesList.length], 'en');
             answer += trans('model.command.audit.totalRolesOnServer', [rolesList.length], 'en');

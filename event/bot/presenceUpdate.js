@@ -2,26 +2,38 @@ const Guild = require('../../model/guild');
 const Blacklist = require('../../model/blacklist');
 
 /**
- * @param {GuildMember} oldMember
- * @param {GuildMember} newMember
+ * @param {Presence} oldPresence
+ * @param {Presence} newPresence
  */
-module.exports = (oldMember, newMember) => {
-    if (Guild.isMemberMod(oldMember)) {
+module.exports = (oldPresence, newPresence) => {
+    const oldMember = oldPresence !== undefined ? oldPresence.member : null;
+    const newMember = newPresence !== undefined ? newPresence.member : null;
+    const member = oldMember !== null ? oldMember : newMember;
+
+    if (Guild.isMemberMod(member)) {
         return;
     }
 
-    const newHasGame = newMember.presence.game !== null;
-    const oldHasGame = oldMember.presence.game !== null;
-    const hasCustomStatus = newHasGame && newMember.presence.game.type === 4;
-    const differentCustomStatus = oldHasGame && newHasGame && oldMember.presence.game.state !== newMember.presence.game.state;
+    const oldCustomStatus = oldPresence !== undefined
+        ? oldPresence.activities.find(activity => activity.type === 'CUSTOM_STATUS')
+        : undefined;
 
-    if (hasCustomStatus && differentCustomStatus) {
-        const state = newMember.presence.game.state === null ? '' : newMember.presence.game.state;
+    const newCustomStatus = newPresence !== undefined
+        ? newPresence.activities.find(activity => activity.type === 'CUSTOM_STATUS')
+        : undefined;
+
+    const oldHasCustomStatus = oldCustomStatus !== undefined;
+    const newHasCustomStatus = newCustomStatus !== undefined;
+
+    const differentCustomStatus = oldHasCustomStatus && newHasCustomStatus && oldCustomStatus.state !== newCustomStatus.state;
+
+    if (newHasCustomStatus && differentCustomStatus) {
+        const state = newCustomStatus.state === null ? '' : newCustomStatus.state;
 
         Guild.serverLogChannel.send(
             trans(
                 'model.guild.customStatusUpdate',
-                [newMember.toString(), state],
+                [member.toString(), state],
                 'en'
             )
         );
@@ -30,7 +42,7 @@ module.exports = (oldMember, newMember) => {
             Guild.botChannel.send(
                 trans(
                     'model.guild.customStatusSemiBlacklist',
-                    [newMember.toString(), state],
+                    [member.toString(), state],
                     'en'
                 )
             )
@@ -40,7 +52,7 @@ module.exports = (oldMember, newMember) => {
             Guild.botChannel.send(
                 trans(
                     'model.guild.customStatusFullBlacklist',
-                    [newMember.toString(), state],
+                    [member.toString(), state],
                     'en'
                 )
             )

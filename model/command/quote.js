@@ -20,7 +20,7 @@ module.exports = {
                 content.shift();
             }
 
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setAuthor(
                     `${member.displayName}`,
                     member.user.displayAvatarURL
@@ -32,7 +32,7 @@ module.exports = {
                 await message.delete();
             }).catch(async (error) => {
                 Logger.error(error.toString());
-                await message.react(bot.emojis.find(emoji => emoji.name === 'pollno'));
+                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollno'));
             });
         }
     }

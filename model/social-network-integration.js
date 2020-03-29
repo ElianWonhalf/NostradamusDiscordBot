@@ -21,7 +21,7 @@ postOn[TWITTER] = async (message, authorName, content, image) => {
 
 const SocialNetworkIntegration = {
     handleMessage: async (message) => {
-        const emoji = bot.emojis.find(emoji => emoji.name === REACTION);
+        const emoji = bot.emojis.cache.find(emoji => emoji.name === REACTION);
 
         if (message.channel.id === Config.channels.starboard && message.author.bot) {
             await message.react(emoji);
@@ -35,9 +35,9 @@ const SocialNetworkIntegration = {
      * @param {User} user
      */
     handleReaction: async (reaction, user) => {
-        if (Guild.isMemberMod(await Guild.discordGuild.fetchMember(user)) && reaction.emoji.name === REACTION) {
-            const modReactions = reaction.users.filter(
-                async user => Guild.isMemberMod(await Guild.discordGuild.fetchMember(user))
+        if (Guild.isMemberMod(await Guild.discordGuild.member(user)) && reaction.emoji.name === REACTION) {
+            const modReactions = reaction.users.cache.filter(
+                async user => Guild.isMemberMod(await Guild.discordGuild.member(user))
             ).size;
 
             if (modReactions < 2) {

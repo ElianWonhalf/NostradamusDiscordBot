@@ -178,7 +178,7 @@ const HardcoreLearning = {
             );
             HardcoreLearning.alreadyWarned[message.channel.id] = true;
         } else if (!lastMessageWasRight) {
-            const emoji = bot.emojis.find(emoji => emoji.name === 'roocop');
+            const emoji = bot.emojis.cache.find(emoji => emoji.name === 'roocop');
             message.react(emoji);
 
             if (wrongLanguageCounter > MAX_WRONG_LANGUAGE_MESSAGES_BEFORE_WARNING + 7) {
@@ -187,7 +187,7 @@ const HardcoreLearning = {
         }
 
         if (apologiesAccepted || rightLanguageCounter >= RIGHT_LANGUAGES_MESSAGES_BEFORE_RESET) {
-            const emoji = bot.emojis.find(emoji => emoji.name === 'blobpats');
+            const emoji = bot.emojis.cache.find(emoji => emoji.name === 'blobpats');
 
             message.react(emoji);
             HardcoreLearning.reset(message.channel);

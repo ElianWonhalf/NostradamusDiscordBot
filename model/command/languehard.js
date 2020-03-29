@@ -1,4 +1,3 @@
-const Config = require('../../config.json');
 const CommandCategory = require('../command-category');
 
 /**
