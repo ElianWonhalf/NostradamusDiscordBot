@@ -88,6 +88,8 @@ model:
       description: "Pour être mentionné quand il y a une lecture à voix haute"
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
+    panic:
+      description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr)"
     post:
       description: "Envoie un message sur le serveur depuis le bot"
     quote:
