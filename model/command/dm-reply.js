@@ -2,6 +2,7 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -9,41 +10,38 @@ const CommandCategory = require('../command-category');
 module.exports = {
     aliases: ['dmreply'],
     category: CommandCategory.MODERATION,
+    isAllowedForContext: CommandPermission.isMemberMod,
     process: async (message, content) => {
-        const member = await Guild.getMemberFromMessage(message);
+		const recipientId = content.shift();
 
-        if (Guild.isMemberMod(member)) {
-			const recipientId = content.shift();
+		if (content.length > 0) {
+			const answer = content.join(' ');
 
-			if (content.length > 0) {
-				const answer = content.join(' ');
+			if (bot.users.cache.has(recipientId)) {
+				const embed = await Guild.messageToEmbed(message);
 
-				if (bot.users.cache.has(recipientId)) {
-					const embed = await Guild.messageToEmbed(message);
+				embed.setDescription(answer);
+				embed.setTimestamp(message.createdTimestamp);
 
-					embed.setDescription(answer);
-					embed.setTimestamp(message.createdTimestamp);
+				bot.users.cache.get(recipientId).send({
+					embed: embed,
+					files: message.attachments.map(messageAttachment => {
+						return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
+					})
+				}).then(() => {
+					const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
+					message.react(emoji);
+				}).catch((exception) => {
+					const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
 
-					bot.users.cache.get(recipientId).send({
-	    				embed: embed,
-	    				files: message.attachments.map(messageAttachment => {
-	        				return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
-	   					})
-					}).then(() => {
-	                	const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
-	                	message.react(emoji);
-	            	}).catch((exception) => {
-	                	const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
-
-	                	message.react(emoji);
-	                	Logger.exception(exception);
-	                });
-				} else {
-	        		message.reply(trans('model.command.dmReply.notFound', [], 'en'));
-				}
+					message.react(emoji);
+					Logger.exception(exception);
+				});
 			} else {
-				message.reply(trans('model.command.dmReply.noMessage', [], 'en'));
+				message.reply(trans('model.command.dmReply.notFound', [], 'en'));
 			}
-        }
+		} else {
+			message.reply(trans('model.command.dmReply.noMessage', [], 'en'));
+		}
     }
 };

@@ -25,7 +25,7 @@ const awaitReactions = async (message, expectedEmojis, expectedUserId, callback)
             const users = await messageReaction.users.fetch();
 
             users.delete(bot.user.id);
-            callback(messageReaction, await Guild.discordGuild.member(users.first()));
+            callback(messageReaction, await Guild.discordGuild.members.fetch(users.first()));
         }
     });
 

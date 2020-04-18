@@ -1,20 +1,27 @@
 const fs = require('fs');
+const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
 const Command = {
+    commandList: new Discord.Collection(),
     commandAliases: {},
 
     init: () => {
+        Command.commandList = new Discord.Collection();
+        Command.commandAliases = {};
+
         fs.readdirSync('model/command/').forEach(file => {
             if (file.substr(file.lastIndexOf('.')).toLowerCase() === '.js') {
                 const commandInstance = require(`./command/${file}`);
-                const commandName = file.substr(0, file.lastIndexOf('.'));
+                const commandName = file.substr(0, file.lastIndexOf('.')).toLowerCase();
+
+                Command.commandList.set(commandName, commandInstance);
 
                 if (commandInstance.aliases !== undefined && commandInstance.aliases !== null) {
                     commandInstance.aliases.forEach(alias => {
                         Command.commandAliases[alias.toLowerCase()] = commandName;
-                    })
+                    });
                 }
             }
         });
@@ -31,7 +38,7 @@ const Command = {
             let content = message.content.substr(Config.prefix.length).trim().split(' ');
             const calledCommand = content.shift().toLowerCase();
 
-            if (Command.isValid(calledCommand)) {
+            if (await Command.isValid(calledCommand, message)) {
                 const member = await Guild.getMemberFromMessage(message);
 
                 if (member === null) {
@@ -41,10 +48,10 @@ const Command = {
                     isCommand = true;
 
                     if (Command.commandAliases.hasOwnProperty(calledCommand)) {
-                        commandName = Command.commandAliases[calledCommand].toLowerCase();
+                        commandName = Command.commandAliases[calledCommand];
                     }
 
-                    (require('./command/' + commandName + '.js')).process(message, content);
+                    Command.commandList.get(commandName).process(message, content, Command);
                 }
             }
         }
@@ -54,18 +61,21 @@ const Command = {
 
     /**
      * @param {string} command
-     * @return {boolean}
+     * @param {Message} message
+     * @return {Promise<boolean>}
      */
-    isValid: (command) => {
-        let valid = fs.existsSync('model/command/' + command.toLowerCase() + '.js');
+    isValid: async (command, message) => {
         let canonicalCommand = command.toLowerCase();
+        let valid = Command.commandList.has(canonicalCommand);
 
-        if (!valid && Command.commandAliases.hasOwnProperty(command)) {
-            valid = fs.existsSync('model/command/' + Command.commandAliases[command].toLowerCase() + '.js');
-            canonicalCommand = Command.commandAliases[command].toLowerCase();
+        if (!valid && Command.commandAliases.hasOwnProperty(canonicalCommand)) {
+            canonicalCommand = Command.commandAliases[command];
+            valid = Command.commandList.has(canonicalCommand);
         }
 
-        valid = valid && Config.disabledCommands.indexOf(canonicalCommand) < 0;
+        valid = valid
+            && Config.disabledCommands.indexOf(canonicalCommand) < 0
+            && await Command.commandList.get(canonicalCommand).isAllowedForContext(message);
 
         return valid;
     }

@@ -5,6 +5,6 @@ const Guild = require('../../model/guild');
  */
 module.exports = (channel) => {
     if (channel.type === 'dm') {
-        Guild.botChannel.stopTyping();
+        Guild.botChannel.stopTyping(true);
     }
 };

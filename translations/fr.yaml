@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "Bonjour %% et bienvenue sur le serveur %% ! Réagis à ce message avec :afrench: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) ."
+  welcomeMessage: "\nBonjour %% et bienvenue sur le serveur %% ! **Réagis** à ce message avec :alogo: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) ."
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
@@ -26,6 +26,9 @@ model:
       fourthStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
     audit:
       description: "Vérifie s'il y a un écart entre le serveur et la base de données"
+    avatar:
+      description: "Affiche l'avatar du membre spécifié"
+      notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     checkCustomStatuses:
       description: "Trouve les statuts personnalisés contenant des termes blacklistés"
     committee:
@@ -57,7 +60,9 @@ model:
       description: "Donne l'ID du membre spécifié"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     help:
-      description: "Donne une liste de commandes"
+      description: "Donne une liste des commandes"
+      timeout: "Trop tard ! Tu peux renvoyer la commande si tu veux :eowynsheep: ."
+      embedTitle: "Commande help"
     kill:
       description: "Tue le processus du bot"
     language:
@@ -141,10 +146,10 @@ model:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
     secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"
   memberRolesFlow:
-    noSpeakOnlyAnswer: "Hélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu cliques sur l'une des réactions du message ci-dessous :) !"
-    start: "Ok %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
+    noSpeakOnlyAnswer: "\nHélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu **cliques sur l'une des réactions** du message ci-dessous :) !"
+    start: "\nOk %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
-    levelStepTitle: "Ok %%! Quel est ton niveau en %% ?"
+    levelStepTitle: "\nOk %%! Quel est ton niveau en %% ?"
     levelStepBeginner: "Débutant"
     levelStepIntermediate: "Intermédiaire"
     levelStepAdvanced: "Avancé"

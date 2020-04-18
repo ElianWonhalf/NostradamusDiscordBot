@@ -2,6 +2,7 @@ const Config = require('../../config.json');
 const Guild = require('../guild');
 const Language = require('../language');
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -10,11 +11,8 @@ const CommandCategory = require('../command-category');
 module.exports = {
     aliases: ['langue', 'langage'],
     category: CommandCategory.ROLE,
+    isAllowedForContext: CommandPermission.inRoles,
     process: async (message, args) => {
-        if (message.guild === null || message.channel.id !== Config.channels.roles) {
-            return;
-        }
-
         const member = await Guild.getMemberFromMessage(message);
         const language = args.join(' ').toLowerCase().trim();
 

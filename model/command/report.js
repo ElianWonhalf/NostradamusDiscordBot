@@ -1,6 +1,7 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -8,12 +9,8 @@ const CommandCategory = require('../command-category');
 module.exports = {
     aliases: ['rp', 'rep'],
     category: CommandCategory.MODERATION,
+    isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message) => {
-        if (message.guild === null) {
-            message.reply(trans('model.command.report.onlyOnServer'));
-            return;
-        }
-
         message.delete().catch(Logger.exception);
         const member = await Guild.getMemberFromMessage(message);
         let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);

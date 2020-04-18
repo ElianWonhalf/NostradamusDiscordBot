@@ -3,7 +3,7 @@ learntLanguage:
   french: "French"
 
 bot:
-  welcomeMessage: "Hello %% and welcome to the %% server! React to this message with :alogo:, like I just did! This will be our main method of interaction :) ."
+  welcomeMessage: "\nHello %% and welcome to the %% server! **React** to this message with :alogo:, like I just did! This will be our main method of interaction :) ."
 model:
   command:
     notOnServer: "sorry, you do not seem to be on the server."
@@ -49,6 +49,9 @@ model:
       languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
       countriesInDbWithoutRole: "\nI've found %% country(-ies) in the DB that don't have any roles assigned"
       rolesWithoutDbEntry: "\n\nI've found %% role(s) that don't have a DB entry assigned"
+    avatar:
+      description: "Displays the avatar of the specified member."
+      notFound: "I... Have no idea who that could be, sorry."
     checkCustomStatuses:
       description: "Searches for blacklisted terms in members' custom messages"
       introduction: "%% members currently have a custom status set."
@@ -86,8 +89,10 @@ model:
       description: "Provides the ID of the specified member."
       notFound: "I... Have no idea who that could be, sorry."
     help:
-      description: "Provides a list of commands"
+      description: "Provides the list of commands"
       notice: "%% seems to need help in %%.\n%%"
+      timeout: "Timed out! You may send the command again :eowynsheep: ."
+      embedTitle: "Help command"
     kill:
       description: "Kills the bot process"
     language:
@@ -186,7 +191,7 @@ model:
   commandCategory:
     moderation: "Moderation"
     administration: "Administration"
-    bot_management: "Gestion du bot"
+    bot_management: "Bot management"
     fun: "Fun"
     info: "Info"
     role: "Role"
@@ -194,17 +199,17 @@ model:
   dm:
     notification: "%% sent a DM:"
   guild:
-    customStatusUpdate: ":status: %% updated their custom status to: %%"
+    customStatusUpdate: ":status: %%: %%"
     customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
   memberRolesFlow:
-    noSpeakOnlyAnswer: "Alas, I cannot fathom the complexity of human language :pensive: . But fear not, for you need only react to the upcoming message :) !"
-    start: "Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
+    noSpeakOnlyAnswer: "\nSorry, I can't understand what you're saying :pensive: . But don't worry, you only need to **react** to the upcoming message :) !"
+    start: "\nOk %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
-    levelStepTitle: "Ok %%! What is your level in %%?"
+    levelStepTitle: "\nOk %%! What is your level in %%?"
     levelStepBeginner: "Beginner"
     levelStepIntermediate: "Intermediate"
     levelStepAdvanced: "Advanced"

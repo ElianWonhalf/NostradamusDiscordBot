@@ -55,7 +55,7 @@ const botProcess = () => {
     const CallerId = require('caller-id');
 
     global.testMode = process.env.NOSTRADAMUS_TEST === '1';
-    global.bot = new Discord.Client();
+    global.bot = new Discord.Client({ fetchAllMembers: true });
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {
             const caller = CallerId.getData();

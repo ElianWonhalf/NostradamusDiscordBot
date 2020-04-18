@@ -1,4 +1,5 @@
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -6,6 +7,7 @@ const CommandCategory = require('../command-category');
 module.exports = {
     aliases: [],
     category: CommandCategory.FUN,
+    isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message) => {
         message.channel.send(
             trans(

@@ -8,11 +8,4 @@ const CommandCategory = {
     RESOURCE: 'resource'
 };
 
-const categories = Object.values(CommandCategory);
-CommandCategory.translations = {};
-
-for (const category of categories) {
-    CommandCategory.translations[category] = trans(`model.commandCategory.${category}`);
-}
-
 module.exports = CommandCategory;

@@ -33,7 +33,7 @@ const WatchedMember = {
 
             if (lastActiveNull || lastActiveTooOld) {
                 WatchedMember.logEvent(
-                    await Guild.discordGuild.member(message.author),
+                    await Guild.discordGuild.members.fetch(message.author),
                     trans('model.watchedMember.active', [message.channel], 'en')
                 );
             }
