@@ -1,6 +1,7 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -21,7 +22,7 @@ module.exports = {
         'lecture-voix-haute'
     ],
     category: CommandCategory.ROLE,
-
+    isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 

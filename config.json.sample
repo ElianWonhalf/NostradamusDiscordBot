@@ -1,6 +1,6 @@
 {
     "token": "",
-    "prefix": "!",
+    "prefix": ".",
     "db": {
         "host": "",
         "user": "",
@@ -56,5 +56,6 @@
     "learntLanguage": "learntLanguage.",
     "learntLanguagePrefix": "",
     "disabledCommands": [],
+    "hiddenCommands": [],
     "notCountryOrLanguageRoles": []
 }

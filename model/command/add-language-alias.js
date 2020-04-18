@@ -2,6 +2,7 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Guild = require('../guild');
 const Language = require('../language');
 const CommandCategory = require('../command-category');
+const CommandPermission = require('../command-permission');
 
 /**
  * @param {Message} message
@@ -10,25 +11,22 @@ const CommandCategory = require('../command-category');
 module.exports = {
     aliases: ['addlanguagealias'],
     category: CommandCategory.ADMINISTRATION,
+    isAllowedForContext: CommandPermission.isMemberMod,
     process: async (message, args) => {
-        const member = await Guild.getMemberFromMessage(message);
+        args = args.join(' ').split('|');
 
-        if (Guild.isMemberMod(member)) {
-            args = args.join(' ').split('|');
+        const alias = args[0];
+        const role = args[1];
 
-            const alias = args[0];
-            const role = args[1];
-
-            if (Language.getRoleNameFromString(role) !== null) {
-                Language.addAlias(alias, role).then(() => {
-                    message.reply(trans('model.command.addLanguageAlias.success', [role], 'en'));
-                }).catch(error => {
-                    Logger.exception(error);
-                    message.reply(trans('model.command.addLanguageAlias.error', [role], 'en'));
-                });
-            } else {
-                message.channel.send(trans('model.command.addLanguageAlias.doesNotExist', [role], 'en'));
-            }
+        if (Language.getRoleNameFromString(role) !== null) {
+            Language.addAlias(alias, role).then(() => {
+                message.reply(trans('model.command.addLanguageAlias.success', [role], 'en'));
+            }).catch(error => {
+                Logger.exception(error);
+                message.reply(trans('model.command.addLanguageAlias.error', [role], 'en'));
+            });
+        } else {
+            message.channel.send(trans('model.command.addLanguageAlias.doesNotExist', [role], 'en'));
         }
     }
 };

@@ -139,18 +139,14 @@ const Guild = {
 
     /**
      * @param message
-     * @returns {GuildMember|null}
+     * @returns {Promise<GuildMember|null>}
      */
     getMemberFromMessage: async (message) => {
-        let member = null;
-
-        try {
-            member = await Guild.discordGuild.member(message.author);
-        } catch (exception) {
+        return await Guild.discordGuild.members.fetch(message.author).catch(exception => {
             Logger.error(exception.toString());
-        }
 
-        return member;
+            return null;
+        });
     },
 
     createRole: (name) => {
@@ -162,7 +158,7 @@ const Guild = {
      * @returns {boolean}
      */
     memberHasLevelRole: (member) => {
-        return member.roles.some(role => Object.values(Guild.levelRolesIds).indexOf(role.id) > -1);
+        return member !== undefined && member !== null && member.roles.some(role => Object.values(Guild.levelRolesIds).indexOf(role.id) > -1);
     },
 
     /**
@@ -170,21 +166,21 @@ const Guild = {
      * @returns {*}
      */
     isMemberNative: (member) => {
-        return member.roles.cache.has(Config.roles.native);
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.native);
     },
 
     /**
      * @param {GuildMember} member
      */
     isMemberMod: (member) => {
-        return member.roles.cache.has(Config.roles.mod);
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.mod);
     },
 
     /**
      * @param {GuildMember} member
      */
     isMemberTutor: (member) => {
-        return member.roles.cache.has(Config.roles.tutor);
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.tutor);
     },
 
     /**

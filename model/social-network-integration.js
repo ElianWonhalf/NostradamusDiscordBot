@@ -35,9 +35,9 @@ const SocialNetworkIntegration = {
      * @param {User} user
      */
     handleReaction: async (reaction, user) => {
-        if (Guild.isMemberMod(await Guild.discordGuild.member(user)) && reaction.emoji.name === REACTION) {
+        if (Guild.isMemberMod(await Guild.discordGuild.members.fetch(user)) && reaction.emoji.name === REACTION) {
             const modReactions = reaction.users.cache.filter(
-                async user => Guild.isMemberMod(await Guild.discordGuild.member(user))
+                async user => Guild.isMemberMod(await Guild.discordGuild.members.fetch(user))
             ).size;
 
             if (modReactions < 2) {
