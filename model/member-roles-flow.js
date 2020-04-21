@@ -2,41 +2,27 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
-const memeURL = 'https://cdn.discordapp.com/attachments/445022429819961344/661313083200897036/497331af-69a6-4007-8411-2b6af7eb6c95.png';
-const fiveMinutes = 300000;
+const logoEmojiName = 'alogo';
+const nativeEmojiName = '👍';
+const notNativeEmojiName = '👎';
+const beginnerEmojiName = '🥚';
+const intermediateEmojiName = '🐣';
+const advancedEmojiName = '🐥';
+const nativeStepEmojis = [nativeEmojiName, notNativeEmojiName];
+const levelStepEmojis = [beginnerEmojiName, intermediateEmojiName, advancedEmojiName];
 
-const awaitReactions = async (message, expectedEmojis, expectedUserId, callback) => {
-    for (const expectedEmoji of expectedEmojis) {
+const addReactions = async (message, emojis) => {
+    for (const expectedEmoji of emojis) {
         const emoji = bot.emojis.cache.find(emoji => emoji.name === expectedEmoji);
         await message.react(emoji || expectedEmoji);
     }
-
-    const collector = new Discord.ReactionCollector(
-        message,
-        (reaction, user) => {
-            return expectedEmojis.includes(reaction.emoji.name) && user.id === expectedUserId;
-        },
-        { time: fiveMinutes, max: 1 }
-    );
-
-    collector.once('end', async (reactions) => {
-        if (reactions.size > 0) {
-            const messageReaction = reactions.first();
-            const users = await messageReaction.users.fetch();
-
-            users.delete(bot.user.id);
-            callback(messageReaction, await Guild.discordGuild.members.fetch(users.first()));
-        }
-    });
-
-    Guild.addMemberReactionCollector(expectedUserId, collector);
 };
 
 const MemberRolesFlow = {
     canPostMeme: true,
 
-    introduction: (message, member) => {
-        awaitReactions(message, ['alogo'], member.id, MemberRolesFlow.start);
+    introduction: (message) => {
+        addReactions(message, [logoEmojiName]);
     },
 
     /**
@@ -48,7 +34,8 @@ const MemberRolesFlow = {
             'model.memberRolesFlow.start',
             [member, [Config.learntLanguage]]
         ));
-        await awaitReactions(reply, ['👍', '👎'], member.id, MemberRolesFlow.isNativeStep);
+
+        await addReactions(reply, nativeStepEmojis);
     },
 
     /**
@@ -56,9 +43,6 @@ const MemberRolesFlow = {
      * @param {GuildMember} member
      */
     isNativeStep: async (messageReaction, member) => {
-        const nativeEmojiName = '👍';
-        const notNativeEmojiName = '👎';
-
         switch (messageReaction.emoji.name) {
             case nativeEmojiName:
                 await member.roles.add(Config.roles.native);
@@ -92,7 +76,7 @@ const MemberRolesFlow = {
             )
         );
 
-        await awaitReactions(reply, ['🥚', '🐣', '🐥'], member.id, MemberRolesFlow.levelStep);
+        await addReactions(reply, levelStepEmojis);
     },
 
     /**
@@ -100,10 +84,6 @@ const MemberRolesFlow = {
      * @param {GuildMember} member
      */
     levelStep: async (messageReaction, member) => {
-        const beginnerEmojiName = '🥚';
-        const intermediateEmojiName = '🐣';
-        const advancedEmojiName = '🐥';
-
         await member.roles.remove(Config.roles.unknownLevel);
 
         switch (messageReaction.emoji.name) {
@@ -128,39 +108,6 @@ const MemberRolesFlow = {
     },
 
     /**
-     * @param {Message} message
-     */
-    parse: async (message) => {
-        /** {GuildMember} member */
-        const member = await Guild.getMemberFromMessage(message);
-
-        if (member !== null && !member.roles.cache.has(Config.roles.officialMember)) {
-            Guild.stopMemberReactionCollectors(member.id);
-
-            const options = MemberRolesFlow.canPostMeme ? { file: memeURL } : null;
-
-            await message.reply(
-                trans('model.memberRolesFlow.noSpeakOnlyAnswer'),
-                options
-            );
-
-            if (options !== null) {
-                MemberRolesFlow.canPostMeme = false;
-
-                setTimeout(() => {
-                    MemberRolesFlow.canPostMeme = true;
-                }, fiveMinutes);
-            }
-
-            if (member.roles.cache.has(Config.roles.unknownLevel)) {
-                MemberRolesFlow.levelStepMessage(await Guild.getMemberFromMessage(message));
-            } else {
-                MemberRolesFlow.start(null, await Guild.getMemberFromMessage(message));
-            }
-        }
-    },
-
-    /**
      * @param {GuildMember} member
      */
     welcomeMember: async (member) => {
@@ -180,6 +127,29 @@ const MemberRolesFlow = {
         logEmbed.setTimestamp(new Date());
 
         Guild.memberFlowLogChannel.send(logEmbed);
+    },
+
+    /**
+     * @param {MessageReaction} reaction
+     * @param {User} user
+     */
+    handleReaction: async (reaction, user) => {
+        /** {GuildMember} member */
+        const member = await Guild.discordGuild.members.fetch(user);
+        const userMentions = reaction.message.mentions.users;
+        const isWelcomeChannel = reaction.message.channel.id === Config.channels.welcome;
+        const validMember = !user.bot && member !== null && !member.roles.cache.has(Config.roles.officialMember);
+        const validReaction = userMentions.size > 0 && userMentions.first().id === user.id;
+
+        if (isWelcomeChannel && validMember && validReaction) {
+            if (member.roles.cache.has(Config.roles.unknownLevel) && levelStepEmojis.includes(reaction.emoji.name)) {
+                MemberRolesFlow.levelStep(reaction, member);
+            } else if (member.roles.cache.size < 2 && nativeStepEmojis.includes(reaction.emoji.name)) {
+                MemberRolesFlow.isNativeStep(reaction, member);
+            } else if (member.roles.cache.size < 2 && reaction.emoji.name === logoEmojiName) {
+                MemberRolesFlow.start(reaction, member);
+            }
+        }
     }
 };
 

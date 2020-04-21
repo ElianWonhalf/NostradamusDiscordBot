@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "\nBonjour %% et bienvenue sur le serveur %% ! **Réagis** à ce message avec :alogo: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) ."
+  welcomeMessage: "\n\n**__Français__**\n> Bonjour %% et bienvenue sur le serveur %% ! **Réagis** à ce message avec :alogo: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) ."
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
@@ -146,10 +146,10 @@ model:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
     secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"
   memberRolesFlow:
-    noSpeakOnlyAnswer: "\nHélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu **cliques sur l'une des réactions** du message ci-dessous :) !"
-    start: "\nOk %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
+    noSpeakOnlyAnswer: "\n\n**__Français__**\n> Hélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu **cliques sur l'une des réactions** du message ci-dessous :) !"
+    start: "\n\n**__Français__**\n> Ok %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
     levelStep: "%%\n\n:egg: : **%%**\n:hatching_chick: : **%%**\n:hatched_chick: : **%%**"
-    levelStepTitle: "\nOk %%! Quel est ton niveau en %% ?"
+    levelStepTitle: "\n\n**__Français__**\n> Ok %%! Quel est ton niveau en %% ?"
     levelStepBeginner: "Débutant"
     levelStepIntermediate: "Intermédiaire"
     levelStepAdvanced: "Avancé"

@@ -20,7 +20,7 @@ module.exports = async (member) => {
                 )
             );
 
-            MemberRolesFlow.introduction(message, member);
+            MemberRolesFlow.introduction(message);
         }, 2000);
     }
 };
