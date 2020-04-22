@@ -136,12 +136,10 @@ const MemberRolesFlow = {
     handleReaction: async (reaction, user) => {
         /** {GuildMember} member */
         const member = await Guild.discordGuild.members.fetch(user);
-        const userMentions = reaction.message.mentions.users;
         const isWelcomeChannel = reaction.message.channel.id === Config.channels.welcome;
         const validMember = !user.bot && member !== null && !member.roles.cache.has(Config.roles.officialMember);
-        const validReaction = userMentions.size > 0 && userMentions.first().id === user.id;
 
-        if (isWelcomeChannel && validMember && validReaction) {
+        if (isWelcomeChannel && validMember) {
             if (member.roles.cache.has(Config.roles.unknownLevel) && levelStepEmojis.includes(reaction.emoji.name)) {
                 MemberRolesFlow.levelStep(reaction, member);
             } else if (member.roles.cache.size < 2 && nativeStepEmojis.includes(reaction.emoji.name)) {
