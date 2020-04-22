@@ -44,11 +44,11 @@ module.exports = {
                 return;
             }
 
-            if (rolesToRemove.size > 0) {
-                await member.roles.remove(rolesToRemove);
-            }
-
             if (role !== null) {
+                if (rolesToRemove.size > 0) {
+                    await member.roles.remove(rolesToRemove);
+                }
+
                 if (!rolesToRemove.has(role.id)) {
                     member.roles.add(role);
                     message.reply(trans('model.command.language.added', [role.name]));
