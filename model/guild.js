@@ -150,7 +150,7 @@ const Guild = {
     },
 
     createRole: (name) => {
-        return Guild.discordGuild.createRole({name: name, permissions: []});
+        return Guild.discordGuild.roles.create({data: {name: name, permissions: []}});
     },
 
     /**
