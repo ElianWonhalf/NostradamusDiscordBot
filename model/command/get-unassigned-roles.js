@@ -8,7 +8,7 @@ const CommandPermission = require('../command-permission');
 module.exports = {
     aliases: ['getunassignedroles', 'get-unassigned-role', 'getunassignedrole', 'gur'],
     category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMemberMod,
+    isAllowedForContext: CommandPermission.isMommy,
     process: async (message) => {
         const unassignedRoles = Guild.discordGuild.roles.cache.filter(role => {
             return Guild.discordGuild.members.cache.filter(member => member.roles.cache.has(role.id)).size > 0;
