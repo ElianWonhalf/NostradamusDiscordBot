@@ -88,6 +88,9 @@ model:
     getMemberId:
       description: "Provides the ID of the specified member."
       notFound: "I... Have no idea who that could be, sorry."
+    getUnassignedRoles:
+      description: "Yield a list of all the unassigned roles. DO NOT DELETE ANY WITHOUT ASKING LILY PLS"
+      wait: ":alogo: Please wait, gathering the roles, this might take a while..."
     help:
       description: "Provides the list of commands"
       notice: "%% seems to need help in %%.\n%%"

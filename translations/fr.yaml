@@ -59,6 +59,8 @@ model:
     getMemberId:
       description: "Donne l'ID du membre spécifié"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
+    getUnassignedRoles:
+      description: "Donne une liste de tous les rôles non assignés. N'EN SUPPRIMEZ AUCUN SANS DEMANDER À LILY SVP"
     help:
       description: "Donne une liste des commandes"
       timeout: "Trop tard ! Tu peux renvoyer la commande si tu veux :eowynsheep: ."
