@@ -217,6 +217,7 @@ const Guild = {
     findDesignatedMemberInMessage: (message) => {
         let foundMembers = [];
         let certain = true;
+        const memberList = message.guild.members.cache.concat(bot.users.cache);
 
         if (message.mentions.members.array().length > 0) {
             foundMembers = message.mentions.members.array();
@@ -224,13 +225,11 @@ const Guild = {
             const ids = message.content.match(/[0-9]{18}/);
 
             ids.map(id => {
-                if (message.guild.members.cache.has(id)) {
-                    foundMembers.push(message.guild.members.cache.get(id));
+                if (memberList.has(id)) {
+                    foundMembers.push(memberList.get(id));
                 }
             });
         } else {
-            const memberList = message.guild.members.cache.array();
-
             certain = false;
             memberList.forEach(member => {
                 const hasNickname = member.nickname !== undefined && member.nickname !== null;
