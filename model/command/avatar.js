@@ -7,7 +7,7 @@ const Guild = require('../guild');
  * @param {Message} message
  */
 module.exports = {
-    aliases: [],
+    aliases: ['av'],
     category: CommandCategory.FUN,
     isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message, args) => {

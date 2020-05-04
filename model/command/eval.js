@@ -43,7 +43,7 @@ module.exports = {
         let output = null;
 
         try {
-            output = eval(code); // Spoopy! 🎃 🦇 👻 ☠ 🕷
+            output = eval(`(async () => {${code}})()`); // Spoopy! 🎃 🦇 👻 ☠ 🕷
         } catch (exception) {
             output = `**${exception.name}: ${exception.message}**\n${exception.stack}`;
         }

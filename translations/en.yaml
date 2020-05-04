@@ -178,18 +178,16 @@ model:
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mod channels.\n"
     watch:
       description: "Manage the watched member list"
+      error: "I don't... Wha- Who?"
       add:
         success: "%% is now in the watched member list :eyes: ."
         alreadyWatched: "%% is already in the watched member list :WinkKitteh: ."
-        error: "I don't... Wha- Who?"
         noReason: "You need to specify a reason so we don't forget why I am watching that member :nail_care:"
       remove:
         success: "%% is no longer in the watched member list :relieved: ."
-        error: "I don't... Wha- Who?"
       edit:
         success: "Successfully edited the reason for %% :eyes: ."
         redirect: "%% is not in the watched member list yet, let's add them :WinkKitteh: ."
-        error: "I don't... Wha- Who?"
         noReason: "You need to specify a reason so we don't forget why I am watching that member :nail_care:"
   commandCategory:
     moderation: "Moderation"
@@ -232,3 +230,4 @@ model:
     joinedVocal: "just joined vocal channel %%"
     leftVocal: "just left vocal channel %%"
     active: "is now active in channel %%"
+    joined: "just joined the server"

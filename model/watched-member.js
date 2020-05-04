@@ -25,6 +25,18 @@ const WatchedMember = {
         });
     },
 
+    /**
+     * @param {GuildMember} member
+     */
+    guildMemberAddHandler: async (member) => {
+        if (WatchedMember.isMemberWatched(member.id)) {
+            WatchedMember.logEvent(
+                member,
+                trans('model.watchedMember.joined', [], 'en')
+            );
+        }
+    },
+
     messageHandler: async (message) => {
         if (WatchedMember.isMemberWatched(message.author.id)) {
             const currentTimestamp = (new Date()).getTime();

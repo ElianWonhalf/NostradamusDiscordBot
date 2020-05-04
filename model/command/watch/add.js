@@ -5,35 +5,30 @@ const WatchedMember = require('../../watched-member');
 /**
  * @param {Message} message
  * @param {Array} args
+ * @param {Object} target
  */
-module.exports = async (message, args) => {
+module.exports = async (message, args, target) => {
     if (args.length > 2) {
-        const memberToWatch = Guild.findDesignatedMemberInMessage(message);
+        if (!WatchedMember.isMemberWatched(target.id)) {
+            args.shift(); // Remove the action
+            args.shift(); // Remove the member
+            const reason = args.join(' ');
 
-        if (memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
-            if (!WatchedMember.isMemberWatched(memberToWatch.foundMembers[0])) {
-                args.shift(); // Remove the action
-                args.shift(); // Remove the member
-                const reason = args.join(' ');
-
-                WatchedMember.add(memberToWatch.foundMembers[0].id, reason).then(() => {
-                    message.reply(trans(
-                        'model.command.watch.add.success',
-                        [memberToWatch.foundMembers[0].toString()],
-                        'en'
-                    ));
-                }).catch((error) => {
-                    Logger.error(error.message);
-                });
-            } else {
+            WatchedMember.add(target.id, reason).then(() => {
                 message.reply(trans(
-                    'model.command.watch.add.alreadyWatched',
-                    [memberToWatch.foundMembers[0].toString()],
+                    'model.command.watch.add.success',
+                    [target.label],
                     'en'
                 ));
-            }
+            }).catch((error) => {
+                Logger.error(error.message);
+            });
         } else {
-            message.reply(trans('model.command.watch.add.error', [], 'en'));
+            message.reply(trans(
+                'model.command.watch.add.alreadyWatched',
+                [target.label],
+                'en'
+            ));
         }
     } else {
         message.reply(trans('model.command.watch.add.noReason', [], 'en'));
