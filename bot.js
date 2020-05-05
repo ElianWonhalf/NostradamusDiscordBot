@@ -3,13 +3,19 @@ const Dotenv = require('dotenv');
 
 Dotenv.config();
 
-const mainProcess = () => {
+const mainProcess = (enableHue) => {
     const ChildProcess = require('child_process');
 
     process.on('uncaughtException', Logger.exception);
 
     Logger.info('Spawning bot subprocess...');
-    let botProcess = ChildProcess.spawn(process.argv[0], [process.argv[1], 'bot']);
+    const args = [process.argv[1], 'bot'];
+
+    if (!enableHue) {
+        args.push('--without-hue');
+    }
+
+    let botProcess = ChildProcess.spawn(process.argv[0], args);
 
     const stdLog = (callback) => {
         return (data) => {
@@ -50,10 +56,11 @@ const mainProcess = () => {
     Logger.info('Bot subprocess spawned');
 };
 
-const botProcess = () => {
+const botProcess = (enableHue) => {
     const Discord = require('discord.js');
     const CallerId = require('caller-id');
 
+    global.enableHue = enableHue;
     global.testMode = process.env.NOSTRADAMUS_TEST === '1';
     global.bot = new Discord.Client({ fetchAllMembers: true });
     global.debug = (message) => {
@@ -91,12 +98,18 @@ const botProcess = () => {
 
     Command.init();
 
-    fs.readdirSync('./event/bot/')
-        .filter(filename => filename.endsWith('.js'))
-        .map(filename => filename.substr(0, filename.length - 3))
-        .forEach(filename => {
-            bot.on(filename, require(`./event/bot/${filename}`));
-        });
+    bot.on('ready', () => {
+        fs.readdirSync('./event/bot/')
+            .filter(filename => filename.endsWith('.js'))
+            .map(filename => filename.substr(0, filename.length - 3))
+            .forEach(filename => {
+                if (filename !== 'ready') {
+                    bot.on(filename, require(`./event/bot/${filename}`));
+                } else {
+                    require(`./event/bot/${filename}`)();
+                }
+            });
+    });
 
     Logger.info('--------');
 
@@ -104,4 +117,37 @@ const botProcess = () => {
     bot.login(Config.token);
 };
 
-process.argv[2] === 'bot' ? botProcess() : mainProcess();
+const hueProcess = () => {
+    const Discord = require('discord.js');
+
+    global.bot = new Discord.Client({ fetchAllMembers: true });
+
+    require('./model/translator');
+
+    const Config = require('./config.json');
+
+    bot.on('ready', () => {
+        require('./model/hue.js').flash();
+    });
+
+    Logger.info('Logging in...');
+    bot.login(Config.token);
+};
+
+let enableHue = process.argv[2] !== '--without-hue';
+
+switch (process.argv[2]) {
+    case 'bot':
+        enableHue = process.argv[3] !== '--without-hue';
+        botProcess(enableHue);
+        break;
+
+    case 'hue':
+        hueProcess();
+        break;
+
+    default:
+        enableHue = process.argv[2] !== '--without-hue';
+        mainProcess(enableHue);
+        break;
+}
