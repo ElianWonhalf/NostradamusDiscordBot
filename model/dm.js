@@ -24,7 +24,9 @@ const SemiBlacklist = {
      * @param {boolean} isCommand
      */
     parseMessage: async (message, isCommand) => {
-        if (message.guild === null && !isCommand && !SemiBlacklist.ignoredUserDMs.includes(message.author.id)) {
+        const isMom = message.author.id === Config.admin;
+
+        if (message.guild === null && !isMom && !isCommand && !SemiBlacklist.ignoredUserDMs.includes(message.author.id)) {
             const embed = await Guild.messageToEmbed(message);
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);

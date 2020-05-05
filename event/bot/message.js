@@ -1,5 +1,6 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
+const Hue = require('../../model/hue');
 const Guild = require('../../model/guild');
 const Blacklist = require('../../model/blacklist');
 const MemberRolesFlow = require('../../model/member-roles-flow');
@@ -17,6 +18,12 @@ module.exports = async (message) => {
 
     SocialNetworkIntegration.handleMessage(message);
     WatchedMember.messageHandler(message);
+
+    if (enableHue) {
+        if (message.mentions.roles.size > 0 || message.mentions.users.has(Config.admin)) {
+            Hue.flash(true);
+        }
+    }
 
     if (message.channel.id === Config.channels.roles) {
         setTimeout(() => {

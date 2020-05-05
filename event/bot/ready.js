@@ -4,11 +4,19 @@ const Language = require('../../model/language');
 const Country = require('../../model/country');
 const DM = require('../../model/dm');
 const WatchedMember = require('../../model/watched-member');
+const Hue = require('../../model/hue');
 
 module.exports = async () => {
     Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
 
     Logger.info('--------');
+
+    if (enableHue) {
+        Logger.info('Initializing light system...');
+        await Hue.flash(true);
+
+        Logger.info('--------');
+    }
 
     Logger.info('Syncing guilds...');
     await Guild.init(bot);
