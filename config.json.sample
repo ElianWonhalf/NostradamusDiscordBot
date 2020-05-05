@@ -51,6 +51,7 @@
         "publicModLog": "",
         "anonymousMessages": "",
         "modLog": "",
+        "modDMs": "",
         "automod": "",
         "serverLog": "",
         "memberFlowLog": "",

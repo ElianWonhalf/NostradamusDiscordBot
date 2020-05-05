@@ -31,7 +31,7 @@ const SemiBlacklist = {
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
 
-            Guild.botChannel.send(
+            Guild.modDMsChannel.send(
                 trans('model.dm.notification', [message.author], 'en'),
                 {
                     embed: embed,
