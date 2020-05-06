@@ -236,9 +236,11 @@ const Guild = {
         } else {
             certain = false;
             memberList.forEach(member => {
+                const user = member.user === undefined ? member : member.user;
+
                 const hasNickname = member.nickname !== undefined && member.nickname !== null;
-                const nickname = hasNickname ? `${member.nickname.toLowerCase()}#${member.user.discriminator}` : '';
-                const username = `${member.user.username.toLowerCase()}#${member.user.discriminator}`;
+                const nickname = hasNickname ? `${member.nickname.toLowerCase()}#${user.discriminator}` : '';
+                const username = `${user.username.toLowerCase()}#${user.discriminator}`;
                 const content = message.cleanContent.toLowerCase().split(' ').splice(1).join(' ');
 
                 if (content.length > 0) {
