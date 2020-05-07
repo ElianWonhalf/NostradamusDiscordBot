@@ -119,8 +119,9 @@ class Hue
         };
 
         const connectWithCode = async () => {
-            this._api = await hueRemoteBootstrap.connectWithCode(this.credentials.code).catch(async (exception) => {
+            this._api = await hueRemoteBootstrap.connectWithCode(this.credentials.code, null, 60000).catch(async (exception) => {
                 Logger.error(exception.stack);
+                Logger.exception(exception.response.data);
                 await askCodeToMom();
             });
         };
@@ -166,12 +167,6 @@ class Hue
             }
 
             if (this._api !== undefined && this._api !== null) {
-                setInterval(refreshTokens, 60 * 60 * 1000);
-
-                if (this.credentials.accessToken === null) {
-                    refreshTokens();
-                }
-
                 this.initializing = false;
                 this.initialized = true;
             } else {
