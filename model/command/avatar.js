@@ -17,7 +17,11 @@ module.exports = {
             const result = Guild.findDesignatedMemberInMessage(message);
 
             if (result.foundMembers.length > 0) {
-                user = result.foundMembers[0].user;
+                if (result.foundMembers[0].user !== undefined) {
+                    user = result.foundMembers[0].user;
+                } else {
+                    user = result.foundMembers[0];
+                }
             }
         } else {
             user = message.author;
