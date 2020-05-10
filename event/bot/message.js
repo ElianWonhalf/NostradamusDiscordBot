@@ -19,9 +19,26 @@ module.exports = async (message) => {
     SocialNetworkIntegration.handleMessage(message);
     WatchedMember.messageHandler(message);
 
-    if (enableHue) {
+    if (enableHue && message.author.id !== Config.admin) {
         if (message.mentions.roles.size > 0 || message.mentions.users.has(Config.admin)) {
             Hue.flash(true);
+        } else {
+            let found = false;
+            const mom = await bot.users.fetch(Config.admin);
+            const username = mom.username;
+            const searching = [
+                Config.admin,
+                username,
+                'liily'
+            ].concat(username.split(' ')).map(value => value.toLowerCase());
+
+            searching.forEach(search => {
+                found = found || message.content.toLowerCase().indexOf(search) > -1;
+            });
+
+            if (found) {
+                Hue.flash(true);
+            }
         }
     }
 
