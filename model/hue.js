@@ -93,13 +93,6 @@ class Hue
         }, 2000);
     }
 
-    async api()
-    {
-        await this.init();
-
-        return this._api;
-    }
-
     async init()
     {
         const askCodeToMom = async () => {
