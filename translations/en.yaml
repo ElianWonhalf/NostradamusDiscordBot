@@ -93,6 +93,9 @@ model:
     getUnassignedRoles:
       description: "Yield a list of all the unassigned roles. DO NOT DELETE ANY WITHOUT ASKING LILY PLS"
       wait: ":alogo: Please wait, gathering the roles, this might take a while..."
+    glottophobia:
+        description: "Explains what glottophobia is and that it's not allowed on our server."
+        reply: "We do not allow glottophobia on this server. Mockery and hatred towards lexical, grammatical, idiomatic or phonetic particularities of a person will be punished. This rule is applicable to natives but also learners of any specific dialect; it is applicable to all languages and a fortiori to all dialects and superdialects of the French language (from France, Canada, Maghreb, etc.)."
     help:
       description: "Provides the list of commands"
       notice: "%% seems to need help in %%.\n%%"
