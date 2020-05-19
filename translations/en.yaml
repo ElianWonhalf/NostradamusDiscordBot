@@ -78,6 +78,8 @@ model:
       notFound: "I... Have no idea who that could be, sorry."
     edit:
       description: "Edit a message sent by the bot"
+    eval:
+      description: "Execute JavaScript code! Spoopy! 🎃 🦇 👻 ☠ 🕷"
     games:
       description: "To be notified when a game is held"
       alertsOn: "You will now be notified when there's a game."
@@ -107,6 +109,8 @@ model:
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
+    languagehard:
+      description: "Reminds you of a very important concept about language learning"
     langue:
       description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLanguage difficulty depends entirely on the languages you already know and your own incentives – like your motivation\n"
@@ -131,7 +135,7 @@ model:
       alertsOn: "You will now be notified when a reading is being held."
       alertsOff: "You will now no longer be notified when a reading is being held."
     panic:
-      description: "Prevents everyone in the server from writing (except mods of course)"
+      description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
     post:
       description: "Sends a message to the server from the bot"
     quote:
@@ -177,7 +181,7 @@ model:
       memberNotGuessed: "I didn't understand whom you wanted to warn, so I will just write \"<@ID>\" in the command below."
       answer: "%%\n\nPlease copy one of the commands below, depending on the warned member's language, and send it in one of the mod channels.\n"
     watch:
-      description: "Manage the watched member list"
+      description: "%%watch (add/remove/edit) - Manage the watched member list"
       error: "I don't... Wha- Who?"
       add:
         success: "%% is now in the watched member list :eyes: ."

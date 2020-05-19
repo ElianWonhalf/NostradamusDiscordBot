@@ -50,6 +50,8 @@ model:
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     edit:
       description: "Modifie un message envoyé par le bot"
+    eval:
+      description: "Exécute du code JavaScript ! Spoopy ! 🎃 🦇 👻 ☠ 🕷"
     games:
       description: "Pour être mentionné quand il y a un jeu"
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
@@ -75,6 +77,8 @@ model:
       missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
       illegal: ":roocop: Tu dois demander aux modos si tu veux changer ton niveau en %%"
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
+    languagehard:
+      description: "Te rappelle un concept très important dans l'apprentissage de langues"
     langue:
       description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLa difficulté d'une langue dépend entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
@@ -96,7 +100,7 @@ model:
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
       alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
     panic:
-      description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr)"
+      description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
     post:
       description: "Envoie un message sur le serveur depuis le bot"
     quote:
@@ -135,7 +139,7 @@ model:
       description: "Donne des instructions pour avertir un troll"
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
     watch:
-      description: "Ajoute un membre à la liste des membres surveillés"
+      description: "%%watch (add/remove/edit) - Gérer la liste des membres surveillés"
   commandCategory:
     moderation: "Modération"
     administration: "Administration"

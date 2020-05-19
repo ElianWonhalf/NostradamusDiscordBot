@@ -139,7 +139,7 @@ class HelpDialog
         const category = this.categoriesMapping.get(collection.first().emoji.name);
         const commandsEmbed = new Discord.MessageEmbed();
         const commands = this.categoryCommandMapping.get(category).reduce((accumulator, command, commandName) => {
-            accumulator += `**${Config.prefix}${commandName}** ${trans(`model.command.${kebabCaseToCamelCase(commandName)}.description`)}\n\n`;
+            accumulator += `**${Config.prefix}${commandName}** ${trans(`model.command.${kebabCaseToCamelCase(commandName)}.description`, [Config.prefix])}\n\n`;
 
             return accumulator;
         }, '');
