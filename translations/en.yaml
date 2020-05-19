@@ -98,6 +98,9 @@ model:
       notice: "%% seems to need help in %%.\n%%"
       timeout: "Timed out! You may send the command again :eowynsheep: ."
       embedTitle: "Help command"
+    homework:
+      description: "Explains rule 2 of our server"
+      reply: "This server is for learning, and not meant as a tool for cheating on academic assignments. Homework help is not allowed. You can ask about concepts related to homework, but no specific homework questions should be discussed."
     kill:
       description: "Kills the bot process"
     language:
