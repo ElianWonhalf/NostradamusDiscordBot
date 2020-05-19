@@ -12,7 +12,24 @@ module.exports = {
     category: CommandCategory.ADMINISTRATION,
     isAllowedForContext: CommandPermission.isMemberMod,
     process: async (message, args) => {
-        const panicOverWords = ['off', 'over'];
+        const panicOverWords = [
+            'off',
+            'over',
+            'done',
+            'stop',
+            'calm',
+            'fini',
+            'finie',
+            'passé',
+            'passée',
+            'arrête',
+            'arrete',
+            'arrêter',
+            'arreter',
+            'calm',
+            'calme',
+            'calmer'
+        ];
         const enabled = args.length < 1 || panicOverWords.indexOf(args[0]) < 0;
         const officialMemberRole = Guild.discordGuild.roles.cache.get(Config.roles.officialMember);
 

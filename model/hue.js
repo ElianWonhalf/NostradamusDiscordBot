@@ -112,7 +112,11 @@ class Hue
         };
 
         const connectWithCode = async () => {
-            this._api = await hueRemoteBootstrap.connectWithCode(this.credentials.code, null, 60000).catch(async (exception) => {
+            this._api = await hueRemoteBootstrap.connectWithCode(this.credentials.code, null, 60000).then((api) => {
+                Logger.info('Successfully connected to Hue with code!');
+
+                return api;
+            }).catch(async (exception) => {
                 Logger.error(exception.stack);
                 Logger.exception(exception.response.data);
                 await askCodeToMom();
@@ -139,8 +143,16 @@ class Hue
                     this.credentials.accessToken,
                     this.credentials.refreshToken
                 ).catch(async () => {
-                    Logger.warning('Could not connect to hue with tokens, trying with code...');
-                    await connectWithCode();
+                    Logger.warning('Could not connect to hue with tokens, refreshing tokens...');
+                    await refreshTokens();
+
+                    this._api = await hueRemoteBootstrap.connectWithTokens(
+                        this.credentials.accessToken,
+                        this.credentials.refreshToken
+                    ).catch(async () => {
+                        Logger.warning('Could not connect to hue with tokens, trying with code...');
+                        await connectWithCode();
+                    });
                 });
             }
 
