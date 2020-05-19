@@ -67,6 +67,9 @@ model:
       description: "Donne une liste des commandes"
       timeout: "Trop tard ! Tu peux renvoyer la commande si tu veux :eowynsheep: ."
       embedTitle: "Commande help"
+    homework:
+      description: "Explique la règle numéro 2 du serveur."
+      reply: "Ce serveur est destiné à l'apprentissage et n'est pas un outil pour tricher sur les travaux académiques. L'aide aux devoirs n'est pas autorisée. Vous pouvez poser des questions sur les concepts liés aux devoirs, mais aucune question sur un devoir spécifique ne devrait être posée."
     kill:
       description: "Tue le processus du bot"
     language:
