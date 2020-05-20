@@ -65,7 +65,7 @@ model:
       description: "Donne une liste de tous les rôles non assignés. N'EN SUPPRIMEZ AUCUN SANS DEMANDER À LILY SVP"
     glottophobia:
       description: "Explique ce que c'est que la glottophobie et que ce n'est pas permis ici."
-      reply: "La glottophobie est interdite sur ce serveur. Toute moquerie et tout discours haineux vis-à-vis des particularités lexicales, grammaticales, idiomatiques ou phonétiques d'une personne sera puni. La règle vaut pour les natifs mais aussi pour les apprenants d'un dialecte particulier ; elle vaut pour toutes les langues et a fortiori pour tous les dialectes et superdialectes du français (dialectes métropolitains, canadiens, maghrébins etc.)."
+      reply: "\nLa glottophobie est interdite sur ce serveur. Toute moquerie et tout discours haineux vis-à-vis des particularités lexicales, grammaticales, idiomatiques ou phonétiques d'une personne sera puni. La règle vaut pour les natifs mais aussi pour les apprenants d'un dialecte particulier ; elle vaut pour toutes les langues et a fortiori pour tous les dialectes et superdialectes du français (dialectes métropolitains, canadiens, maghrébins etc.).\n"
     help:
       description: "Donne une liste des commandes"
       timeout: "Trop tard ! Tu peux renvoyer la commande si tu veux :eowynsheep: ."
