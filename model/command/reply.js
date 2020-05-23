@@ -1,3 +1,4 @@
+const Logger = require('@elian-wonhalf/pretty-logger');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
@@ -9,6 +10,7 @@ module.exports = {
     category: CommandCategory.FUN,
     isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message) => {
+        message.delete().catch(Logger.exception);
         message.channel.send(
             trans(
                 `model.command.reply.${Math.random() < 0.92 ? 'calisse' : 'tabarnak'}`,
