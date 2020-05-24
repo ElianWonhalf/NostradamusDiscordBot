@@ -33,7 +33,7 @@ module.exports = {
         const enabled = args.length < 1 || panicOverWords.indexOf(args[0]) < 0;
         const officialMemberRole = Guild.discordGuild.roles.cache.get(Config.roles.officialMember);
 
-        Logger.warning((enabled ? 'Entering' : 'Leaving') + ' server panic mode');
+        Logger.warning(`${enabled ? 'Entering' : 'Leaving'} server panic mode (called by ${message.author.username})`);
         let permissions = officialMemberRole.permissions;
 
         if (enabled) {
