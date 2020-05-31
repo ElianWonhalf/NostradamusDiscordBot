@@ -5,7 +5,8 @@ const Config = require('../config.json');
 const pool = MySQL.createPool(Config.db);
 
 const connection = {
-    query: function () {
+    query: function ()
+    {
         const queryArgs = Array.prototype.slice.call(arguments),
             events = [],
             eventNameIndex = {};
@@ -35,6 +36,15 @@ const connection = {
                 return this;
             }
         };
+    },
+
+    asyncQuery: function ()
+    {
+        const queryArgs = Array.prototype.slice.call(arguments);
+
+        return new Promise((resolve, reject) => {
+            this.query(...queryArgs).on('end', resolve).on('error', reject);
+        });
     }
 };
 

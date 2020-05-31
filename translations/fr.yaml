@@ -18,12 +18,11 @@ model:
     anonymous:
       description: "Envoie un message anonyme à l'équipe de modération"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"
-      firstStep: "Est-ce que je devrais parler français ou anglais ? (clique sur la bonne réaction ci-dessous)\n\n:one: Anglais\n:two: Français"
-      secondStep: "À qui veux-tu envoyer ton message anonyme ? (clique sur la bonne réaction ci-dessous)\n\n:one: À l'admin\n:two: Aux modos"
-      thirdStep: "Pigé ! Tu peux maintenant écrire ton message. Je n'enverrai cependant que le premier ! Assure-toi de dire tout ce que tu as à dire en un seul message. Aussi, les destinataires ne seront pas capables de te répondre étant donné que c'est anonyme. Si tu as besoin d'une réponse, tu devrais expliquer dans ton message comment ils peuvent te répondre, sachant qu'ils ne savent pas qui tu es. Tu as trente minutes pour l'écrire :) ."
-      fourthStepNoMessage: "On dirait que tu n'as envoyé aucun message. Demande d'envoi de message anonyme annulée. Tu peux réessayer quand tu veux en envoyant la commande `%%anonymous`."
-      fourthStepSuccess: "Ton message anonyme a été envoyé avec succès !"
-      fourthStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
+      firstStep: "\nEst-ce que je devrais parler français ou anglais ? (clique sur la bonne réaction ci-dessous)\n\n:one: Anglais\n:two: Français\n"
+      secondStep: "Pigé ! Tu peux maintenant écrire ton message. Je n'enverrai cependant que le premier ! Assure-toi de dire tout ce que tu as à dire en un seul message. Aussi, les destinataires ne seront pas capables de te répondre étant donné que c'est anonyme. Si tu as besoin d'une réponse, tu devrais expliquer dans ton message comment ils peuvent te répondre, sachant qu'ils ne savent pas qui tu es. Tu as trente minutes pour l'écrire :) ."
+      thirdStepNoMessage: "On dirait que tu n'as envoyé aucun message. Demande d'envoi de message anonyme annulée. Tu peux réessayer quand tu veux en envoyant la commande `%%anonymous`."
+      thirdStepSuccess: "Ton message anonyme a été envoyé avec succès !"
+      thirdStepErrorAnswer: "Il y a eu un problème lors de l'envoi de votre message et nous avons été mis au courant. Veuillez réessayer plus tard."
     audit:
       description: "Vérifie s'il y a un écart entre le serveur et la base de données"
     avatar:

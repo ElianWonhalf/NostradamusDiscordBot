@@ -34,14 +34,13 @@ model:
     anonymous:
       description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
-      firstStep: "Should I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French"
-      secondStep: "To whom do you want to send your anonymous message? (click on the right reaction below)\n\n:one: To the admin\n:two: To the mods"
-      thirdStep: "Gotcha! You can now write your message. I will only send the first one, though, so make sure to put everything in one message. Also, the recipients will not be able to respond since it's anonymous. If you need an answer, you should explain how they can reply in your message, keeping in mind that they don't know who you are. You have thirty minutes to write it :)."
-      fourthStepNoMessage: "It seems that you didn't send a message. Your anonymous message request has been cancelled. You can try again anytime by sending the command `%%anonymous`."
-      anonymousMessageWrapper: "Someone sent an anonymous message:\n\n%%"
-      fourthStepSuccess: "Your anonymous message has been successfully sent!"
-      fourthStepErrorNotice: "The anonymous message could not be sent! Please contact Lily so she can check the logs!"
-      fourthStepErrorAnswer: "Your message could not be sent due to a known issue that we are working on. Please try again later."
+      firstStep: "\nShould I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French\n"
+      secondStep: "Gotcha! You can now write your message. I will only send the first one, though, so make sure to put everything in one message. Also, the recipients will not be able to respond since it's anonymous. If you need an answer, you should explain how they can reply in your message, keeping in mind that they don't know who you are. You have thirty minutes to write it :)."
+      thirdStepNoMessage: "It seems that you didn't send a message. Your anonymous message request has been cancelled. You can try again anytime by sending the command `%%anonymous`."
+      thirdStepSuccess: "Your anonymous message has been successfully sent!"
+      thirdStepErrorNotice: "The anonymous message could not be sent! Please contact Lily so she can check the logs!"
+      thirdStepErrorAnswer: "Your message could not be sent due to a known issue that we are working on. Please try again later."
+      anonymousMessageWrapper: "Someone sent an anonymous message:"
     audit:
       description: "Checks for disparity between the server and database"
       totalLanguagesAndCountriesInDB: "I've found %% languages, and %% countries in the DB.\n"
@@ -170,6 +169,13 @@ model:
       description: "Make Nostradamus speak in the voice channel you're in!"
       format: "You have to be connected in a voice channel, enter a two letter language prefix, then the text you want me to say in vocal."
       error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
+    statsBackfill:
+      description: "%%stats-backfill messages - Backfill the stats tables in the database."
+      messages:
+        warning: "This command will empty all data in the messages stats table and start building back up by backfilling it slowly. Please do not change server architecture (change channels, roles, or permissions in general) while it's processing. It will send a message once it is over.\n\nBeginning now."
+        gatheringStatus: "Gathered %% messages so far. Currently gathering messages from channel #%%"
+        savingStatus: "Gathered %% messages in total. Currently saving information in database..."
+        done: "Messages stat backfilling complete!"
     trombinoscope:
       description: "Explanation of the trombinoscope channel"
       reply: "\n**Trombine** is a slang term meaning \"face\".\n**-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"

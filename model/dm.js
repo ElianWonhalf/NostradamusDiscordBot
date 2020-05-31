@@ -3,19 +3,19 @@ const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
-const SemiBlacklist = {
+const DM = {
     ignoredUserDMs: [],
 
     init: () => {
         Guild.events.on('member.ignoreDMStart', (member) => {
-            if (!SemiBlacklist.ignoredUserDMs.includes(member.user.id)) {
-                SemiBlacklist.ignoredUserDMs.push(member.user.id);
+            if (!DM.ignoredUserDMs.includes(member.user.id)) {
+                DM.ignoredUserDMs.push(member.user.id);
             }
         });
 
         Guild.events.on('member.ignoreDMEnd', (member) => {
-            const idx = SemiBlacklist.ignoredUserDMs.findIndex(id => id === member.user.id);
-            if (idx >= 0) SemiBlacklist.ignoredUserDMs.splice(idx, 1);
+            const idx = DM.ignoredUserDMs.findIndex(id => id === member.user.id);
+            if (idx >= 0) DM.ignoredUserDMs.splice(idx, 1);
         });
     },
 
@@ -26,7 +26,7 @@ const SemiBlacklist = {
     parseMessage: async (message, isCommand) => {
         const isMom = message.author.id === Config.admin;
 
-        if (message.guild === null && !isMom && !isCommand && !SemiBlacklist.ignoredUserDMs.includes(message.author.id)) {
+        if (message.guild === null && !isMom && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
             const embed = await Guild.messageToEmbed(message);
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
@@ -52,4 +52,4 @@ const SemiBlacklist = {
     },
 };
 
-module.exports = SemiBlacklist;
+module.exports = DM;

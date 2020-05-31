@@ -13,68 +13,46 @@ const FRENCH = 'fr';
 const ENGLISH = 'en';
 let language = null;
 
-const ADMIN = 'admin';
-const MOD = 'mod';
-let recipient = null;
+const THIRTY_MINUTES = 1800000;
 
 /**
- * @param {Collection<Snowflake, Message>} collection
+ * @param {string} string
+ * @returns {string}
  */
-const fourthStep = async (collection) => {
-    let message = null;
+const escapeRegex = (string) => {
+    return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
 
-    if (collection.size > 0) {
-        message = collection.first();
-    }
-
-    if (message === null) {
-        channel.send(trans('model.command.anonymous.fourthStepNoMessage', [Config.prefix], language));
-        Guild.events.emit('member.ignoreDMEnd', member);
-    } else {
-        let recipientChannel = Guild.anonymousMessagesChannel;
-
-        if (recipient === ADMIN) {
-            recipientChannel = await bot.users.cache.get(Config.admin).createDM();
-        }
-
-        recipientChannel.send(
-            trans('model.command.anonymous.anonymousMessageWrapper', [message.content], 'en'),
+/**
+ * @param {Message} message
+ */
+const thirdStep = async (message) => {
+    const commandSearch = new RegExp(`^${escapeRegex(Config.prefix)}anonymous`, 'u');
+    const content = message.content.replace(commandSearch, '').trim();
+    const sendAnonymousMessage = () => {
+        Guild.anonymousMessagesChannel.send(
+            content,
             {
                 files: message.attachments.map(messageAttachment => {
                     return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
                 })
             }
         ).then(() => {
-            channel.send(trans('model.command.anonymous.fourthStepSuccess', [], language));
+            channel.send(trans('model.command.anonymous.thirdStepSuccess', [], language));
             Guild.events.emit('member.ignoreDMEnd', member);
+            language = null;
         }).catch((exception) => {
             Logger.exception(exception);
-            Guild.botChannel.send(trans('model.command.anonymous.fourthStepErrorNotice', [], 'en'));
-            channel.send(trans('model.command.anonymous.fourthStepErrorAnswer', [], language));
+            Guild.botChannel.send(trans('model.command.anonymous.thirdStepErrorNotice', [], 'en'));
+            channel.send(trans('model.command.anonymous.thirdStepErrorAnswer', [], language));
             Guild.events.emit('member.ignoreDMEnd', member);
+            language = null;
         });
-    }
-};
-
-/**
- * @param {Collection<Snowflake, MessageReaction>} collection
- */
-const thirdStep = async (collection) => {
-    if (collection.size < 1) {
-        Guild.events.emit('member.ignoreDMEnd', member);
-        return;
-    }
-
-    recipient = collection.first().emoji.name === EmojiCharacters[1] ? ADMIN : MOD;
-
-    const filter = (message) => {
-        return message.author.id === member.user.id;
     };
 
-    await channel.send(trans('model.command.anonymous.thirdStep', [], language));
-
-    // 30 minutes
-    channel.awaitMessages(filter, { time: 1800000, max: 1 }).then(fourthStep).catch(Logger.exception);
+    Guild.anonymousMessagesChannel.send(
+        trans('model.command.anonymous.anonymousMessageWrapper', [], 'en')
+    ).then(sendAnonymousMessage).catch(sendAnonymousMessage);
 };
 
 /**
@@ -83,23 +61,40 @@ const thirdStep = async (collection) => {
 const secondStep = async (collection) => {
     if (collection.size < 1) {
         Guild.events.emit('member.ignoreDMEnd', member);
+        language = null;
+
         return;
     }
 
     language = collection.first().emoji.name === EmojiCharacters[1] ? ENGLISH : FRENCH;
 
-    const filter = (reaction, user) => {
-        const emoji = reaction.emoji.name;
-        return (emoji === EmojiCharacters[1] || emoji === EmojiCharacters[2]) && user.id === member.user.id;
+    const filter = (message) => {
+        return message.author.id === member.user.id;
     };
 
-    const secondStepMessage = await channel.send(trans('model.command.anonymous.secondStep', [], language));
+    await channel.send(trans('model.command.anonymous.secondStep', [], language));
 
-    // 5 minutes
-    secondStepMessage.awaitReactions(filter, { time: 300000, max: 1 }).then(thirdStep).catch(Logger.exception);
+    /**
+     * @param {Collection<Snowflake, MessageReaction>} collection
+     */
+    channel.awaitMessages(filter, { time: THIRTY_MINUTES, max: 1 }).then((collection) => {
+        let message = null;
 
-    await secondStepMessage.react(EmojiCharacters[1]);
-    await secondStepMessage.react(EmojiCharacters[2]);
+        if (collection.size > 0) {
+            message = collection.first();
+        }
+
+        if (message === null) {
+            channel.send(trans('model.command.anonymous.thirdStepNoMessage', [Config.prefix], language));
+            Guild.events.emit('member.ignoreDMEnd', member);
+            language = null;
+        } else {
+            thirdStep(message);
+        }
+    }).catch((error) => {
+        Logger.exception(error);
+        language = null;
+    });
 };
 
 /**
@@ -109,7 +104,7 @@ module.exports = {
     aliases: [],
     category: CommandCategory.MODERATION,
     isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message) => {
+    process: async (message, args) => {
         member = await Guild.getMemberFromMessage(message);
         channel = message.channel;
 
@@ -118,19 +113,23 @@ module.exports = {
         } else {
             Guild.events.emit('member.ignoreDMStart', member);
 
-            const filter = (reaction, user) => {
-                const emoji = reaction.emoji.name;
-                return (emoji === EmojiCharacters[1] || emoji === EmojiCharacters[2]) && user.id === member.user.id;
-            };
+            if (args.length < 1) {
+                const filter = (reaction, user) => {
+                    const emoji = reaction.emoji.name;
+                    return (emoji === EmojiCharacters[1] || emoji === EmojiCharacters[2]) && user.id === member.user.id;
+                };
 
-            /** {Message} firstStepMessage */
-            const firstStepMessage = await channel.send(trans('model.command.anonymous.firstStep'));
+                /** {Message} firstStepMessage */
+                const firstStepMessage = await channel.send(trans('model.command.anonymous.firstStep'));
 
-            // 5 minutes
-            firstStepMessage.awaitReactions(filter, { time: 300000, max: 1 }).then(secondStep).catch(Logger.exception);
+                // 5 minutes
+                firstStepMessage.awaitReactions(filter, { time: 300000, max: 1 }).then(secondStep).catch(Logger.exception);
 
-            await firstStepMessage.react(EmojiCharacters[1]);
-            await firstStepMessage.react(EmojiCharacters[2]);
+                await firstStepMessage.react(EmojiCharacters[1]);
+                await firstStepMessage.react(EmojiCharacters[2]);
+            } else {
+                await thirdStep(message);
+            }
         }
     }
 };

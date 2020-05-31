@@ -2,6 +2,12 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
+const cachelessRequire = (path) => {
+    delete require.cache[require.resolve(path)];
+
+    return require(path);
+};
+
 /**
  * @param {Message} message
  * @param {Array} args
@@ -30,7 +36,7 @@ module.exports = {
                     case 'add':
                     case 'remove':
                     case 'edit':
-                        (require('./watch/' + args[0].toLowerCase() + '.js'))(message, args, target);
+                        (cachelessRequire('./watch/' + args[0].toLowerCase() + '.js'))(message, args, target);
                 }
             } else {
                 message.reply(trans('model.command.watch.error', [], 'en'));

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
-const GuildAuditLogs = Discord.GuildAuditLogs;
 const Config = require('../config.json');
 const Guild = require('./guild');
+
+const GuildAuditLogs = Discord.GuildAuditLogs;
 
 const ModerationLog = {
     memberLeftDate: null,

@@ -47,7 +47,7 @@ module.exports = async () => {
     DM.init();
     WatchedMember.init();
 
-    if (process.argv[3] === '--reboot') {
+    if (process.argv.includes('--reboot')) {
         Guild.botChannel.send('I\'m back :) .');
     }
 };

@@ -46,7 +46,10 @@ const mainProcess = (enableHue) => {
             Logger.error(`Bot subprocess exited with code ${code}`);
 
             if (code !== 0) {
-                botProcess = ChildProcess.spawn(process.argv[0], [process.argv[1], 'bot', '--reboot']);
+                botProcess = ChildProcess.spawn(
+                    process.argv[0],
+                    args.concat(['--reboot'])
+                );
                 bindProcess(botProcess);
             }
         });
@@ -81,6 +84,13 @@ const botProcess = (enableHue) => {
             }
         }
     };
+    global.saveDebugFile = (filename, data) => {
+        if (!fs.existsSync('./debug')) {
+            fs.mkdirSync('./debug');
+        }
+
+        fs.writeFileSync(`./debug/${filename}`, data);
+    };
 
     require('./model/translator');
 
@@ -103,12 +113,19 @@ const botProcess = (enableHue) => {
             .filter(filename => filename.endsWith('.js'))
             .map(filename => filename.substr(0, filename.length - 3))
             .forEach(filename => {
+                const event = filename.replace(/_([A-Z])/gu, character => `${character.toUpperCase()}`);
+
                 if (filename !== 'ready') {
-                    bot.on(filename, require(`./event/bot/${filename}`));
+                    bot.on(event, require(`./event/bot/${filename}`));
                 } else {
                     require(`./event/bot/${filename}`)();
                 }
             });
+
+        const minute = require('./event/system/minute');
+
+        setInterval(minute, 60 * 1000);
+        minute();
     });
 
     Logger.info('--------');
@@ -134,11 +151,10 @@ const hueProcess = () => {
     bot.login(Config.token);
 };
 
-let enableHue = process.argv[2] !== '--without-hue';
+let enableHue = !process.argv.includes('--without-hue');
 
 switch (process.argv[2]) {
     case 'bot':
-        enableHue = process.argv[3] !== '--without-hue';
         botProcess(enableHue);
         break;
 
@@ -147,7 +163,6 @@ switch (process.argv[2]) {
         break;
 
     default:
-        enableHue = process.argv[2] !== '--without-hue';
         mainProcess(enableHue);
         break;
 }

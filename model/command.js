@@ -3,6 +3,12 @@ const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
+const cachelessRequire = (path) => {
+    delete require.cache[require.resolve(path)];
+
+    return require(path);
+};
+
 const Command = {
     commandList: new Discord.Collection(),
     commandAliases: {},
@@ -13,10 +19,11 @@ const Command = {
 
         fs.readdirSync('model/command/').forEach(file => {
             if (file.substr(file.lastIndexOf('.')).toLowerCase() === '.js') {
-                const commandInstance = require(`./command/${file}`);
+                const commandPath = `./command/${file}`;
+                const commandInstance = cachelessRequire(commandPath);
                 const commandName = file.substr(0, file.lastIndexOf('.')).toLowerCase();
 
-                Command.commandList.set(commandName, commandInstance);
+                Command.commandList.set(commandName, commandPath);
 
                 if (commandInstance.aliases !== undefined && commandInstance.aliases !== null) {
                     commandInstance.aliases.forEach(alias => {
@@ -51,7 +58,7 @@ const Command = {
                         commandName = Command.commandAliases[calledCommand];
                     }
 
-                    Command.commandList.get(commandName).process(message, content, Command);
+                    cachelessRequire(Command.commandList.get(commandName)).process(message, content, Command);
                 }
             }
         }
@@ -75,7 +82,7 @@ const Command = {
 
         valid = valid
             && Config.disabledCommands.indexOf(canonicalCommand) < 0
-            && await Command.commandList.get(canonicalCommand).isAllowedForContext(message);
+            && await cachelessRequire(Command.commandList.get(canonicalCommand)).isAllowedForContext(message);
 
         return valid;
     }
