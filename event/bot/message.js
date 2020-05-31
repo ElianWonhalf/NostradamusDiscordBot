@@ -1,14 +1,13 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Hue = require('../../model/hue');
-const Guild = require('../../model/guild');
 const Blacklist = require('../../model/blacklist');
-const MemberRolesFlow = require('../../model/member-roles-flow');
 const Command = require('../../model/command');
 const DM = require('../../model/dm');
 const HardcoreLearning = require('../../model/hardcore-learning');
 const SocialNetworkIntegration = require('../../model/social-network-integration');
 const WatchedMember = require('../../model/watched-member');
+const StatMessages = require('../../model/stat-messages');
 
 /**
  * @param {Message} message
@@ -50,6 +49,10 @@ module.exports = async (message) => {
 
     if (!testMode && user.id !== Config.testAccount || testMode && (user.id === Config.testAccount || user.bot)) {
         Blacklist.parseMessage(message);
+
+        if (message.guild !== null) {
+            StatMessages.save(message.author.id, '+1');
+        }
 
         if (message.channel.id !== Config.channels.welcome && !user.bot) {
             const isCommand = await Command.parseMessage(message);

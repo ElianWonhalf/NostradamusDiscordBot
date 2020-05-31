@@ -2,6 +2,7 @@ const fs = require('fs');
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../config.json');
 const hueV3 = require('node-hue-api').v3;
+
 const LightState = hueV3.lightStates.LightState;
 const hueRemoteBootstrap = hueV3.api.createRemote(Config.hue.clientId, Config.hue.clientSecret);
 

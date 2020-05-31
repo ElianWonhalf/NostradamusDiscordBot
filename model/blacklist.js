@@ -1,4 +1,7 @@
 const Guild = require('./guild');
+const StatFullBlacklistTriggers = require('./stat-full-blacklist-triggers');
+const StatSemiBlacklistTriggers = require('./stat-semi-blacklist-triggers');
+
 const formatBlacklistTerm = (term) => {
     return `(^|\\s)${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()}(\\s|$)`;
 };
@@ -36,11 +39,18 @@ const Blacklist = {
     parseMessage: async (message) => {
         if (message.guild !== null && !message.author.bot) {
             // Dyno is taking care of the full blacklist for now
+            // Update 2020-05-23: NOPE, DYNO IS KICKED LOLZ!!!11!1! HEPBOAT IS IN CHARGE NOW!!
             if (Blacklist.isSemiTriggered(message.cleanContent)) {
+                StatSemiBlacklistTriggers.save(message.author.id, '+1');
+
                 Guild.automodChannel.send(
                     trans('model.blacklist.semi.triggered', [message.author, message.channel, message.url], 'en'),
                     await Guild.messageToEmbed(message)
-                )
+                );
+            }
+
+            if (Blacklist.isFullTriggered(message.cleanContent)) {
+                StatFullBlacklistTriggers.save(message.author.id, '+1');
             }
         }
     },

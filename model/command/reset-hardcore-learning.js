@@ -1,4 +1,3 @@
-const Guild = require('../guild');
 const HardcoreLearning = require('../hardcore-learning');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
