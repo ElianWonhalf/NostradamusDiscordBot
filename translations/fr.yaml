@@ -28,10 +28,6 @@ model:
     avatar:
       description: "Affiche l'avatar du membre spécifié"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
-    binla:
-      description: "Faites dire \"Bin là\" à Nostradamus dans le channel vocal dans lequel vous êtes !"
-      format: "Tu dois être connecté dans un channel vocal."
-      error: "Désolé, j'ai un gros mal de gorge. On dirait que j'ai assez parlé pour aujourd'hui ! Lily, sirop pour la toux s'il te plaît !"
     checkCustomStatuses:
       description: "Trouve les statuts personnalisés contenant des termes blacklistés"
     committee:
@@ -132,6 +128,11 @@ model:
       description: "Remet à 0 le compteur de messages qui ne sont pas dans la bonne langue"
     setAvatar:
       description: "Définit la photo de profil du bot"
+    sound:
+      description: "Faites jouer un son à Nostradamus dans le channel vocal dans lequel vous êtes !"
+      format: "Tu dois être connecté dans un channel vocal et entrer un nom de son."
+      error: "Désolé, j'ai un gros mal de gorge. On dirait que j'ai assez parlé pour aujourd'hui ! Lily, sirop pour la toux s'il te plaît !"
+      notFound: "Ce son ne semble pas exister."
     speak:
       description: "Faites parler Nostradamus dans le channel vocal dans lequel vous êtes !"
       format: "Tu dois être connecté dans un channel vocal, entrer un préfixe de langue de deux lettres, puis le texte que tu veux que je dise en vocal."

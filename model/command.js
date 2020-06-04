@@ -4,9 +4,11 @@ const Config = require('../config.json');
 const Guild = require('./guild');
 
 const cachelessRequire = (path) => {
-    delete require.cache[require.resolve(path)];
+    if (typeof path === 'string') {
+        delete require.cache[require.resolve(path)];
+    }
 
-    return require(path);
+    return typeof path === 'string' && fs.existsSync(path) ? require(path) : null;
 };
 
 const Command = {
@@ -21,14 +23,17 @@ const Command = {
             if (file.substr(file.lastIndexOf('.')).toLowerCase() === '.js') {
                 const commandPath = `./command/${file}`;
                 const commandInstance = cachelessRequire(commandPath);
-                const commandName = file.substr(0, file.lastIndexOf('.')).toLowerCase();
 
-                Command.commandList.set(commandName, commandPath);
+                if (commandInstance !== null) {
+                    const commandName = file.substr(0, file.lastIndexOf('.')).toLowerCase();
 
-                if (commandInstance.aliases !== undefined && commandInstance.aliases !== null) {
-                    commandInstance.aliases.forEach(alias => {
-                        Command.commandAliases[alias.toLowerCase()] = commandName;
-                    });
+                    Command.commandList.set(commandName, commandPath);
+
+                    if (commandInstance.aliases !== undefined && commandInstance.aliases !== null) {
+                        commandInstance.aliases.forEach(alias => {
+                            Command.commandAliases[alias.toLowerCase()] = commandName;
+                        });
+                    }
                 }
             }
         });
@@ -58,7 +63,13 @@ const Command = {
                         commandName = Command.commandAliases[calledCommand];
                     }
 
-                    cachelessRequire(Command.commandList.get(commandName)).process(message, content, Command);
+                    const commandInstance = cachelessRequire(Command.commandList.get(commandName));
+
+                    if (commandInstance !== null) {
+                        commandInstance.process(message, content, Command);
+                    } else {
+                        Command.commandList.delete(commandName);
+                    }
                 }
             }
         }
@@ -80,9 +91,16 @@ const Command = {
             valid = Command.commandList.has(canonicalCommand);
         }
 
+        const commandInstance = cachelessRequire(Command.commandList.get(canonicalCommand));
+
+        if (commandInstance === null) {
+            Command.commandList.delete(canonicalCommand);
+        }
+
         valid = valid
             && Config.disabledCommands.indexOf(canonicalCommand) < 0
-            && await cachelessRequire(Command.commandList.get(canonicalCommand)).isAllowedForContext(message);
+            && commandInstance !== null
+            && await commandInstance.isAllowedForContext(message);
 
         return valid;
     }
