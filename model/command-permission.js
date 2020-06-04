@@ -4,7 +4,7 @@ const Guild = require('./guild');
 const CommandPermission = {
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     isMommy: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
@@ -14,7 +14,7 @@ const CommandPermission = {
 
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     isMemberMod: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
@@ -24,7 +24,7 @@ const CommandPermission = {
 
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     isMemberModOrTutor: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
@@ -39,7 +39,7 @@ const CommandPermission = {
     memberHasPermission: (permission) => {
         /**
          * @param {Message} message
-         * @returns {Promise<boolean>}
+         * @returns {Promise.<boolean>}
          */
         return async (message) => {
             const member = await Guild.getMemberFromMessage(message);
@@ -50,7 +50,7 @@ const CommandPermission = {
 
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     notInWelcome: async (message) => {
         return message.channel.id !== Config.channels.welcome;
@@ -58,7 +58,7 @@ const CommandPermission = {
 
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     inRoles: async (message) => {
         return message.channel.id === Config.channels.roles;
@@ -66,7 +66,7 @@ const CommandPermission = {
 
     /**
      * @param {Message} message
-     * @returns {Promise<boolean>}
+     * @returns {Promise.<boolean>}
      */
     yes: async (message) => {
         return true;

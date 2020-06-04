@@ -22,7 +22,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setAuthor(
                 `${member.displayName}`,
-                member.user.displayAvatarURL
+                member.user.displayAvatarURL({ dynamic: true })
             )
             .setColor(0x00FF00)
             .setDescription(content.join(' '));

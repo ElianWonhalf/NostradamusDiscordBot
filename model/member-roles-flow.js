@@ -121,9 +121,9 @@ const MemberRolesFlow = {
         const logEmbed = new Discord.MessageEmbed();
 
         logEmbed.setColor('#ffb8e6');
-        logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL);
+        logEmbed.setAuthor(trans('model.memberRolesFlow.logTitle', [], 'en'), member.user.displayAvatarURL({ dynamic: true }));
         logEmbed.setDescription(`${member} ${member.displayName}#${member.user.discriminator}`);
-        logEmbed.setThumbnail(member.user.displayAvatarURL);
+        logEmbed.setThumbnail(member.user.displayAvatarURL({ dynamic: true }));
         logEmbed.setFooter(trans('model.memberRolesFlow.logFooter', [member.id], 'en'));
         logEmbed.setTimestamp(new Date());
 

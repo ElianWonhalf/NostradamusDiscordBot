@@ -69,7 +69,7 @@ const Command = {
     /**
      * @param {string} command
      * @param {Message} message
-     * @return {Promise<boolean>}
+     * @return {Promise.<boolean>}
      */
     isValid: async (command, message) => {
         let canonicalCommand = command.toLowerCase();

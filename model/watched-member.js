@@ -89,7 +89,7 @@ const WatchedMember = {
         const embed = new Discord.MessageEmbed()
             .setAuthor(
                 `${member.user.username}#${member.user.discriminator}${suffix}`,
-                member.user.displayAvatarURL
+                member.user.displayAvatarURL({ dynamic: true })
             )
             .setColor(0x00FF00)
             .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
