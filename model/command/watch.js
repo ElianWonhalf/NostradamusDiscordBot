@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
@@ -8,7 +7,7 @@ const cachelessRequire = (path) => {
         delete require.cache[require.resolve(path)];
     }
 
-    return typeof path === 'string' && fs.existsSync(path) ? require(path) : null;
+    return typeof path === 'string' ? require(path) : null;
 };
 
 /**

@@ -8,7 +8,7 @@ const cachelessRequire = (path) => {
         delete require.cache[require.resolve(path)];
     }
 
-    return typeof path === 'string' && fs.existsSync(path) ? require(path) : null;
+    return typeof path === 'string' ? require(path) : null;
 };
 
 const Command = {

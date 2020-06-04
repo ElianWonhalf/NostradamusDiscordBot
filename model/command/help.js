@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Discord = require('discord.js');
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Config = require('../../config.json');
@@ -16,7 +15,7 @@ const cachelessRequire = (path) => {
         delete require.cache[require.resolve(path)];
     }
 
-    return typeof path === 'string' && fs.existsSync(path) ? require(path) : null;
+    return typeof path === 'string' ? require(path) : null;
 };
 
 class HelpDialog
