@@ -10,6 +10,12 @@ const kebabCaseToCamelCase = string => {
     return string.replace(/(-[a-zA-Z])/g, $1 => $1.substr(1).toUpperCase());
 };
 
+const cachelessRequire = (path) => {
+    delete require.cache[require.resolve(path)];
+
+    return require(path);
+};
+
 class HelpDialog
 {
     /**
@@ -45,7 +51,7 @@ class HelpDialog
 
         for (let i = 0; i < commandList.length; i++) {
             const commandName = commandList[i];
-            const command = Command.commandList.get(commandName);
+            const command = cachelessRequire(`../${Command.commandList.get(commandName)}`);
             const isHidden = Config.hiddenCommands.includes(commandName);
             const isAllowed = await command.isAllowedForContext(this.originalMessage);
 

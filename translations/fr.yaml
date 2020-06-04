@@ -28,6 +28,10 @@ model:
     avatar:
       description: "Affiche l'avatar du membre spécifié"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
+    binla:
+      description: "Faites dire \"Bin là\" à Nostradamus dans le channel vocal dans lequel vous êtes !"
+      format: "Tu dois être connecté dans un channel vocal."
+      error: "Désolé, j'ai un gros mal de gorge. On dirait que j'ai assez parlé pour aujourd'hui ! Lily, sirop pour la toux s'il te plaît !"
     checkCustomStatuses:
       description: "Trouve les statuts personnalisés contenant des termes blacklistés"
     committee:

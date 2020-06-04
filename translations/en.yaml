@@ -51,6 +51,10 @@ model:
     avatar:
       description: "Displays the avatar of the specified member."
       notFound: "I... Have no idea who that could be, sorry."
+    binla:
+      description: "Make Nostradamus say \"Bin là\" in the voice channel you're in!"
+      format: "You have to be connected in a voice channel."
+      error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
     checkCustomStatuses:
       description: "Searches for blacklisted terms in members' custom messages"
       introduction: "%% members currently have a custom status set."
