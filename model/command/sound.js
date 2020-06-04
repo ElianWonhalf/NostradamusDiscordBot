@@ -21,14 +21,14 @@ module.exports = {
         if (argsValid && voiceValid) {
             const file = args.join(' ');
 
-            if (files.includes(file)) {
+            if (FILES.includes(file)) {
                 const voiceChannelConnection = bot.voice.connections.find(connection => {
                     return connection.channel.guild.id === Guild.discordGuild.id
                         && connection.status === DiscordJS.Constants.VoiceStatus.CONNECTED
                 });
 
                 const play = (connection) => {
-                    const streamDispatcher = connection.play('./static/audio/binla.mp3');
+                    const streamDispatcher = connection.play(`./static/audio/${file}.mp3`);
 
                     streamDispatcher.on('finish', () => {
                         setTimeout(() => {
