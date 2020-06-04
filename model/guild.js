@@ -141,7 +141,7 @@ const Guild = {
 
     /**
      * @param message
-     * @returns {Promise<GuildMember|null>}
+     * @returns {Promise.<GuildMember|null>}
      */
     getMemberFromMessage: async (message) => {
         return await Guild.discordGuild.members.fetch(message.author).catch(exception => {
@@ -201,12 +201,12 @@ const Guild = {
      */
     messageToEmbed: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
-        const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
+        const suffix = member !== null && member.nickname !== null && member.nickname !== undefined ? ` aka ${member.nickname}` : '';
 
         return new Discord.MessageEmbed()
             .setAuthor(
                 `${message.author.username}#${message.author.discriminator}${suffix}`,
-                message.author.displayAvatarURL
+                message.author.displayAvatarURL({ dynamic: true })
             )
             .setColor(0x00FF00)
             .setDescription(message.content);

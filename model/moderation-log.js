@@ -59,7 +59,7 @@ const ModerationLog = {
 
                 const embed = new Discord.MessageEmbed().setAuthor(
                     `${entry.target.username}#${entry.target.discriminator}`,
-                    entry.target.displayAvatarURL
+                    entry.target.displayAvatarURL({ dynamic: true })
                 );
 
                 let action = '';
