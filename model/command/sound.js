@@ -4,7 +4,7 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-const FILES = ['binla'];
+const FILES = ['binla', 'whisky', 'whisky2'];
 
 /**
  * @param {Message} message
