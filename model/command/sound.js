@@ -42,14 +42,14 @@ module.exports = {
                 } else {
                     member.voice.channel.join().then(play).catch(exception => {
                         Logger.exception(exception);
-                        message.reply(trans('model.command.binla.error'));
+                        message.reply(trans('model.command.sound.error'));
                     });
                 }
             } else {
-                message.reply(trans('model.command.binla.notFound'));
+                message.reply(trans('model.command.sound.notFound'));
             }
         } else {
-            message.reply(trans('model.command.binla.format'));
+            message.reply(trans('model.command.sound.format'));
         }
     }
 };
