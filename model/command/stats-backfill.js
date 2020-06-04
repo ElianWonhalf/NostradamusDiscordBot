@@ -3,9 +3,11 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
 const cachelessRequire = (path) => {
-    delete require.cache[require.resolve(path)];
+    if (typeof path === 'string') {
+        delete require.cache[require.resolve(path)];
+    }
 
-    return require(path);
+    return typeof path === 'string' && fs.existsSync(path) ? require(path) : null;
 };
 
 /**

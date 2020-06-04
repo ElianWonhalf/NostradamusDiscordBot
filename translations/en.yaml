@@ -51,10 +51,6 @@ model:
     avatar:
       description: "Displays the avatar of the specified member."
       notFound: "I... Have no idea who that could be, sorry."
-    binla:
-      description: "Make Nostradamus say \"Bin là\" in the voice channel you're in!"
-      format: "You have to be connected in a voice channel."
-      error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
     checkCustomStatuses:
       description: "Searches for blacklisted terms in members' custom messages"
       introduction: "%% members currently have a custom status set."
@@ -171,6 +167,11 @@ model:
       description: "Set the bot avatar"
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
+    sound:
+      description: "Make Nostradamus play a sound in the voice channel you're in!"
+      format: "You have to be connected in a voice channel and input a sound name."
+      error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
+      notFound: "That sound doesn't seem to exist."
     speak:
       description: "Make Nostradamus speak in the voice channel you're in!"
       format: "You have to be connected in a voice channel, enter a two letter language prefix, then the text you want me to say in vocal."
