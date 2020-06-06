@@ -4,7 +4,12 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-const FILES = ['binla', 'whisky', 'whisky2'];
+const FILES = {
+    'binla': ['binla'],
+    'bin la': ['binla'],
+    'whisky': ['whisky', 'whisky2'],
+    'honey': ['honey1', 'honey2', 'honey3', 'honey4']
+};
 
 /**
  * @param {Message} message
@@ -21,14 +26,14 @@ module.exports = {
         if (argsValid && voiceValid) {
             const file = args.join(' ');
 
-            if (FILES.includes(file)) {
+            if (FILES.hasOwnProperty(file)) {
                 const voiceChannelConnection = bot.voice.connections.find(connection => {
                     return connection.channel.guild.id === Guild.discordGuild.id
                         && connection.status === DiscordJS.Constants.VoiceStatus.CONNECTED
                 });
 
                 const play = (connection) => {
-                    const streamDispatcher = connection.play(`./static/audio/${file}.mp3`);
+                    const streamDispatcher = connection.play(`./static/audio/${FILES[file].getRandomElement()}.mp3`);
 
                     streamDispatcher.on('finish', () => {
                         setTimeout(() => {

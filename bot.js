@@ -1,6 +1,14 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
 const Dotenv = require('dotenv');
 
+// I know that the following can bring a lot of anger.
+// I know there would be 69581 reasons why I shouldn't do this.
+// But you know what?
+// Fuck it :) .
+Array.prototype.getRandomElement = function () {
+    return this[Math.floor(Math.random() * this.length)];
+};
+
 Dotenv.config();
 
 const mainProcess = (enableHue) => {
