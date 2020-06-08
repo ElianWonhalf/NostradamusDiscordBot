@@ -9,7 +9,7 @@ const MemberRolesFlow = require('../../model/member-roles-flow');
 module.exports = async (reaction, user) => {
     SocialNetworkIntegration.handleReaction(reaction, user);
 
-    if (!testMode && user.id !== Config.testAccount || testMode && user.id === Config.testAccount) {
+    if (reaction.message.guild === null || isRightGuild(reaction.message.guild.id)) {
         MemberRolesFlow.handleReaction(reaction, user);
     }
 };

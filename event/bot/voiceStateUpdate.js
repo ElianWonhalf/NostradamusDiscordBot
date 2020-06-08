@@ -10,7 +10,7 @@ module.exports = (oldVoiceState, newVoiceState) => {
     const oldMember = oldVoiceState.member;
     const newMember = newVoiceState.member;
 
-    if (!testMode && oldMember.user.id !== Config.testAccount || testMode && oldMember.user.id === Config.testAccount) {
+    if (isRightGuild(oldMember.guild)) {
         if (oldVoiceState.channel !== undefined && newVoiceState.channel !== undefined) {
             const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(oldMember.id) > -1;
             const sourceChannel = oldVoiceState.channel;
