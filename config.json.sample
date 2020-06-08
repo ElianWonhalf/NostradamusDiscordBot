@@ -17,15 +17,6 @@
             "accessTokenSecret": ""
         }
     },
-    "hue": {
-        "appId": "",
-        "clientId": "",
-        "clientSecret": "",
-        "lights": {
-            "ceiling": 0,
-            "floor": 0
-        }
-    },
     "guild": "",
     "admin": "",
     "statsEnabled": true,
