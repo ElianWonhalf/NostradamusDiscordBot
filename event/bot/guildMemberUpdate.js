@@ -5,11 +5,13 @@ const StatProfileChange = require('../../model/stat-profile-change');
  * @param {GuildMember} newMember
  */
 module.exports = (oldMember, newMember) => {
-    if (oldMember.nickname !== newMember.nickname && newMember.nickname !== null && newMember.nickname !== undefined) {
+    const hasNickname = newMember.nickname !== null && newMember.nickname !== undefined;
+
+    if (isRightGuild(oldMember.guild.id) && oldMember.nickname !== newMember.nickname && hasNickname) {
         StatProfileChange.save(
             newMember.id,
             newMember.nickname,
-            { type: StatProfileChange.constructor.TYPE_NICKNAME }
+            {type: StatProfileChange.constructor.TYPE_NICKNAME}
         );
     }
 };

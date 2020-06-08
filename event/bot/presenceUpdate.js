@@ -10,7 +10,7 @@ module.exports = (oldPresence, newPresence) => {
     const newMember = newPresence !== undefined ? newPresence.member : null;
     const member = oldMember !== null ? oldMember : newMember;
 
-    if (Guild.isMemberMod(member)) {
+    if (!isRightGuild(member.guild) || Guild.isMemberMod(member)) {
         return;
     }
 

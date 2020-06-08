@@ -9,7 +9,7 @@ const WatchedMember = require('../../model/watched-member');
 module.exports = async (member) => {
     WatchedMember.guildMemberAddHandler(member);
 
-    if (!testMode && member.id !== Config.testAccount || testMode && member.id === Config.testAccount) {
+    if (isRightGuild(member.guild.id)) {
         setTimeout(async () => {
             const message = await Guild.welcomeChannel.send(
                 trans(

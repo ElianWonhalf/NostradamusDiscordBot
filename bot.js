@@ -2,7 +2,7 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Dotenv = require('dotenv');
 
 // I know that the following can bring a lot of anger.
-// I know there would be 69581 reasons why I shouldn't do this.
+// I know there would be a bajillion reasons why I shouldn't do this.
 // But you know what?
 // Fuck it :) .
 Array.prototype.getRandomElement = function () {
@@ -11,18 +11,13 @@ Array.prototype.getRandomElement = function () {
 
 Dotenv.config();
 
-const mainProcess = (enableHue) => {
+const mainProcess = () => {
     const ChildProcess = require('child_process');
 
     process.on('uncaughtException', Logger.exception);
 
     Logger.info('Spawning bot subprocess...');
     const args = [process.argv[1], 'bot'];
-
-    if (!enableHue) {
-        args.push('--without-hue');
-    }
-
     let botProcess = ChildProcess.spawn(process.argv[0], args);
 
     const stdLog = (callback) => {
@@ -67,13 +62,12 @@ const mainProcess = (enableHue) => {
     Logger.info('Bot subprocess spawned');
 };
 
-const botProcess = (enableHue) => {
+const botProcess = () => {
     const Discord = require('discord.js');
     const CallerId = require('caller-id');
 
-    global.enableHue = enableHue;
-    global.testMode = process.env.NOSTRADAMUS_TEST === '1';
     global.bot = new Discord.Client({ fetchAllMembers: true });
+    global.isRightGuild = (guildSnowflake) => guildSnowflake === Config.guild;
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {
             const caller = CallerId.getData();
@@ -142,35 +136,12 @@ const botProcess = (enableHue) => {
     bot.login(Config.token);
 };
 
-const hueProcess = () => {
-    const Discord = require('discord.js');
-
-    global.bot = new Discord.Client({ fetchAllMembers: true });
-
-    require('./model/translator');
-
-    const Config = require('./config.json');
-
-    bot.on('ready', () => {
-        require('./model/hue.js').flash();
-    });
-
-    Logger.info('Logging in...');
-    bot.login(Config.token);
-};
-
-let enableHue = !process.argv.includes('--without-hue');
-
 switch (process.argv[2]) {
     case 'bot':
-        botProcess(enableHue);
-        break;
-
-    case 'hue':
-        hueProcess();
+        botProcess();
         break;
 
     default:
-        mainProcess(enableHue);
+        mainProcess();
         break;
 }

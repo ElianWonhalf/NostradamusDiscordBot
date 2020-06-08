@@ -1,4 +1,5 @@
 const Logger = require('@elian-wonhalf/pretty-logger');
+const Config = require('../config.json');
 const connection = require('./db');
 
 class StatEntity
@@ -59,7 +60,7 @@ class StatEntity
      */
     async save(snowflake, data, extraColumns = null)
     {
-        if (!this.paused) {
+        if (Config.statsEnabled && !this.paused) {
             let updateString = 'data = ?';
             const query = this.getInsertQuery(snowflake, data, extraColumns);
 

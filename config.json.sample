@@ -28,7 +28,7 @@
     },
     "guild": "",
     "admin": "",
-    "testAccount": "",
+    "statsEnabled": true,
     "botLanguage": "fr,en",
     "roles": {
         "mod": "",
