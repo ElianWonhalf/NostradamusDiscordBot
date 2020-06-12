@@ -2,6 +2,7 @@ const Logger = require('@elian-wonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
+const StatMemberFlow = require('./stat-member-flow');
 
 const logoEmojiName = 'alogo';
 const nativeEmojiName = '👍';
@@ -117,6 +118,8 @@ const MemberRolesFlow = {
         Guild.rolesChannel.send(
             trans('model.memberRolesFlow.validatedMessage', [member])
         );
+
+        StatMemberFlow.save(member.id, StatMemberFlow.constructor.MEMBER_FLOW_EVENT_VALIDATED);
 
         const logEmbed = new Discord.MessageEmbed();
 

@@ -9,6 +9,31 @@ Array.prototype.getRandomElement = function () {
     return this[Math.floor(Math.random() * this.length)];
 };
 
+global.secondsAmountToDelayString = (seconds) => {
+    seconds = parseInt(seconds);
+
+    const parts = {
+        'jour': Math.floor(seconds / (3600 * 24)),
+        'heure': Math.floor(seconds % (3600 * 24) / 3600),
+        'minute': Math.floor(seconds % 3600 / 60),
+        'seconde': Math.floor(seconds % 60)
+    };
+
+    return Object.keys(parts).reduce((carry, part) => {
+        if (parts[part] > 0) {
+            carry += `${parts[part]} ${part}`;
+
+            if (parts[part] > 1) {
+                carry += 's';
+            }
+
+            carry += ', ';
+        }
+
+        return carry;
+    }, '').replace(/, $/, '');
+};
+
 Dotenv.config();
 
 const mainProcess = () => {

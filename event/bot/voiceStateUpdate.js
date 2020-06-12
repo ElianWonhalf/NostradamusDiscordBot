@@ -1,4 +1,3 @@
-const Config = require('../../config.json');
 const Guild = require('../../model/guild');
 const WatchedMember = require('../../model/watched-member');
 
@@ -10,7 +9,7 @@ module.exports = (oldVoiceState, newVoiceState) => {
     const oldMember = oldVoiceState.member;
     const newMember = newVoiceState.member;
 
-    if (isRightGuild(oldMember.guild)) {
+    if (isRightGuild(oldMember.guild.id)) {
         if (oldVoiceState.channel !== undefined && newVoiceState.channel !== undefined) {
             const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(oldMember.id) > -1;
             const sourceChannel = oldVoiceState.channel;

@@ -4,21 +4,33 @@ const connection = require('./db');
 
 class StatEntity
 {
+    /**
+     * @returns {string}
+     */
     static get INSERT_QUERY_MODE_FULL()
     {
         return 'full';
     }
 
+    /**
+     * @returns {string}
+     */
     static get INSERT_QUERY_MODE_HEAD()
     {
         return 'head';
     }
 
+    /**
+     * @returns {string}
+     */
     static get INSERT_QUERY_MODE_TAIL()
     {
         return 'tail';
     }
 
+    /**
+     * @returns {Array<string>}
+     */
     static get INSERT_QUERY_MODES()
     {
         return [
