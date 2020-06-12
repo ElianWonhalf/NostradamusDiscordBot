@@ -3,6 +3,17 @@ const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 
+const GREETINGS = [
+    'bonjour',
+    'salut',
+    'hello',
+    'hi',
+    'good morning',
+    'good afternoon',
+    'good evening',
+    'good night',
+];
+
 const DM = {
     ignoredUserDMs: [],
 
@@ -24,9 +35,7 @@ const DM = {
      * @param {boolean} isCommand
      */
     parseMessage: async (message, isCommand) => {
-        const isMom = message.author.id === Config.admin;
-
-        if (message.guild === null && !isMom && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
+        if (message.guild === null && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
             const embed = await Guild.messageToEmbed(message);
 
             embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
@@ -42,6 +51,11 @@ const DM = {
             ).then(() => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);
+
+                if (GREETINGS.includes(message.content.toLowerCase())) {
+                    message.channel.send(trans('model.dm.greetingsAnswer'));
+                    Guild.modDMsChannel.send(trans('model.dm.greetingsAnswerSent', [], 'en'));
+                }
             }).catch((exception) => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
 
