@@ -7,6 +7,9 @@ const CommandPermission = require('../command-permission');
 const FILES = {
     'binla': ['binla'],
     'bin la': ['binla'],
+    'calisse': ['ahbincalisse'],
+    'ahbincalisse': ['ahbincalisse'],
+    'ah bin calisse': ['ahbincalisse'],
     'whisky': ['whisky', 'whisky2'],
     'honey': ['honey1', 'honey2', 'honey3', 'honey4']
 };
