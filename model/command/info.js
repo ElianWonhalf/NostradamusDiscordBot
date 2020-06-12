@@ -3,10 +3,9 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
 const StatMessages = require('../stat-messages');
-
-const getMemberJoinedDate = (member) => {
-    return member.joinedAt;
-};
+const StatMemberFlow = require('../stat-member-flow');
+const StatVocal = require('../stat-vocal');
+const StatInviteLinks = require('../stat-invite-links');
 
 const dateFormatOptions = {
     day: 'numeric',
@@ -15,6 +14,24 @@ const dateFormatOptions = {
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric'
+};
+
+const getMemberJoinedDate = async (member) => {
+    const firstMessageDate = await StatMessages.getFirstMessageDate(member.id);
+    const savedJoinDate = await StatMemberFlow.getFirstJoinedDate(member.id);
+    let joinDate = member.joinedAt;
+    let prefix = '';
+
+    if (firstMessageDate.getTime() < joinDate.getTime()) {
+        joinDate = firstMessageDate;
+        prefix = '≈';
+    }
+
+    if (savedJoinDate !== null && savedJoinDate.getTime() < joinDate.getTime()) {
+        joinDate = savedJoinDate;
+    }
+
+    return `${prefix}${joinDate.toLocaleString('fr', dateFormatOptions).replace(' à 00:00:00', '')}`;
 };
 
 /**
@@ -45,9 +62,11 @@ module.exports = {
                 .setColor(0x00FF00);
 
             information.push(`**Account created:** ${target.user.createdAt.toLocaleString('fr', dateFormatOptions)}`); // @TODO add account age
-            information.push(`**Member joined:** ${getMemberJoinedDate(target).toLocaleString('fr', dateFormatOptions)}`); // @TODO consider older messages, add member age
-            information.push(`**Messages sent:** ${await StatMessages.getMessageAmount(target.id)}`);
+            information.push(`**Member joined:** ${await getMemberJoinedDate(target)}`); // @TODO add member age
+            information.push(`**Messages sent:** ${await StatMessages.getAmount(target.id)}`);
+            information.push(`**Time spent in vocal:** ${secondsAmountToDelayString((await StatVocal.getAmount(target.id)) * 60)}`);
             information.push(`**Member ID:** ${target.id}`);
+            information.push(`**Invite links:** ${await StatInviteLinks.getAmount(target.id)}`);
 
             embed.setDescription(information.join('\n'));
 

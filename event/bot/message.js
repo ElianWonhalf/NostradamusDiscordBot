@@ -14,7 +14,6 @@ const StatMessages = require('../../model/stat-messages');
 module.exports = async (message) => {
     const user = message.author;
 
-
     if (message.guild === null || isRightGuild(message.guild.id)) {
         WatchedMember.messageHandler(message);
 
