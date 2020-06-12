@@ -222,6 +222,8 @@ model:
     resource: "Resource"
   dm:
     notification: "%% sent a DM:"
+    greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"
+    greetingsAnswerSent: "I just told that person that I am just a bot and maybe just a greeting isn't very relevant."
   guild:
     customStatusUpdate: ":status: %%: %%"
     customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
