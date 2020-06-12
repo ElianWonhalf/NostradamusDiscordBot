@@ -95,7 +95,7 @@ const WatchedMember = {
             .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
             .setFooter(WatchedMember.list[member.id].reason);
 
-        Guild.botChannel.send(embed);
+        Guild.watchlistChannel.send(embed);
     },
 
     /**
