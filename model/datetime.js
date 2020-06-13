@@ -4,9 +4,10 @@ const Config = require('../config.json');
 // https://stackoverflow.com/a/7751977/3551909
 global.TWO_WEEKS = 12096e5;
 
-global.secondsAmountToDelayString = (seconds, upTo = 'second') => {
+global.secondsAmountToDelayString = (seconds, upTo = 'second', isDelay = false) => {
     seconds = parseInt(seconds);
 
+    const nullTranslation = isDelay ? 'noTime' : 'today';
     const parts = {
         year: Math.floor(seconds / (3600 * 24 * 365)),
         // No month, because month is a horrible unit, I hate it
@@ -17,7 +18,7 @@ global.secondsAmountToDelayString = (seconds, upTo = 'second') => {
     };
     let upToReached = false;
 
-    return Object.keys(parts).filter(part => {
+    const string = Object.keys(parts).filter(part => {
         const keep = !upToReached;
 
         if (part === upTo) {
@@ -37,5 +38,7 @@ global.secondsAmountToDelayString = (seconds, upTo = 'second') => {
         }
 
         return carry;
-    }, '').replace(/, $/u, '').replace(/,([^,]+)$/u, ' et $1');
+    }, '').replace(/, $/u, '').replace(/,([^,]+)$/u, ' et $1').trim();
+
+    return string.length > 0 ? string : trans(`model.datetime.${nullTranslation}`, [], Config.learntLanguagePrefix);
 };

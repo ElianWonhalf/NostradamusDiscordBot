@@ -240,6 +240,8 @@ model:
     hour: "hour"
     minute: "minute"
     second: "second"
+    today: "pretty much today"
+    noTime: "*no time*"
   dm:
     notification: "%% sent a DM:"
     greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"
