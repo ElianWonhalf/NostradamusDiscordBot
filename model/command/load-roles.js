@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Guild = require('../guild');
 const Language = require('../language');
 const Country = require('../country');

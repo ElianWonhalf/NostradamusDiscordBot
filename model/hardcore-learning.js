@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const got = require('got');
 const GoogleTranslateToken = require('./google-translate-token');
 const Config = require('../config.json');

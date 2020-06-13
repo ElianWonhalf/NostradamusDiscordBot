@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Language = require('../language');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');

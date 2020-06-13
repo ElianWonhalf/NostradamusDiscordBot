@@ -1,6 +1,6 @@
 const Twit = require('twit');
 const got = require('got');
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../config.json');
 const MAX_CHAR_COUNT = 280;
 

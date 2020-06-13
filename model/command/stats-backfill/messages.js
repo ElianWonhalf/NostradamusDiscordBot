@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const fs = require('fs');
 const Discord = require('discord.js');
 const StatMessages = require('../../stat-messages');

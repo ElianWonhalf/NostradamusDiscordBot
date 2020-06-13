@@ -1,7 +1,7 @@
 const fs = require('fs');
 const crypto = require('crypto');
 const got = require('got');
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const GoogleTranslateToken = require('./google-translate-token');
 
 const domain = 'translate.google.ca';
