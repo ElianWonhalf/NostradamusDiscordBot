@@ -24,6 +24,26 @@ const dateFormatOptions = {
  * @param {Snowflake} snowflake
  * @returns {Promise.<string>}
  */
+const getJoinedAmount = async (snowflake) => {
+    const amount = await StatMemberFlow.getJoinedAmount(snowflake);
+
+    return `${amount} time${amount > 1 ? 's' : ''}`;
+};
+
+/**
+ * @param {Snowflake} snowflake
+ * @returns {Promise.<string>}
+ */
+const getRecentJoinedAmount = async (snowflake) => {
+    const amount = await StatMemberFlow.getJoinedAmount(snowflake, true);
+
+    return `${amount} time${amount > 1 ? 's' : ''}`;
+};
+
+/**
+ * @param {Snowflake} snowflake
+ * @returns {Promise.<string>}
+ */
 const getPastUsernames = async (snowflake) => {
     const list = await StatProfileChange.getUsernameList(snowflake);
     const listString = list.map(username => `\`${username}\``).join(', ');
@@ -128,6 +148,24 @@ module.exports = {
         if (target !== null) {
             const suffix = target.nickname !== null && target.nickname !== undefined ? ` aka ${target.nickname}` : '';
             const information = [];
+            const data = {
+                member: {
+                    accountCreated: await getMemberAccountCreationDate(target),
+                    memberJoined: await getMemberJoinedDate(target),
+                    messagesSent: await StatMessages.getAmount(target.id),
+                    vocalTime: secondsAmountToDelayString((await StatVocal.getAmount(target.id)) * 60),
+                    memberId: target.id
+                },
+                mod: {
+                    inviteLinks: await StatInviteLinks.getAmount(target.id),
+                    triggeredBlacklist: await getBlacklistsTriggerAmounts(target.id),
+                    recentlyTriggeredBlacklist: await getRecentBlacklistsTriggerAmounts(target.id),
+                    joinedAmount: await getJoinedAmount(target.id),
+                    recentlyJoinedAmount: await getRecentJoinedAmount(target.id),
+                    usernames: await getPastUsernames(target.id),
+                    nicknames: await getPastNicknames(target.id)
+                }
+            };
             const embed = new Discord.MessageEmbed()
                 .setAuthor(
                     `${target.user.username}#${target.user.discriminator}${suffix}`,
@@ -136,22 +174,29 @@ module.exports = {
                 .setThumbnail(target.user.displayAvatarURL({ dynamic: true }))
                 .setColor(0x00FF00);
 
-            information.push(`**Account created:** ${await getMemberAccountCreationDate(target)}`);
-            information.push(`**Member joined:** ${await getMemberJoinedDate(target)}`);
-            information.push(`**Messages sent:** ${await StatMessages.getAmount(target.id)}`);
-            information.push(`**Time spent in vocal:** ${secondsAmountToDelayString((await StatVocal.getAmount(target.id)) * 60)}`);
-            information.push(`**Member ID:** ${target.id}`);
+            Object.keys(data.member).forEach(datum => {
+                const key = trans(`model.command.info.data.${datum}`, [], 'en');
+                const value = data.member[datum];
+
+                information.push(`**${key}** ${value}`);
+            });
 
             if (Config.modCategories.includes(message.channel.parentID)) {
-                information.push(`**Invite links:** ${await StatInviteLinks.getAmount(target.id)}`);
-                information.push(`**Triggered blacklist:** ${await getBlacklistsTriggerAmounts(target.id)}`);
-                information.push(`**Recently triggered blacklist:** ${await getRecentBlacklistsTriggerAmounts(target.id)}`);
-                information.push(`**Past usernames:** ${await getPastUsernames(target.id)}`);
-                information.push(`**Past nicknames:** ${await getPastNicknames(target.id)}`);
+                Object.keys(data.mod).forEach(datum => {
+                    const key = trans(`model.command.info.data.${datum}`, [], 'en');
+                    const value = data.mod[datum];
+
+                    information.push(`**${key}** ${value}`);
+                });
             }
 
-            embed.setDescription(information.join('\n'));
+            let description = information.join('\n');
 
+            if (Config.modCategories.includes(message.channel.parentID)) {
+                description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}`;
+            }
+
+            embed.setDescription(description);
             message.channel.send(embed);
         } else {
             message.reply(trans('model.command.info.notFound'));
