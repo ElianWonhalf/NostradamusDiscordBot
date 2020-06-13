@@ -55,6 +55,9 @@
         "starboard": "",
         "announcements": ""
     },
+    "modCategories": [
+        ""
+    ],
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",
     "learntLanguagePrefix": "",
