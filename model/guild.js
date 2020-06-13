@@ -1,7 +1,7 @@
 const EventEmitter = require('events');
 
 const Config = require('../config.json');
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Discord = require('discord.js');
 
 const Guild = {

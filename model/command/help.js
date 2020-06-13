@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../config.json');
 const EmojiCharacters = require('../../emoji-characters.json');
 const Guild = require('../guild');

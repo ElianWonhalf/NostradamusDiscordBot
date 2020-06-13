@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../config.json');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');

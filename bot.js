@@ -1,4 +1,4 @@
-const Logger = require('@elian-wonhalf/pretty-logger');
+const Logger = require('@lilywonhalf/pretty-logger');
 const Dotenv = require('dotenv');
 
 // I know that the following can bring a lot of anger.
