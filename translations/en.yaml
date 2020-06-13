@@ -278,3 +278,4 @@ model:
     leftVocal: "just left vocal channel %%"
     active: "is now active in channel %%"
     joined: "just joined the server"
+    left: "just left the server"
