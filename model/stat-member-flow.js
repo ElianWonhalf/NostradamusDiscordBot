@@ -57,6 +57,63 @@ class StatMemberFlow extends StatEntity
     /**
      * @param {string} snowflake
      * @param {string} event
+     * @param {boolean} recent
+     * @returns {Promise.<int>}
+     */
+    async getEventAmount(snowflake, event, recent = false)
+    {
+        if (StatMemberFlow.MEMBER_FLOW_EVENTS.includes(event)) {
+            let querySuffix = '';
+
+            if (recent) {
+                const twoWeeksAgo = new Date(Date.now() - TWO_WEEKS);
+                const twoWeeksAgoString = `${twoWeeksAgo.getFullYear()}-${twoWeeksAgo.getMonth() + 1}-${twoWeeksAgo.getDate()}-0`;
+
+                querySuffix = `AND \`date\` > '${twoWeeksAgoString}'`;
+            }
+
+            const data = await connection.asyncQuery(
+                `SELECT COUNT(*) AS amount FROM \`${this.tableName}\` WHERE \`user_id\` = ? AND \`data\` = ? ${querySuffix}`,
+                [snowflake, event]
+            );
+
+            return data.amount === null ? 0 : parseInt(data.amount);
+        }
+    }
+
+    /**
+     * @param {string} snowflake
+     * @param {boolean} recent
+     * @returns {Promise.<int>}
+     */
+    getJoinedAmount(snowflake, recent = false)
+    {
+        return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_JOINED, recent);
+    }
+
+    /**
+     * @param {string} snowflake
+     * @param {boolean} recent
+     * @returns {Promise.<int>}
+     */
+    getLeftAmount(snowflake, recent = false)
+    {
+        return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_LEFT, recent);
+    }
+
+    /**
+     * @param {string} snowflake
+     * @param {boolean} recent
+     * @returns {Promise.<int>}
+     */
+    getValidatedAmount(snowflake, recent = false)
+    {
+        return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_VALIDATED, recent);
+    }
+
+    /**
+     * @param {string} snowflake
+     * @param {string} event
      * @returns {Promise.<Date>}
      */
     async getFirstDate(snowflake, event)
