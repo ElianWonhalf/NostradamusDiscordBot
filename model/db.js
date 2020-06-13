@@ -69,7 +69,19 @@ const connection = {
         const queryArgs = Array.prototype.slice.call(arguments);
 
         return new Promise((resolve, reject) => {
-            this.query(...queryArgs).on('result', resolve).on('error', reject);
+            const result = [];
+
+            this.query(...queryArgs).on('result', row => {
+                result.push(row);
+            }).on('error', reject).on('end', () => {
+                if (result.length < 1) {
+                    resolve();
+                } else if (result.length < 2) {
+                    resolve(result[0]);
+                } else {
+                    resolve(result);
+                }
+            });
         });
     },
 

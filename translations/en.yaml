@@ -220,6 +220,12 @@ model:
     info: "Info"
     role: "Role"
     resource: "Resource"
+  datetime:
+    year: "year"
+    day: "day"
+    hour: "hour"
+    minute: "minute"
+    second: "second"
   dm:
     notification: "%% sent a DM:"
     greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"

@@ -1,38 +1,7 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Dotenv = require('dotenv');
-
-// I know that the following can bring a lot of anger.
-// I know there would be a bajillion reasons why I shouldn't do this.
-// But you know what?
-// Fuck it :) .
-Array.prototype.getRandomElement = function () {
-    return this[Math.floor(Math.random() * this.length)];
-};
-
-global.secondsAmountToDelayString = (seconds) => {
-    seconds = parseInt(seconds);
-
-    const parts = {
-        'jour': Math.floor(seconds / (3600 * 24)),
-        'heure': Math.floor(seconds % (3600 * 24) / 3600),
-        'minute': Math.floor(seconds % 3600 / 60),
-        'seconde': Math.floor(seconds % 60)
-    };
-
-    return Object.keys(parts).reduce((carry, part) => {
-        if (parts[part] > 0) {
-            carry += `${parts[part]} ${part}`;
-
-            if (parts[part] > 1) {
-                carry += 's';
-            }
-
-            carry += ', ';
-        }
-
-        return carry;
-    }, '').replace(/, $/, '');
-};
+require('./model/datetime');
+require('./model/array');
 
 Dotenv.config();
 

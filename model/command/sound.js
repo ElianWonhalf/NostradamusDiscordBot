@@ -36,7 +36,7 @@ module.exports = {
                 });
 
                 const play = (connection) => {
-                    const streamDispatcher = connection.play(`./static/audio/${FILES[file].getRandomElement()}.mp3`);
+                    const streamDispatcher = connection.play(`./static/audio/${getRandomArrayElement(FILES[file])}.mp3`);
 
                     streamDispatcher.on('finish', () => {
                         setTimeout(() => {
