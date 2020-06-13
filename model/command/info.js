@@ -153,7 +153,7 @@ module.exports = {
                     accountCreated: await getMemberAccountCreationDate(target),
                     memberJoined: await getMemberJoinedDate(target),
                     messagesSent: await StatMessages.getAmount(target.id),
-                    vocalTime: secondsAmountToDelayString((await StatVocal.getAmount(target.id)) * 60),
+                    vocalTime: secondsAmountToDelayString((await StatVocal.getAmount(target.id)) * 60, 'second', true),
                     memberId: target.id
                 },
                 mod: {

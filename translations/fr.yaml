@@ -166,6 +166,8 @@ model:
     hour: "heure"
     minute: "minute"
     second: "seconde"
+    today: "plus ou moins aujourd'hui"
+    noTime: "*aucun*"
   dm:
     greetingsAnswer: "Salut ! Je ne suis qu'un bot, donc tu ne peux pas vraiment discuter avec moi. De plus, garde à l'esprit que chaque message que tu m'envoies est transmis aux modérateurs !"
   hardcoreLearning:
