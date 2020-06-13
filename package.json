@@ -9,7 +9,7 @@
   "author": "Lily Wonhalf <lilywonhalf@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@lilywonhalf/pretty-logger": "^1.1.1",
+    "@lilywonhalf/pretty-logger": "^1.1.2",
     "caller-id": "^0.1.0",
     "configstore": "^5.0.1",
     "discord.js": "^12.2.0",
