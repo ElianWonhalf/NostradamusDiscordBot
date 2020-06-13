@@ -34,6 +34,11 @@ module.exports = async (message) => {
         if (message.channel.id !== Config.channels.welcome && !user.bot) {
             const isCommand = await Command.parseMessage(message);
             const watchedChannels = [Config.channels.beginner, Config.channels.learntLanguage];
+
+            if (Config.channels.learntLanguageClone !== null) {
+                watchedChannels.push(Config.channels.learntLanguageClone);
+            }
+
             DM.parseMessage(message, isCommand);
 
             if (!isCommand && watchedChannels.indexOf(message.channel.id) > -1) {
