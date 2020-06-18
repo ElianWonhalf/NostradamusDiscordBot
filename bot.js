@@ -1,5 +1,6 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Dotenv = require('dotenv');
+
 require('./model/datetime');
 require('./model/array');
 

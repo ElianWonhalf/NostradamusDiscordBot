@@ -106,7 +106,7 @@ const getMemberJoinedDate = async (member) => {
     let joinDate = member.joinedAt;
     let prefix = '';
 
-    if (firstMessageDate.getTime() < joinDate.getTime()) {
+    if (firstMessageDate !== undefined && firstMessageDate.getTime() < joinDate.getTime()) {
         joinDate = firstMessageDate;
         prefix = '≈';
     }
