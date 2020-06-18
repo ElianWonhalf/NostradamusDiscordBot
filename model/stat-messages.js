@@ -33,18 +33,21 @@ class StatMessages extends StatEntity
             `SELECT MIN(\`date\`) AS date FROM \`${this.tableName}\` WHERE \`user_id\` = ?`,
             [snowflake]
         );
-        const dateParts = data.date.split('-');
 
-        dateParts.pop();
-        date.setFullYear(dateParts[0]);
-        date.setMonth(parseInt(dateParts[1]) - 1);
-        date.setDate(dateParts[2]);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
+        if (data.date !== null) {
+            const dateParts = data.date.split('-');
 
-        return date;
+            dateParts.pop();
+            date.setFullYear(dateParts[0]);
+            date.setMonth(parseInt(dateParts[1]) - 1);
+            date.setDate(dateParts[2]);
+            date.setHours(0);
+            date.setMinutes(0);
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+
+            return date;
+        }
     }
 }
 
