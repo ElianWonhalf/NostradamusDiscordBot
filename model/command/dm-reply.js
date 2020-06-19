@@ -8,7 +8,7 @@ const CommandPermission = require('../command-permission');
  * @param {Message} message
  */
 module.exports = {
-    aliases: ['dmreply','dm'],
+    aliases: ['dmreply', 'dm', 'mp'],
     category: CommandCategory.MODERATION,
     isAllowedForContext: CommandPermission.isMemberMod,
     process: async (message, content) => {
