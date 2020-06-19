@@ -4,7 +4,8 @@ const Config = require('../config.json');
 const Guild = require('./guild');
 const StatMemberFlow = require('./stat-member-flow');
 
-const POSSIBLE_TROLL_DELAY = 10 * 1000;
+const POSSIBLE_NON_NATIVE_TROLL_DELAY = 10 * SECOND;
+const POSSIBLE_NATIVE_TROLL_DELAY = 5 * SECOND;
 const LOGO_EMOJI_NAME = 'alogo';
 const NATIVE_EMOJI_NAME = '👍';
 const NOT_NATIVE_EMOJI_NAME = '👎';
@@ -136,8 +137,15 @@ const MemberRolesFlow = {
 
         Guild.memberFlowLogChannel.send(logEmbed);
 
-        if (new Date().getTime() - memberTime[member.id] < POSSIBLE_TROLL_DELAY) {
-            Guild.automodChannel.send(trans('model.memberRolesFlow.possibleTroll', [member.toString()], 'en'));
+        if (typeof memberTime[member.id] !== 'undefined') {
+            const processDelay = new Date().getTime() - memberTime[member.id];
+            const possibleTroll = Guild.isMemberNative(member)
+                ? processDelay < POSSIBLE_NATIVE_TROLL_DELAY
+                : processDelay < POSSIBLE_NON_NATIVE_TROLL_DELAY;
+
+            if (possibleTroll) {
+                Guild.automodChannel.send(trans('model.memberRolesFlow.possibleTroll', [member.toString()], 'en'));
+            }
         }
     },
 
