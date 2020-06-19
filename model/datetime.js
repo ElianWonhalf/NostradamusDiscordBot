@@ -3,6 +3,7 @@ const Config = require('../config.json');
 // Of course this is copy-pasted from Stack Overflow!
 // https://stackoverflow.com/a/7751977/3551909
 global.TWO_WEEKS = 12096e5;
+global.SECOND = 1000;
 
 global.secondsAmountToDelayString = (seconds, upTo = 'second', isDelay = false) => {
     seconds = parseInt(seconds);
