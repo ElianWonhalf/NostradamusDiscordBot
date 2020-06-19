@@ -271,6 +271,7 @@ model:
     validatedMessage: "Welcome %%!"
     logTitle: "Member validated"
     logFooter: "ID: %%"
+    possibleTroll: "The member %% just went through the welcome system quicker than usual, they might be a troll!"
   moderationLog:
     member: "Member %%"
     kicked: "kicked"
