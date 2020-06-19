@@ -4,14 +4,17 @@ const Config = require('../config.json');
 const Guild = require('./guild');
 const StatMemberFlow = require('./stat-member-flow');
 
-const logoEmojiName = 'alogo';
-const nativeEmojiName = '👍';
-const notNativeEmojiName = '👎';
-const beginnerEmojiName = '🥚';
-const intermediateEmojiName = '🐣';
-const advancedEmojiName = '🐥';
-const nativeStepEmojis = [nativeEmojiName, notNativeEmojiName];
-const levelStepEmojis = [beginnerEmojiName, intermediateEmojiName, advancedEmojiName];
+const POSSIBLE_TROLL_DELAY = 10 * 1000;
+const LOGO_EMOJI_NAME = 'alogo';
+const NATIVE_EMOJI_NAME = '👍';
+const NOT_NATIVE_EMOJI_NAME = '👎';
+const BEGINNER_EMOJI_NAME = '🥚';
+const INTERMEDIATE_EMOJI_NAME = '🐣';
+const ADVANCED_EMOJI_NAME = '🐥';
+
+const nativeStepEmojis = [NATIVE_EMOJI_NAME, NOT_NATIVE_EMOJI_NAME];
+const levelStepEmojis = [BEGINNER_EMOJI_NAME, INTERMEDIATE_EMOJI_NAME, ADVANCED_EMOJI_NAME];
+const memberTime = {};
 
 const addReactions = async (message, emojis) => {
     for (const expectedEmoji of emojis) {
@@ -24,7 +27,7 @@ const MemberRolesFlow = {
     canPostMeme: true,
 
     introduction: (message) => {
-        addReactions(message, [logoEmojiName]);
+        addReactions(message, [LOGO_EMOJI_NAME]);
     },
 
     /**
@@ -37,6 +40,7 @@ const MemberRolesFlow = {
             [member, [Config.learntLanguage]]
         ));
 
+        memberTime[member.id] = new Date().getTime();
         await addReactions(reply, nativeStepEmojis);
     },
 
@@ -46,12 +50,12 @@ const MemberRolesFlow = {
      */
     isNativeStep: async (messageReaction, member) => {
         switch (messageReaction.emoji.name) {
-            case nativeEmojiName:
+            case NATIVE_EMOJI_NAME:
                 await member.roles.add(Config.roles.native);
                 MemberRolesFlow.welcomeMember(member);
                 break;
 
-            case notNativeEmojiName:
+            case NOT_NATIVE_EMOJI_NAME:
                 await member.roles.add(Config.roles.unknownLevel);
                 MemberRolesFlow.levelStepMessage(member);
                 break;
@@ -89,15 +93,15 @@ const MemberRolesFlow = {
         await member.roles.remove(Config.roles.unknownLevel);
 
         switch (messageReaction.emoji.name) {
-            case beginnerEmojiName:
+            case BEGINNER_EMOJI_NAME:
                 await member.roles.add(Config.roles.beginner);
                 break;
 
-            case intermediateEmojiName:
+            case INTERMEDIATE_EMOJI_NAME:
                 await member.roles.add(Config.roles.intermediate);
                 break;
 
-            case advancedEmojiName:
+            case ADVANCED_EMOJI_NAME:
                 await member.roles.add(Config.roles.advanced);
                 break;
 
@@ -131,6 +135,10 @@ const MemberRolesFlow = {
         logEmbed.setTimestamp(new Date());
 
         Guild.memberFlowLogChannel.send(logEmbed);
+
+        if (new Date().getTime() - memberTime[member.id] < POSSIBLE_TROLL_DELAY) {
+            Guild.automodChannel.send(trans('model.memberRolesFlow.possibleTroll', [member.toString()], 'en'));
+        }
     },
 
     /**
@@ -148,7 +156,7 @@ const MemberRolesFlow = {
                 MemberRolesFlow.levelStep(reaction, member);
             } else if (member.roles.cache.size < 2 && nativeStepEmojis.includes(reaction.emoji.name)) {
                 MemberRolesFlow.isNativeStep(reaction, member);
-            } else if (member.roles.cache.size < 2 && reaction.emoji.name === logoEmojiName) {
+            } else if (member.roles.cache.size < 2 && reaction.emoji.name === LOGO_EMOJI_NAME) {
                 MemberRolesFlow.start(reaction, member);
             }
         }
