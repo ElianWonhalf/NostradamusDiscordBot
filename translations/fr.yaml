@@ -116,6 +116,8 @@ model:
     quotes:
       description: "Montre quels guillemets on peut utiliser"
       answer: ":pollno: << >>\n:pollno: 《 》\n:pollyes: \" \"\n:pollyes: « »"
+    react:
+      description: "Faites réagir Nostradamus à un message"
     reload:
       description: "Redémarre le bot"
     reply:

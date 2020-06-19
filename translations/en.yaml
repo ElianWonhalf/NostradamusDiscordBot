@@ -165,6 +165,10 @@ model:
     quotes:
       description: "Shows what quotation marks are acceptable to use"
       answer: ":pollno: << >>\n:pollno: 《 》\n:pollno: « »\n:pollyes: \" \""
+    react:
+      description: "Make Nostradamus react to a message"
+      notFound: "I was not able to find the emoji \"%%\""
+      error: "There has been an error with the emoji \"%%\": \n%%"
     reload:
       description: "Reboots the bot"
       answer: "OK, I'm rebooting now."
