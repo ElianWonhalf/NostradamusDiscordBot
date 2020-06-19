@@ -101,7 +101,7 @@ const secondStep = async (collection) => {
  * @param {Message} message
  */
 module.exports = {
-    aliases: [],
+    aliases: ['anonyme'],
     category: CommandCategory.MODERATION,
     isAllowedForContext: CommandPermission.notInWelcome,
     process: async (message, args) => {
