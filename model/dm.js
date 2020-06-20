@@ -25,12 +25,13 @@ const GREETINGS = [
     'bon apresmidi',
     'bonne apresmidi',
     'salut',
+    'salutations',
     'hello',
     'hi',
     'good morning',
     'good afternoon',
     'good evening',
-    'good night',
+    'good night'
 ];
 
 const DM = {
