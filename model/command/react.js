@@ -18,7 +18,7 @@ module.exports = {
     process: async (message, args) => {
         let targetedMessage;
 
-        if (args[0].match(/\d+/u) !== null) {
+        if (args[0].match(/^\d+$/u) !== null) {
             targetedMessage = await message.channel.messages.fetch(args.shift());
         } else {
             const fetchMessageOptions = { limit: 1, before: message.channel.lastMessageID };
