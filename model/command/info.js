@@ -111,7 +111,13 @@ const getMemberJoinedDate = async (member) => {
         prefix = '≈';
     }
 
-    if (savedJoinDate !== null && savedJoinDate.getTime() < joinDate.getTime()) {
+    const joinDateWithoutTime = new Date(joinDate.getTime());
+    joinDateWithoutTime.setHours(0);
+    joinDateWithoutTime.setMinutes(0);
+    joinDateWithoutTime.setSeconds(0);
+    joinDateWithoutTime.setMilliseconds(0);
+
+    if (savedJoinDate !== null && savedJoinDate.getTime() < joinDateWithoutTime.getTime()) {
         joinDate = savedJoinDate;
     }
 
