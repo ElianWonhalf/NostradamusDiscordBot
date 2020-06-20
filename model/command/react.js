@@ -3,6 +3,10 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
 const emojiNameRegex = /^<?[^:]*:(?<name>[^:]+):[^>]*>?$/u;
+const stringEmojiMap = {
+    vote: ['pollyes', 'pollno', 'pollneutral'],
+    votes: ['pollyes', 'pollno', 'pollneutral']
+};
 
 /**
  * @param {Message} message
@@ -12,10 +16,18 @@ module.exports = {
     category: CommandCategory.RESOURCE,
     isAllowedForContext: CommandPermission.isMemberMod,
     process: async (message, args) => {
-        const messageId = args.shift();
-        const targetedMessage = await message.channel.messages.fetch(messageId);
+        let targetedMessage;
 
-        const emojis = args.map(arg => {
+        if (args[0].match(/\d+/u) !== null) {
+            targetedMessage = await message.channel.messages.fetch(args.shift());
+        } else {
+            const fetchMessageOptions = { limit: 1, before: message.channel.lastMessageID };
+            targetedMessage = (await message.channel.messages.fetch(fetchMessageOptions)).first();
+        }
+
+        const emojis = [];
+
+        args.forEach(arg => {
             let foundEmoji = arg.replace(/[\s\n]+/u, '');
 
             if (foundEmoji.match(emojiNameRegex) !== null) {
@@ -25,10 +37,22 @@ module.exports = {
                 if (typeof foundEmoji === 'undefined') {
                     message.reply(trans('model.command.react.notFound', [name], 'en'));
                 }
+            } else if (typeof stringEmojiMap[foundEmoji] !== 'undefined') {
+                Array.prototype.push.apply(
+                    emojis,
+                    stringEmojiMap[foundEmoji].map(
+                        name => bot.emojis.cache.find(emoji => emoji.name === name)
+                    )
+                );
+
+                // Yes, that's just a non-risky way to get an undefined "value"
+                foundEmoji = (() => {})();
             }
 
-            return foundEmoji;
-        }).filter(emoji => typeof emoji !== 'undefined');
+            if (typeof foundEmoji !== 'undefined') {
+                emojis.push(foundEmoji);
+            }
+        });
 
         while (emojis.length > 0) {
             const emoji = emojis.shift();
