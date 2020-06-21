@@ -53,8 +53,9 @@ model:
       notFound: "I... Have no idea who that could be, sorry."
     checkCustomStatuses:
       description: "Searches for blacklisted terms in members' custom messages"
-      introduction: "%% members currently have a custom status set."
-      customStatus: "%%: %%"
+      customStatus: "(Custom status) %%: %%"
+      username: "(Username) %%: %%"
+      nickname: "(Nickname) %%: %%"
       semiBlacklistHeading: ":roocop: The following triggered the **semi** blacklist:"
       fullBlacklistHeading: ":ban: The following triggered the **full** blacklist:"
     committee:

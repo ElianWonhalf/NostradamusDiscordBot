@@ -3,7 +3,7 @@ const StatFullBlacklistTriggers = require('./stat-full-blacklist-triggers');
 const StatSemiBlacklistTriggers = require('./stat-semi-blacklist-triggers');
 
 const formatBlacklistTerm = (term) => {
-    return `(^|\\W)${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()}(\\W|$)`;
+    return `(^|\\W)(${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()})(\\W|$)`;
 };
 
 const Blacklist = {
@@ -43,7 +43,7 @@ const Blacklist = {
             string = string.replace(
                 new RegExp(
                     word,
-                    'gu'
+                    'giu'
                 ),
                 occurrence => {
                     return `***${occurrence}***`;
@@ -55,7 +55,7 @@ const Blacklist = {
             string = string.replace(
                 new RegExp(
                     word,
-                    'gu'
+                    'giu'
                 ),
                 occurrence => {
                     return `__***${occurrence}***__`;
