@@ -106,7 +106,7 @@ class CheckCustomStatuses
                 'model.command.checkCustomStatuses.semiBlacklistHeading',
                 [],
                 'en'
-            )}**\n${semiBlacklistTriggered.join('\n')}\n\n`;
+            )}**\n${semiBlacklistTriggered.sort().join('\n')}\n\n`;
         }
 
         if (fullBlacklistTriggered.length > 0) {
@@ -114,7 +114,7 @@ class CheckCustomStatuses
                 'model.command.checkCustomStatuses.fullBlacklistHeading',
                 [],
                 'en'
-            )}**\n${fullBlacklistTriggered.join('\n')}\n\n`;
+            )}**\n${fullBlacklistTriggered.sort().join('\n')}\n\n`;
         }
 
         message.channel.send(finalMessage);
