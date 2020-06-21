@@ -255,6 +255,10 @@ model:
     customStatusUpdate: ":status: %%: %%"
     customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
+    usernameSemiBlacklist: ":roocop: %% updated their username and it triggered the **semi** blacklist: %%"
+    usernameFullBlacklist: ":ban: %% updated their username and it triggered the **full** blacklist: %%"
+    nicknameSemiBlacklist: ":roocop: %% updated their nickname and it triggered the **semi** blacklist: %%"
+    nicknameFullBlacklist: ":ban: %% updated their nickname and it triggered the **full** blacklist: %%"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"

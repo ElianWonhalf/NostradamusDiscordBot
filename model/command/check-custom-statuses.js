@@ -44,18 +44,20 @@ class CheckCustomStatuses
             const hasCustomStatusSet = hasGame && activity.state !== null;
 
             if (hasCustomStatusSet) {
-                if (Blacklist.isSemiTriggered(activity.state)) {
-                    semiBlacklistTriggered.push(`   ${trans(
-                        'model.command.checkCustomStatuses.customStatus',
-                        [member.toString(), activity.state],
-                        'en'
-                    )}`);
-                }
+                const semiWords = Blacklist.getSemiWordsInString(activity.state);
+                const fullWords = Blacklist.getFullWordsInString(activity.state);
+                const formattedState = Blacklist.formatWordsInString(activity.state);
 
-                if (Blacklist.isFullTriggered(activity.state)) {
+                if (fullWords.length > 0) {
                     fullBlacklistTriggered.push(`   ${trans(
                         'model.command.checkCustomStatuses.customStatus',
-                        [member.toString(), activity.state],
+                        [member.toString(), formattedState],
+                        'en'
+                    )}`);
+                } else if (semiWords.length > 0) {
+                    semiBlacklistTriggered.push(`   ${trans(
+                        'model.command.checkCustomStatuses.customStatus',
+                        [member.toString(), formattedState],
                         'en'
                     )}`);
                 }
