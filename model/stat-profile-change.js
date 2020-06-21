@@ -3,23 +3,19 @@ const StatEntity = require('./stat-entity');
 
 class StatProfileChange extends StatEntity
 {
-    static get TYPE_NICKNAME()
-    {
+    static get TYPE_NICKNAME() {
         return 'nickname';
     }
 
-    static get TYPE_USERNAME()
-    {
+    static get TYPE_USERNAME() {
         return 'username';
     }
 
-    static get TYPE_AVATAR()
-    {
+    static get TYPE_AVATAR() {
         return 'avatar';
     }
 
-    static get TYPES()
-    {
+    static get TYPES() {
         return [
             StatProfileChange.TYPE_NICKNAME,
             StatProfileChange.TYPE_USERNAME,
@@ -27,8 +23,7 @@ class StatProfileChange extends StatEntity
         ];
     }
 
-    constructor()
-    {
+    constructor() {
         super('stat_profile_change');
     }
 
@@ -37,8 +32,7 @@ class StatProfileChange extends StatEntity
      * @param {string} type
      * @returns {Promise.<Array<string>>}
      */
-    async getDataList(snowflake, type)
-    {
+    async getDataList(snowflake, type) {
         if (StatProfileChange.TYPES.includes(type)) {
             let data = await connection.asyncQuery(
                 `SELECT \`data\` FROM \`${this.tableName}\` WHERE \`user_id\` = ? AND type = ?`,
@@ -57,8 +51,7 @@ class StatProfileChange extends StatEntity
      * @param {Snowflake} snowflake
      * @returns {Promise.<Array<string>>}
      */
-    async getUsernameList(snowflake)
-    {
+    async getUsernameList(snowflake) {
         return this.getDataList(snowflake, StatProfileChange.TYPE_USERNAME);
     }
 
@@ -66,8 +59,7 @@ class StatProfileChange extends StatEntity
      * @param {Snowflake} snowflake
      * @returns {Promise.<Array<string>>}
      */
-    async getNicknameList(snowflake)
-    {
+    async getNicknameList(snowflake) {
         return this.getDataList(snowflake, StatProfileChange.TYPE_NICKNAME);
     }
 
@@ -75,8 +67,7 @@ class StatProfileChange extends StatEntity
      * @param {Snowflake} snowflake
      * @returns {Promise.<Array<string>>}
      */
-    async getAvatarList(snowflake)
-    {
+    async getAvatarList(snowflake) {
         return this.getDataList(snowflake, StatProfileChange.TYPE_AVATAR);
     }
 }

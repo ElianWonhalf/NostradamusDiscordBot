@@ -127,14 +127,25 @@ const getMemberJoinedDate = async (member) => {
     return `${prefix}${joinDate.toLocaleString('fr', dateFormatOptions).replace(' à 00:00:00', '')} (${elapsedTimeString})`;
 };
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['whois', 'information', 'informations', 'who'],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message, args) => {
+class Info
+{
+    static instance = null;
+
+    constructor() {
+        if (Info.instance !== null) {
+            return Info.instance;
+        }
+
+        this.aliases = ['whois', 'information', 'informations', 'who'];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const result = await Guild.findDesignatedMemberInMessage(message);
         let target = null;
 
@@ -208,4 +219,6 @@ module.exports = {
             message.reply(trans('model.command.info.notFound'));
         }
     }
-};
+}
+
+module.exports = new Info();

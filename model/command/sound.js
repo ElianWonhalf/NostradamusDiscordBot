@@ -14,14 +14,25 @@ const FILES = {
     'honey': ['honey1', 'honey2', 'honey3', 'honey4']
 };
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['son'],
-    category: CommandCategory.FUN,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message, args) => {
+class Sound
+{
+    static instance = null;
+
+    constructor() {
+        if (Sound.instance !== null) {
+            return Sound.instance;
+        }
+
+        this.aliases = ['son'];
+        this.category = CommandCategory.FUN;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
         const argsValid = args.length > 0;
         const voiceValid = member.voice.channel !== null;
@@ -60,4 +71,6 @@ module.exports = {
             message.reply(trans('model.command.sound.format'));
         }
     }
-};
+}
+
+module.exports = new Sound();

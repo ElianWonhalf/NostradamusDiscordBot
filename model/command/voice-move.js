@@ -2,14 +2,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.memberHasPermission('MOVE_MEMBERS'),
-    process: async (message) => {
+class VoiceMove
+{
+    static instance = null;
+
+    constructor() {
+        if (VoiceMove.instance !== null) {
+            return VoiceMove.instance;
+        }
+
+        this.aliases = ['voicemove'];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.memberHasPermission('MOVE_MEMBERS');
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         const member = await Guild.getMemberFromMessage(message);
 
         Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {
@@ -19,4 +29,6 @@ module.exports = {
 
         message.reply(trans('model.command.voicemove.ready', [], 'en'));
     }
-};
+}
+
+module.exports = new VoiceMove();

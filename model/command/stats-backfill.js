@@ -10,14 +10,25 @@ const cachelessRequire = (path) => {
     return typeof path === 'string' ? require(path) : null;
 };
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['statsbackfill', 'backfillstats', 'backfill-stats'],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMommy,
-    process: async (message, args) => {
+class StatsBackfill
+{
+    static instance = null;
+
+    constructor() {
+        if (StatsBackfill.instance !== null) {
+            return StatsBackfill.instance;
+        }
+
+        this.aliases = ['statsbackfill', 'backfillstats', 'backfill-stats'];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.isMommy;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         if (!fs.existsSync('./cache')) {
             fs.mkdirSync('./cache');
         }
@@ -33,4 +44,6 @@ module.exports = {
             }
         }
     }
-};
+}
+
+module.exports = new StatsBackfill();

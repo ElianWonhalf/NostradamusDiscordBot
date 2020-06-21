@@ -4,14 +4,25 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class Panic
+{
+    static instance = null;
+
+    constructor() {
+        if (Panic.instance !== null) {
+            return Panic.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const panicOverWords = [
             'off',
             'over',
@@ -45,4 +56,6 @@ module.exports = {
         officialMemberRole.setPermissions(permissions);
         Logger.warning((enabled ? 'Entered' : 'Left') + ' server panic mode');
     }
-};
+}
+
+module.exports = new Panic();

@@ -3,14 +3,25 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['av'],
-    category: CommandCategory.FUN,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message, args) => {
+class Avatar
+{
+    static instance = null;
+
+    constructor() {
+        if (Avatar.instance !== null) {
+            return Avatar.instance;
+        }
+
+        this.aliases = ['av'];
+        this.category = CommandCategory.FUN;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         let user = null;
 
         if (args.length > 0) {
@@ -38,4 +49,6 @@ module.exports = {
             message.reply(trans('model.command.avatar.notFound'));
         }
     }
-};
+}
+
+module.exports = new Avatar();

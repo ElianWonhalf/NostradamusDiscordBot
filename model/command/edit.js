@@ -2,28 +2,41 @@ const Logger = require('@lilywonhalf/pretty-logger');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['send'],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, content) => {
+class Edit
+{
+    static instance = null;
+
+    constructor() {
+        if (Edit.instance !== null) {
+            return Edit.instance;
+        }
+
+        this.aliases = ['send'];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         let channel = message.channel;
 
         if (message.mentions.channels.size > 0) {
             channel = message.mentions.channels.first();
-            content.shift();
+            args.shift();
         }
 
-        const target = await channel.messages.fetch(content.shift());
+        const target = await channel.messages.fetch(args.shift());
 
-        target.edit(content.join(' ')).then(async () => {
+        target.edit(args.join(' ')).then(async () => {
             await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
         }).catch(async (error) => {
             Logger.error(error.toString());
             await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollno'));
         });
     }
-};
+}
+
+module.exports = new Edit();

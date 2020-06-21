@@ -4,18 +4,29 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['dmreply', 'dm', 'mp'],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, content) => {
-		const recipientId = content.shift();
+class DMReply
+{
+    static instance = null;
 
-		if (content.length > 0) {
-			const answer = content.join(' ');
+    constructor() {
+        if (DMReply.instance !== null) {
+            return DMReply.instance;
+        }
+
+        this.aliases = ['dmreply', 'dm', 'mp'];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+	/**
+	 * @param {Message} message
+	 * @param {Array} args
+	 */
+    async process(message, args) {
+		const recipientId = args.shift();
+
+		if (args.length > 0) {
+			const answer = args.join(' ');
 
 			if (bot.users.cache.has(recipientId)) {
 				const embed = await Guild.messageToEmbed(message);
@@ -44,4 +55,6 @@ module.exports = {
 			message.reply(trans('model.command.dmReply.noMessage', [], 'en'));
 		}
     }
-};
+}
+
+module.exports = new DMReply();

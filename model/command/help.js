@@ -23,8 +23,7 @@ class HelpDialog
     /**
      * @param {Message} message
      */
-    constructor(message)
-    {
+    constructor(message) {
         this.member = null;
         this.categoriesMapping = new Discord.Collection();
         this.categoriesEmbed = new Discord.MessageEmbed();
@@ -38,8 +37,7 @@ class HelpDialog
     /**
      * @param {Command} Command
      */
-    async init(Command)
-    {
+    async init(Command) {
         this.member = await Guild.getMemberFromMessage(this.originalMessage);
 
         if (!this.member.roles.cache.has(Config.roles.officialMember)) {
@@ -92,8 +90,7 @@ class HelpDialog
     /**
      * @param {Collection<Snowflake, MessageReaction>} [collection]
      */
-    async listCategories(collection)
-    {
+    async listCategories(collection) {
         this.stopAddingReactions = true;
 
         if (collection !== undefined && collection.size < 1) {
@@ -127,8 +124,7 @@ class HelpDialog
     /**
      * @param {Collection<Snowflake, MessageReaction>} collection
      */
-    async listCommands(collection)
-    {
+    async listCommands(collection) {
         this.stopAddingReactions = true;
         this.postedMessage.reactions.removeAll();
 
@@ -164,17 +160,29 @@ class HelpDialog
     }
 }
 
-/**
- * @param {Message} message
- * @param {Array} args
- * @param {Command} Command
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.INFO,
-    isAllowedForContext: CommandPermission.yes,
-    process: (message, args, Command) => {
+class Help
+{
+    static instance = null;
+
+    constructor() {
+        if (Help.instance !== null) {
+            return Help.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.INFO;
+        this.isAllowedForContext = CommandPermission.yes;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     * @param {Command} Command
+     */
+    async process(message, args, Command) {
         const dialog = new HelpDialog(message);
         dialog.init(Command);
     }
-};
+}
+
+module.exports = new Help();

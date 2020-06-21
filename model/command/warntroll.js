@@ -3,14 +3,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message) => {
+class WarnTroll
+{
+    static instance = null;
+
+    constructor() {
+        if (WarnTroll.instance !== null) {
+            return WarnTroll.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
         let certaintySentence;
         let answer;
@@ -34,4 +44,6 @@ module.exports = {
 
         message.reply(answer);
     }
-};
+}
+
+module.exports = new WarnTroll();

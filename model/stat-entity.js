@@ -7,32 +7,28 @@ class StatEntity
     /**
      * @returns {string}
      */
-    static get INSERT_QUERY_MODE_FULL()
-    {
+    static get INSERT_QUERY_MODE_FULL() {
         return 'full';
     }
 
     /**
      * @returns {string}
      */
-    static get INSERT_QUERY_MODE_HEAD()
-    {
+    static get INSERT_QUERY_MODE_HEAD() {
         return 'head';
     }
 
     /**
      * @returns {string}
      */
-    static get INSERT_QUERY_MODE_TAIL()
-    {
+    static get INSERT_QUERY_MODE_TAIL() {
         return 'tail';
     }
 
     /**
      * @returns {Array<string>}
      */
-    static get INSERT_QUERY_MODES()
-    {
+    static get INSERT_QUERY_MODES() {
         return [
             StatEntity.INSERT_QUERY_MODE_FULL,
             StatEntity.INSERT_QUERY_MODE_HEAD,
@@ -43,8 +39,7 @@ class StatEntity
     /**
      * @param {string} tableName
      */
-    constructor(tableName)
-    {
+    constructor(tableName) {
         this.tableName = tableName;
         this.paused = false;
     }
@@ -52,16 +47,14 @@ class StatEntity
     /**
      * @returns {string}
      */
-    static getCurrentDate(date = null)
-    {
+    static getCurrentDate(date = null) {
         date = date !== null ? date : new Date();
         const day = date.getDay() === 0 ? 7 : date.getDay();
 
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${day}`;
     }
 
-    async truncate()
-    {
+    async truncate() {
         await connection.asyncQuery(`TRUNCATE TABLE ${this.tableName}`);
     }
 
@@ -70,8 +63,7 @@ class StatEntity
      * @param {string} data
      * @param {object} [extraColumns]
      */
-    async save(snowflake, data, extraColumns = null)
-    {
+    async save(snowflake, data, extraColumns = null) {
         if (Config.statsEnabled && !this.paused) {
             let updateString = 'data = ?';
             const query = this.getInsertQuery(snowflake, data, extraColumns);
@@ -94,8 +86,7 @@ class StatEntity
      * @param {object|null} [extraColumns]
      * @param {string} mode
      */
-    getInsertQuery(snowflake, data, extraColumns = null, mode = 'full')
-    {
+    getInsertQuery(snowflake, data, extraColumns = null, mode = 'full') {
         let dateObject = null;
 
         data = data === null ? '' : data.toString();
@@ -151,8 +142,7 @@ class StatEntity
     /**
      * @param {Array} lines
      */
-    async bulkSave(lines)
-    {
+    async bulkSave(lines) {
         const chunkSize = 4000;
         const chunksAmount = Math.ceil(lines.length / chunkSize);
         const queryHead = this.getInsertQuery(null, null, null, StatEntity.INSERT_QUERY_MODE_HEAD);

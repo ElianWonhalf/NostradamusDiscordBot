@@ -2,15 +2,25 @@ const Logger = require('@lilywonhalf/pretty-logger');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['setavatar'],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class SetAvatar
+{
+    static instance = null;
+
+    constructor() {
+        if (SetAvatar.instance !== null) {
+            return SetAvatar.instance;
+        }
+
+        this.aliases = ['setavatar'];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         global.bot.user.setAvatar(args.join(' ')).then(() => {
             message.reply(trans('model.command.setAvatar.success', [], 'en'))
         }).catch((error) => {
@@ -18,4 +28,6 @@ module.exports = {
             Logger.exception(error);
         });
     }
-};
+}
+
+module.exports = new SetAvatar();

@@ -3,8 +3,7 @@ const StatEntity = require('./stat-entity');
 
 class StatMessages extends StatEntity
 {
-    constructor()
-    {
+    constructor() {
         super('stat_messages');
     }
 
@@ -12,8 +11,7 @@ class StatMessages extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<int>}
      */
-    async getAmount(snowflake)
-    {
+    async getAmount(snowflake) {
         const data = await connection.asyncQuery(
             `SELECT SUM(\`data\`) AS amount FROM \`${this.tableName}\` WHERE \`user_id\` = ?`,
             [snowflake]
@@ -26,8 +24,7 @@ class StatMessages extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<Date>}
      */
-    async getFirstMessageDate(snowflake)
-    {
+    async getFirstMessageDate(snowflake) {
         const date = new Date();
         const data = await connection.asyncQuery(
             `SELECT MIN(\`date\`) AS date FROM \`${this.tableName}\` WHERE \`user_id\` = ?`,
