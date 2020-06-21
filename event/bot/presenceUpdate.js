@@ -29,6 +29,9 @@ module.exports = (oldPresence, newPresence) => {
 
     if (newHasCustomStatus && differentCustomStatus) {
         const state = newCustomStatus.state === null ? '' : newCustomStatus.state;
+        const semiWords = Blacklist.getSemiWordsInString(state);
+        const fullWords = Blacklist.getFullWordsInString(state);
+        const formattedState = Blacklist.formatWordsInString(state);
 
         Guild.serverLogChannel.send(
             trans(
@@ -38,21 +41,19 @@ module.exports = (oldPresence, newPresence) => {
             )
         );
 
-        if (Blacklist.isSemiTriggered(state)) {
-            Guild.botChannel.send(
+        if (fullWords.length > 0) {
+            Guild.automodChannel.send(
                 trans(
-                    'model.guild.customStatusSemiBlacklist',
-                    [member.toString(), state],
+                    'model.guild.customStatusFullBlacklist',
+                    [member.toString(), formattedState],
                     'en'
                 )
             )
-        }
-
-        if (Blacklist.isFullTriggered(state)) {
-            Guild.botChannel.send(
+        } else if (semiWords.length > 0) {
+            Guild.automodChannel.send(
                 trans(
-                    'model.guild.customStatusFullBlacklist',
-                    [member.toString(), state],
+                    'model.guild.customStatusSemiBlacklist',
+                    [member.toString(), formattedState],
                     'en'
                 )
             )

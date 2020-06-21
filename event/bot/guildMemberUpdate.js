@@ -1,4 +1,6 @@
 const StatProfileChange = require('../../model/stat-profile-change');
+const Blacklist = require('../../model/blacklist');
+const Guild = require('../../model/guild');
 
 /**
  * @param {GuildMember} oldMember
@@ -13,5 +15,27 @@ module.exports = (oldMember, newMember) => {
             newMember.nickname,
             {type: StatProfileChange.constructor.TYPE_NICKNAME}
         );
+
+        const semiWords = Blacklist.getSemiWordsInString(newMember.nickname);
+        const fullWords = Blacklist.getFullWordsInString(newMember.nickname);
+        const formattedNickname = Blacklist.formatWordsInString(newMember.nickname);
+
+        if (fullWords.length > 0) {
+            Guild.automodChannel.send(
+                trans(
+                    'model.guild.nicknameFullBlacklist',
+                    [newMember.toString(), formattedNickname],
+                    'en'
+                )
+            )
+        } else if (semiWords.length > 0) {
+            Guild.automodChannel.send(
+                trans(
+                    'model.guild.nicknameSemiBlacklist',
+                    [newMember.toString(), formattedNickname],
+                    'en'
+                )
+            )
+        }
     }
 };

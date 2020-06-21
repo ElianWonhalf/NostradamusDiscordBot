@@ -3,7 +3,7 @@ const StatFullBlacklistTriggers = require('./stat-full-blacklist-triggers');
 const StatSemiBlacklistTriggers = require('./stat-semi-blacklist-triggers');
 
 const formatBlacklistTerm = (term) => {
-    return `(^|\\s)${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()}(\\s|$)`;
+    return `(^|\\W)${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()}(\\W|$)`;
 };
 
 const Blacklist = {
@@ -15,22 +15,55 @@ const Blacklist = {
 
     /**
      * @param {String} string
-     * @returns {boolean}
+     * @returns {Array}
      */
-    isSemiTriggered: (string) => {
-        return Blacklist.semiBlacklistWords.some(
+    getSemiWordsInString: (string) => {
+        return Blacklist.semiBlacklistWords.filter(
             blackWord => string.toLowerCase().match(new RegExp(blackWord)) !== null
         );
     },
 
     /**
      * @param {String} string
-     * @returns {boolean}
+     * @returns {Array}
      */
-    isFullTriggered: (string) => {
-        return Blacklist.fullBlacklistWords.some(
+    getFullWordsInString: (string) => {
+        return Blacklist.fullBlacklistWords.filter(
             blackWord => string.toLowerCase().match(new RegExp(blackWord)) !== null
         );
+    },
+
+    /**
+     * @param {string} string
+     *
+     * @returns {string}
+     */
+    formatWordsInString: (string) => {
+        Blacklist.getSemiWordsInString(string).forEach(word => {
+            string = string.replace(
+                new RegExp(
+                    word,
+                    'gu'
+                ),
+                occurrence => {
+                    return `***${occurrence}***`;
+                }
+            );
+        });
+
+        Blacklist.getFullWordsInString(string).forEach(word => {
+            string = string.replace(
+                new RegExp(
+                    word,
+                    'gu'
+                ),
+                occurrence => {
+                    return `__***${occurrence}***__`;
+                }
+            );
+        });
+
+        return string;
     },
 
     /**
@@ -40,16 +73,22 @@ const Blacklist = {
         if (message.guild !== null && !message.author.bot) {
             // Dyno is taking care of the full blacklist for now
             // Update 2020-05-23: NOPE, DYNO IS KICKED LOLZ!!!11!1! HEPBOAT IS IN CHARGE NOW!!
-            if (Blacklist.isSemiTriggered(message.cleanContent)) {
+            const semiWords = Blacklist.getSemiWordsInString(message.cleanContent);
+            const fullWords = Blacklist.getFullWordsInString(message.cleanContent);
+
+            if (semiWords.length > 0) {
                 StatSemiBlacklistTriggers.save(message.author.id, '+1');
+
+                const embed = await Guild.messageToEmbed(message);
+                embed.setDescription(Blacklist.formatWordsInString(message.content));
 
                 Guild.automodChannel.send(
                     trans('model.blacklist.semi.triggered', [message.author, message.channel, message.url], 'en'),
-                    await Guild.messageToEmbed(message)
+                    embed
                 );
             }
 
-            if (Blacklist.isFullTriggered(message.cleanContent)) {
+            if (fullWords.length > 0) {
                 StatFullBlacklistTriggers.save(message.author.id, '+1');
             }
         }
