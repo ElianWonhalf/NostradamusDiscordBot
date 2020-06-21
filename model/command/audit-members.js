@@ -15,7 +15,7 @@ const checkUsername = (member, semiBlacklistTriggered, fullBlacklistTriggered) =
             'en'
         )}`);
     } else if (semiWords.length > 0) {
-        fullBlacklistTriggered.push(`   ${trans(
+        semiBlacklistTriggered.push(`   ${trans(
             'model.command.checkCustomStatuses.username',
             [member.toString(), formattedUsername],
             'en'
@@ -38,7 +38,7 @@ const checkNickname = (member, semiBlacklistTriggered, fullBlacklistTriggered) =
                 'en'
             )}`);
         } else if (semiWords.length > 0) {
-            fullBlacklistTriggered.push(`   ${trans(
+            semiBlacklistTriggered.push(`   ${trans(
                 'model.command.checkCustomStatuses.nickname',
                 [member.toString(), formattedNickname],
                 'en'
