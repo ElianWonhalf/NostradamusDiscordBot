@@ -4,15 +4,25 @@ const Language = require('../language');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['addlanguage'],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class AddLanguage
+{
+    static instance = null;
+
+    constructor() {
+        if (AddLanguage.instance !== null) {
+            return AddLanguage.instance;
+        }
+
+        this.aliases = ['addlanguage'];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         args = args.join(' ').split('|');
 
         const friendly = args[0];
@@ -23,7 +33,7 @@ module.exports = {
                 .then(roleInstance => {
                     message.reply(trans('model.command.addLanguage.discordRoleAddSuccess', [roleInstance], 'en'));
 
-                    // then add to database
+                    // Then add to database
                     Language.add(friendly, role).then(() => {
                         message.reply(trans('model.command.addLanguage.databaseRoleAddSuccess', [role], 'en'));
                     }).catch(error => {
@@ -38,4 +48,6 @@ module.exports = {
             message.channel.send(trans('model.command.addLanguage.alreadyExists', [role], 'en'));
         }
     }
-};
+}
+
+module.exports = new AddLanguage();

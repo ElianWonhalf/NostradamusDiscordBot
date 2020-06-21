@@ -4,19 +4,30 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, content) => {
+class Quote
+{
+    static instance = null;
+
+    constructor() {
+        if (Quote.instance !== null) {
+            return Quote.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         let member = await Guild.getMemberFromMessage(message);
 
         if (message.mentions.members.size > 0) {
             member = message.mentions.members.first();
-            content.shift();
+            args.shift();
         }
 
         const embed = new Discord.MessageEmbed()
@@ -25,7 +36,7 @@ module.exports = {
                 member.user.displayAvatarURL({ dynamic: true })
             )
             .setColor(0x00FF00)
-            .setDescription(content.join(' '));
+            .setDescription(args.join(' '));
 
         message.channel.send(embed).then(async () => {
             await message.delete();
@@ -34,4 +45,6 @@ module.exports = {
             await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollno'));
         });
     }
-};
+}
+
+module.exports = new Quote();

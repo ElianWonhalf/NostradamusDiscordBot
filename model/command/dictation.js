@@ -3,14 +3,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['dictee', 'dictée'],
-    category: CommandCategory.ROLE,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message) => {
+class Dictation
+{
+    static instance = null;
+
+    constructor() {
+        if (Dictation.instance !== null) {
+            return Dictation.instance;
+        }
+
+        this.aliases = ['dictee', 'dictée'];
+        this.category = CommandCategory.ROLE;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         const member = await Guild.getMemberFromMessage(message);
 
         if (member.roles.cache.has(Config.roles.dictation)) {
@@ -23,4 +33,6 @@ module.exports = {
             });
         }
     }
-};
+}
+
+module.exports = new Dictation();

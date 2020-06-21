@@ -1,26 +1,36 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
-const Country = require('../country');
+const CountryEntity = require('../country');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['pays'],
-    category: CommandCategory.ROLE,
-    isAllowedForContext: CommandPermission.inRoles,
-    process: async (message, args) => {
+class Country
+{
+    static instance = null;
+
+    constructor() {
+        if (Country.instance !== null) {
+            return Country.instance;
+        }
+
+        this.aliases = ['pays'];
+        this.category = CommandCategory.ROLE;
+        this.isAllowedForContext = CommandPermission.inRoles;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
         const country = args.join(' ').toLowerCase().trim();
 
         if (country !== '') {
             const rolesToRemove = member.roles.cache.filter(role => {
-                return Country.getRoleNameList().indexOf(role.name) > -1;
+                return CountryEntity.getRoleNameList().indexOf(role.name) > -1;
             });
-            const roleName = Country.getRoleNameFromString(country);
+            const roleName = CountryEntity.getRoleNameFromString(country);
 
             let role = null;
 
@@ -52,4 +62,6 @@ module.exports = {
             );
         }
     }
-};
+}
+
+module.exports = new Country();

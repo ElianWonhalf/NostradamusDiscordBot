@@ -3,14 +3,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message) => {
+class GetCustomStatuses
+{
+    static instance = null;
+
+    constructor() {
+        if (GetCustomStatuses.instance !== null) {
+            return GetCustomStatuses.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         let answers = [];
         const membersWithCustomStatus = Guild.discordGuild.members.cache.filter(member => {
             const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
@@ -51,4 +61,6 @@ module.exports = {
             message.channel.send(answer);
         });
     }
-};
+}
+
+module.exports = new GetCustomStatuses();

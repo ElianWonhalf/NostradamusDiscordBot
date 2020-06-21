@@ -5,14 +5,25 @@ const CommandCategory = require('../command-category');
 const VoiceSynthesizer = require('../voice-synthesizer');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.FUN,
-    isAllowedForContext: CommandPermission.isMemberModOrTutor,
-    process: async (message, args) => {
+class Speak
+{
+    static instance = null;
+
+    constructor() {
+        if (Speak.instance !== null) {
+            return Speak.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.FUN;
+        this.isAllowedForContext = CommandPermission.isMemberModOrTutor;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
         const argsValid = args.length > 1 && args[0].length === 2;
         const voiceValid = member.voice.channel !== null;
@@ -52,4 +63,6 @@ module.exports = {
             message.reply(trans('model.command.speak.format'));
         }
     }
-};
+}
+
+module.exports = new Speak();

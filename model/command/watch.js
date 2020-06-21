@@ -10,15 +10,25 @@ const cachelessRequire = (path) => {
     return typeof path === 'string' ? require(path) : null;
 };
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class Watch
+{
+    static instance = null;
+
+    constructor() {
+        if (Watch.instance !== null) {
+            return Watch.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         if (args.length > 0) {
             const messageContainsMemberID = message.content.match(/[0-9]{18}/) !== null;
             const memberToWatch = Guild.findDesignatedMemberInMessage(message);
@@ -45,4 +55,6 @@ module.exports = {
             }
         }
     }
-};
+}
+
+module.exports = new Watch();

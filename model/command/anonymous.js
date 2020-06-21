@@ -97,14 +97,25 @@ const secondStep = async (collection) => {
     });
 };
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['anonyme'],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message, args) => {
+class Anonymous
+{
+    static instance = null;
+
+    constructor() {
+        if (Anonymous.instance !== null) {
+            return Anonymous.instance;
+        }
+
+        this.aliases = ['anonyme'];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         member = await Guild.getMemberFromMessage(message);
         channel = message.channel;
 
@@ -132,4 +143,6 @@ module.exports = {
             }
         }
     }
-};
+}
+
+module.exports = new Anonymous();

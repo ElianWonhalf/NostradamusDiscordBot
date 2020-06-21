@@ -3,14 +3,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['rp', 'rep'],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message) => {
+class Report
+{
+    static instance = null;
+
+    constructor() {
+        if (Report.instance !== null) {
+            return Report.instance;
+        }
+
+        this.aliases = ['rp', 'rep'];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         message.delete().catch(Logger.exception);
         const member = await Guild.getMemberFromMessage(message);
         let {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
@@ -26,4 +36,6 @@ module.exports = {
             await Guild.messageToEmbed(message)
         );
     }
-};
+}
+
+module.exports = new Report();

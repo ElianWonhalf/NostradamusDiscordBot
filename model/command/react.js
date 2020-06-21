@@ -8,14 +8,25 @@ const stringEmojiMap = {
     votes: ['pollyes', 'pollno', 'pollneutral']
 };
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.RESOURCE,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class React
+{
+    static instance = null;
+
+    constructor() {
+        if (React.instance !== null) {
+            return React.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.RESOURCE;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         let targetedMessage;
 
         if (args[0].match(/^\d+$/u) !== null) {
@@ -65,4 +76,6 @@ module.exports = {
 
         await message.delete();
     }
-};
+}
+
+module.exports = new React();

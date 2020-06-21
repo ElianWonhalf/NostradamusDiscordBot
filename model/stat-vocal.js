@@ -3,8 +3,7 @@ const StatEntity = require('./stat-entity');
 
 class StatVocal extends StatEntity
 {
-    constructor()
-    {
+    constructor() {
         super('stat_vocal');
     }
 
@@ -12,8 +11,7 @@ class StatVocal extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<int>}
      */
-    async getAmount(snowflake)
-    {
+    async getAmount(snowflake) {
         const data = await connection.asyncQuery(
             `SELECT SUM(\`data\`) AS amount FROM \`${this.tableName}\` WHERE \`user_id\` = ?`,
             [snowflake]

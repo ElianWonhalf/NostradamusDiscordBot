@@ -3,14 +3,24 @@ const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['getunassignedroles', 'get-unassigned-role', 'getunassignedrole', 'gur'],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMommy,
-    process: async (message) => {
+class GetUnassignedRoles
+{
+    static instance = null;
+
+    constructor() {
+        if (GetUnassignedRoles.instance !== null) {
+            return GetUnassignedRoles.instance;
+        }
+
+        this.aliases = ['getunassignedroles', 'get-unassigned-role', 'getunassignedrole', 'gur'];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMommy;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         const waitMessage = await message.reply(trans('model.command.getUnassignedRoles.wait', [], 'en'));
 
         const unassignedRoles = Guild.discordGuild.roles.cache.filter(role => {
@@ -24,4 +34,6 @@ module.exports = {
             await message.channel.send(answers[i]);
         }
     }
-};
+}
+
+module.exports = new GetUnassignedRoles();

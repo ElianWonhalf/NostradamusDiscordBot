@@ -23,14 +23,24 @@ const WatchedMember = require('../watched-member');
 
 const JAVASCRIPT_LOGO_URL = 'https://i.discord.fr/IEV8.png';
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.BOT_MANAGEMENT,
-    isAllowedForContext: CommandPermission.isMommy,
-    process: async (message) => {
+class Eval
+{
+    static instance = null;
+
+    constructor() {
+        if (Eval.instance !== null) {
+            return Eval.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.BOT_MANAGEMENT;
+        this.isAllowedForContext = CommandPermission.isMommy;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         const emoji = bot.emojis.cache.find(emoji => emoji.name === 'eowynsheep');
         const code = message.content
             .substr(Config.prefix.length + 'eval'.length)
@@ -55,4 +65,6 @@ module.exports = {
 
         message.channel.send(embed);
     }
-};
+}
+
+module.exports = new Eval();

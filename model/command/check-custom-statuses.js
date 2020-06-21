@@ -4,14 +4,24 @@ const Blacklist = require('../blacklist');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.MODERATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message) => {
+class CheckCustomStatuses
+{
+    static instance = null;
+
+    constructor() {
+        if (CheckCustomStatuses.instance !== null) {
+            return CheckCustomStatuses.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.MODERATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         const membersWithCustomStatusCount = Guild.discordGuild.members.cache.filter(member => {
             const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
 
@@ -70,4 +80,6 @@ module.exports = {
 
         message.channel.send(finalMessage);
     }
-};
+}
+
+module.exports = new CheckCustomStatuses();

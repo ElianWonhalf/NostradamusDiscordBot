@@ -5,15 +5,25 @@ const Country = require('../country');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['loadroles'],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class LoadRoles
+{
+    static instance = null;
+
+    constructor() {
+        if (LoadRoles.instance !== null) {
+            return LoadRoles.instance;
+        }
+
+        this.aliases = ['loadroles'];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const dryRun = args[0] === 'dry';
         const foundLanguageRoles = Language.getRoleNameList();
         const foundCountryRoles = Country.getRoleNameList();
@@ -49,4 +59,6 @@ module.exports = {
 
         message.reply(trans('model.command.loadRoles.count', [amountRolesCreated], 'en'));
     }
-};
+}
+
+module.exports = new LoadRoles();

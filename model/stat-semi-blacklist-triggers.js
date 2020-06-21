@@ -3,8 +3,7 @@ const StatEntity = require('./stat-entity');
 
 class StatSemiBlacklistTriggers extends StatEntity
 {
-    constructor()
-    {
+    constructor() {
         super('stat_semi_blacklist_triggers');
     }
 
@@ -13,8 +12,7 @@ class StatSemiBlacklistTriggers extends StatEntity
      * @param {boolean} recent
      * @returns {Promise.<int>}
      */
-    async getAmount(snowflake, recent = false)
-    {
+    async getAmount(snowflake, recent = false) {
         let querySuffix = '';
 
         if (recent) {

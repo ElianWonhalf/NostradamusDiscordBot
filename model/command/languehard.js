@@ -1,14 +1,33 @@
+const Heat = require('../heat');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: ['languedifficile', 'hardlanguage', 'languagehard'],
-    category: CommandCategory.RESOURCE,
-    isAllowedForContext: CommandPermission.notInWelcome,
-    process: async (message) => {
-        message.channel.send(trans('model.command.langue.reply'));
+class LanguageHard extends Heat
+{
+    static instance = null;
+
+    constructor() {
+        if (LanguageHard.instance !== null) {
+            return LanguageHard.instance;
+        }
+
+        super(10 * SECOND);
+        this.aliases = ['languedifficile', 'hardlanguage', 'languagehard'];
+        this.category = CommandCategory.RESOURCE;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
     }
-};
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
+        if (this.canCall()) {
+            this.registerCall();
+            message.channel.send(trans('model.command.langue.reply'));
+        } else {
+            message.react('⌛');
+        }
+    }
+}
+
+module.exports = new LanguageHard();

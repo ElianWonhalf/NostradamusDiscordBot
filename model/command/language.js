@@ -1,18 +1,28 @@
 const Config = require('../../config.json');
 const Guild = require('../guild');
-const Language = require('../language');
+const LanguageEntity = require('../language');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['langue', 'langage'],
-    category: CommandCategory.ROLE,
-    isAllowedForContext: CommandPermission.inRoles,
-    process: async (message, args) => {
+class Language
+{
+    static instance = null;
+
+    constructor() {
+        if (Language.instance !== null) {
+            return Language.instance;
+        }
+
+        this.aliases = ['langue', 'langage'];
+        this.category = CommandCategory.ROLE;
+        this.isAllowedForContext = CommandPermission.inRoles;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
         const language = args.join(' ').toLowerCase().trim();
 
@@ -26,9 +36,9 @@ module.exports = {
             }
 
             let rolesToRemove = member.roles.cache.filter(role => {
-                return Language.getRoleNameList().indexOf(role.name) > -1;
+                return LanguageEntity.getRoleNameList().indexOf(role.name) > -1;
             });
-            const roleName = Language.getRoleNameFromString(language);
+            const roleName = LanguageEntity.getRoleNameFromString(language);
 
             let role = null;
 
@@ -70,4 +80,6 @@ module.exports = {
             );
         }
     }
-};
+}
+
+module.exports = new Language();

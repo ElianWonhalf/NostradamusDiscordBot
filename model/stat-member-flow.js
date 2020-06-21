@@ -6,32 +6,28 @@ class StatMemberFlow extends StatEntity
     /**
      * @returns {string}
      */
-    static get MEMBER_FLOW_EVENT_JOINED()
-    {
+    static get MEMBER_FLOW_EVENT_JOINED() {
         return 'joined';
     }
 
     /**
      * @returns {string}
      */
-    static get MEMBER_FLOW_EVENT_LEFT()
-    {
+    static get MEMBER_FLOW_EVENT_LEFT() {
         return 'left';
     }
 
     /**
      * @returns {string}
      */
-    static get MEMBER_FLOW_EVENT_VALIDATED()
-    {
+    static get MEMBER_FLOW_EVENT_VALIDATED() {
         return 'validated';
     }
 
     /**
      * @returns {Array<string>}
      */
-    static get MEMBER_FLOW_EVENTS()
-    {
+    static get MEMBER_FLOW_EVENTS() {
         return [
             StatMemberFlow.MEMBER_FLOW_EVENT_JOINED,
             StatMemberFlow.MEMBER_FLOW_EVENT_LEFT,
@@ -39,16 +35,14 @@ class StatMemberFlow extends StatEntity
         ];
     }
 
-    constructor()
-    {
+    constructor() {
         super('stat_member_flow');
     }
 
     /**
      * @inheritDoc
      */
-    async save(snowflake, data, extraColumns = null)
-    {
+    async save(snowflake, data, extraColumns = null) {
         if (StatMemberFlow.MEMBER_FLOW_EVENTS.includes(data)) {
             super.save(snowflake, data, extraColumns);
         }
@@ -60,8 +54,7 @@ class StatMemberFlow extends StatEntity
      * @param {boolean} recent
      * @returns {Promise.<int>}
      */
-    async getEventAmount(snowflake, event, recent = false)
-    {
+    async getEventAmount(snowflake, event, recent = false) {
         if (StatMemberFlow.MEMBER_FLOW_EVENTS.includes(event)) {
             let querySuffix = '';
 
@@ -86,8 +79,7 @@ class StatMemberFlow extends StatEntity
      * @param {boolean} recent
      * @returns {Promise.<int>}
      */
-    getJoinedAmount(snowflake, recent = false)
-    {
+    getJoinedAmount(snowflake, recent = false) {
         return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_JOINED, recent);
     }
 
@@ -96,8 +88,7 @@ class StatMemberFlow extends StatEntity
      * @param {boolean} recent
      * @returns {Promise.<int>}
      */
-    getLeftAmount(snowflake, recent = false)
-    {
+    getLeftAmount(snowflake, recent = false) {
         return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_LEFT, recent);
     }
 
@@ -106,8 +97,7 @@ class StatMemberFlow extends StatEntity
      * @param {boolean} recent
      * @returns {Promise.<int>}
      */
-    getValidatedAmount(snowflake, recent = false)
-    {
+    getValidatedAmount(snowflake, recent = false) {
         return this.getEventAmount(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_VALIDATED, recent);
     }
 
@@ -116,8 +106,7 @@ class StatMemberFlow extends StatEntity
      * @param {string} event
      * @returns {Promise.<Date>}
      */
-    async getFirstDate(snowflake, event)
-    {
+    async getFirstDate(snowflake, event) {
         if (StatMemberFlow.MEMBER_FLOW_EVENTS.includes(event)) {
             const date = new Date();
             const data = await connection.asyncQuery(
@@ -148,8 +137,7 @@ class StatMemberFlow extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<Date>}
      */
-    getFirstJoinedDate(snowflake)
-    {
+    getFirstJoinedDate(snowflake) {
         return this.getFirstDate(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_JOINED);
     }
 
@@ -157,8 +145,7 @@ class StatMemberFlow extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<Date>}
      */
-    getFirstLeftDate(snowflake)
-    {
+    getFirstLeftDate(snowflake) {
         return this.getFirstDate(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_LEFT);
     }
 
@@ -166,8 +153,7 @@ class StatMemberFlow extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<Date>}
      */
-    getFirstValidatedDate(snowflake)
-    {
+    getFirstValidatedDate(snowflake) {
         return this.getFirstDate(snowflake, StatMemberFlow.MEMBER_FLOW_EVENT_VALIDATED);
     }
 }

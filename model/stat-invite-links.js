@@ -3,8 +3,7 @@ const StatEntity = require('./stat-entity');
 
 class StatInviteLinks extends StatEntity
 {
-    constructor()
-    {
+    constructor() {
         super('stat_invite_links');
     }
 
@@ -12,8 +11,7 @@ class StatInviteLinks extends StatEntity
      * @param {string} snowflake
      * @returns {Promise.<int>}
      */
-    async getAmount(snowflake)
-    {
+    async getAmount(snowflake) {
         const data = await connection.asyncQuery(
             `SELECT SUM(\`data\`) AS amount FROM \`${this.tableName}\` WHERE \`user_id\` = ?`,
             [snowflake]

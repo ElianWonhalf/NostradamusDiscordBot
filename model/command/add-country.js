@@ -4,15 +4,25 @@ const Country = require('../country');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- * @param {Array} args
- */
-module.exports = {
-    aliases: ['addcountry'],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message, args) => {
+class AddCountry
+{
+    static instance = null;
+
+    constructor() {
+        if (AddCountry.instance !== null) {
+            return AddCountry.instance;
+        }
+
+        this.aliases = ['addcountry'];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     * @param {Array} args
+     */
+    async process(message, args) {
         args = args.join(' ').split('|');
 
         const friendly = args[0];
@@ -38,4 +48,6 @@ module.exports = {
             message.channel.send(trans('model.command.addCountry.alreadyExists', [role], 'en'));
         }
     }
-};
+}
+
+module.exports = new AddCountry();

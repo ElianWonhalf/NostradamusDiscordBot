@@ -5,14 +5,24 @@ const Country = require('../country');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-/**
- * @param {Message} message
- */
-module.exports = {
-    aliases: [],
-    category: CommandCategory.ADMINISTRATION,
-    isAllowedForContext: CommandPermission.isMemberMod,
-    process: async (message) => {
+class Audit
+{
+    static instance = null;
+
+    constructor() {
+        if (Audit.instance !== null) {
+            return Audit.instance;
+        }
+
+        this.aliases = [];
+        this.category = CommandCategory.ADMINISTRATION;
+        this.isAllowedForContext = CommandPermission.isMemberMod;
+    }
+
+    /**
+     * @param {Message} message
+     */
+    async process(message) {
         let answer = '\n';
 
         const languagesList = Language.getRoleNameList();
@@ -45,4 +55,6 @@ module.exports = {
 
         message.reply(answer);
     }
-};
+}
+
+module.exports = new Audit();
