@@ -207,11 +207,13 @@ class Info
                 });
             }
 
-            let description = information.join('\n');
+            let description = target.toString();
 
             if (Config.modCategories.includes(message.channel.parentID)) {
-                description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}`;
+                description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}\n\n`;
             }
+
+            description += information.join('\n');
 
             embed.setDescription(description);
             message.channel.send(embed);
