@@ -4,8 +4,8 @@ const Config = require('../config.json');
 const Guild = require('./guild');
 const StatMemberFlow = require('./stat-member-flow');
 
-const POSSIBLE_NON_NATIVE_TROLL_DELAY = 10 * SECOND;
-const POSSIBLE_NATIVE_TROLL_DELAY = 5 * SECOND;
+const POSSIBLE_NON_NATIVE_TROLL_DELAY = 5 * SECOND;
+const POSSIBLE_NATIVE_TROLL_DELAY = 2.5 * SECOND;
 const LOGO_EMOJI_NAME = 'alogo';
 const NATIVE_EMOJI_NAME = '👍';
 const NOT_NATIVE_EMOJI_NAME = '👎';
