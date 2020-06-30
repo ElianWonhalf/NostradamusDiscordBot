@@ -28,7 +28,7 @@ class Level
             return;
         }
 
-        const {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
+        const { certain, foundMembers } = Guild.findDesignatedMemberInMessage(message);
 
         if (!certain) {
             message.reply(trans('model.command.level.invalidMemberMentions'));
