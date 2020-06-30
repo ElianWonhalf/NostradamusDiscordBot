@@ -23,35 +23,35 @@ class Level
     async process(message, args) {
         const argsStr = args.join(' ').toLowerCase().trim();
 
-        if (message.members === null || message.members.length === 0) {
-            message.reply(
-                trans('model.command.level.noMembersGiven')
-            );
+        if (!Guild.levelRoles.some(roleName => argsStr.includes(roleName.toLowerCase()))) {
+            message.reply(trans('model.command.level.roleNotFound'));
             return;
         }
 
-        for (let i = 0; i < Guild.levelRoles.length; i++) {
-            if (argsStr.includes(Guild.levelRoles[i].toLowerCase())) {
-                break;
-            }
-            message.reply(
-                trans('model.command.level.roleNotFound')
-            );
+        const {certain, foundMembers} = Guild.findDesignatedMemberInMessage(message);
+
+        if (!certain) {
+            message.reply(trans('model.command.level.invalidMemberMentions'));
             return;
         }
-        const targetRoleName = Guild.levelRoles[i];
+
+        if (foundMembers.length < 1) {
+            message.reply(trans('model.command.level.noMembersGiven'));
+            return;
+        }
+
+        const targetRoleName = Guild.levelRoles.find(roleName => argsStr.includes(roleName.toLowerCase()));
         const targetRole = Guild.getRoleByName(targetRoleName);
-
         const levelRoles = Guild.levelRoles.map(name => Guild.getRoleByName(name));
-        message.members.each(member => {
+
+        message.mentions.members.each(member => {
             await Promise.all([
                 member.roles.remove(levelRoles),
                 member.roles.add(targetRole),
             ]);
         });
-        message.reply(
-            trans('model.command.level.setRole', [targetRoleName])
-        );
+
+        message.reply(trans('model.command.level.setRole', [targetRoleName]));
     }
 }
 
