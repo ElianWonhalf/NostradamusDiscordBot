@@ -137,6 +137,11 @@ model:
     langue:
       description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLanguage difficulty depends entirely on the languages you already know and your own incentives – like your motivation\n"
+    level:
+      description: "Sets the level role of a member or members"
+      noMembersGiven: "You did not give any member for whom level role must be set."
+      roleNotFound: "Did not find any existing level role name in your message"
+      setRole: "Set role \"%%\" to given member(s)!"
     loadRoles:
       description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
