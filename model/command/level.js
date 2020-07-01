@@ -50,7 +50,7 @@ class Level
                 member.roles.remove(levelRoles),
                 member.roles.add(targetRole),
             ]);
-            Guild.serverLogChannel.send(trans('model.command.level.logAction', [author.id, member.id, targetRole]));
+            Guild.serverLogChannel.send(trans('model.command.level.logAction', [author.id, member.id, targetRole], 'en'));
         });
 
         message.reply(trans('model.command.level.setRole', [targetRoleName]));
