@@ -158,13 +158,16 @@ const MemberRolesFlow = {
         const member = await Guild.discordGuild.members.fetch(user);
         const isWelcomeChannel = reaction.message.channel.id === Config.channels.welcome;
         const validMember = !user.bot && member !== null && !member.roles.cache.has(Config.roles.officialMember);
+        const roleCollection = member.roles.cache;
+
+        roleCollection.delete(Config.roles.raid);
 
         if (isWelcomeChannel && validMember) {
-            if (member.roles.cache.has(Config.roles.unknownLevel) && levelStepEmojis.includes(reaction.emoji.name)) {
+            if (roleCollection.has(Config.roles.unknownLevel) && levelStepEmojis.includes(reaction.emoji.name)) {
                 MemberRolesFlow.levelStep(reaction, member);
-            } else if (member.roles.cache.size < 2 && nativeStepEmojis.includes(reaction.emoji.name)) {
+            } else if (roleCollection.size < 2 && nativeStepEmojis.includes(reaction.emoji.name)) {
                 MemberRolesFlow.isNativeStep(reaction, member);
-            } else if (member.roles.cache.size < 2 && reaction.emoji.name === LOGO_EMOJI_NAME) {
+            } else if (roleCollection.size < 2 && reaction.emoji.name === LOGO_EMOJI_NAME) {
                 MemberRolesFlow.start(reaction, member);
             }
         }
