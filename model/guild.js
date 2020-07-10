@@ -161,10 +161,11 @@ const Guild = {
 
     /**
      * @param {GuildMember} member
+     * @param {Snowflake} snowflake - The Role snowflake.
      * @returns {boolean}
      */
-    memberHasLevelRole: (member) => {
-        return member !== undefined && member !== null && member.roles.some(role => Object.values(Guild.levelRolesIds).indexOf(role.id) > -1);
+    memberHasRole: (member, snowflake) => {
+        return member !== undefined && member !== null && member.roles.cache.some(role => role.id === snowflake);
     },
 
     /**
@@ -227,8 +228,8 @@ const Guild = {
 
         if (message.mentions.members !== null && message.mentions.members.size > 0) {
             foundMembers = message.mentions.members.array();
-        } else if (message.content.match(/[0-9]{18}/) !== null) {
-            const ids = message.content.match(/[0-9]{18}/);
+        } else if (message.content.match(/[0-9]{18}/u) !== null) {
+            const ids = message.content.match(/[0-9]{18}/gu);
 
             ids.map(id => {
                 if (memberList.has(id)) {
