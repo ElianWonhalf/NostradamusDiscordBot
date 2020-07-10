@@ -210,10 +210,10 @@ class Info
             let description = target.toString();
 
             if (Config.modCategories.includes(message.channel.parentID)) {
-                description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}\n\n`;
+                description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}`;
             }
 
-            description += information.join('\n');
+            description += `\n\n${information.join('\n')}`;
 
             embed.setDescription(description);
             message.channel.send(embed);
