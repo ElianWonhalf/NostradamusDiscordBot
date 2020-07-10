@@ -21,7 +21,7 @@ class SetAvatar
      * @param {Array} args
      */
     async process(message, args) {
-        global.bot.user.setAvatar(args.join(' ')).then(() => {
+        bot.user.setAvatar(args.join(' ')).then(() => {
             message.reply(trans('model.command.setAvatar.success', [], 'en'))
         }).catch((error) => {
             message.reply(trans('model.command.setAvatar.error', [], 'en'));

@@ -184,7 +184,7 @@ model:
     resetHardcoreLearning:
       description: "Resets the counter of messages in the incorrect language to 0"
     setAvatar:
-      description: "Set the bot avatar"
+      description: "Sets the bot avatar"
       success: "my avatar has been changed!"
       error: "there has been an error changing my avatar. Check the logs for more details."
     sound:
