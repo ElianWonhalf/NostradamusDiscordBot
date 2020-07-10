@@ -45,7 +45,7 @@ class Level
         const targetRole = Guild.getRoleByName(targetRoleName);
         const levelRoles = Guild.levelRoles.map(name => Guild.getRoleByName(name));
 
-        foundMembers.each(member => {
+        foundMembers.each(async member => {
             await Promise.all([
                 member.roles.remove(levelRoles),
                 member.roles.add(targetRole),
