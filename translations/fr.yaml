@@ -90,6 +90,12 @@ model:
     langue:
       description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLa difficulté d'une langue dépend entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
+    level:
+      description: "Attribue le rôle de niveau à un ou plusieurs membres"
+      invalidMemberMentions: "Je n'arrive pas à savoir quels membres ont besoin d'un changement de rôle."
+      noMembersGiven: "Tu n'as donné aucun membre à qui attribuer un rôle."
+      roleNotFound: "Aucun nom de rôle de niveau existant trouvé dans ton message"
+      setRole: "J'ai attribué le rôle \"%%\" aux membres donnés !"
     loadRoles:
       description: "Ajoute des rôles au serveur depuis la base de données"
     logs:
