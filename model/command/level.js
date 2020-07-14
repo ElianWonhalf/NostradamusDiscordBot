@@ -46,10 +46,8 @@ class Level
         const levelRoles = Guild.levelRoles.map(name => Guild.getRoleByName(name));
 
         foundMembers.each(async member => {
-            await Promise.all([
-                member.roles.remove(levelRoles),
-                member.roles.add(targetRole),
-            ]);
+            await member.roles.remove(levelRoles);
+            await member.roles.add(targetRole);
             Guild.serverLogChannel.send(trans('model.command.level.logAction', [author.id, member.id, targetRole], 'en'));
         });
 
