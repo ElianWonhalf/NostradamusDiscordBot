@@ -24,7 +24,7 @@ class Level
         const author = await Guild.getMemberFromMessage(message);
         const argsStr = args.join(' ').toLowerCase().trim();
 
-        if (!Guild.levelRoles.some(roleName => argsStr.includes(roleName.toLowerCase()))) {
+        if (!Guild.levelRoles.array().some(roleName => argsStr.includes(roleName.toLowerCase()))) {
             message.reply(trans('model.command.level.roleNotFound'));
             return;
         }
@@ -41,19 +41,21 @@ class Level
             return;
         }
 
-        const targetRoleName = Guild.levelRoles.find(roleName => argsStr.includes(roleName.toLowerCase()));
-        const targetRole = Guild.getRoleByName(targetRoleName);
-        const levelRoles = Guild.levelRoles.map(name => Guild.getRoleByName(name));
+        const targetRoleId = Guild.levelRoles.findKey(roleName => argsStr.includes(roleName.toLowerCase()));
+        const targetRole = Guild.discordGuild.roles.cache.get(targetRoleId);
 
-        foundMembers.each(async member => {
-            await Promise.all([
-                member.roles.remove(levelRoles),
-                member.roles.add(targetRole),
-            ]);
-            Guild.serverLogChannel.send(trans('model.command.level.logAction', [author.id, member.id, targetRole], 'en'));
+        foundMembers.forEach(async member => {
+            const levelRoles = member.roles.cache.keyArray().filter(
+                value => Guild.levelRoles.keyArray().includes(value)
+            );
+
+            await member.roles.remove(levelRoles);
+            await member.roles.add(targetRoleId);
+
+            Guild.botChannel.send(trans('model.command.level.logAction', [author.toString(), member.id, targetRole.name], 'en'));
         });
 
-        message.reply(trans('model.command.level.setRole', [targetRoleName]));
+        message.reply(trans('model.command.level.setRole', [targetRole.name]));
     }
 }
 
