@@ -7,21 +7,7 @@ const Discord = require('discord.js');
 const Guild = {
     events: new EventEmitter(),
 
-    /** {Object} */
-    levelRolesIds: {
-        native: Config.roles.native,
-        advanced: Config.roles.advanced,
-        intermediate: Config.roles.intermediate,
-        beginner: Config.roles.beginner,
-    },
-
-    /** {Object} */
-    levelRoles: {
-        native: 'Francophone Natif',
-        advanced: 'Avancé',
-        intermediate: 'Intermédiaire',
-        beginner: 'Débutant',
-    },
+    levelRoles: new Discord.Collection(),
 
     /** {Guild} */
     discordGuild: null,
@@ -93,6 +79,11 @@ const Guild = {
         Guild.rolesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.roles);
         Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
+
+        Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
+        Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
+        Guild.levelRoles.set(Config.roles.intermediate, 'Intermédiaire');
+        Guild.levelRoles.set(Config.roles.beginner, 'Débutant');
 
         Guild.kickInactiveNewMembers();
         setInterval(() => {

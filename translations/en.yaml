@@ -140,7 +140,7 @@ model:
     level:
       description: "Sets the level role of a member or members"
       invalidMemberMentions: "I cannot determine which member(s) need a role change."
-      logAction: "Tutor <@%%> changed level role of member <@%%> to \"%%\""
+      logAction: "%% changed level role of member <@%%> to \"%%\""
       noMembersGiven: "You did not give any member for whom level role must be set."
       roleNotFound: "Did not find any existing level role name in your message"
       setRole: "Set role \"%%\" to given member(s)!"
