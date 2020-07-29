@@ -4,6 +4,8 @@ const LanguageEntity = require('../language');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
+const LANGUAGE_PLACEHOLDER = 'yourlanguage';
+
 class Language
 {
     static instance = null;
@@ -24,6 +26,12 @@ class Language
      */
     async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
+
+        if (args.map(arg => arg.toLowerCase()).includes(LANGUAGE_PLACEHOLDER)) {
+            const index = args.map(arg => arg.toLowerCase()).findIndex(arg => arg === LANGUAGE_PLACEHOLDER);
+            delete args[index];
+        }
+
         const language = args.join(' ').toLowerCase().trim();
 
         if (language !== '') {

@@ -4,6 +4,8 @@ const CountryEntity = require('../country');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
+const COUNTRY_PLACEHOLDER = 'yourcountry';
+
 class Country
 {
     static instance = null;
@@ -24,6 +26,12 @@ class Country
      */
     async process(message, args) {
         const member = await Guild.getMemberFromMessage(message);
+
+        if (args.map(arg => arg.toLowerCase()).includes(COUNTRY_PLACEHOLDER)) {
+            const index = args.map(arg => arg.toLowerCase()).findIndex(arg => arg === COUNTRY_PLACEHOLDER);
+            delete args[index];
+        }
+
         const country = args.join(' ').toLowerCase().trim();
 
         if (country !== '') {
