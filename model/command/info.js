@@ -154,9 +154,11 @@ class Info
             result.foundMembers.push(await Guild.discordGuild.members.fetch(message.author));
         }
 
-        if (result.certain) {
+        try {
+            target = await Guild.discordGuild.members.fetch(result.foundMembers[0].id);
+        } catch (error) {
             try {
-                target = await Guild.discordGuild.members.fetch(result.foundMembers[0].id);
+                target = bot.users.cache.get(result.foundMembers[0].id);
             } catch (error) {
                 target = null;
             }
