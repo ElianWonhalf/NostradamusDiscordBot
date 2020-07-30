@@ -215,7 +215,7 @@ const Guild = {
     findDesignatedMemberInMessage: (message) => {
         let foundMembers = [];
         let certain = true;
-        const memberList = Guild.discordGuild.members.cache.concat(bot.users.cache);
+        const memberList = bot.users.cache.concat(Guild.discordGuild.members.cache);
 
         if (message.mentions.members !== null && message.mentions.members.size > 0) {
             foundMembers = message.mentions.members.array();
