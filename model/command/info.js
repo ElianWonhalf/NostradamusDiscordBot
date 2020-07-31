@@ -89,7 +89,7 @@ const getRecentBlacklistsTriggerAmounts = async (snowflake) => {
  * @returns {Promise.<string>}
  */
 const getMemberAccountCreationDate = async (member) => {
-    const accountCreationDate = member.user.createdAt;
+    const accountCreationDate = member.user ? member.user.createdAt : member.createdAt;
     const elapsedTime = (new Date().getTime() - accountCreationDate.getTime()) / 1000;
     const elapsedTimeString = secondsAmountToDelayString(elapsedTime, 'day');
 
@@ -103,28 +103,36 @@ const getMemberAccountCreationDate = async (member) => {
 const getMemberJoinedDate = async (member) => {
     const firstMessageDate = await StatMessages.getFirstMessageDate(member.id);
     const savedJoinDate = await StatMemberFlow.getFirstJoinedDate(member.id);
-    let joinDate = member.joinedAt;
+    let joinDate = member.user ? member.joinedAt : null;
     let prefix = '';
 
-    if (firstMessageDate !== undefined && firstMessageDate.getTime() < joinDate.getTime()) {
+    if (firstMessageDate !== undefined && (joinDate === null || firstMessageDate.getTime() < joinDate.getTime())) {
         joinDate = firstMessageDate;
         prefix = '≈';
     }
 
-    const joinDateWithoutTime = new Date(joinDate.getTime());
-    joinDateWithoutTime.setHours(0);
-    joinDateWithoutTime.setMinutes(0);
-    joinDateWithoutTime.setSeconds(0);
-    joinDateWithoutTime.setMilliseconds(0);
+    let joinDateWithoutTime = null;
 
-    if (savedJoinDate !== null && savedJoinDate.getTime() < joinDateWithoutTime.getTime()) {
+    if (joinDate !== null) {
+        joinDateWithoutTime = new Date(joinDate.getTime());
+        joinDateWithoutTime.setHours(0);
+        joinDateWithoutTime.setMinutes(0);
+        joinDateWithoutTime.setSeconds(0);
+        joinDateWithoutTime.setMilliseconds(0);
+    }
+
+    if (savedJoinDate !== null && (joinDateWithoutTime === null || savedJoinDate.getTime() < joinDateWithoutTime.getTime())) {
         joinDate = savedJoinDate;
     }
 
-    const elapsedTime = (new Date().getTime() - joinDate.getTime()) / 1000;
-    const elapsedTimeString = secondsAmountToDelayString(elapsedTime, 'day');
+    if (joinDate !== null) {
+        const elapsedTime = (new Date().getTime() - joinDate.getTime()) / 1000;
+        const elapsedTimeString = secondsAmountToDelayString(elapsedTime, 'day');
 
-    return `${prefix}${joinDate.toLocaleString('fr', dateFormatOptions).replace(' à 00:00:00', '')} (${elapsedTimeString})`;
+        return `${prefix}${joinDate.toLocaleString('fr', dateFormatOptions).replace(' à 00:00:00', '')} (${elapsedTimeString})`;
+    } else {
+        return `--`;
+    }
 };
 
 class Info
@@ -185,13 +193,15 @@ class Info
                     nicknames: await getPastNicknames(target.id)
                 }
             };
+            const user = target.user ? target.user : target;
+            const colour = target.user ? 0x00FF00 : 0xFF0000;
             const embed = new Discord.MessageEmbed()
                 .setAuthor(
-                    `${target.user.username}#${target.user.discriminator}${suffix}`,
-                    target.user.displayAvatarURL({ dynamic: true })
+                    `${user.username}#${user.discriminator}${suffix}`,
+                    user.displayAvatarURL({ dynamic: true })
                 )
-                .setThumbnail(target.user.displayAvatarURL({ dynamic: true }))
-                .setColor(0x00FF00);
+                .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+                .setColor(colour);
 
             Object.keys(data.member).forEach(datum => {
                 const key = trans(`model.command.info.data.${datum}`, [], 'en');
