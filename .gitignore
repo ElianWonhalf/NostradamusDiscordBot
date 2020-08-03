@@ -3,6 +3,7 @@
 node_modules
 deploy.sh
 config.json*
+_config.json*
 !config.json.sample
 blacklist.json*
 !blacklist.json.sample
