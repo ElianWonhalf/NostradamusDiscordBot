@@ -6,12 +6,11 @@ const WatchedMember = require('../../model/watched-member');
  * @param {VoiceState} newVoiceState
  */
 module.exports = (oldVoiceState, newVoiceState) => {
-    const oldMember = oldVoiceState.member;
-    const newMember = newVoiceState.member;
+    const member = oldVoiceState.member;
 
-    if (isRightGuild(oldMember.guild.id)) {
+    if (isRightGuild(member.guild.id)) {
         if (oldVoiceState.channel !== undefined && newVoiceState.channel !== undefined) {
-            const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(oldMember.id) > -1;
+            const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(member.id) > -1;
             const sourceChannel = oldVoiceState.channel;
             const destChannel = newVoiceState.channel;
             const connectedInDifferentChannel = oldVoiceState.channel === null
@@ -19,8 +18,8 @@ module.exports = (oldVoiceState, newVoiceState) => {
                 || oldVoiceState.channel.id !== newVoiceState.channel.id;
 
             if (memberCalledVoiceMove && connectedInDifferentChannel) {
-                clearInterval(Guild.voiceMoveMembers[oldMember.id]);
-                delete Guild.voiceMoveMembers[oldMember.id];
+                clearInterval(Guild.voiceMoveMembers[member.id]);
+                delete Guild.voiceMoveMembers[member.id];
 
                 sourceChannel.members.array().filter(member => !member.user.bot).forEach(
                     member => member.voice.setChannel(destChannel)
@@ -28,6 +27,6 @@ module.exports = (oldVoiceState, newVoiceState) => {
             }
         }
 
-        WatchedMember.voiceStateUpdateHandler(oldMember, newMember);
+        WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
     }
 };
