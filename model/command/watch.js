@@ -38,7 +38,7 @@ class Watch
 
                 if (messageContainsMemberID) {
                     target.id = message.content.match(/[0-9]{18}/)[0];
-                    target.label = message.content.match(/[0-9]{18}/)[0];
+                    target.label = (await bot.users.fetch(target.id)).toString();
                 } else {
                     target.id = memberToWatch.foundMembers[0].id;
                     target.label = memberToWatch.foundMembers[0].toString();
