@@ -45,6 +45,10 @@ class Watch
                 }
 
                 switch (args[0].toLowerCase()) {
+                    case 'delete':
+                        (cachelessRequire('./watch/remove.js'))(message, args, target);
+                        break;
+
                     case 'add':
                     case 'remove':
                     case 'edit':
