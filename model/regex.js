@@ -1,0 +1,1 @@
+global.regexEscape = string => string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');

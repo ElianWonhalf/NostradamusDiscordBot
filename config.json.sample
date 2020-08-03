@@ -59,6 +59,8 @@
     "modCategories": [
         ""
     ],
+    "warnCommand": "!warn %id %reason",
+    "unbanCommand": "!unban %id %reason",
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",
     "learntLanguagePrefix": "",

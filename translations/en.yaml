@@ -288,6 +288,7 @@ model:
     member: "Member %%"
     kicked: "kicked"
     banned: "banned"
+    unbanned: "unbanned"
     reason: "for the following reason: %%"
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
   blacklist:
