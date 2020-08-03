@@ -8,7 +8,6 @@ const ModerationLog = {
     memberLeftDate: null,
     auditLogFetchInterval: 5 * 60 * 1000, // 5 minutes
     searchAuditLogTimeout: null,
-    lastFetchedAuditLogId: null,
     language: Config.botLanguage.split(',')[0],
 
     processMemberRemove: async (user, banned) => {
@@ -17,7 +16,6 @@ const ModerationLog = {
         debug(`Detected member leaving: ${user.username}`);
 
         const auditLogs = await Guild.discordGuild.fetchAuditLogs({
-            after: ModerationLog.lastFetchedAuditLogId,
             type: banned ? GuildAuditLogs.Actions.MEMBER_BAN_ADD : GuildAuditLogs.Actions.MEMBER_KICK,
             limit: 1
         });
