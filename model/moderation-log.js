@@ -10,6 +10,47 @@ const ModerationLog = {
     searchAuditLogTimeout: null,
     language: Config.botLanguage.split(',')[0],
 
+    /**
+     * @param {User} user
+     * @returns {Promise.<void>}
+     */
+    processUnban: async (user) => {
+        let reason = '';
+        const commandRegex = new RegExp(
+            regexEscape(Config.unbanCommand)
+                .replace('%id', user.id)
+                .replace('%reason', '(.+)'),
+            'u'
+        );
+
+        const messages = await Guild.modLogChannel.messages.fetch({ limit: 100 });
+        const message = messages.find(message => {
+            return message.content.match(commandRegex) !== null;
+        });
+
+        if (message !== undefined) {
+            reason = message.content.match(commandRegex)[1];
+        }
+
+        const member = trans('model.moderationLog.member', [user.toString()], ModerationLog.language);
+        const action = trans('model.moderationLog.unbanned', [], ModerationLog.language);
+
+        reason = reason.replace(/https?:\/\/[^\s.]+\.[^\s]+/g, '[CENSORED LINK]');
+        reason = trans('model.moderationLog.reason', [reason], ModerationLog.language);
+
+        const embed = new Discord.MessageEmbed().setAuthor(
+            `${user.username}#${user.discriminator}`,
+            user.displayAvatarURL({ dynamic: true })
+        ).setDescription(`${member} ${action} ${reason}`).setColor(0x00FF00);
+
+        Guild.publicModLogChannel.send(embed);
+    },
+
+    /**
+     * @param {User} user
+     * @param {boolean} banned
+     * @returns {Promise.<void>}
+     */
     processMemberRemove: async (user, banned) => {
         banned = banned || false;
 

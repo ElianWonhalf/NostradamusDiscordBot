@@ -3,7 +3,7 @@ const StatFullBlacklistTriggers = require('./stat-full-blacklist-triggers');
 const StatSemiBlacklistTriggers = require('./stat-semi-blacklist-triggers');
 
 const formatBlacklistTerm = (term) => {
-    return `(^|\\W)(${term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&').replace(/%/g, '[^\\s]*').toLowerCase()})(\\W|$)`;
+    return `(^|\\W)(${regexEscape(term).replace(/%/g, '[^\\s]*').toLowerCase()})(\\W|$)`;
 };
 
 const Blacklist = {
