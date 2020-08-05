@@ -72,6 +72,14 @@ model:
       description: "To be notified when a dictation is held"
       alertsOn: "You will now be notified when there's a dictation."
       alertsOff: "You will now no longer be notified when there's a dictation."
+    dictionaries:
+      description: "Provides a list of useful translation sites and online dictionaries"
+      reply: "%%\n%%\n%%\n%%\n%%"
+        wordreference: "[**Wordreference**](https://www.wordreference.com/) is a bilingual dictionary that is very good for single-word translations and provides a wide variety of contexts and definitions."
+        usito: "[**Usito**](https://usito.usherbrooke.ca/) is a monolignual dictionary featuring lots of other information, including on the particularities of certain dialects."
+        deepl: "[**Deepl**](https://www.deepl.com/translator) is a very good translator for full sentences or paragraphs, but not so much for single words."
+        googleTranslate: "[**Google Translate**](https://translate.google.com/) is good for quick, single-word translations, but less so for larger amounts of text."
+        reversoContextAndLinguee: "[**Reverso Context**](https://context.reverso.net/traduction/) et [**Linguee**](https://www.linguee.fr/) are online dictionaries that are good for seeing how others have translated expressions or words in context, but must be used with caution as these translations are rarely verified."
     dmReply:
       description: "Allows Moderators to respond to Direct Messages sent through the bot"
       noMessage: "Don't forget to add your message, or else I'll have nothing to send!"
