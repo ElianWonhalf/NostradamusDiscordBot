@@ -75,6 +75,7 @@ model:
     dictionaries:
       description: "Provides a list of useful translation sites and online dictionaries"
       reply: "%%\n%%\n%%\n%%\n%%"
+      translator:
         wordreference: "[**Wordreference**](https://www.wordreference.com/) is a bilingual dictionary that is very good for single-word translations and provides a wide variety of contexts and definitions."
         usito: "[**Usito**](https://usito.usherbrooke.ca/) is a monolignual dictionary featuring lots of other information, including on the particularities of certain dialects."
         deepl: "[**Deepl**](https://www.deepl.com/translator) is a very good translator for full sentences or paragraphs, but not so much for single words."
