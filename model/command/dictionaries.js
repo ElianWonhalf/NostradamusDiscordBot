@@ -28,11 +28,11 @@ class Dictionaries extends Heat
             const description = trans(
                 'model.command.dictionaries.reply',
                 [
-                    ['model.command.dictionaries.reply.wordreference'],
-                    ['model.command.dictionaries.reply.usito'],
-                    ['model.command.dictionaries.reply.deepl'],
-                    ['model.command.dictionaries.reply.googleTranslate'],
-                    ['model.command.dictionaries.reply.reversoContextAndLinguee'],
+                    ['model.command.dictionaries.translator.wordreference'],
+                    ['model.command.dictionaries.translator.usito'],
+                    ['model.command.dictionaries.translator.deepl'],
+                    ['model.command.dictionaries.translator.googleTranslate'],
+                    ['model.command.dictionaries.translator.reversoContextAndLinguee'],
                 ]
             );
 

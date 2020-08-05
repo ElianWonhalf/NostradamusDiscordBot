@@ -46,6 +46,7 @@ model:
     dictionaries:
       description: "Donne une liste de dictionnaires en ligne et de sites de traduction utiles"
       reply: "%%\n%%\n%%\n%%\n%%"
+      translator:
         wordreference: "[**Wordreference**](https://www.wordreference.com/) est un dictionnaire bilingue qui fonctionne très bien pour les traductions d'un seul mot et donne plusieurs définitions et contextes."
         usito: "[**Usito**](https://usito.usherbrooke.ca/) est un dictionnaire monolingue avec beaucoup d'autres informations, incluant les particularités de différents dialectes."
         deepl: "[**Deepl**](https://www.deepl.com/translator) est un traducteur qui marche bien pour les phrases et paragraphes, mais pas vraiment pour les mots individuels."
