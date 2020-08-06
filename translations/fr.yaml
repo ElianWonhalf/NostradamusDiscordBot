@@ -118,6 +118,9 @@ model:
     modList:
       description: "Liste les membres actuels de l'équipe de modération"
       answer: "Il y a en ce moment %% modérateurs :"
+    native:
+      description: "Explique la différence du rôle Francophone natif par rapport aux rôles de niveau"
+      reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
     outLoudReading:
       description: "Pour être mentionné quand il y a une lecture à voix haute"
       alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
