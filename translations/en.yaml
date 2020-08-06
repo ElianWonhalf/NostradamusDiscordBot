@@ -171,7 +171,7 @@ model:
       answer: "There are currently %% moderators:"
     native:
       description: "Explains how the Native French speaker role differs from level roles"
-      reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker, either you are not. It is not \"better\" nor \"stronger\" than advanced. It's a completely different thing."
+      reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better\" nor \"stronger\" than advanced. It's a completely separate thing."
     outLoudReading:
       description: "To be notified when a reading is being held"
       alertsOn: "You will now be notified when a reading is being held."
