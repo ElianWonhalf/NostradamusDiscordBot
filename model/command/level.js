@@ -52,7 +52,7 @@ class Level
             await member.roles.remove(levelRoles);
             await member.roles.add(targetRoleId);
 
-            Guild.botChannel.send(trans('model.command.level.logAction', [author.toString(), member.id, targetRole.name], 'en'));
+            Guild.botChannel.send(trans('model.command.level.logAction', [author.username, member.id, targetRole.name], 'en'));
         });
 
         message.reply(trans('model.command.level.setRole', [targetRole.name]));
