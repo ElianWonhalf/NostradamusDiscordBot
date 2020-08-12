@@ -100,10 +100,10 @@ const WatchedMember = {
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
         const embed = new Discord.MessageEmbed()
             .setAuthor(
-                `${member.user.username}#${member.user.discriminator}${suffix}`,
+                `${member.user.username}#${member.user.discriminator}${suffix}`, // username of undefined???
                 member.user.displayAvatarURL({ dynamic: true })
             )
-            .setColor(0x00FF00)
+            .setColor(alertFinished ? 0xFF0000 : 0x00FF00)
             .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
             .setFooter(WatchedMember.list[member.id].reason);
 
