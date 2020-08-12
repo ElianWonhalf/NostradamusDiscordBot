@@ -8,6 +8,14 @@ const WatchedMember = require('../../model/watched-member');
 module.exports = (oldVoiceState, newVoiceState) => {
     const member = oldVoiceState.member;
 
+    if (typeof oldVoiceState.channelID === 'undefined') {
+        oldVoiceState.channelID = null;
+    }
+
+    if (typeof newVoiceState.channelID === 'undefined') {
+        newVoiceState.channelID = null;
+    }
+
     if (isRightGuild(member.guild.id)) {
         if (oldVoiceState.channel !== undefined && newVoiceState.channel !== undefined) {
             const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(member.id) > -1;

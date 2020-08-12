@@ -21,7 +21,7 @@ class Level
      * @param {Array} args
      */
     async process(message, args) {
-        const author = await Guild.getMemberFromMessage(message);
+        const authorMember = await Guild.getMemberFromMessage(message);
         const argsStr = args.join(' ').toLowerCase().trim();
 
         if (!Guild.levelRoles.array().some(roleName => argsStr.includes(roleName.toLowerCase()))) {
@@ -52,7 +52,7 @@ class Level
             await member.roles.remove(levelRoles);
             await member.roles.add(targetRoleId);
 
-            Guild.botChannel.send(trans('model.command.level.logAction', [author.username, member.id, targetRole.name], 'en'));
+            Guild.botChannel.send(trans('model.command.level.logAction', [authorMember.user.username, member.id, targetRole.name], 'en'));
         });
 
         message.reply(trans('model.command.level.setRole', [targetRole.name]));
