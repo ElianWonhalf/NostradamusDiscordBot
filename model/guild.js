@@ -60,6 +60,9 @@ const Guild = {
     /** {TextChannel} */
     announcementsChannel: null,
 
+    /** {TextChannel} */
+    metaChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -79,6 +82,7 @@ const Guild = {
         Guild.rolesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.roles);
         Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
+        Guild.metaChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.meta);
 
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
@@ -132,6 +136,13 @@ const Guild = {
      */
     removeMemberFromVoiceStateUpdateWatcher: (snowflake) => {
         delete Guild.voiceMoveMembers[snowflake];
+    },
+
+    /**
+     * @param {GuildMember} member
+     */
+    announcePatreonBooster: (member) => {
+        Guild.metaChannel.send(trans('model.guild.patreonBoosterAnnouncement', [member.toString()]));
     },
 
     /**
