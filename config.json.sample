@@ -36,7 +36,8 @@
         "intermediate": "",
         "beginner": "",
         "logs": "",
-        "raid": ""
+        "raid": "",
+        "patreonBooster": ""
     },
     "channels": {
         "welcome": "",
@@ -54,7 +55,8 @@
         "learntLanguageClone": null,
         "roles": "",
         "starboard": "",
-        "announcements": ""
+        "announcements": "",
+        "meta": ""
     },
     "modCategories": [
         ""

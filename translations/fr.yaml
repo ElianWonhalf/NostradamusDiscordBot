@@ -191,6 +191,8 @@ model:
     noTime: "*aucun*"
   dm:
     greetingsAnswer: "Salut ! Je ne suis qu'un bot, donc tu ne peux pas vraiment discuter avec moi. De plus, garde à l'esprit que chaque message que tu m'envoies est transmis aux modérateurs !"
+  guild:
+    patreonBoosterAnnouncement: "\n:aww: %% vient de booster le serveur via Patreon :ChatRave: !"
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
     secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"
