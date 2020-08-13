@@ -33,6 +33,9 @@ model:
     committee:
       description: "Liste les membres actuels du comité"
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
+    correspondenceAudit:
+      description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
+      dm: "Salut !\n\nTu participes au système de correspondance et ceci est un audit qu'on fait pour s'assurer que tout se passe bien. (Donc oui, c'est un message préécrit, mais on est à l'écoute derrière !)\n\nEst-ce que ta (ou tes) correspondance est toujours active ? Ça se passe bien ? Aurais-tu des suggestions à faire ou des questions à poser ? En tout cas, n'hésite pas, on est là pour t'aider.\n\nMerci pour ta participation !\n — Le staff de French"
     country:
       description: "Pour définir ton pays actuel"
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"
