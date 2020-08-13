@@ -47,8 +47,8 @@ const Command = {
         let isCommand = false;
 
         if (message.content.toLowerCase().substr(0, Config.prefix.length) === Config.prefix) {
-            let content = message.content.substr(Config.prefix.length).trim().split(' ');
-            const calledCommand = content.shift().toLowerCase();
+            let args = message.content.substr(Config.prefix.length).trim().split(/ +/u);
+            const calledCommand = args.shift().toLowerCase();
 
             if (await Command.isValid(calledCommand, message)) {
                 const member = await Guild.getMemberFromMessage(message);
@@ -66,7 +66,7 @@ const Command = {
                     const commandInstance = cachelessRequire(Command.commandList.get(commandName));
 
                     if (commandInstance !== null) {
-                        commandInstance.process(message, content, Command);
+                        commandInstance.process(message, args, Command);
                     } else {
                         Command.commandList.delete(commandName);
                     }
