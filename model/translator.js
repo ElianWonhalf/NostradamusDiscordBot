@@ -28,6 +28,28 @@ const translateKeysInString = (value, language) => {
 
 /**
  * @param {string} value
+ * @param {string|null} language
+ * @returns {string}
+ */
+const renderNestedTranslation = (value, language) => {
+    Array.from(new Set(value.match(/%[^\s%]+%/gu))).forEach(foundTranslation => {
+        foundTranslation = foundTranslation.replace(/%([^%]+)%/u, '$1');
+
+        const translationResult = trans(foundTranslation, [], language);
+
+        if (translationResult !== foundTranslation) {
+            value = value.replace(
+                new RegExp(`%${regexEscape(foundTranslation)}%`, 'gu'),
+                translationResult
+            );
+        }
+    });
+
+    return value;
+};
+
+/**
+ * @param {string} value
  * @param {Array} variables
  * @param {string|null} language
  * @returns {string}
@@ -38,7 +60,7 @@ const replaceVariablesInString = (value, variables, language) => {
         value = value.replace(/%%/, variable);
     });
 
-    return value;
+    return renderNestedTranslation(value, language);
 };
 
 /**
