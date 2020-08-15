@@ -230,8 +230,8 @@ const Guild = {
 
         if (message.mentions.members !== null && message.mentions.members.size > 0) {
             foundMembers = message.mentions.members.array();
-        } else if (message.content.match(/[0-9]{18}/u) !== null) {
-            const ids = message.content.match(/[0-9]{18}/gu);
+        } else if (message.content.match(/[0-9]{16,18}/u) !== null) {
+            const ids = message.content.match(/[0-9]{16,18}/gu);
 
             ids.map(id => {
                 if (memberList.has(id)) {
