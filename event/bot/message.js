@@ -7,6 +7,7 @@ const HardcoreLearning = require('../../model/hardcore-learning');
 const SocialNetworkIntegration = require('../../model/social-network-integration');
 const WatchedMember = require('../../model/watched-member');
 const StatMessages = require('../../model/stat-messages');
+const Guild = require('../../model/guild');
 
 /**
  * @param {Message} message
@@ -16,6 +17,14 @@ module.exports = async (message) => {
 
     if (message.guild === null || isRightGuild(message.guild.id)) {
         WatchedMember.messageHandler(message);
+
+        if (message.mentions.everyone) {
+            Guild.everyonePingHandler(message);
+        }
+
+        if (message.mentions.roles.size > 0) {
+            Guild.rolePingHandler(message);
+        }
 
         // Delete messages in the #rôles channel after one minute
         if (message.channel.id === Config.channels.roles) {
