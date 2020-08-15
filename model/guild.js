@@ -265,6 +265,20 @@ const Guild = {
             certain,
             foundMembers
         };
+    },
+
+    rolePingHandler: (message) => {
+        const roleMentions = message.mentions.roles.keyArray();
+
+        if (roleMentions.includes(Config.roles.everyone) || roleMentions.includes(Config.roles.here)) {
+            Guild.everyonePingHandler(message);
+        }
+    },
+
+    everyonePingHandler: (message) => {
+        if (message.guild !== null) {
+            message.member.roles.add([Config.roles.everyone, Config.roles.here]);
+        }
     }
 };
 
