@@ -25,16 +25,7 @@ class Dictionaries extends Heat
         if (this.canCall()) {
             this.registerCall();
             const embed = new MessageEmbed();
-            const description = trans(
-                'model.command.dictionaries.reply',
-                [
-                    ['model.command.dictionaries.translator.wordreference'],
-                    ['model.command.dictionaries.translator.usito'],
-                    ['model.command.dictionaries.translator.deepl'],
-                    ['model.command.dictionaries.translator.googleTranslate'],
-                    ['model.command.dictionaries.translator.reversoContextAndLinguee'],
-                ]
-            );
+            const description = trans('model.command.dictionaries.reply');
 
             message.channel.send(
                 embed.setDescription(description).setColor(0x00FF00)

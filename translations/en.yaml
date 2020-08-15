@@ -6,7 +6,7 @@ bot:
   welcomeMessage: "\n\n**__English__**\n> Hello %% and welcome to the %% server! **React** to this message with :alogo:, like I just did! This will be our main method of interaction :) ."
 model:
   command:
-    notOnServer: "sorry, you do not seem to be on the server."
+    notOnServer: "sorry, %learntLanguage.english% you do not seem to be on the server."
     addCountry:
       description: "Adds a new country role"
       discordRoleAddSuccess: "new role added on Discord: %%"
@@ -79,7 +79,7 @@ model:
       alertsOff: "You will now no longer be notified when there's a dictation."
     dictionaries:
       description: "Provides a list of useful translation sites and online dictionaries"
-      reply: "%%\n\n%%\n\n%%\n\n%%\n\n%%"
+      reply: "\n\n%model.command.dictionaries.translator.wordreference%\n%model.command.dictionaries.translator.usito%\n%model.command.dictionaries.translator.deepl%\n%model.command.dictionaries.translator.googleTranslate%\n%model.command.dictionaries.translator.reversoContextAndLinguee%\n"
       translator:
         wordreference: "[**Wordreference**](https://www.wordreference.com/) is a bilingual dictionary that is very good for single-word translations and provides a wide variety of contexts and definitions."
         usito: "[**Usito**](https://usito.usherbrooke.ca/) is a monolignual dictionary featuring lots of other information, including on the particularities of certain dialects."
