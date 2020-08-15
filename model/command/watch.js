@@ -30,29 +30,22 @@ class Watch
      */
     async process(message, args) {
         if (args.length > 0) {
-            const messageContainsMemberID = message.content.match(/[0-9]{18}/) !== null;
             const memberToWatch = Guild.findDesignatedMemberInMessage(message);
 
-            if (messageContainsMemberID || memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
-                const target = {};
+            if (memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
+                const action = args.shift().toLowerCase();
 
-                if (messageContainsMemberID) {
-                    target.id = message.content.match(/[0-9]{18}/)[0];
-                    target.label = (await bot.users.fetch(target.id)).toString();
-                } else {
-                    target.id = memberToWatch.foundMembers[0].id;
-                    target.label = memberToWatch.foundMembers[0].toString();
-                }
+                args.splice(0, memberToWatch.foundMembers.length);
 
-                switch (args[0].toLowerCase()) {
+                switch (action) {
                     case 'delete':
-                        (cachelessRequire('./watch/remove.js'))(message, args, target);
+                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), memberToWatch.foundMembers);
                         break;
 
                     case 'add':
                     case 'remove':
                     case 'edit':
-                        (cachelessRequire('./watch/' + args[0].toLowerCase() + '.js'))(message, args, target);
+                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), memberToWatch.foundMembers);
                 }
             } else {
                 message.reply(trans('model.command.watch.error', [], 'en'));

@@ -3,31 +3,29 @@ const WatchedMember = require('../../watched-member');
 
 /**
  * @param {Message} message
- * @param {Array} args
- * @param {Object} target
+ * @param {string} reason
+ * @param {Array<User|GuildMember>} targets
  */
-module.exports = async (message, args, target) => {
-    if (args.length > 2) {
-        if (!WatchedMember.isMemberWatched(target.id)) {
-            args.shift(); // Remove the action
-            args.shift(); // Remove the member
-            const reason = args.join(' ');
-
-            WatchedMember.add(target.id, reason).then(() => {
-                message.reply(trans(
-                    'model.command.watch.add.success',
-                    [target.label],
+module.exports = async (message, reason, targets) => {
+    if (reason.length > 0) {
+        for (const target of targets) {
+            if (!WatchedMember.isMemberWatched(target.id)) {
+                WatchedMember.add(target.id, reason).then(() => {
+                    message.channel.send(trans(
+                        'model.command.watch.add.success',
+                        [target.toString()],
+                        'en'
+                    ));
+                }).catch((error) => {
+                    Logger.error(error.message);
+                });
+            } else {
+                message.channel.send(trans(
+                    'model.command.watch.add.alreadyWatched',
+                    [target.toString()],
                     'en'
                 ));
-            }).catch((error) => {
-                Logger.error(error.message);
-            });
-        } else {
-            message.reply(trans(
-                'model.command.watch.add.alreadyWatched',
-                [target.label],
-                'en'
-            ));
+            }
         }
     } else {
         message.reply(trans('model.command.watch.add.noReason', [], 'en'));
