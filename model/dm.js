@@ -68,7 +68,7 @@ const DM = {
                         return new Discord.MessageAttachment(messageAttachment.url, messageAttachment.filename);
                     })
                 }
-            ).then(() => {
+            ).then((sentMessage) => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);
 
@@ -76,6 +76,8 @@ const DM = {
                     message.channel.send(trans('model.dm.greetingsAnswer'));
                     Guild.modDMsChannel.send(trans('model.dm.greetingsAnswerSent', [], 'en'));
                 }
+
+                sentMessage.react('📋');
             }).catch((exception) => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
 
@@ -84,6 +86,22 @@ const DM = {
             });
         }
     },
+
+    /**
+     * @param {MessageReaction} reaction
+     * @param {User} user
+     */
+    handleReaction: (reaction, user) => {
+        const message = reaction.message;
+        const isRightReaction = user.id !== bot.user.id && reaction.emoji.name === '📋';
+        const isInDMs = message.channel.id === Config.channels.modDMs;
+        const isByMe = message.author.id === bot.user.id;
+        const hasEmbeds = message.embeds.length > 0 && typeof message.embeds[0].description !== 'undefined';
+
+        if (isRightReaction && isInDMs && isByMe && hasEmbeds) {
+            Guild.modDMsChannel.send(`\`\`\`${message.embeds[0].description}\`\`\``);
+        }
+    }
 };
 
 module.exports = DM;
