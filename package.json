@@ -9,6 +9,7 @@
   "author": "Lily Wonhalf <lilywonhalf@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "@lilywonhalf/pretty-logger": "^1.1.3",
     "caller-id": "^0.1.0",
     "configstore": "^5.0.1",

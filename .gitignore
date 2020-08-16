@@ -2,6 +2,7 @@
 *.iml
 node_modules
 deploy.sh
+change-env.sh
 config.json*
 _config.json*
 !config.json.sample
