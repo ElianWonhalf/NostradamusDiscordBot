@@ -63,6 +63,9 @@ const Guild = {
     /** {TextChannel} */
     metaChannel: null,
 
+    /** {TextChannel} */
+    softChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -83,11 +86,13 @@ const Guild = {
         Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
         Guild.metaChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.meta);
+        Guild.softChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.soft);
 
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
         Guild.levelRoles.set(Config.roles.intermediate, 'Intermédiaire');
         Guild.levelRoles.set(Config.roles.beginner, 'Débutant');
+        Guild.levelRoles.set(Config.roles.bornFrancophone, 'Francophone de naissance');
 
         Guild.kickInactiveNewMembers();
         setInterval(() => {
@@ -188,6 +193,13 @@ const Guild = {
     /**
      * @param {GuildMember} member
      */
+    isMemberSoft: (member) => {
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.soft);
+    },
+
+    /**
+     * @param {GuildMember} member
+     */
     isMemberTutor: (member) => {
         return member !== undefined && member !== null && member.roles.cache.has(Config.roles.tutor);
     },
@@ -270,14 +282,18 @@ const Guild = {
     rolePingHandler: (message) => {
         const roleMentions = message.mentions.roles.keyArray();
 
-        if (roleMentions.includes(Config.roles.everyone) || roleMentions.includes(Config.roles.here)) {
+        if (roleMentions.includes(Config.roles.everyone)) {
             Guild.everyonePingHandler(message);
+        }
+
+        if (roleMentions.includes(Config.roles.mod) && !Config.modCategories.includes(message.channel.parent.id)) {
+            Guild.softChannel.send(`<@&${Config.roles.soft}> ${message.channel.toString()}`);
         }
     },
 
     everyonePingHandler: (message) => {
-        if (message.guild !== null) {
-            message.member.roles.add([Config.roles.everyone, Config.roles.here]);
+        if (message.guild !== null && message.content.includes('@everyone')) { // Could be @here
+            message.member.roles.add([Config.roles.everyone]);
         }
     }
 };

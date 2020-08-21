@@ -15,7 +15,7 @@ class AddLanguage
 
         this.aliases = ['addlanguage'];
         this.category = CommandCategory.ADMINISTRATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

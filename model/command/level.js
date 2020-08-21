@@ -13,7 +13,7 @@ class Level
 
         this.aliases = ['niveau'];
         this.category = CommandCategory.ROLE;
-        this.isAllowedForContext = CommandPermission.isMemberModOrTutor;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoftOrTutor;
     }
 
     /**

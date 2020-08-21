@@ -13,7 +13,7 @@ class GetMemberId
 
         this.aliases = ['getmemberid', 'getuserid', 'memberid', 'userid', 'gmid', 'guid'];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

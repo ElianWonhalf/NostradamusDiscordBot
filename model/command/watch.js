@@ -21,7 +21,7 @@ class Watch
 
         this.aliases = [];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

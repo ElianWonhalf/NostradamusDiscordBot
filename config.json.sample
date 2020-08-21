@@ -6,7 +6,7 @@
         "user": "",
         "password": "",
         "database": "",
-		"charset": "utf8mb4_general_ci"
+        "charset": "utf8mb4_general_ci"
     },
     "socialMedia": {
         "twitter": {
@@ -31,6 +31,7 @@
         "committee": "",
         "tutor": "",
         "unknownLevel": "",
+        "bornFrancophone": "",
         "native": "",
         "advanced": "",
         "intermediate": "",
@@ -39,7 +40,7 @@
         "raid": "",
         "patreonBooster": "",
         "everyone": "",
-        "here": ""
+        "soft": ""
     },
     "channels": {
         "welcome": "",
@@ -58,7 +59,8 @@
         "roles": "",
         "starboard": "",
         "announcements": "",
-        "meta": ""
+        "meta": "",
+        "soft": ""
     },
     "modCategories": [
         ""

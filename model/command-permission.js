@@ -26,10 +26,30 @@ const CommandPermission = {
      * @param {Message} message
      * @returns {Promise.<boolean>}
      */
+    isMemberModOrSoft: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member);
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
     isMemberModOrTutor: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
         return await Guild.isMemberMod(member) || await Guild.isMemberTutor(member);
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
+    isMemberModOrSoftOrTutor: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberMod(member) || await Guild.isMemberTutor(member) || await Guild.isMemberTutor(member);
     },
 
     /**

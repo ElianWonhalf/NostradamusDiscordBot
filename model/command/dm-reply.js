@@ -15,7 +15,7 @@ class DMReply
 
         this.aliases = ['dmreply', 'dm', 'mp'];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
 	/**
