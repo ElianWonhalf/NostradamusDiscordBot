@@ -14,7 +14,7 @@ class AddCountryAlias
 
         this.aliases = ['addcountryalias'];
         this.category = CommandCategory.ADMINISTRATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

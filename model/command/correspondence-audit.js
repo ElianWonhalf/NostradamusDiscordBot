@@ -15,7 +15,7 @@ class AuditFR
 
         this.aliases = ['correspondenceaudit', 'caudit', 'c-audit', 'correspondance-audit', 'correspondanceaudit'];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
 	/**

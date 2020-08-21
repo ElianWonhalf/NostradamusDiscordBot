@@ -84,7 +84,7 @@ class CheckCustomStatuses
 
         this.aliases = ['auditmembers'];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

@@ -13,7 +13,7 @@ class SetAvatar
 
         this.aliases = ['setavatar'];
         this.category = CommandCategory.BOT_MANAGEMENT;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMommy;
     }
 
     /**

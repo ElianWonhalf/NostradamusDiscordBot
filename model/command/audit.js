@@ -16,7 +16,7 @@ class Audit
 
         this.aliases = [];
         this.category = CommandCategory.ADMINISTRATION;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

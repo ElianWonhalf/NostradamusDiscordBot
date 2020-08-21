@@ -19,7 +19,7 @@ class React
 
         this.aliases = [];
         this.category = CommandCategory.RESOURCE;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**
