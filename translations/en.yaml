@@ -206,7 +206,7 @@ model:
     redirect:
       description: "Redirect discussions to general chat rooms or classroom material to classrooms"
       unknownDest: "Uhm... Where should I redirect people to? Chat rooms `%%redir chat` or classrooms `%%redir class`?"
-      toChatRooms: "This channel is meant for questions about French. General discussions are better off  in channels like <#%%> or <#%%>!"
+      toChatRooms: "This channel is meant for questions about French. General discussions are better off in channels like <#%%> or <#%%>!"
       toClassrooms: "This channel is meant for general discussions. For questions about French, go to one of the classrooms, such as <#%%>!"
     reload:
       description: "Reboots the bot"
