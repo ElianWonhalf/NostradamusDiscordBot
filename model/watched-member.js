@@ -26,6 +26,18 @@ const WatchedMember = {
     },
 
     /**
+     * @param {Invite} invite
+     */
+    inviteCreateHandler: async (invite) => {
+        if (WatchedMember.isMemberWatched(invite.inviter.id)) {
+            WatchedMember.logEvent(
+                await invite.guild.members.fetch(invite.inviter.id),
+                trans('model.watchedMember.inviteCreated', [invite.code], 'en')
+            );
+        }
+    },
+
+    /**
      * @param {GuildMember} member
      */
     guildMemberAddHandler: async (member) => {
@@ -55,7 +67,7 @@ const WatchedMember = {
             const lastActiveNull = WatchedMember.list[message.author.id].lastActive === null;
             const lastActiveTooOld = currentTimestamp - WatchedMember.list[message.author.id].lastActive >= ONE_HOUR;
 
-            if (lastActiveNull || lastActiveTooOld) {
+            if (lastActiveNull || lastActiveTooOld) {
                 WatchedMember.logEvent(
                     await Guild.discordGuild.members.fetch(message.author),
                     trans('model.watchedMember.active', [message.channel], 'en')
@@ -94,7 +106,7 @@ const WatchedMember = {
      * @returns {Promise.<void>}
      */
     logEvent: async (member, log, alertFinished) => {
-        alertFinished = alertFinished || false;
+        alertFinished = alertFinished || false;
 
         const alertEmoji = alertFinished ? '😌' : '🙀';
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';

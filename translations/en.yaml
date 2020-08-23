@@ -313,6 +313,7 @@ model:
     semi:
       triggered: "Semi-blacklist triggered by %% in %%\n%%"
   watchedMember:
+    inviteCreated: "just created invite `%%`"
     joinedVocal: "just joined vocal channel %%"
     leftVocal: "just left vocal channel %%"
     active: "is now active in channel %%"
