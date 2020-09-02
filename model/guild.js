@@ -66,6 +66,12 @@ const Guild = {
     /** {TextChannel} */
     softChannel: null,
 
+    /** {TextChannel} */
+    correspondenceLearnersChannel: null,
+
+    /** {TextChannel} */
+    correspondenceNativesChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -87,6 +93,8 @@ const Guild = {
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
         Guild.metaChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.meta);
         Guild.softChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.soft);
+        Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
+        Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
 
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
