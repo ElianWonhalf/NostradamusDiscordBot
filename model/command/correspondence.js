@@ -50,17 +50,17 @@ class Watch
                     });
                 }
 
-                args.splice(0, foundMembers.length);
+                args.splice(0, memberToWatch.foundMembers.length);
 
                 switch (action) {
                     case 'delete':
-                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), foundMembers);
+                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), memberToWatch.foundMembers);
                         break;
 
                     case 'add':
                     case 'remove':
                     case 'edit':
-                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), foundMembers);
+                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), memberToWatch.foundMembers);
                 }
             } else {
                 message.reply(trans('model.command.watch.error', [], 'en'));
