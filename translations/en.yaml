@@ -61,11 +61,13 @@ model:
     committee:
       description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
-    correspondenceAudit:
-      description: "To audit a member who is part of the Correspondence System"
-      dm: "Hello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French"
+    correspondence:
+      description: "To manage the Correspondence System. .c (audit) (other params)"
       notFound: "I... Have no idea who that could be, sorry."
-      badFormat: "Please input a two-letter language (fr or en) and a user ID."
+      badFormat: "You have to specify an action."
+      audit:
+        dm: "\nHello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French\n"
+        error: "Could not send a DM to %%"
     country:
       description: "Set current country"
       request: "Country tag requested by %%: %%"

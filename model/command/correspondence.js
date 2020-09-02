@@ -1,4 +1,3 @@
-const { User } = require('discord.js');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
@@ -11,16 +10,16 @@ const cachelessRequire = (path) => {
     return typeof path === 'string' ? require(path) : null;
 };
 
-class Watch
+class Correspondence
 {
     static instance = null;
 
     constructor() {
-        if (Watch.instance !== null) {
-            return Watch.instance;
+        if (Correspondence.instance !== null) {
+            return Correspondence.instance;
         }
 
-        this.aliases = [];
+        this.aliases = ['correspondent', 'correspodance', 'correspondant', 'c'];
         this.category = CommandCategory.MODERATION;
         this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
@@ -31,42 +30,30 @@ class Watch
      */
     async process(message, args) {
         if (args.length > 0) {
-            const messageContainsMemberID = message.content.match(/[0-9]{18}/gu) !== null;
             const memberToWatch = Guild.findDesignatedMemberInMessage(message);
 
-            if (messageContainsMemberID || memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
+            if (memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
                 const action = args.shift().toLowerCase();
                 const foundMembers = memberToWatch.foundMembers;
 
-                // Consider IDs even if the client doesn't know them
-                if (messageContainsMemberID) {
-                    const foundMemberIds = foundMembers.map(memberOrUser => memberOrUser.id);
-
-                    message.content.match(/[0-9]{16,18}/gu).forEach(id => {
-                        if (!foundMemberIds.includes(id)) {
-                            const user = new User(bot, { id, bot: false });
-                            foundMembers.push(user);
-                        }
-                    });
-                }
-
-                args.splice(0, memberToWatch.foundMembers.length);
+                args.splice(0, foundMembers.length);
 
                 switch (action) {
-                    case 'delete':
-                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), memberToWatch.foundMembers);
+                    case 'audition':
+                    case 'auditer':
+                        (cachelessRequire('./correspondence/audit.js'))(message, foundMembers, args.join(' '));
                         break;
 
-                    case 'add':
-                    case 'remove':
-                    case 'edit':
-                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), memberToWatch.foundMembers);
+                    case 'audit':
+                        (cachelessRequire('./correspondence/' + action + '.js'))(message, foundMembers, args.join(' '));
                 }
             } else {
-                message.reply(trans('model.command.watch.error', [], 'en'));
+                message.reply(trans('model.command.correspondence.notFound', [], 'en'));
             }
+        } else {
+            message.reply(trans('model.command.correspondence.badFormat', [], 'en'));
         }
     }
 }
 
-module.exports = new Watch();
+module.exports = new Correspondence();
