@@ -1,3 +1,4 @@
+const { User } = require('discord.js');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
@@ -30,10 +31,24 @@ class Watch
      */
     async process(message, args) {
         if (args.length > 0) {
+            const messageContainsMemberID = message.content.match(/[0-9]{18}/gu) !== null;
             const memberToWatch = Guild.findDesignatedMemberInMessage(message);
 
-            if (memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
+            if (messageContainsMemberID || memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
                 const action = args.shift().toLowerCase();
+                const foundMembers = memberToWatch.foundMembers;
+
+                // Consider IDs even if the client doesn't know them
+                if (messageContainsMemberID) {
+                    const foundMemberIds = foundMembers.map(memberOrUser => memberOrUser.id);
+
+                    message.content.match(/[0-9]{16,18}/gu).forEach(id => {
+                        if (!foundMemberIds.includes(id)) {
+                            const user = new User(bot, { id, bot: false });
+                            foundMembers.push(user);
+                        }
+                    });
+                }
 
                 args.splice(0, memberToWatch.foundMembers.length);
 

@@ -59,10 +59,10 @@ const mainProcess = () => {
 };
 
 const botProcess = () => {
-    const Discord = require('discord.js');
+    const { Client } = require('discord.js');
     const CallerId = require('caller-id');
 
-    global.bot = new Discord.Client({ fetchAllMembers: true });
+    global.bot = new Client({ fetchAllMembers: true });
     global.isRightGuild = (guildSnowflake) => guildSnowflake === Config.guild;
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {
