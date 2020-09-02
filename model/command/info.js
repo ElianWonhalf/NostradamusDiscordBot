@@ -11,15 +11,6 @@ const StatSemiBlacklistTriggers = require('../stat-semi-blacklist-triggers');
 const StatFullBlacklistTriggers = require('../stat-full-blacklist-triggers');
 const StatProfileChange = require('../stat-profile-change');
 
-const dateFormatOptions = {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric'
-};
-
 /**
  * @param {Snowflake} snowflake
  * @returns {Promise.<string>}
@@ -93,7 +84,7 @@ const getMemberAccountCreationDate = async (member) => {
     const elapsedTime = (new Date().getTime() - accountCreationDate.getTime()) / 1000;
     const elapsedTimeString = secondsAmountToDelayString(elapsedTime, 'day');
 
-    return `${accountCreationDate.toLocaleString('fr', dateFormatOptions)} (${elapsedTimeString})`;
+    return `${accountCreationDate.toLocaleString('fr', DATE_FORMAT_OPTIONS)} (${elapsedTimeString})`;
 };
 
 /**
@@ -129,7 +120,7 @@ const getMemberJoinedDate = async (member) => {
         const elapsedTime = (new Date().getTime() - joinDate.getTime()) / 1000;
         const elapsedTimeString = secondsAmountToDelayString(elapsedTime, 'day');
 
-        return `${prefix}${joinDate.toLocaleString('fr', dateFormatOptions).replace(' à 00:00:00', '')} (${elapsedTimeString})`;
+        return `${prefix}${joinDate.toLocaleString('fr', DATE_FORMAT_OPTIONS).replace(' à 00:00:00', '')} (${elapsedTimeString})`;
     } else {
         return `--`;
     }

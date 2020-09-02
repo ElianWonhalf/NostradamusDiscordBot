@@ -60,7 +60,9 @@
         "starboard": "",
         "announcements": "",
         "meta": "",
-        "soft": ""
+        "soft": "",
+        "correspondenceLearners": "",
+        "correspondenceNatives": ""
     },
     "modCategories": [
         ""

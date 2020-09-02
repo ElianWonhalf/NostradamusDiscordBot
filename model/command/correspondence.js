@@ -1,4 +1,3 @@
-const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
@@ -30,28 +29,24 @@ class Correspondence
      */
     async process(message, args) {
         if (args.length > 0) {
-            const memberToWatch = Guild.findDesignatedMemberInMessage(message);
+            const action = args.shift().toLowerCase();
 
-            if (memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
-                const action = args.shift().toLowerCase();
-                const foundMembers = memberToWatch.foundMembers;
+            switch (action) {
+                case 'validate':
+                    (cachelessRequire('./correspondence/valid.js'))(message, args);
+                    break;
 
-                args.splice(0, foundMembers.length);
+                case 'audition':
+                case 'auditer':
+                    (cachelessRequire('./correspondence/audit.js'))(message, args);
+                    break;
 
-                switch (action) {
-                    case 'audition':
-                    case 'auditer':
-                        (cachelessRequire('./correspondence/audit.js'))(message, foundMembers, args.join(' '));
-                        break;
-
-                    case 'audit':
-                        (cachelessRequire('./correspondence/' + action + '.js'))(message, foundMembers, args.join(' '));
-                }
-            } else {
-                message.reply(trans('model.command.correspondence.notFound', [], 'en'));
+                case 'audit':
+                case 'valid':
+                    (cachelessRequire('./correspondence/' + action + '.js'))(message, args);
             }
         } else {
-            message.reply(trans('model.command.correspondence.badFormat', [], 'en'));
+            message.reply(trans('model.command.correspondence.error.missingAction', [], 'en'));
         }
     }
 }
