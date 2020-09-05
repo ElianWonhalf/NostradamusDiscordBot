@@ -12,7 +12,7 @@ class LanguageHard extends Heat
         }
 
         super(10 * SECOND);
-        this.aliases = ['languedifficile', 'hardlanguage', 'languagehard'];
+        this.aliases = ['languedifficile', 'hardlanguage', 'languagehard', 'languehard', 'langue-hard'];
         this.category = CommandCategory.RESOURCE;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
@@ -23,7 +23,7 @@ class LanguageHard extends Heat
     async process(message) {
         if (this.canCall()) {
             this.registerCall();
-            message.channel.send(trans('model.command.langue.reply'));
+            message.channel.send(trans('model.command.languageHard.reply'));
         } else {
             message.react('⌛');
         }
