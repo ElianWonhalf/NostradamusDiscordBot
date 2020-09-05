@@ -52,6 +52,15 @@ const Guild = {
     beginnerChannel: null,
 
     /** {TextChannel} */
+    learntLanguageChannel: null,
+
+    /** {TextChannel} */
+    otherLanguageChannel: null,
+
+    /** {TextChannel} */
+    mainClassroomChannel: null,
+
+    /** {TextChannel} */
     rolesChannel: null,
 
     /** {TextChannel} */
@@ -88,6 +97,9 @@ const Guild = {
         Guild.watchlistChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.watchlist);
         Guild.automodChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.automod);
         Guild.beginnerChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.beginner);
+        Guild.learntLanguageChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.learntLanguage);
+        Guild.otherLanguageChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.otherLanguage);
+        Guild.mainClassroomChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.mainClassroom);
         Guild.rolesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.roles);
         Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
