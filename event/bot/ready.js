@@ -7,6 +7,7 @@ const WatchedMember = require('../../model/watched-member');
 
 module.exports = async () => {
     Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
+    bot.user.setActivity('DM me to talk to mods').catch(Logger.exception);
 
     Logger.info('--------');
 
