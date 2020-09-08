@@ -312,7 +312,7 @@ const Guild = {
     },
 
     everyonePingHandler: (message) => {
-        if (message.guild !== null && message.content.includes('@everyone')) { // Could be @here
+        if (message.guild !== null && message.cleanContent.includes('@everyone')) { // Could be @here
             message.member.roles.add([Config.roles.everyone]);
         }
     }

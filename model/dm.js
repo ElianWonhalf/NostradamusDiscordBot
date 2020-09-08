@@ -53,15 +53,17 @@ const DM = {
     /**
      * @param {Message} message
      * @param {boolean} isCommand
+     * @param {boolean} edit
      */
-    parseMessage: async (message, isCommand) => {
+    parseMessage: async (message, isCommand, edit = false) => {
         if (message.guild === null && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
             const embed = await Guild.messageToEmbed(message);
+            const translationKey = edit ? 'model.dm.editNotification' : 'model.dm.notification';
 
-            embed.setFooter(`${Config.prefix}dmreply ${message.author.id}`);
+            embed.setFooter(`${Config.prefix}dm ${message.author.id}`);
 
             Guild.modDMsChannel.send(
-                trans('model.dm.notification', [message.author], 'en'),
+                trans(translationKey, [message.author], 'en'),
                 {
                     embed: embed,
                     files: message.attachments.map(messageAttachment => {

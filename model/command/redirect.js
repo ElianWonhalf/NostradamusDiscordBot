@@ -19,7 +19,7 @@ const destinations = {
     'discussions': 'chat',
     'conversation': 'chat',
     'conversations': 'chat'
-}
+};
 
 class Redirect extends Heat
 {
@@ -38,6 +38,7 @@ class Redirect extends Heat
 
     /**
      * @param {Message} message
+     * @param {Array} args
      */
     async process(message, args) {
         if (this.canCall()) {
@@ -57,6 +58,8 @@ class Redirect extends Heat
 
                 return;
             }
+
+            message.delete();
 
             if (destinations[lowercaseArgs] === 'chat') {
                 message.channel.send(trans('model.command.redirect.toChatRooms', [Guild.learntLanguageChannel.toString(), Guild.otherLanguageChannel.toString()]));

@@ -43,10 +43,6 @@ model:
       added: ":eowynsheep: C'est bon, je t'ai **ajouté** le rôle \"%%\" !"
       removed: ":eowynsheep: C'est bon, je t'ai **retiré** le rôle \"%%\" !"
       missingRole: "Ce rôle ne semble pas exister :ThirstyKitteh: . Peut-être l'as-tu mal écrit ? Ne t'en fais pas, j'en ai informé les modos."
-    dictation:
-      description: "Pour être mentionné quand il y a une dictée"
-      alertsOn: "Tu seras maintenant mentionné quand il y a une dictée."
-      alertsOff: "Tu ne seras plus mentionné quand il y a une dictée."
     dictionaries:
       description: "Donne une liste de dictionnaires en ligne et de sites de traduction utiles"
       reply: "\n%model.command.dictionaries.translator.wordreference%\n%model.command.dictionaries.translator.usito%\n%model.command.dictionaries.translator.deepl%\n%model.command.dictionaries.translator.googleTranslate%\n%model.command.dictionaries.translator.reversoContextAndLinguee%\n\n"
@@ -56,7 +52,7 @@ model:
         deepl: "[**Deepl**](https://www.deepl.com/translator) est un traducteur qui marche bien pour les phrases et paragraphes, mais pas vraiment pour les mots individuels."
         googleTranslate: "[**Google Translate**](https://translate.google.com/) traduit assez bien quand il n'y a qu'un ou deux mots, mais moins bien pour les phrases plus longues."
         reversoContextAndLinguee: "[**Reverso Context**](https://context.reverso.net/traduction/) et [**Linguee**](https://www.linguee.fr/) sont des dictionnaires qui marchent bien pour voir comment d'autres personnes ont traduit des expressions ou des mots en contexte, mais il faut être prudent car ces traductions sont rarement vérifiés."
-    dmReply:
+    dm:
       description: "Permet aux Modos de répondre aux Messages Privés envoyés au bot"
       noMessage: "N'oublie pas d'ajouter ton message, sinon j'ai rien à envoyer !"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
@@ -64,6 +60,10 @@ model:
       description: "Modifie un message envoyé par le bot"
     eval:
       description: "Exécute du code JavaScript ! Spoopy ! 🎃 🦇 👻 ☠ 🕷"
+    events:
+      description: "Pour être mentionné quand il y a un évènement"
+      alertsOn: "Tu seras maintenant mentionné quand il y a un évènement."
+      alertsOff: "Tu ne seras plus mentionné quand il y a un évènement."
     games:
       description: "Pour être mentionné quand il y a un jeu"
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
@@ -115,20 +115,12 @@ model:
       description: "Pour avoir accès au canal des logs d'arrivée et de départ des membres"
       channelOn: "Tu as maintenant accès au canal des logs d'arrivée et de départ des membres."
       channelOff: "Tu n'as plus accès au canal des logs d'arrivée et de départ des membres."
-    miniClass:
-      description: "Pour être mentionné quand il y a une mini classe"
-      alertsOn: "Tu seras maintenant mentionné quand il y a une mini classe."
-      alertsOff: "Tu ne seras plus mentionné quand il y a une mini classe."
     modList:
       description: "Liste les membres actuels de l'équipe de modération"
       answer: "Il y a en ce moment %% modérateurs :"
     native:
       description: "Explique la différence du rôle Francophone natif par rapport aux rôles de niveau"
       reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
-    outLoudReading:
-      description: "Pour être mentionné quand il y a une lecture à voix haute"
-      alertsOn: "Tu seras maintenant mentionné quand il y a une lecture à voix haute."
-      alertsOff: "Tu ne seras plus mentionné quand il y a une lecture à voix haute."
     panic:
       description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
     post:
@@ -201,7 +193,7 @@ model:
   dm:
     greetingsAnswer: "Salut ! Je ne suis qu'un bot, donc tu ne peux pas vraiment discuter avec moi. De plus, garde à l'esprit que chaque message que tu m'envoies est transmis aux modérateurs !"
   guild:
-    patreonBoosterAnnouncement: "\n:aww: %% vient de booster le serveur via Patreon :ChatRave: !"
+    patreonBoosterAnnouncement: "\n:aww: %% vient de booster le serveur via Patreon :yay: !"
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
     secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"

@@ -13,7 +13,7 @@ class Post
 
         this.aliases = ['send'];
         this.category = CommandCategory.BOT_MANAGEMENT;
-        this.isAllowedForContext = CommandPermission.isMemberMod;
+        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
 
     /**

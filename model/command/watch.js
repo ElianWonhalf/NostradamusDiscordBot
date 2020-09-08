@@ -31,7 +31,7 @@ class Watch
      */
     async process(message, args) {
         if (args.length > 0) {
-            const messageContainsMemberID = message.content.match(/[0-9]{18}/gu) !== null;
+            const messageContainsMemberID = message.content.match(/(^| )[0-9]{18}( |$)/gu) !== null;
             const memberToWatch = Guild.findDesignatedMemberInMessage(message);
 
             if (messageContainsMemberID || memberToWatch.certain === true && memberToWatch.foundMembers.length > 0) {
@@ -42,9 +42,9 @@ class Watch
                 if (messageContainsMemberID) {
                     const foundMemberIds = foundMembers.map(memberOrUser => memberOrUser.id);
 
-                    message.content.match(/[0-9]{16,18}/gu).forEach(id => {
-                        if (!foundMemberIds.includes(id)) {
-                            const user = new User(bot, { id, bot: false });
+                    args.forEach(arg => {
+                        if (arg.match(/^[0-9]{16,18}$/u) !== null && !foundMemberIds.includes(arg)) {
+                            const user = new User(bot, { arg, bot: false });
                             foundMembers.push(user);
                         }
                     });
