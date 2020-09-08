@@ -82,10 +82,6 @@ model:
       added: ":eowynsheep: All good, I **added** the role \"%%\" to your profile !"
       removed: ":eowynsheep: All good, I **removed** the role \"%%\" from your profile !"
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
-    dictation:
-      description: "To be notified when a dictation is held"
-      alertsOn: "You will now be notified when there's a dictation."
-      alertsOff: "You will now no longer be notified when there's a dictation."
     dictionaries:
       description: "Provides a list of useful translation sites and online dictionaries"
       reply: "\n\n%model.command.dictionaries.translator.wordreference%\n%model.command.dictionaries.translator.usito%\n%model.command.dictionaries.translator.deepl%\n%model.command.dictionaries.translator.googleTranslate%\n%model.command.dictionaries.translator.reversoContextAndLinguee%\n"
@@ -95,7 +91,7 @@ model:
         deepl: "[**Deepl**](https://www.deepl.com/translator) is a very good translator for full sentences or paragraphs, but not so much for single words."
         googleTranslate: "[**Google Translate**](https://translate.google.com/) is good for quick, single-word translations, but less so for larger amounts of text."
         reversoContextAndLinguee: "[**Reverso Context**](https://context.reverso.net/traduction/) et [**Linguee**](https://www.linguee.fr/) are online dictionaries that are good for seeing how others have translated expressions or words in context, but must be used with caution as these translations are rarely verified."
-    dmReply:
+    dm:
       description: "Allows Moderators to respond to Direct Messages sent through the bot"
       noMessage: "Don't forget to add your message, or else I'll have nothing to send!"
       notFound: "I... Have no idea who that could be, sorry."
@@ -103,6 +99,10 @@ model:
       description: "Edit a message sent by the bot"
     eval:
       description: "Execute JavaScript code! Spoopy! 🎃 🦇 👻 ☠ 🕷"
+    events:
+      description: "To be notified when an event is held"
+      alertsOn: "You will now be notified when there's an event."
+      alertsOff: "You will now no longer be notified when there's an event."
     games:
       description: "To be notified when a game is held"
       alertsOn: "You will now be notified when there's a game."
@@ -176,20 +176,12 @@ model:
       description: "Gives access to the member flow logging channel"
       channelOn: "You now have access to the member flow logging channel."
       channelOff: "You no longer have access to the member flow logging channel."
-    miniClass:
-      description: "To be notified when a mini class is held"
-      alertsOn: "You will now be notified when there's a mini class."
-      alertsOff: "You will now no longer be notified when there's a mini class."
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
-    outLoudReading:
-      description: "To be notified when a reading is being held"
-      alertsOn: "You will now be notified when a reading is being held."
-      alertsOff: "You will now no longer be notified when a reading is being held."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
     post:
@@ -288,6 +280,7 @@ model:
     noTime: "*no time*"
   dm:
     notification: "%% sent a DM:"
+    editNotification: "%% **edited** a DM:"
     greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"
     greetingsAnswerSent: "I just told that person that I am just a bot and maybe just a greeting isn't very relevant."
   guild:
@@ -298,7 +291,7 @@ model:
     usernameFullBlacklist: ":ban: %% updated their username and it triggered the **full** blacklist: %%"
     nicknameSemiBlacklist: ":roocop: %% updated their nickname and it triggered the **semi** blacklist: %%"
     nicknameFullBlacklist: ":ban: %% updated their nickname and it triggered the **full** blacklist: %%"
-    patreonBoosterAnnouncement: "\n:aww: %% just boosted the server via Patreon :ChatRave: !"
+    patreonBoosterAnnouncement: "\n:aww: %% just boosted the server via Patreon :yay: !"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"

@@ -24,9 +24,7 @@
     "roles": {
         "mod": "",
         "officialMember": "",
-        "dictation": "",
-        "miniClass": "",
-        "outLoudReading": "",
+        "events": "",
         "games": "",
         "committee": "",
         "tutor": "",
