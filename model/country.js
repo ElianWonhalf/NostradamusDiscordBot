@@ -1,7 +1,7 @@
 const db = require('./db');
 
 const Country = {
-    /** {Array} */
+    /** {Object} */
     list: {},
 
     /**

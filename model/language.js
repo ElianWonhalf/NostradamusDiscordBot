@@ -1,15 +1,15 @@
 const db = require('./db');
 
 const Language = {
-    /** {Array} */
-    list: [],
+    /** {Object} */
+    list: {},
 
     /**
      * @returns {Promise}
      */
     init: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT friendly, role FROM languages').on('result', row => {
+            db.query('SELECT friendly, aliases, role FROM languages').on('result', row => {
                 Language.list[row.role.toLowerCase()] = row.role;
                 Language.list[row.friendly.toLowerCase()] = row.role;
 
