@@ -44,7 +44,7 @@ class Redirect extends Heat
         if (this.canCall()) {
             this.registerCall();
             if (args.length < 1) {
-                message.channel.send(trans('model.command.redirect.toClassrooms', [Guild.mainClassroomChannel.toString()]));
+                message.channel.send(trans('model.command.redirect.toClassrooms', [Guild.classroomChannel.toString()]));
 
                 return;
             }
@@ -64,7 +64,7 @@ class Redirect extends Heat
             if (destinations[lowercaseArgs] === 'chat') {
                 message.channel.send(trans('model.command.redirect.toChatRooms', [Guild.learntLanguageChannel.toString(), Guild.otherLanguageChannel.toString()]));
             } else {
-                message.channel.send(trans('model.command.redirect.toClassrooms', [Guild.mainClassroomChannel.toString()]));
+                message.channel.send(trans('model.command.redirect.toClassrooms', [Guild.classroomChannel.toString()]));
             }
         } else {
             message.react('⌛');
