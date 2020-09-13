@@ -8,6 +8,7 @@ const SocialNetworkIntegration = require('../../model/social-network-integration
 const WatchedMember = require('../../model/watched-member');
 const StatMessages = require('../../model/stat-messages');
 const Guild = require('../../model/guild');
+const Repeat = require('../../model/repeat');
 
 /**
  * @param {Message} message
@@ -17,6 +18,7 @@ module.exports = async (message) => {
 
     if (message.guild === null || isRightGuild(message.guild.id)) {
         WatchedMember.messageHandler(message);
+        Repeat.messageHandler(message);
 
         if (message.mentions.everyone) {
             Guild.everyonePingHandler(message);
