@@ -318,7 +318,7 @@ const Guild = {
             Guild.everyonePingHandler(message);
         }
 
-        if (roleMentions.includes(Config.roles.mod) && !Config.modCategories.includes(message.channel.parent.id)) {
+        if (roleMentions.includes(Config.roles.mod) && !Config.channelCategories.mod.includes(message.channel.parent.id)) {
             Guild.softChannel.send(`<@&${Config.roles.soft}> ${message.channel.toString()}`);
         }
     },

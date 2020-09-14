@@ -201,7 +201,7 @@ class Info
                 information.push(`**${key}** ${value}`);
             });
 
-            if (Config.modCategories.includes(message.channel.parentID) && await CommandPermission.isMemberModOrSoftOrTutor(message)) {
+            if (Config.channelCategories.mod.includes(message.channel.parentID) && await CommandPermission.isMemberModOrSoftOrTutor(message)) {
                 Object.keys(data.mod).forEach(datum => {
                     const key = trans(`model.command.info.data.${datum}`, [], 'en');
                     const value = data.mod[datum];
@@ -212,7 +212,7 @@ class Info
 
             let description = target.toString();
 
-            if (Config.modCategories.includes(message.channel.parentID) && await CommandPermission.isMemberModOrSoftOrTutor(message)) {
+            if (Config.channelCategories.mod.includes(message.channel.parentID) && await CommandPermission.isMemberModOrSoftOrTutor(message)) {
                 description = `${trans('model.command.info.modIntroduction', [], 'en')}\n\n${description}`;
             }
 
