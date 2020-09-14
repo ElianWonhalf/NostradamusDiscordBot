@@ -141,8 +141,13 @@ model:
         recentlyTriggeredBlacklist: "Recently triggered blacklist:"
         joinedAmount: "Joined the server:"
         recentlyJoinedAmount: "Recently joined the server:"
-        usernames: "Past usernames:"
-        nicknames: "Past nicknames:"
+        usernames: "Number of past usernames:"
+        nicknames: "Number of past nicknames:"
+        avatars: "Number of past avatars:"
+      usernames:
+        none: "No past usernames found."
+      nicknames:
+        none: "No past nicknames found."
       notFound: "I... Have no idea who that could be, sorry."
     kill:
       description: "Kills the bot process"

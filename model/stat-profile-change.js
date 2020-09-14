@@ -48,6 +48,26 @@ class StatProfileChange extends StatEntity
     }
 
     /**
+     * @param {string} snowflake
+     * @param {string} type
+     * @returns {Promise.<int>}
+     */
+    async getDataCount(snowflake, type) {
+        if (StatProfileChange.TYPES.includes(type)) {
+            let data = await connection.asyncQuery(
+                `SELECT COUNT(*) AS \`count\` FROM \`${this.tableName}\` WHERE \`user_id\` = ? AND type = ?`,
+                [snowflake, type]
+            );
+
+            if (data !== undefined && Array.isArray(data)) {
+                data = data[0];
+            }
+
+            return typeof data === 'undefined' || typeof data.count === 'undefined' ? 0 : data.count;
+        }
+    }
+
+    /**
      * @param {Snowflake} snowflake
      * @returns {Promise.<Array<string>>}
      */
@@ -69,6 +89,30 @@ class StatProfileChange extends StatEntity
      */
     async getAvatarList(snowflake) {
         return this.getDataList(snowflake, StatProfileChange.TYPE_AVATAR);
+    }
+
+    /**
+     * @param {Snowflake} snowflake
+     * @returns {Promise.<int>}
+     */
+    async getUsernameCount(snowflake) {
+        return this.getDataCount(snowflake, StatProfileChange.TYPE_USERNAME);
+    }
+
+    /**
+     * @param {Snowflake} snowflake
+     * @returns {Promise.<int>}
+     */
+    async getNicknameCount(snowflake) {
+        return this.getDataCount(snowflake, StatProfileChange.TYPE_NICKNAME);
+    }
+
+    /**
+     * @param {Snowflake} snowflake
+     * @returns {Promise.<int>}
+     */
+    async getAvatarCount(snowflake) {
+        return this.getDataCount(snowflake, StatProfileChange.TYPE_AVATAR);
     }
 }
 
