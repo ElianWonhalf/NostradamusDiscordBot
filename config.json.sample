@@ -67,9 +67,10 @@
         "correspondenceLearners": "",
         "correspondenceNatives": ""
     },
-    "modCategories": [
-        ""
-    ],
+    "channelCategories": {
+        "mod": [],
+        "vocal": []
+    },
     "warnCommand": "!warn %id %reason",
     "unbanCommand": "!unban %id %reason",
     "levelCommand": "",

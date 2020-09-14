@@ -137,6 +137,7 @@ model:
       unknownDest: "Euh... Où devrais-je rediriger les gens ? Les salons de discussion `%%redir chat` ou les salles de classe `%%redir class` ?"
       toChatRooms: "Ce salon est fait pour les questions sur le français. Pour les discussions, il y a %% ou %% !"
       toClassrooms: "Ce salon est fait pour discuter de tout et de rien. Pour les questions sur le français, merci d'aller dans une salle de classe, comme %% !"
+      fromVocal: "Ce canal est fait pour le canal vocal correspondant. Si vous voulez discuter, essayez %% ou %%, si vous avez des questions, essayez %%."
     reload:
       description: "Redémarre le bot"
     reply:

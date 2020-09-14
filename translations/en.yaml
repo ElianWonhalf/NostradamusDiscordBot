@@ -200,6 +200,7 @@ model:
       unknownDest: "Uhm... Where should I redirect people to? Chat rooms `%%redir chat` or classrooms `%%redir class`?"
       toChatRooms: "This channel is meant for questions about French. General discussions are better off in channels like %% or %%!"
       toClassrooms: "This channel is meant for general discussions. For questions about French, go to one of the classrooms, such as %%!"
+      fromVocal: "This room is for the associated vocal chat. If you're looking to chat, try %% or %%, if you have questions, try %%"
     reload:
       description: "Reboots the bot"
       answer: "OK, I'm rebooting now."

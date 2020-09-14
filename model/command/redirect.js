@@ -41,6 +41,17 @@ class Redirect extends Heat
                         [Guild.learntLanguageChannel.toString(), Guild.otherLanguageChannel.toString()]
                     )
                 );
+            } else if (Config.channelCategories.vocal.includes(message.channel.parent.id)) {
+                message.channel.send(
+                    trans(
+                        'model.command.redirect.fromVocal',
+                        [
+                            Guild.learntLanguageChannel.toString(),
+                            Guild.otherLanguageChannel.toString(),
+                            Guild.classroom3Channel.toString()
+                        ]
+                    )
+                );
             } else {
                 message.channel.send(
                     trans(
