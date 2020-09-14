@@ -148,6 +148,8 @@ model:
         none: "No past usernames found."
       nicknames:
         none: "No past nicknames found."
+      avatars:
+        none: "No past avatars found."
       notFound: "I... Have no idea who that could be, sorry."
     kill:
       description: "Kills the bot process"

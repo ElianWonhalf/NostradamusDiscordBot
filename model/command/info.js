@@ -59,9 +59,14 @@ class Info
                     (cachelessRequire('./info/nicknames.js'))(message, target);
                     break;
 
+                case 'avatar':
+                    (cachelessRequire('./info/nicknames.js'))(message, target);
+                    break;
+
                 case 'info':
                 case 'usernames':
                 case 'nicknames':
+                case 'avatars':
                     (cachelessRequire('./info/' + action + '.js'))(message, target);
                     break;
 
