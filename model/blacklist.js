@@ -70,7 +70,7 @@ const Blacklist = {
      * @param {Message} message
      */
     parseMessage: async (message) => {
-        if (message.guild !== null && !message.author.bot) {
+        if (message.guild !== null && !message.author.bot && !Guild.isMemberMod(message.member)) {
             // Dyno is taking care of the full blacklist for now
             // Update 2020-05-23: NOPE, DYNO IS KICKED LOLZ!!!11!1! HEPBOAT IS IN CHARGE NOW!!
             const semiWords = Blacklist.getSemiWordsInString(message.cleanContent);
