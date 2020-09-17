@@ -68,7 +68,10 @@ const Command = {
 
                     if (commandInstance !== null) {
                         commandInstance.process(message, args, Command);
-                        Logger.info(`Command ${commandName} called by ${message.author.tag}`);
+
+                        if (commandName !== 'anonymous') {
+                            Logger.info(`Command ${commandName} called by ${message.author.tag}`);
+                        }
                     } else {
                         isCommand = false;
                         Command.commandList.delete(commandName);
