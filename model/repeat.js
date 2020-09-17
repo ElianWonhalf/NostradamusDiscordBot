@@ -28,7 +28,7 @@ class Repeat {
                 );
             }
 
-            if (snowflakes.length > 2 && !answered && shouldRepeat) {
+            if (message.cleanContent === lastString && snowflakes.length > 2 && !answered && shouldRepeat) {
                 message.channel.send(message.cleanContent);
                 lastMessage.set(
                     message.channel.id,
