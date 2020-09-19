@@ -94,7 +94,7 @@ const HardcoreLearning = {
     /**
      * @param {Message} message
      */
-    addMessage: async (message) => {
+    messageHandler: async (message) => {
         const content = message.cleanContent.replace(/\s?<:[^:]+:\d+>/g, '');
 
         if (content.length < MINIMUM_CHARACTERS_TO_TRANSLATE) {
