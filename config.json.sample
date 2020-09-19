@@ -55,6 +55,7 @@
         "learntLanguage": "",
         "learntLanguageClone": null,
         "otherLanguage": "",
+        "otherLanguages": "",
         "classroom1": "",
         "classroom2": "",
         "classroom3": "",
@@ -76,6 +77,7 @@
     "levelCommand": "",
     "learntLanguage": "learntLanguage.",
     "learntLanguagePrefix": "",
+    "otherLanguagePrefix": "",
     "disabledCommands": [],
     "hiddenCommands": [],
     "notCountryOrLanguageRoles": []

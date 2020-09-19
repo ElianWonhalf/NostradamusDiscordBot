@@ -4,6 +4,7 @@ const Blacklist = require('../../model/blacklist');
 const Command = require('../../model/command');
 const DM = require('../../model/dm');
 const HardcoreLearning = require('../../model/hardcore-learning');
+const HardcoreOtherLanguages = require('../../model/hardcore-other-languages');
 const SocialNetworkIntegration = require('../../model/social-network-integration');
 const WatchedMember = require('../../model/watched-member');
 const StatMessages = require('../../model/stat-messages');
@@ -52,8 +53,12 @@ module.exports = async (message) => {
 
             DM.parseMessage(message, isCommand);
 
-            if (!isCommand && watchedChannels.indexOf(message.channel.id) > -1) {
-                HardcoreLearning.addMessage(message);
+            if (!isCommand) {
+                HardcoreOtherLanguages.messageHandler(message);
+
+                if (watchedChannels.indexOf(message.channel.id) > -1) {
+                    HardcoreLearning.messageHandler(message);
+                }
             }
         }
     }

@@ -304,8 +304,9 @@ model:
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
-  hue:
-    needCode: "Hi mom, I need a hue code please"
+  hardcoreOtherLanguages:
+    warning: "I detected a high number of non-other-languages messages! Please go back to speaking other languages or I will call the police :roocop: !"
+    secondWarning: "If you want to speak those languages so badly, you can go to the corresponding channels!"
   memberRolesFlow:
     noSpeakOnlyAnswer: "\n\n**__English__**\n> Sorry, I can't understand what you're saying :pensive: . But don't worry, you only need to **react** to the upcoming message :) !"
     start: "\n\n**__English__**\n> Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"

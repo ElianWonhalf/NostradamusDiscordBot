@@ -41,7 +41,7 @@ module.exports = async (oldMessage, message) => {
             DM.parseMessage(message, isCommand, true);
 
             if (!isCommand && watchedChannels.indexOf(message.channel.id) > -1) {
-                HardcoreLearning.addMessage(message);
+                HardcoreLearning.messageHandler(message);
             }
         }
     }
