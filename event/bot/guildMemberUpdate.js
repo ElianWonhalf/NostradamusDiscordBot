@@ -33,9 +33,18 @@ const nicknameChangedHandler = (oldMember, newMember) => {
     }
 };
 
+/**
+ * @param {GuildMember} member
+ * @param {Collection} addedRoles
+ * @param {Collection} removedRoles
+ */
 const rolesChangedHandler = (member, addedRoles, removedRoles) => {
     if (addedRoles.keyArray().includes(Config.roles.patreonBooster)) {
         Guild.announcePatreonBooster(member);
+    }
+
+    if (addedRoles.keyArray().includes(Config.roles.raid)) {
+        Guild.raiderHandler(member);
     }
 };
 
