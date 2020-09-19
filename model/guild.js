@@ -312,7 +312,7 @@ const Guild = {
         };
     },
 
-    rolePingHandler: (message) => {
+    rolePingHandler: async (message) => {
         const roleMentions = message.mentions.roles.keyArray();
 
         if (roleMentions.includes(Config.roles.everyone)) {
@@ -320,7 +320,12 @@ const Guild = {
         }
 
         if (roleMentions.includes(Config.roles.mod) && !Config.channelCategories.mod.includes(message.channel.parent.id)) {
-            Guild.softChannel.send(`<@&${Config.roles.soft}> ${message.channel.toString()}`);
+            Guild.softChannel.send(
+                `<@&${Config.roles.soft}> ${message.channel.toString()} ${message.url}`,
+                {
+                    embed: await Guild.messageToEmbed(message)
+                }
+            );
         }
     },
 
