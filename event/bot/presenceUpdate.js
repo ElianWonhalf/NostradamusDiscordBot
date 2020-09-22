@@ -27,7 +27,7 @@ module.exports = (oldPresence, newPresence) => {
 
     const differentCustomStatus = oldHasCustomStatus && newHasCustomStatus && oldCustomStatus.state !== newCustomStatus.state;
 
-    if (newHasCustomStatus && differentCustomStatus) {
+    if (newHasCustomStatus || differentCustomStatus) {
         const state = newCustomStatus.state === null ? '' : newCustomStatus.state;
         const semiWords = Blacklist.getSemiWordsInString(state);
         const fullWords = Blacklist.getFullWordsInString(state);
