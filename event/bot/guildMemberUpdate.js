@@ -2,6 +2,7 @@ const Config = require('../../config.json');
 const StatProfileChange = require('../../model/stat-profile-change');
 const Blacklist = require('../../model/blacklist');
 const Guild = require('../../model/guild');
+const WatchedMember = require('../../model/watched-member');
 
 const nicknameChangedHandler = (oldMember, newMember) => {
     StatProfileChange.save(
@@ -44,7 +45,7 @@ const rolesChangedHandler = (member, addedRoles, removedRoles) => {
     }
 
     if (addedRoles.keyArray().includes(Config.roles.raid)) {
-        Guild.raiderHandler(member);
+        WatchedMember.raiderHandler(member);
     }
 };
 
