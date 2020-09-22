@@ -23,6 +23,7 @@ class Homework extends Heat
     async process(message) {
         if (this.canCall()) {
             this.registerCall();
+            message.delete();
             message.channel.send(trans('model.command.homework.reply'));
         } else {
             message.react('⌛');

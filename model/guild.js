@@ -3,7 +3,6 @@ const EventEmitter = require('events');
 const Config = require('../config.json');
 const Logger = require('@lilywonhalf/pretty-logger');
 const Discord = require('discord.js');
-const WatchedMember = require('./watched-member');
 
 const Guild = {
     events: new EventEmitter(),
@@ -333,16 +332,6 @@ const Guild = {
         if (message.guild !== null && message.cleanContent.includes('@everyone')) { // Could be @here
             message.member.roles.add([Config.roles.everyone]);
         }
-    },
-
-    raiderHandler: async (member) => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-
-        await WatchedMember.add(member.id, `Suspected raid ${year}-${month}-${day}`);
-        Guild.watchlistChannel.send(trans('model.guild.raiderHandler', [member.toString()], 'en'));
     }
 };
 
