@@ -1,5 +1,6 @@
 .idea
 *.iml
+.vscode
 node_modules
 deploy.sh
 change-env.sh
