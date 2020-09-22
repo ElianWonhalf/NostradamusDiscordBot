@@ -10,13 +10,13 @@ const checkUsername = (member, semiBlacklistTriggered, fullBlacklistTriggered) =
 
     if (fullWords.length > 0) {
         fullBlacklistTriggered.push(`   ${trans(
-            'model.command.checkCustomStatuses.username',
+            'model.command.auditMembers.username',
             [member.toString(), formattedUsername],
             'en'
         )}`);
     } else if (semiWords.length > 0) {
         semiBlacklistTriggered.push(`   ${trans(
-            'model.command.checkCustomStatuses.username',
+            'model.command.auditMembers.username',
             [member.toString(), formattedUsername],
             'en'
         )}`);
@@ -33,13 +33,13 @@ const checkNickname = (member, semiBlacklistTriggered, fullBlacklistTriggered) =
 
         if (fullWords.length > 0) {
             fullBlacklistTriggered.push(`   ${trans(
-                'model.command.checkCustomStatuses.nickname',
+                'model.command.auditMembers.nickname',
                 [member.toString(), formattedNickname],
                 'en'
             )}`);
         } else if (semiWords.length > 0) {
             semiBlacklistTriggered.push(`   ${trans(
-                'model.command.checkCustomStatuses.nickname',
+                'model.command.auditMembers.nickname',
                 [member.toString(), formattedNickname],
                 'en'
             )}`);
@@ -59,13 +59,13 @@ const checkCustomStatus = (member, semiBlacklistTriggered, fullBlacklistTriggere
 
         if (fullWords.length > 0) {
             fullBlacklistTriggered.push(`   ${trans(
-                'model.command.checkCustomStatuses.customStatus',
+                'model.command.auditMembers.customStatus',
                 [member.toString(), formattedState],
                 'en'
             )}`);
         } else if (semiWords.length > 0) {
             semiBlacklistTriggered.push(`   ${trans(
-                'model.command.checkCustomStatuses.customStatus',
+                'model.command.auditMembers.customStatus',
                 [member.toString(), formattedState],
                 'en'
             )}`);
@@ -103,7 +103,7 @@ class CheckCustomStatuses
 
         if (semiBlacklistTriggered.length > 0) {
             finalMessage += `**${trans(
-                'model.command.checkCustomStatuses.semiBlacklistHeading',
+                'model.command.auditMembers.semiBlacklistHeading',
                 [],
                 'en'
             )}**\n${semiBlacklistTriggered.sort().join('\n')}\n\n`;
@@ -111,7 +111,7 @@ class CheckCustomStatuses
 
         if (fullBlacklistTriggered.length > 0) {
             finalMessage += `**${trans(
-                'model.command.checkCustomStatuses.fullBlacklistHeading',
+                'model.command.auditMembers.fullBlacklistHeading',
                 [],
                 'en'
             )}**\n${fullBlacklistTriggered.sort().join('\n')}\n\n`;
