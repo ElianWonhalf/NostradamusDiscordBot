@@ -48,16 +48,16 @@ model:
       languagesInDbWithoutRole: "I've found %% language(s) in the DB that don't have any roles assigned"
       countriesInDbWithoutRole: "\nI've found %% country(-ies) in the DB that don't have any roles assigned"
       rolesWithoutDbEntry: "\n\nI've found %% role(s) that don't have a DB entry assigned"
-    avatar:
-      description: "Displays the avatar of the specified member."
-      notFound: "I... Have no idea who that could be, sorry."
-    checkCustomStatuses:
+    auditMembers:
       description: "Searches for blacklisted terms in members' custom messages"
       customStatus: "(Custom status) %%: %%"
       username: "(Username) %%: %%"
       nickname: "(Nickname) %%: %%"
       semiBlacklistHeading: ":roocop: The following triggered the **semi** blacklist:"
       fullBlacklistHeading: ":ban: The following triggered the **full** blacklist:"
+    avatar:
+      description: "Displays the avatar of the specified member."
+      notFound: "I... Have no idea who that could be, sorry."
     committee:
       description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
@@ -247,7 +247,7 @@ model:
     tutors:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
-    voicemove:
+    voiceMove:
       description: "Move all members of one voice chat to another"
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll move the members for you."
