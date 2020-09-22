@@ -85,7 +85,7 @@ const WatchedMember = {
         const day = String(now.getDate()).padStart(2, '0');
 
         await WatchedMember.add(member.id, `Suspected raid ${year}-${month}-${day}`);
-        Guild.watchlistChannel.send(trans('model.guild.raiderHandler', [member.toString()], 'en'));
+        Guild.watchlistChannel.send(trans('model.watchedMember.raiderHandler', [member.toString()], 'en'));
     },
 
     voiceStateUpdateHandler: (oldVoiceState, newVoiceState) => {
