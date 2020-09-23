@@ -1,6 +1,6 @@
-const Logger = require('@lilywonhalf/pretty-logger');
 const Guild = require('../../model/guild');
 const Blacklist = require('../../model/blacklist');
+const ActivityManager = require('../../model/activity-manager');
 
 /**
  * @param {Presence} oldPresence
@@ -14,22 +14,12 @@ module.exports = (oldPresence, newPresence) => {
     if (!isRightGuild(member.guild.id) || Guild.isMemberMod(member)) {
         return;
     }
-
-    const oldCustomStatus = oldPresence !== undefined
-        ? oldPresence.activities.find(activity => activity.type === 'CUSTOM_STATUS')
-        : undefined;
-
     const newCustomStatus = newPresence !== undefined
         ? newPresence.activities.find(activity => activity.type === 'CUSTOM_STATUS')
         : undefined;
 
-    const oldHasCustomStatus = oldCustomStatus !== undefined;
-    const newHasCustomStatus = newCustomStatus !== undefined;
-
-    const differentCustomStatus = oldHasCustomStatus && newHasCustomStatus && oldCustomStatus.state !== newCustomStatus.state;
-
-    if (!oldHasCustomStatus && newHasCustomStatus || newHasCustomStatus && differentCustomStatus) {
-        const state = newCustomStatus.state === null ? '' : newCustomStatus.state;
+    if (ActivityManager.hasNewActivity(newPresence)) {
+        const state = newCustomStatus.state ? newCustomStatus.state : '';
         const semiWords = Blacklist.getSemiWordsInString(state);
         const fullWords = Blacklist.getFullWordsInString(state);
         const formattedState = Blacklist.formatWordsInString(state);

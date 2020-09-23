@@ -27,7 +27,7 @@ class GetCustomStatuses
 
             return !member.roles.cache.has(Config.roles.mod)
                 && activity !== undefined
-                && activity.state !== null;
+                && activity.state;
         }).array().map(member => {
             const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
 

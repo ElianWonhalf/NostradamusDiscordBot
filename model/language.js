@@ -36,7 +36,7 @@ const Language = {
             Language.list[role.toLowerCase()] = role;
             Language.list[friendly.toLowerCase()] = role;
 
-            db.query('SET NAMES utf8');
+            db.query('SET NAMES utf8mb4');
             db.query(`INSERT INTO languages (friendly, role) VALUES (?, ?)`, [friendly, role], (error) => {
                 error ? reject(error) : resolve();
             });
@@ -55,7 +55,7 @@ const Language = {
             if (Language.list.hasOwnProperty(role.toLowerCase())) {
                 Language.list[alias] = role;
 
-                db.query('SET NAMES utf8');
+                db.query('SET NAMES utf8mb4');
                 db.query(
                     `UPDATE languages SET aliases = IF(aliases IS NULL, ?, CONCAT(aliases, ',', ?)) WHERE role = ? OR friendly = ?`,
                     [alias, alias, role, role],

@@ -4,6 +4,7 @@ const Language = require('../../model/language');
 const Country = require('../../model/country');
 const DM = require('../../model/dm');
 const WatchedMember = require('../../model/watched-member');
+const ActivityManager = require('../../model/activity-manager');
 
 module.exports = async () => {
     Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
@@ -34,6 +35,12 @@ module.exports = async () => {
         Logger.exception(error);
     }
     Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
+
+    Logger.info('--------');
+
+    Logger.info('Initialising activities...');
+    ActivityManager.init();
+    Logger.info('Activities initialised.');
 
     Logger.info('--------');
 

@@ -36,7 +36,7 @@ const Country = {
             Country.list[role.toLowerCase()] = role;
             Country.list[friendly.toLowerCase()] = role;
 
-            db.query('SET NAMES utf8');
+            db.query('SET NAMES utf8mb4');
             db.query(`INSERT INTO countries (friendly, role) VALUES (?, ?)`, [friendly, role], (error) => {
                 error ? reject(error) : resolve();
             });
@@ -55,7 +55,7 @@ const Country = {
             if (Country.list.hasOwnProperty(role.toLowerCase())) {
                 Country.list[alias] = role;
 
-                db.query('SET NAMES utf8');
+                db.query('SET NAMES utf8mb4');
                 db.query(
                     `UPDATE countries SET aliases = IF(aliases IS NULL, ?, CONCAT(aliases, ',', ?)) WHERE role = ? OR friendly = ?`,
                     [alias, alias, role, role],
