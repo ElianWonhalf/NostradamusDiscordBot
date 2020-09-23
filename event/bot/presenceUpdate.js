@@ -1,3 +1,4 @@
+const Logger = require('@lilywonhalf/pretty-logger');
 const Guild = require('../../model/guild');
 const Blacklist = require('../../model/blacklist');
 
@@ -27,7 +28,7 @@ module.exports = (oldPresence, newPresence) => {
 
     const differentCustomStatus = oldHasCustomStatus && newHasCustomStatus && oldCustomStatus.state !== newCustomStatus.state;
 
-    if (newHasCustomStatus || differentCustomStatus) {
+    if (!oldHasCustomStatus && newHasCustomStatus || newHasCustomStatus && differentCustomStatus) {
         const state = newCustomStatus.state === null ? '' : newCustomStatus.state;
         const semiWords = Blacklist.getSemiWordsInString(state);
         const fullWords = Blacklist.getFullWordsInString(state);
