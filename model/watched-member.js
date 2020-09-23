@@ -152,7 +152,7 @@ const WatchedMember = {
             WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
             WatchedMember.list[id].reason = reason;
 
-            db.query('SET NAMES utf8');
+            db.query('SET NAMES utf8mb4');
             db.query(
                 `INSERT INTO watchedMember (id, reason, active) VALUES (?, ?, ?)
                 ON DUPLICATE KEY UPDATE reason = ?, active = ?`,
@@ -172,7 +172,7 @@ const WatchedMember = {
             WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
             WatchedMember.list[id].reason = reason;
 
-            db.query('SET NAMES utf8');
+            db.query('SET NAMES utf8mb4');
             db.query(
                 `UPDATE watchedMember SET reason = ? WHERE id = ?`,
                 [reason, id, 1],
@@ -191,7 +191,7 @@ const WatchedMember = {
                 delete WatchedMember.list[id];
             }
 
-            db.query('SET NAMES utf8');
+            db.query('SET NAMES utf8mb4');
             db.query(`UPDATE watchedMember SET active = 0 WHERE id = ?`, [id], (error) => {
                 error ? reject(error) : resolve();
             });

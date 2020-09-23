@@ -50,7 +50,7 @@ const checkNickname = (member, semiBlacklistTriggered, fullBlacklistTriggered) =
 const checkCustomStatus = (member, semiBlacklistTriggered, fullBlacklistTriggered) => {
     const activity = member.presence.activities.find(activity => activity.type === 'CUSTOM_STATUS');
     const hasGame = activity !== undefined;
-    const hasCustomStatusSet = hasGame && activity.state !== null;
+    const hasCustomStatusSet = hasGame && activity.state;
 
     if (hasCustomStatusSet) {
         const semiWords = Blacklist.getSemiWordsInString(activity.state);
