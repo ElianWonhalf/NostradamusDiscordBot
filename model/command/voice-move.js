@@ -24,10 +24,10 @@ class VoiceMove
 
         Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {
             Guild.removeMemberFromVoiceStateUpdateWatcher(member.id);
-            message.reply(trans('model.command.voicemove.timeout', [], 'en'));
+            message.reply(trans('model.command.voiceMove.timeout', [], 'en'));
         }, 5 * 60 * 1000));
 
-        message.reply(trans('model.command.voicemove.ready', [], 'en'));
+        message.reply(trans('model.command.voiceMove.ready', [], 'en'));
     }
 }
 
