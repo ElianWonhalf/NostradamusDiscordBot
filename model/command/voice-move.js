@@ -22,12 +22,16 @@ class VoiceMove
     async process(message) {
         const member = await Guild.getMemberFromMessage(message);
 
-        Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {
-            Guild.removeMemberFromVoiceStateUpdateWatcher(member.id);
-            message.reply(trans('model.command.voiceMove.timeout', [], 'en'));
-        }, 5 * 60 * 1000));
+        if (member.voice.channelID && isRightGuild(member.voice.channel.guild.id)) {
+            Guild.addMemberToVoiceStateUpdateWatcher(member.id, setTimeout(() => {
+                Guild.removeMemberFromVoiceStateUpdateWatcher(member.id);
+                message.reply(trans('model.command.voiceMove.timeout', [], 'en'));
+            }, 5 * 60 * 1000));
 
-        message.reply(trans('model.command.voiceMove.ready', [], 'en'));
+            message.reply(trans('model.command.voiceMove.ready', [], 'en'));
+        } else {
+            message.reply(trans('model.command.voiceMove.notConnected', [], 'en'));
+        }
     }
 }
 

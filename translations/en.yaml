@@ -251,6 +251,7 @@ model:
       description: "Move all members of one voice chat to another"
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll move the members for you."
+      notConnected: "you have to be connected in a channel to be able to run this command."
     warntroll:
       description: "Provides instructions to warn a troll"
       warnMessage: "trolling on the %% server. If you do not change your behaviour, you will be banned."
