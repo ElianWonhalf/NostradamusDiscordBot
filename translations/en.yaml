@@ -164,8 +164,6 @@ model:
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
     languageHard:
       description: "Reminds you of a very important concept about language learning"
-    langue:
-      description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLanguage difficulty depends entirely on the languages you already know and your own incentives – like your motivation\n"
     level:
       description: "Sets the level role of a member or members"
@@ -191,6 +189,10 @@ model:
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
+    preventSuicide:
+      description: "Sends a DM to a user with all the useful resource to prevent suicide"
+      nonNative: "Hello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team"
+      notFound: "I don't know who that is"
     post:
       description: "Sends a message to the server from the bot"
     quote:
@@ -301,7 +303,6 @@ model:
     nicknameSemiBlacklist: ":roocop: %% updated their nickname and it triggered the **semi** blacklist: %%"
     nicknameFullBlacklist: ":ban: %% updated their nickname and it triggered the **full** blacklist: %%"
     patreonBoosterAnnouncement: "\n:aww: %% just boosted the server via Patreon :yay: !"
-    raiderHandler: ":eyes: Suspected raider %% added to the watchlist"
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
@@ -337,3 +338,4 @@ model:
     active: "is now active in channel %%"
     joined: "just joined the server"
     left: "just left the server"
+    raiderHandler: ":eyes: Suspected raider %% added to the watchlist"
