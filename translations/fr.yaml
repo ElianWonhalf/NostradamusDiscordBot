@@ -100,8 +100,6 @@ model:
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     languageHard:
       description: "Te rappelle un concept très important dans l'apprentissage de langues"
-    langue:
-      description: "Rappel que les langues ne sont pas intrinsèquement faciles ou difficiles à apprendre"
       reply: "\nLa difficulté d'une langue dépend entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
     level:
       description: "Attribue le rôle de niveau à un ou plusieurs membres"
@@ -123,6 +121,10 @@ model:
       reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
     panic:
       description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
+    preventSuicide:
+      description: "Envoie un MP à un utilisateur avec toutes les ressources utiles pour la prévention au suicide"
+      native: "Bonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://fr.wikipedia.org/wiki/Pr%C3%A9vention_du_suicide#%C3%89coute_en_ligne_et_aide_directe>.\n\nL'équipe de modération de French"
+      nonNative: "Bonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nL'équipe de modération de French"
     post:
       description: "Envoie un message sur le serveur depuis le bot"
     quote:
