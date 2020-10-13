@@ -200,9 +200,6 @@ model:
   hardcoreLearning:
     warning: "J'ai détecté un grand nombre de messages qui ne sont pas en %% ! Merci de parler %% à nouveau ou j'appelle la police :roocop: !"
     secondWarning: "Si vous voulez tant que ça parler anglais, vous pouvez aller dans le channel anglais (ou le channel autres langues pour autre chose). Si c'est pour enseigner le français, les channels salle de classe sont là pour ça. Mais ici, c'est fait pour **pratiquer** le **français** !"
-  hardcoreOtherLanguages:
-    warning: "J'ai détecté un grand nombre de messages qui ne sont pas en d'autres langues ! Merci de parler d'autres langues à nouveau ou j'appelle la police :roocop: !"
-    secondWarning: "Si vous voulez tant que ça à parler ces langues, vous pouvez aller dans les channels correspondants!"
   memberRolesFlow:
     noSpeakOnlyAnswer: "\n\n**__Français__**\n> Hélas, je ne suis pas codé pour comprendre le langage des humains :pensive: . Il suffit que tu **cliques sur l'une des réactions** du message ci-dessous :) !"
     start: "\n\n**__Français__**\n> Ok %%, pour commencer, parlons de ton niveau. Est-ce que le %% est ta langue maternelle ?"
