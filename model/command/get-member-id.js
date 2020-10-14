@@ -24,12 +24,15 @@ class GetMemberId
         const result = Guild.findDesignatedMemberInMessage(message);
 
         if (result.foundMembers.length > 0) {
-            result.foundMembers.slice(0, 5).forEach(async member => {
-                const embed = new Discord.MessageEmbed().setAuthor(
-                    `${member.user.username}#${member.user.discriminator}`,
-                    member.user.displayAvatarURL({ dynamic: true })
-                ).setDescription(`ID: ${member.id}`);
-                await message.channel.send(embed);
+            result.foundMembers.slice(0, 5)
+                .filter(member => member.guild !== undefined && isRightGuild(member.guild.id))
+                .forEach(async member => {
+                    const user = member.user === undefined ? member : member.user;
+                    const embed = new Discord.MessageEmbed().setAuthor(
+                        `${user.username}#${user.discriminator}`,
+                        user.displayAvatarURL({ dynamic: true })
+                    ).setDescription(`${member}`).setFooter(`${member.id}`).setColor(0x00FF00);
+                    await message.channel.send(embed);
             });
         } else {
             message.reply(trans('model.command.getMemberId.notFound', [], 'en'));
