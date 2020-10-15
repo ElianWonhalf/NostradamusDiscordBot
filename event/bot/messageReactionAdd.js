@@ -7,7 +7,7 @@ const DM = require('../../model/dm');
  * @param {User} user
  */
 module.exports = async (reaction, user) => {
-    if (reaction.message.guild === null || isRightGuild(reaction.message.guild.id)) {
+    if (reaction.message.guild === null || isRightGuild(reaction.message.guild.id)) {
         SocialNetworkIntegration.handleReaction(reaction, user);
         MemberRolesFlow.handleReaction(reaction, user);
         DM.handleReaction(reaction, user);

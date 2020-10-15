@@ -39,7 +39,7 @@ const CommandPermission = {
     isMemberModOrTutor: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        return await Guild.isMemberMod(member) || await Guild.isMemberTutor(member);
+        return await Guild.isMemberMod(member) || await Guild.isMemberTutor(member);
     },
 
     /**
@@ -49,7 +49,7 @@ const CommandPermission = {
     isMemberModOrSoftOrTutor: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
-        return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member) || await Guild.isMemberTutor(member);
+        return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member) || await Guild.isMemberTutor(member);
     },
 
     /**

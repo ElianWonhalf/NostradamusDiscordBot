@@ -64,7 +64,7 @@ const SocialNetworkIntegration = {
             images = embed.image !== null ? embed.image.url : null;
         }
 
-        const image = images.length > 0 ? images[0] : null;
+        const image = images.length > 0 ? images[0] : null;
 
         for (const socialMedium of socialMedia) {
             postOn[socialMedium](message, authorName, content, image);
