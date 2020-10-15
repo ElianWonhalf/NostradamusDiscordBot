@@ -29,7 +29,7 @@ class DM
             const answer = args.join(' ');
             const { certain, foundMembers } = Guild.findDesignatedMemberInMessage(message);
 
-            if (certain && foundMembers.length > 0) {
+            if (certain && foundMembers.length > 0) {
                 const embed = await Guild.messageToEmbed(message);
 
                 embed.setDescription(answer);

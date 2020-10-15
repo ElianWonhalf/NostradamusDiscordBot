@@ -98,7 +98,7 @@ class StatEntity
         }
 
         const date = this.constructor.getCurrentDate(dateObject);
-        const hasExtra = extraColumns !== null && Object.keys(extraColumns).length > 0;
+        const hasExtra = extraColumns !== null && Object.keys(extraColumns).length > 0;
         const extraColumnNames = hasExtra ? Object.keys(extraColumns).join(', ') : null;
         const extraColumnPlaceholders = hasExtra ? new Array(Object.keys(extraColumns).length).fill('?').join(', ') : null;
 

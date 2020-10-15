@@ -18,7 +18,7 @@ const getMemberJoinedDate = async (member) => {
     let joinDate = member.user ? member.joinedAt : null;
     let prefix = '';
 
-    if (firstMessageDate !== undefined && (joinDate === null || firstMessageDate.getTime() < joinDate.getTime())) {
+    if (firstMessageDate !== undefined && (joinDate === null || firstMessageDate.getTime() < joinDate.getTime())) {
         joinDate = firstMessageDate;
         prefix = '≈';
     }
@@ -95,7 +95,7 @@ const postMemberStats = async (message, member) => {
  * @returns {Promise.<void>}
  */
 module.exports = async (message, args) => {
-    if (args.length > 1) {
+    if (args.length > 1) {
         const messageSnowflake = args.shift();
 
         await Guild.modDMsChannel.messages.fetch(messageSnowflake).then(async memberMessage => {

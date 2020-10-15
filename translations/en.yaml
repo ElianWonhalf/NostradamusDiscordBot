@@ -235,7 +235,7 @@ model:
     speak:
       description: "Make Nostradamus speak in the voice channel you're in!"
       format: "You have to be connected in a voice channel, enter a two letter language prefix, then the text you want me to say in vocal."
-      error: "I'm sorry, it seems that my throat is sore. Looks like I've been speaking enough for today! Lily, cough syrup please!"
+      error: "I'm sorry, it seems that my throat is sore. Looks like I've spoken enough for today! Lily, cough syrup please!"
     statsBackfill:
       description: "%%stats-backfill messages - Backfill the stats tables in the database."
       messages:

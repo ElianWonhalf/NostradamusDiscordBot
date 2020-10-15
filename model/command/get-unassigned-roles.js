@@ -23,7 +23,7 @@ class GetUnassignedRoles
     async process(message) {
         const waitMessage = await message.reply(trans('model.command.getUnassignedRoles.wait', [], 'en'));
 
-        const unassignedRoles = Guild.discordGuild.roles.cache.filter(role => {
+        const unassignedRoles = Guild.discordGuild.roles.cache.filter(role => {
             return Guild.discordGuild.members.cache.filter(member => member.roles.cache.has(role.id)).size < 1;
         }).map(role => role.name).join('\n');
 

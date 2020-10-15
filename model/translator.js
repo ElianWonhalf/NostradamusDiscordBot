@@ -31,7 +31,7 @@ const translateKeysInString = (value, language) => {
  * @param {string|null} language
  * @returns {string}
  */
-const renderNestedTranslation = (value, language) => {
+const renderNestedTranslation = (value, language) => {
     Array.from(new Set(value.match(/%[^\s%]+%/gu))).forEach(foundTranslation => {
         foundTranslation = foundTranslation.replace(/%([^%]+)%/u, '$1');
 

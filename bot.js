@@ -96,7 +96,7 @@ const botProcess = () => {
     const Command = require('./model/command');
     const fs = require('fs');
 
-    const crashRecover = (exception) => {
+    const crashRecover = (exception) => {
         Logger.exception(exception);
         Logger.notice('Need reboot');
     };
