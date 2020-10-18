@@ -27,7 +27,7 @@ class GetMemberId
             result.foundMembers.slice(0, 5)
                 .filter(member => member.guild !== undefined && isRightGuild(member.guild.id))
                 .forEach(async member => {
-                    const user = member.user === undefined ? member : member.user;
+                    const user = member.user;
                     const embed = new Discord.MessageEmbed().setAuthor(
                         `${user.username}#${user.discriminator}`,
                         user.displayAvatarURL({ dynamic: true })
