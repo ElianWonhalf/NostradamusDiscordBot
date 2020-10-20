@@ -49,9 +49,12 @@ class StatEntity
      */
     static getCurrentDate(date = null) {
         date = date !== null ? date : new Date();
+
+        const month = date.getMonth() > 8 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+        const dayDate = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
         const day = date.getDay() === 0 ? 7 : date.getDay();
 
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${day}`;
+        return `${date.getFullYear()}-${month}-${dayDate}-${day}`;
     }
 
     async truncate() {
