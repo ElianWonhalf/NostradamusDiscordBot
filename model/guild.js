@@ -40,6 +40,9 @@ const Guild = {
     memberFlowLogChannel: null,
 
     /** {TextChannel} */
+    memberModificationLogChannel: null,
+
+    /** {TextChannel} */
     botChannel: null,
 
     /** {TextChannel} */
@@ -102,6 +105,7 @@ const Guild = {
         Guild.modDMsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.modDMs);
         Guild.serverLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.serverLog);
         Guild.memberFlowLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.memberFlowLog);
+        Guild.memberModificationLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.memberModificationLog);
         Guild.botChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.bot);
         Guild.watchlistChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.watchlist);
         Guild.automodChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.automod);
@@ -219,7 +223,8 @@ const Guild = {
      * @param {GuildMember} member
      */
     isMemberMod: (member) => {
-        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.mod);
+        return member !== undefined && member !== null
+            && (member.roles.cache.has(Config.roles.mod) || member.id === Config.admin);
     },
 
     /**
