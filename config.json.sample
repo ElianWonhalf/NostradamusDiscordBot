@@ -76,10 +76,12 @@
         "correspondenceInformation": "",
         "correspondenceLearners": "",
         "correspondenceNatives": "",
-        "memberModificationLog": ""
+        "memberModificationLog": "",
+        "smallVoiceChatRequest": ""
     },
     "channelCategories": {
         "mod": [],
+        "smallGroupVocal": "",
         "vocal": []
     },
     "warnCommand": "!warn %id %reason",

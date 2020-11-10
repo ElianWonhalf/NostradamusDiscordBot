@@ -104,6 +104,12 @@ const Guild = {
     /** {TextChannel} */
     correspondenceNativesChannel: null,
 
+    /** {CategoryChannel} */
+    smallVoiceCategoryChannel: null,
+
+    /** {VoiceChannel} */
+    smallVoiceChatRequestChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -136,6 +142,8 @@ const Guild = {
         Guild.correspondenceInformationChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceInformation);
         Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
+        Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallGroupVocal);
+        Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
 
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
