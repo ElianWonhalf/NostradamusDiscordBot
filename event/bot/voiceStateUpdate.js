@@ -1,3 +1,5 @@
+const Logger = require('@lilywonhalf/pretty-logger');
+const Config = require('../../config.json');
 const Guild = require('../../model/guild');
 const WatchedMember = require('../../model/watched-member');
 
@@ -5,7 +7,7 @@ const WatchedMember = require('../../model/watched-member');
  * @param {VoiceState} oldVoiceState
  * @param {VoiceState} newVoiceState
  */
-module.exports = (oldVoiceState, newVoiceState) => {
+module.exports = async (oldVoiceState, newVoiceState) => {
     const member = oldVoiceState.member;
 
     if (typeof oldVoiceState.channelID === 'undefined') {
@@ -33,6 +35,20 @@ module.exports = (oldVoiceState, newVoiceState) => {
                     member => member.voice.setChannel(destChannel)
                 );
             }
+        }
+
+        // Handle private voice channel requests
+        if (newVoiceState.channel !== undefined && newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
+            await Promise.all([
+                member.guild.channels.create(`[Private] ${member.displayName}`, {
+                    type: 'voice',
+                    parent: Guild.smallVoiceCategoryChannel,
+                }),
+                member.guild.channels.create("[Waiting room] ⬆️", {
+                    type: 'voice',
+                    parent: Guild.smallVoiceCategoryChannel,
+                })
+            ]).then(([privateChannel]) => member.voice.setChannel(privateChannel));
         }
 
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
