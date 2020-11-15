@@ -243,6 +243,13 @@ model:
         gatheringStatus: "Gathered %% messages so far. Currently gathering messages from channel #%%"
         savingStatus: "Gathered %% messages in total. Currently saving information in database..."
         done: "Messages stat backfilling complete!"
+    trello:
+      description: "Interact with Trello! %%trello (todo/vote/ping)"
+      noAction: "You have to enter an action"
+      unknownAction: "The action you entered is unknown"
+      addCard:
+        ping: "%% New Trello card: %%"
+        missingTitle: "I need a title for this new Trello card."
     trombinoscope:
       description: "Explanation of the trombinoscope channel"
       reply: "\n**Trombine** is a slang term meaning \"face\".\n**-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"

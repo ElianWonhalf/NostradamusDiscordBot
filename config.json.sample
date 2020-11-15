@@ -17,6 +17,10 @@
             "accessTokenSecret": ""
         }
     },
+    "trello": {
+        "key": "",
+        "token": ""
+    },
     "guild": "",
     "admin": "",
     "statsEnabled": true,
@@ -46,6 +50,7 @@
         "anonymousMessages": "",
         "modLog": "",
         "modDMs": "",
+        "modAnnouncements": "",
         "automod": "",
         "serverLog": "",
         "memberFlowLog": "",
