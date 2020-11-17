@@ -110,7 +110,7 @@ module.exports = async (message, args) => {
 
             const toPost = `${member} (${firstLine})\n\n${retrievedContents}`;
             const embed = new MessageEmbed().setDescription(toPost);
-            const destChannel = Guild.isMemberNative(member)
+            const destChannel = Guild.isMemberNative(member) || Guild.isMemberTutor(member)
                 ? Guild.correspondenceNativesChannel
                 : Guild.correspondenceLearnersChannel;
 

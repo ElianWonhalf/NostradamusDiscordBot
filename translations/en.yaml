@@ -68,6 +68,8 @@ model:
       description: "To manage the Correspondence System. .c (audit) (other params)"
       audit:
         dm: "\nHello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French\n"
+      deny:
+        dm: "Thank you for your interest in the correspondent system. Currently, to be able to apply, you need to have sent at least 100 messages (you can check this by typing .info in the #bot-fun channel) and have been on the server for at least 10 days. You will easily reach this number if you come and talk in the discussion channels from time to time."
       done:
         dm: "Congratulations! Your correspondence with %% has been validated. Go say hello! This is where our role ends, unless any problems come up. Feel free to DM Nostradamus about any issues or questions you may have. Have a good correspondence!"
         nativeSecondDM: "Do you want your presentation to be removed from the channel? (click on one reaction below)"

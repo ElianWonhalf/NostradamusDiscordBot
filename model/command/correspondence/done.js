@@ -23,8 +23,8 @@ module.exports = async (message, args) => {
         const native = members[nativeIndex];
         const learner = members[!nativeIndex ? 1 : 0];
 
-        const nativeLang = Guild.isMemberNative(native) ? 'fr' : null;
-        const learnerLang = Guild.isMemberNative(learner) ? 'fr,en' : null;
+        const nativeLang = Config.learntLanguagePrefix;
+        const learnerLang = Guild.isMemberNative(learner) || Guild.isMemberTutor(member) ? 'fr' : null;
         const learnerIntroduction = await Correspondence.findIntroduction(learner.id);
 
         await learner.roles.remove(Config.roles.seekingCorrespondence);
