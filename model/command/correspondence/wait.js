@@ -10,7 +10,7 @@ module.exports = async (message) => {
     if (membersToMessage.certain === true && membersToMessage.foundMembers.length > 0) {
         for (const target of membersToMessage.foundMembers) {
             const member = await Guild.discordGuild.members.fetch(target.id);
-            const lang = Guild.isMemberNative(member) ? 'fr' : null;
+            const lang = Guild.isMemberNative(member) || Guild.isMemberTutor(member) ? 'fr' : null;
 
             member.send(
                 trans('model.command.correspondence.wait.dm', [], lang)

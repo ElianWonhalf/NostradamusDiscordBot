@@ -22,7 +22,7 @@ module.exports = async (message, args) => {
         const picked = members[pickedIndex];
         const picker = members[!pickedIndex ? 1 : 0];
 
-        const pickedLang = Guild.isMemberNative(picked) ? 'fr' : null;
+        const pickedLang = Guild.isMemberNative(picked) || Guild.isMemberTutor(picked) ? 'fr' : null;
         const pickerIntroduction = await Correspondence.findIntroduction(picker.id);
         const transKey = pickerIntroduction ? 'dm' : 'dmWithoutLink';
         const transVariables = [picker.toString()];
