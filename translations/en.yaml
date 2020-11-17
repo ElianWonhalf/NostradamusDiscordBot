@@ -126,7 +126,7 @@ model:
       alertsOff: "You will now no longer be notified when there's a game."
     gay:
       description: "For when someone tries to use \"gay\" as an insult"
-      reply: "https://www.youtube.com/watch?v=sWS0GVOQPs0"
+      reply: "Why it's not okay to use \"gay\" as an insult: https://www.youtube.com/watch?v=sWS0GVOQPs0"
     getCustomStatuses:
       description: "Lists all currently set custom statuses"
       introduction: "%% members currently have a custom status set, and have a text in it."
