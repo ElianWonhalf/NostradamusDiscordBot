@@ -15,6 +15,9 @@ model:
       description: "Ajoute un nouveau rôle de langue"
     addLanguageAlias:
       description: "Ajoute un nouvel alias à un rôle de langue existant"
+    adminList:
+      description: "Liste les membres actuels de l'équipe d'administration"
+      answer: "Il y a en ce moment %% administrateurs :"
     anonymous:
       description: "Envoie un message anonyme à l'équipe de modération"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"

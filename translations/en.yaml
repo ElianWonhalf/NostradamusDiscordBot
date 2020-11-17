@@ -31,6 +31,9 @@ model:
       doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
+    adminList:
+      description: "Lists the current members of the administration team"
+      answer: "There are currently %% administrators:"
     anonymous:
       description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"

@@ -2,27 +2,24 @@ const Config = require('../../config.json');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-class ModList
+class AdminList
 {
     static instance = null;
 
     constructor() {
-        if (ModList.instance !== null) {
-            return ModList.instance;
+        if (AdminList.instance !== null) {
+            return AdminList.instance;
         }
 
         this.aliases = [
-            'modlist',
-            'mod',
-            'modo',
-            'mods',
-            'modos',
-            'modérateur',
-            'modérateurs',
-            'moderateur',
-            'moderateurs',
-            'moderator',
-            'moderators'
+            'adminlist',
+            'admin',
+            'admin',
+            'admins',
+            'administrateur',
+            'administrateurs',
+            'administrator',
+            'administrators'
         ];
 
         this.category = CommandCategory.INFO;
@@ -34,13 +31,13 @@ class ModList
      */
     async process(message) {
         let list = message.guild.members.cache.filter(
-            member => member.roles.cache.has(Config.roles.mod)
+            member => member.roles.cache.has(Config.roles.admin)
         ).map(
             member => member.displayName + '#' + member.user.discriminator
         );
 
-        message.reply(`${trans('model.command.modList.answer', [list.length])}\n\n${list.join('\n')}`);
+        message.reply(`${trans('model.command.adminList.answer', [list.length])}\n\n${list.join('\n')}`);
     }
 }
 
-module.exports = new ModList();
+module.exports = new AdminList();
