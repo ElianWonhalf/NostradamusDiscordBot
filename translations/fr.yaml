@@ -83,6 +83,9 @@ model:
       description: "Pour être mentionné quand il y a un jeu"
       alertsOn: "Tu seras maintenant mentionné quand il y a un jeu."
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
+    gay:
+      description: "Pour quand quelqu'un essaie d'utiliser « gay » comme insulte"
+      reply: "https://www.youtube.com/watch?v=sWS0GVOQPs0"
     getCustomStatuses:
       description: "Liste tous les status personnalisés actuellement en place"
     getMemberId:
