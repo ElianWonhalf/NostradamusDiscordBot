@@ -24,7 +24,7 @@ class Gay extends Heat
         if (this.canCall()) {
             this.registerCall();
 
-            message.channel.send(trans('model.command.gay.reply'));
+            message.channel.send(`${trans('model.command.gay.reply')}\nhttps://www.youtube.com/watch?v=sWS0GVOQPs0`);
         } else {
             message.react('⌛');
         }
