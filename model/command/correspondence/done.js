@@ -77,7 +77,8 @@ module.exports = async (message, args) => {
                     }
 
                     if (deleteIntroduction) {
-                        nativeIntroduction.delete();
+                        await nativeIntroduction.delete();
+                        await native.roles.remove(Config.roles.seekingCorrespondence);
                         await native.send(trans(`model.command.correspondence.done.introductionDeleted`, [], nativeLang))
                     } else {
                         await native.send(trans(`model.command.correspondence.done.introductionKept`, [], nativeLang))
