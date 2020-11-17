@@ -41,8 +41,15 @@ class Correspondence
                     (cachelessRequire('./correspondence/audit.js'))(message, args);
                     break;
 
+                case 'proposal':
+                case 'proposition':
+                    (cachelessRequire('./correspondence/prop.js'))(message, args);
+                    break;
+
                 case 'audit':
                 case 'valid':
+                case 'prop':
+                case 'done':
                     (cachelessRequire('./correspondence/' + action + '.js'))(message, args);
             }
         } else {

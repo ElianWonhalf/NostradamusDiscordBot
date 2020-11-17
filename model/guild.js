@@ -2,12 +2,17 @@ const EventEmitter = require('events');
 
 const Config = require('../config.json');
 const Logger = require('@lilywonhalf/pretty-logger');
-const Discord = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 
 const Guild = {
+    /** {EventEmitter} */
     events: new EventEmitter(),
 
-    levelRoles: new Discord.Collection(),
+    /** {Collection<String>} */
+    levelRoles: new Collection(),
+
+    /** {Collection<Collection>} */
+    channelMessages: new Collection(),
 
     /** {Guild} */
     discordGuild: null,
@@ -257,13 +262,13 @@ const Guild = {
 
     /**
      * @param {Message} message
-     * @returns {Discord.MessageEmbed}
+     * @returns {MessageEmbed}
      */
     messageToEmbed: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
         const suffix = member !== null && member.nickname !== null && member.nickname !== undefined ? ` aka ${member.nickname}` : '';
 
-        return new Discord.MessageEmbed()
+        return new MessageEmbed()
             .setAuthor(
                 `${message.author.username}#${message.author.discriminator}${suffix}`,
                 message.author.displayAvatarURL({ dynamic: true })
@@ -281,9 +286,7 @@ const Guild = {
         let certain = true;
         const memberList = bot.users.cache.concat(Guild.discordGuild.members.cache);
 
-        if (message.mentions.members !== null && message.mentions.members.size > 0) {
-            foundMembers = message.mentions.members.array();
-        } else if (message.content.match(/[0-9]{16,18}/u) !== null) {
+        if (message.content.match(/[0-9]{16,18}/u) !== null) {
             const ids = message.content.match(/[0-9]{16,18}/gu);
 
             ids.map(id => {
@@ -341,6 +344,44 @@ const Guild = {
         if (message.guild !== null && message.cleanContent.includes('@everyone')) { // Could be @here
             message.member.roles.add([Config.roles.everyone]);
         }
+    },
+
+    /**
+     * @param {TextChannel} channel
+     * @param {boolean} rebuildCache
+     * @returns {Promise<Collection>}
+     */
+    fetchAllChannelMessages: async (channel, rebuildCache) => {
+        rebuildCache = rebuildCache || false;
+
+        if (rebuildCache || !Guild.channelMessages.has(channel.id)) {
+            Logger.info(`Fetching all channel messages for #${channel.name}`);
+            Guild.channelMessages.set(channel.id, new Collection());
+
+            const options = { limit: 100 };
+            let messages;
+
+            do {
+                messages = await channel.messages.fetch(options).catch(Logger.exception);
+
+                if (messages !== undefined && messages.size > 0) {
+                    options.before = messages.last().id;
+
+                    Logger.info(`#${channel.name}: found ${messages.size} messages, the latest's date being ${messages.first().createdAt.toLocaleString()}`);
+                    Guild.channelMessages.set(
+                        channel.id,
+                        Guild.channelMessages.get(channel.id).concat(messages)
+                    );
+                }
+            } while (messages === undefined || messages.size > 0);
+        }
+
+        Guild.channelMessages.set(
+            channel.id,
+            Guild.channelMessages.get(channel.id).concat(channel.messages.cache)
+        );
+
+        return Guild.channelMessages.get(channel.id);
     }
 };
 
