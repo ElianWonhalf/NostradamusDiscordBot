@@ -5,15 +5,15 @@ const Guild = require('../../guild');
  * @param {Message} message
  */
 module.exports = async (message) => {
-    const membersToAudit = Guild.findDesignatedMemberInMessage(message);
+    const membersToMessage = Guild.findDesignatedMemberInMessage(message);
 
-    if (membersToAudit.certain === true && membersToAudit.foundMembers.length > 0) {
-        for (const target of membersToAudit.foundMembers) {
+    if (membersToMessage.certain === true && membersToMessage.foundMembers.length > 0) {
+        for (const target of membersToMessage.foundMembers) {
             const member = await Guild.discordGuild.members.fetch(target.id);
             const lang = Guild.isMemberNative(member) ? 'fr' : null;
 
             member.send(
-                trans('model.command.correspondence.audit.dm', [], lang)
+                trans('model.command.correspondence.wait.dm', [], lang)
             ).then(() => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);

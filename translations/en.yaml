@@ -68,16 +68,28 @@ model:
       description: "To manage the Correspondence System. .c (audit) (other params)"
       audit:
         dm: "\nHello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French\n"
+      done:
+        dm: "Congratulations! Your correspondence with %% has been validated. Go say hello! This is where our role ends, unless any problems come up. Feel free to DM Nostradamus about any issues or questions you may have. Have a good correspondence!"
+        nativeSecondDM: "Do you want your presentation to be removed from the channel? (click on one reaction below)"
+        introductionDeleted: "Alright! Your introduction has been deleted."
+        introductionKept: "Alright! Your introduction stays in the channel."
+      prop:
+        dm: "\nHey there! %% would like to be your correspondent. Here’s a link to their introduction: <%%> (if the link doesn’t work for you, you can also find it in %%). Let us know if you accept. If you do, we will validate your correspondence.\n"
+        dmWithoutLink: "\nHey there! %% would like to be your correspondent. You can find their introduction in %%. Let us know if you accept. If you do, we will validate your correspondence.\n"
       valid:
         memberStats: "%%: Messages sent: %%; Joined: %%"
         confirm: "Does this seem right, should I post it in %%?"
         success: "Message successfully posted in %%!"
         cancelled: "Edit: :pollno: reaction detected, will not send."
+      wait:
+        dm: "\nOk, we’ll contact them and we’ll let you know!\n"
       error:
         missingAction: "You have to specify an action."
         notEnoughArgs: "Not enough arguments. Required: %%"
         dm: "Could not send a DM to %%"
         memberNotFound: "I... Have no idea who that could be, sorry."
+        badFormat: "The command was incorrectly formatted."
+        introductionNotFound: "The introduction for the member %% could not be found."
     country:
       description: "Set current country"
       request: "Country tag requested by %%: %%"

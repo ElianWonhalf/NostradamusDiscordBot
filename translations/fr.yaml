@@ -40,6 +40,16 @@ model:
       description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
       audit:
         dm: "\nSalut !\n\nTu participes au système de correspondance et ceci est un audit qu'on fait pour s'assurer que tout se passe bien. (Donc oui, c'est un message préécrit, mais on est à l'écoute derrière !)\n\nEst-ce que ta (ou tes) correspondance est toujours active ? Ça se passe bien ? Aurais-tu des suggestions à faire ou des questions à poser ? En tout cas, n'hésite pas, on est là pour t'aider.\n\nMerci pour ta participation !\n — Le staff de French\n"
+      done:
+        dm: "Félicitations ! Ta correspondance avec %% a été validée. Envoie-lui donc un petit bonjour en message privé ! Notre rôle s’arrête ici, sauf en cas de problème. N’hésite pas à parler à Nostradamus en privé pour nous faire savoir s’il y a un quelconque souci ou si tu as la moindre question. Bonne correspondance à toi !"
+        nativeSecondDM: "Est-ce que tu veux que ta présentation soit retirée du canal ? (clique sur une des réactions ci-dessous)"
+        introductionDeleted: "Ça marche ! Ta présentation a été supprimée."
+        introductionKept: "Ça marche ! Ta présentation reste dans le canal."
+      prop:
+        dm: "\nCoucou ! %% voudrait correspondre avec toi. Voici un lien vers sa présentation : <%%> (si le lien ne fonctionne pas, tu peux aussi la trouver dans %%). Dis-nous si tu l’acceptes. Si c’est le cas, nous validerons votre correspondance.\n"
+        dmWithoutLink: "\nCoucou ! %% voudrait correspondre avec toi. Tu peux trouver sa présentation dans %%. Dis-nous si tu l’acceptes. Si c’est le cas, nous validerons votre correspondance.\n"
+      wait:
+        dm: "\nOk, on va contacter cette personne et on te tiendra au courant !\n"
     country:
       description: "Pour définir ton pays actuel"
       missingArgument: "Il faut que tu spécifies un pays. La commande `%%country` seule ne me permet pas de savoir quel est le pays dans lequel tu vis. Par exemple : `%%country France`"

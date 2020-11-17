@@ -76,6 +76,10 @@ const reactionHandler = (message, destChannel, toPost) => {
     };
 };
 
+/**
+ * @param {Message} message
+ * @param {GuildMember} member
+ */
 const postMemberStats = async (message, member) => {
     const messagesAmount = await StatMessages.getAmount(member.id);
     const firstJoinDate = await getMemberJoinedDate(member);
@@ -92,7 +96,6 @@ const postMemberStats = async (message, member) => {
 /**
  * @param {Message} message
  * @param {Array} args
- * @returns {Promise.<void>}
  */
 module.exports = async (message, args) => {
     if (args.length > 1) {
