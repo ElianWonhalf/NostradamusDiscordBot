@@ -85,7 +85,7 @@ model:
       alertsOff: "Tu ne seras plus mentionné quand il y a un jeu."
     gay:
       description: "Pour quand quelqu'un essaie d'utiliser « gay » comme insulte"
-      reply: "Pourquoi c'est pas acceptable d'utiliser « gay » comme insulte : https://www.youtube.com/watch?v=sWS0GVOQPs0"
+      reply: "Pourquoi c'est pas acceptable d'utiliser « gay » comme insulte"
     getCustomStatuses:
       description: "Liste tous les status personnalisés actuellement en place"
     getMemberId:
