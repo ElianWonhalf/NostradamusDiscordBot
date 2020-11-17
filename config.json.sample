@@ -26,6 +26,7 @@
     "statsEnabled": true,
     "botLanguage": "fr,en",
     "roles": {
+        "admin": "",
         "mod": "",
         "officialMember": "",
         "events": "",
