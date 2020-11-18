@@ -2,6 +2,7 @@ const Logger = require('@lilywonhalf/pretty-logger');
 const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
+const Correspondence = require('./correspondence');
 
 const GREETINGS = [
     'bonjour',
@@ -57,8 +58,17 @@ const DM = {
      */
     parseMessage: async (message, isCommand, edit = false) => {
         if (message.guild === null && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
+            const member = Guild.getMemberFromMessage(message);
             const embed = await Guild.messageToEmbed(message);
             const translationKey = edit ? 'model.dm.editNotification' : 'model.dm.notification';
+            const needToCheckCorrespondence = !member.roles.has(Config.roles.corresponding)
+                && !member.roles.has(Config.roles.seekingCorrespondence)
+                && Correspondence.isStringAboutCorrespondence(message.cleanContent);
+
+            if (needToCheckCorrespondence) {
+                const translationKey = await Correspondence.isMemberEligible(member) ? 'correspondenceMemberEligible' : 'correspondenceMemberNotEligible';
+                Guild.modDMsChannel.send(trans(`model.dm.${translationKey}`, [member.toString()], 'en'));
+            }
 
             embed.setFooter(`${Config.prefix}dm ${message.author.id}`);
 
