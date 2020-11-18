@@ -20,7 +20,7 @@ class Correspondence
 
         this.aliases = ['correspondent', 'correspodance', 'correspondant', 'c'];
         this.category = CommandCategory.MODERATION;
-        this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
+        this.isAllowedForContext = CommandPermission.notInWelcome;
     }
 
     /**
