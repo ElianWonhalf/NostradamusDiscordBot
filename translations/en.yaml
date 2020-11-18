@@ -96,6 +96,7 @@ model:
         memberNotFound: "I... Have no idea who that could be, sorry."
         badFormat: "The command was incorrectly formatted."
         introductionNotFound: "The introduction for the member %% could not be found."
+        notEligible: "The member %% is not eligible for the correspondence system."
     country:
       description: "Set current country"
       request: "Country tag requested by %%: %%"
@@ -321,10 +322,12 @@ model:
     today: "pretty much today"
     noTime: "*no time*"
   dm:
-    notification: "%% sent a DM:"
+    correspondenceMemberEligible: ":pollyes: The member %% is eligible for the correspondence system :pollyes:"
+    correspondenceMemberNotEligible: ":pollno: The member %% is **not** eligible for the correspondence system :pollno:"
     editNotification: "%% **edited** a DM:"
     greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"
     greetingsAnswerSent: "I just told that person that I am just a bot and maybe just a greeting isn't very relevant."
+    notification: "%% sent a DM:"
   guild:
     customStatusUpdate: ":status: %%: %%"
     customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
