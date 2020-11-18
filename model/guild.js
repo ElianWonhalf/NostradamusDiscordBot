@@ -96,6 +96,9 @@ const Guild = {
     softChannel: null,
 
     /** {TextChannel} */
+    correspondenceInformationChannel: null,
+
+    /** {TextChannel} */
     correspondenceLearnersChannel: null,
 
     /** {TextChannel} */
@@ -130,6 +133,7 @@ const Guild = {
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
         Guild.metaChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.meta);
         Guild.softChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.soft);
+        Guild.correspondenceInformationChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceInformation);
         Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
 

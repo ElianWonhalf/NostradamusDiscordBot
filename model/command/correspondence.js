@@ -59,6 +59,7 @@ class Correspondence
                 case 'prop':
                 case 'done':
                 case 'deny':
+                case 'check':
                     (cachelessRequire('./correspondence/' + action + '.js'))(message, args);
             }
         } else {
