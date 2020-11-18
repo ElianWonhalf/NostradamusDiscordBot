@@ -61,8 +61,8 @@ const DM = {
             const member = Guild.getMemberFromMessage(message);
             const embed = await Guild.messageToEmbed(message);
             const translationKey = edit ? 'model.dm.editNotification' : 'model.dm.notification';
-            const needToCheckCorrespondence = !member.roles.has(Config.roles.corresponding)
-                && !member.roles.has(Config.roles.seekingCorrespondence)
+            const needToCheckCorrespondence = !member.roles.cache.has(Config.roles.corresponding)
+                && !member.roles.cache.has(Config.roles.seekingCorrespondence)
                 && Correspondence.isStringAboutCorrespondence(message.cleanContent);
 
             if (needToCheckCorrespondence) {
