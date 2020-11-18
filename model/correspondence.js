@@ -73,7 +73,7 @@ class Correspondence
     async isMemberEligible(member)
     {
         const memberJoinedElapsedDays = await getMemberJoinedElapsedDays(member);
-        const messagesAmount = (await StatMessages.getAmount(message.author.id)) + Math.ceil((await StatVocal.getAmount(message.author.id)) / 60 * 10);
+        const messagesAmount = (await StatMessages.getAmount(member.id)) + Math.ceil((await StatVocal.getAmount(member.id)) / 60 * 10);
 
         return memberJoinedElapsedDays >= REQUIRED_DAYS && messagesAmount >= REQUIRED_MESSAGE_AMOUNT;
     }
