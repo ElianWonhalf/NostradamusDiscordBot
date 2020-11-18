@@ -1,3 +1,4 @@
+const Logger = require('@lilywonhalf/pretty-logger');
 const Guild = require('./guild');
 const StatMessages = require('./stat-messages');
 const StatMemberFlow = require('./stat-member-flow');
@@ -67,15 +68,18 @@ class Correspondence
     }
 
     /**
-     * @param {Member} member 
+     * @param {GuildMember} member
      * @returns {boolean}
      */
     async isMemberEligible(member)
     {
-        const memberJoinedElapsedDays = await getMemberJoinedElapsedDays(member);
-        const messagesAmount = (await StatMessages.getAmount(member.id)) + Math.ceil((await StatVocal.getAmount(member.id)) / 60 * 10);
+        const messagesAmount = await StatMessages.getAmount(member.id);
+        const vocalTime = await StatVocal.getAmount(member.id);
 
-        return memberJoinedElapsedDays >= REQUIRED_DAYS && messagesAmount >= REQUIRED_MESSAGE_AMOUNT;
+        const memberJoinedElapsedDays = await getMemberJoinedElapsedDays(member);
+        const calculatedMessagesAmount = messagesAmount + Math.ceil(vocalTime / 60 * 10);
+
+        return memberJoinedElapsedDays >= REQUIRED_DAYS && calculatedMessagesAmount >= REQUIRED_MESSAGE_AMOUNT;
     }
 
     /**
