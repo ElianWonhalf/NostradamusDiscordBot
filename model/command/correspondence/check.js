@@ -52,7 +52,7 @@ module.exports = async (message) => {
         message.reply(trans('model.command.correspondence.check.alreadyInCorrespondence'));
     } else {
         const memberJoinedElapsedDays = await getMemberJoinedElapsedDays(member);
-        const messagesAmount = (await StatMessages.getAmount(target.id)) + Math.ceil((await StatVocal.getAmount(target.id)) / 60 * 10);
+        const messagesAmount = (await StatMessages.getAmount(message.author.id)) + Math.ceil((await StatVocal.getAmount(message.author.id)) / 60 * 10);
 
         if (memberJoinedElapsedDays >= Correspondence.constructor.requiredDays && messagesAmount >= Correspondence.constructor.requiredMessageAmount) {
             message.reply(trans('model.command.correspondence.check.eligible', [Guild.correspondenceInformationChannel.toString()]));
