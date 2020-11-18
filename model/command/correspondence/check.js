@@ -1,6 +1,8 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../../config.json');
 const StatMessages = require('../../stat-messages');
+const StatMemberFlow = require('../../stat-member-flow');
+const StatVocal = require('../../stat-vocal');
 const Correspondence = require('../../correspondence');
 const Guild = require('../../guild');
 
