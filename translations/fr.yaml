@@ -40,6 +40,10 @@ model:
       description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
       audit:
         dm: "\nSalut !\n\nTu participes au système de correspondance et ceci est un audit qu'on fait pour s'assurer que tout se passe bien. (Donc oui, c'est un message préécrit, mais on est à l'écoute derrière !)\n\nEst-ce que ta (ou tes) correspondance est toujours active ? Ça se passe bien ? Aurais-tu des suggestions à faire ou des questions à poser ? En tout cas, n'hésite pas, on est là pour t'aider.\n\nMerci pour ta participation !\n — Le staff de French\n"
+      check:
+        alreadyInCorrespondence: "Mais qu'est-ce que tu fais, patate ?! T'es déjà dans le système de correspondance, pas besoin de te vérifier !"
+        eligible: "Youpi ! On dirait bien que t'es éligible pour le système de correspondance ! Il suffit d'aller suivre les instructions dans %% pour postuler."
+        ineligible: "On dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun."
       deny:
         dm: "Merci de ton intérêt pour le système de correspondance. Actuellement, pour l'intégrer, il est nécessaire d'avoir 10 jours d'ancienneté sur le serveur et d'y avoir envoyé au moins 100 messages (tu peux voir ce nombre en tapant .info dans #bot-fun). Tu devrais atteindre ce seuil assez vite si tu viens de temps en temps dans les salons de discussion."
       done:
