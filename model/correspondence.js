@@ -1,7 +1,7 @@
 const Guild = require('./guild');
-const StatMessages = require('../../stat-messages');
-const StatMemberFlow = require('../../stat-member-flow');
-const StatVocal = require('../../stat-vocal');
+const StatMessages = require('./stat-messages');
+const StatMemberFlow = require('./stat-member-flow');
+const StatVocal = require('./stat-vocal');
 
 const REQUIRED_DAYS = 10;
 const REQUIRED_MESSAGE_AMOUNT = 100;
