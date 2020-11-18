@@ -58,7 +58,7 @@ const DM = {
      */
     parseMessage: async (message, isCommand, edit = false) => {
         if (message.guild === null && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
-            const member = Guild.getMemberFromMessage(message);
+            const member = await Guild.getMemberFromMessage(message);
             const embed = await Guild.messageToEmbed(message);
             const translationKey = edit ? 'model.dm.editNotification' : 'model.dm.notification';
             const needToCheckCorrespondence = !member.roles.cache.has(Config.roles.corresponding)
