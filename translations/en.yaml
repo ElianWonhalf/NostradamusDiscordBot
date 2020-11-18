@@ -71,7 +71,7 @@ model:
       check:
         alreadyInCorrespondence: "What are you doing silly?! You're already in the correspondence system, no need to verify yourself!"
         eligible: "Yay! Looks like you're eligible for the correspondence system! You can follow the steps in %% to apply."
-        ineligible: "Looks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel."
+        ineligible: "\nLooks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel.\n"
       deny:
         dm: "Thank you for your interest in the correspondent system. Currently, to be able to apply, you need to have sent at least 100 messages (you can check this by typing `%%info` in the #bot-fun channel) and have been on the server for at least 10 days. You will easily reach this number if you come and talk in the discussion channels from time to time."
       done:

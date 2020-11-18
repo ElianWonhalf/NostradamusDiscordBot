@@ -43,7 +43,7 @@ model:
       check:
         alreadyInCorrespondence: "Mais qu'est-ce que tu fais, patate ?! T'es déjà dans le système de correspondance, pas besoin de te vérifier !"
         eligible: "Youpi ! On dirait bien que t'es éligible pour le système de correspondance ! Il suffit d'aller suivre les instructions dans %% pour postuler."
-        ineligible: "On dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun."
+        ineligible: "\nOn dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun.\n"
       deny:
         dm: "Merci de ton intérêt pour le système de correspondance. Actuellement, pour l'intégrer, il est nécessaire d'avoir 10 jours d'ancienneté sur le serveur et d'y avoir envoyé au moins 100 messages (tu peux voir ce nombre en tapant .info dans #bot-fun). Tu devrais atteindre ce seuil assez vite si tu viens de temps en temps dans les salons de discussion."
       done:
