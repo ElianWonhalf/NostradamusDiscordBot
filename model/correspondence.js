@@ -2,6 +2,16 @@ const Guild = require('./guild');
 
 class Correspondence
 {
+    static get requiredDays()
+    {
+        return 10;
+    }
+
+    static get requiredMessageAmount()
+    {
+        return 100;
+    }
+
     /**
      * @param {Snowflake} snowflake
      * @returns {Message|null}

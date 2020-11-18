@@ -1,4 +1,5 @@
 const Logger = require('@lilywonhalf/pretty-logger');
+const Config = require('../../../config.json');
 const Guild = require('../../guild');
 
 /**
@@ -13,7 +14,7 @@ module.exports = async (message) => {
             const lang = Guild.isMemberNative(member) || Guild.isMemberTutor(member) ? 'fr' : null;
 
             member.send(
-                trans('model.command.correspondence.deny.dm', [], lang)
+                trans('model.command.correspondence.deny.dm', [Config.prefix], lang)
             ).then(() => {
                 const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
                 message.react(emoji);
