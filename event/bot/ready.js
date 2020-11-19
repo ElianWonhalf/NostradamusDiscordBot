@@ -3,6 +3,7 @@ const Guild = require('../../model/guild');
 const Language = require('../../model/language');
 const Country = require('../../model/country');
 const DM = require('../../model/dm');
+const PrivateVC = require('../../model/private-vc');
 const WatchedMember = require('../../model/watched-member');
 const ActivityManager = require('../../model/activity-manager');
 
@@ -35,6 +36,16 @@ module.exports = async () => {
         Logger.exception(error);
     }
     Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
+
+    Logger.info('--------');
+
+    Logger.info('Initialising private VCs...');
+    try {
+        await PrivateVC.init();
+    } catch (error) {
+        Logger.exception(error);
+    }
+    Logger.info(`${PrivateVC.getPrivateChannelsList().length} private VCs initialised.`);
 
     Logger.info('--------');
 
