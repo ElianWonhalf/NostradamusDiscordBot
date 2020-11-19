@@ -49,7 +49,18 @@ module.exports = async (oldVoiceState, newVoiceState) => {
                     type: 'voice',
                     parent: Guild.smallVoiceCategoryChannel,
                 })
-            ]).then(([privateChannel]) => member.voice.setChannel(privateChannel));
+            ]).then(async ([privateChannel, waitingRoomChannel]) => {
+                await member.voice.setChannel(privateChannel);
+                return PrivateVC.add(privateChannel.id, member.id).catch(exception => {
+                    exception.payload = [ privateChannel, waitingRoomChannel ];
+                    throw exception;
+                });
+            }).catch(async (exception) => {
+                Logger.exception(exception);
+                await member.voice.setChannel(oldVoiceState.channel);
+                await Promise.all(exception.payload.map(channel => channel.delete()));
+                // TODO: send a DM to requestor to let him know that channel creation failed.
+            });
         }
 
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
