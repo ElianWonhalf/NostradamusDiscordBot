@@ -20,31 +20,19 @@ module.exports = async () => {
     Logger.info('--------');
 
     Logger.info('Initialising languages...');
-    try {
-        await Language.init();
-    } catch (error) {
-        Logger.exception(error);
-    }
+    await Language.init().catch(Logger.exception);
     Logger.info(`${Language.getRoleNameList().length} languages initialised.`);
 
     Logger.info('--------');
 
     Logger.info('Initialising countries...');
-    try {
-        await Country.init();
-    } catch (error) {
-        Logger.exception(error);
-    }
+    await Country.init().catch(Logger.exception);
     Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
 
     Logger.info('--------');
 
     Logger.info('Initialising private VCs...');
-    try {
-        await PrivateVC.init();
-    } catch (error) {
-        Logger.exception(error);
-    }
+    await PrivateVC.init().catch(Logger.exception);
     Logger.info(`${PrivateVC.getPrivateChannelsList().length} private VCs initialised.`);
 
     Logger.info('--------');
