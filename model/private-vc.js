@@ -24,11 +24,14 @@ const PrivateVC = {
      */
     add: (channel, requestor) => {
         return new Promise((resolve, reject) => {
-            PrivateVC.list[requestor] = channel;
-
             db.query('SET NAMES utf8mb4');
             db.query(`INSERT INTO private_vc (channel, requestor) VALUES (?, ?)`, [channel, requestor], (error) => {
-                error ? reject(error) : resolve();
+                if (error) {
+                    reject(error);
+                } else {
+                    PrivateVC.list[requestor] = channel;
+                    resolve();
+                }
             });
         });
     },
