@@ -57,9 +57,11 @@ module.exports = async (oldVoiceState, newVoiceState) => {
                 });
             }).catch(async (exception) => {
                 Logger.exception(exception);
+                await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()]));
+                await member.send(trans('model.privateVC.errors.creationFailed.member'));
                 await member.voice.setChannel(oldVoiceState.channel);
+                // TODO: figure out why channels are not deleted
                 await Promise.all(exception.payload.map(channel => channel.delete()));
-                // TODO: send a DM to requestor to let him know that channel creation failed.
             });
         }
 
