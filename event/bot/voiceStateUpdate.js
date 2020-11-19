@@ -1,6 +1,7 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../../model/guild');
+const PrivateVC = require('../../model/private-vc');
 const WatchedMember = require('../../model/watched-member');
 
 /**
