@@ -60,8 +60,20 @@ module.exports = async (oldVoiceState, newVoiceState) => {
                 await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()]));
                 await member.send(trans('model.privateVC.errors.creationFailed.member'));
                 await member.voice.setChannel(oldVoiceState.channel);
-                // TODO: figure out why channels are not deleted
                 await Promise.all(exception.payload.map(channel => channel.delete()));
+            });
+        }
+
+        // Handle private voice channel deletion
+        const requestedPrivateChannelID = PrivateVC.list[member.id];
+        if (requestedPrivateChannelID !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === requestedPrivateChannelID) {
+            const privateChannel = oldVoiceState.channel;
+            const waitingRoomChannel = Guild.discordGuild.channels.cache.find(channel => channel.rawPosition === privateChannel.rawPosition + 1);
+            await Promise.all([privateChannel.delete(), waitingRoomChannel.delete()]).then(async () => {
+                return PrivateVC.remove(member.id).catch(async exception => {
+                    Logger.exception(exception);
+                    await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
+                });
             });
         }
 
