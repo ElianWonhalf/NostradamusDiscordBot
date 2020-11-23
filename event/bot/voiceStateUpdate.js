@@ -40,41 +40,13 @@ module.exports = async (oldVoiceState, newVoiceState) => {
 
         // Handle private voice channel requests
         if (newVoiceState.channel !== undefined && newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
-            await Promise.all([
-                member.guild.channels.create(`[Private] ${member.displayName}`, {
-                    type: 'voice',
-                    parent: Guild.smallVoiceCategoryChannel,
-                }),
-                member.guild.channels.create("[Waiting room] ⬆️", {
-                    type: 'voice',
-                    parent: Guild.smallVoiceCategoryChannel,
-                })
-            ]).then(async ([privateChannel, waitingRoomChannel]) => {
-                await member.voice.setChannel(privateChannel);
-                return PrivateVC.add(privateChannel.id, member.id).catch(exception => {
-                    exception.payload = [ privateChannel, waitingRoomChannel ];
-                    throw exception;
-                });
-            }).catch(async (exception) => {
-                Logger.exception(exception);
-                await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()]));
-                await member.send(trans('model.privateVC.errors.creationFailed.member'));
-                await member.voice.setChannel(oldVoiceState.channel);
-                await Promise.all(exception.payload.map(channel => channel.delete()));
-            });
+            PrivateVC.privateVoiceChatRequestHandler(oldVoiceState);
         }
 
         // Handle private voice channel deletion
         const requestedPrivateChannelID = PrivateVC.list[member.id];
         if (requestedPrivateChannelID !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === requestedPrivateChannelID) {
-            const privateChannel = oldVoiceState.channel;
-            const waitingRoomChannel = Guild.discordGuild.channels.cache.find(channel => channel.rawPosition === privateChannel.rawPosition + 1);
-            await Promise.all([privateChannel.delete(), waitingRoomChannel.delete()]).then(async () => {
-                return PrivateVC.remove(member.id).catch(async exception => {
-                    Logger.exception(exception);
-                    await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
-                });
-            });
+            PrivateVC.privateVoiceChatDeletionHandler(oldVoiceState);
         }
 
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
