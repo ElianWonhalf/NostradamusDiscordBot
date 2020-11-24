@@ -64,6 +64,10 @@ model:
     committee:
       description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
+    correction:
+      description: "Explains the correction system and allows members to add the corresponding emoji to their nickname"
+      reply: "While we encourage members to correct each other, we understand this isn't always desirable as it can disrupt the flow of conversation and cause unnecessary frustration. This is why the server has a convention where members can add an asterisk (%%) to the end of their name to express that they would not like to be outright corrected unless they ask. Instead, others may react to their message with an asterisk (:smallcorrection: for small corrections, :bigcorrection: for bigger corrections) as needed, after which the member can make the corrections themself or ask for a correction.\n\n**Would you like me to add %% after your nickname, to show that you prefer not to be corrected outright?**"
+      error: "Looks like something went wrong! Make sure your nickname isn't too long!"
     correspondence:
       description: "To manage the Correspondence System. .c (audit) (other params)"
       audit:

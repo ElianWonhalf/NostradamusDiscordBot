@@ -9,9 +9,6 @@ const Correction = require('../../model/correction');
  */
 module.exports = async (reaction, user) => {
     if (reaction.message.guild === null || isRightGuild(reaction.message.guild.id)) {
-        SocialNetworkIntegration.handleReaction(reaction, user);
-        MemberRolesFlow.handleReaction(reaction, user);
-        DM.handleReaction(reaction, user);
-        Correction.handleReaction(reaction, user);
+        Correction.handleReactionRemove(reaction, user);
     }
 };
