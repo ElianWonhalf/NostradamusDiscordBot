@@ -1,4 +1,5 @@
 const Logger = require('@lilywonhalf/pretty-logger');
+const CommandPermission = require('../../command-permission');
 const Guild = require('../../guild');
 const Correspondence = require('../../correspondence');
 
