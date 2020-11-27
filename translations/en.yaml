@@ -212,6 +212,10 @@ model:
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
+    offers:
+      description: "To be notified when a new offer is posted"
+      alertsOn: "You will now be notified when there's a new offer. Thank you :lovehug:"
+      alertsOff: "You will now no longer be notified when there's a new offer."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
     preventSuicide:
