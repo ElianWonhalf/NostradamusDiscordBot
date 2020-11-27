@@ -141,6 +141,10 @@ model:
     native:
       description: "Explique la différence du rôle Francophone natif par rapport aux rôles de niveau"
       reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
+    offers:
+      description: "Pour être mentionné quand une nouvelle offre est postée"
+      alertsOn: "Tu seras maintenant mentionné quand une nouvelle offre sera postée. Merci :lovehug:"
+      alertsOff: "Tu ne seras plus mentionné quand une nouvelle offre sera postée."
     panic:
       description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
     preventSuicide:
