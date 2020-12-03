@@ -47,7 +47,8 @@
         "seekingCorrespondence": "",
         "corresponding": "",
         "offers": "",
-        "hideSeek": ""
+        "hideSeek": "",
+        "animator": ""
     },
     "channels": {
         "welcome": "",
