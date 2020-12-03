@@ -46,7 +46,8 @@
         "soft": "",
         "seekingCorrespondence": "",
         "corresponding": "",
-        "offers": ""
+        "offers": "",
+        "hideSeek": ""
     },
     "channels": {
         "welcome": "",

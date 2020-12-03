@@ -327,7 +327,11 @@ const Guild = {
         };
     },
 
-    rolePingHandler: async (message) => {
+    /**
+     * @param {Message} message
+     * @param {boolean} edited
+     */
+    rolePingHandler: async (message, edited = false) => {
         const roleMentions = message.mentions.roles.keyArray();
 
         if (roleMentions.includes(Config.roles.everyone)) {
@@ -336,7 +340,7 @@ const Guild = {
 
         if (roleMentions.includes(Config.roles.mod) && !Config.channelCategories.mod.includes(message.channel.parent.id)) {
             Guild.softChannel.send(
-                `<@&${Config.roles.soft}> ${message.channel.toString()} ${message.url}`,
+                `${edited ? '**Edited:**' : `<@&${Config.roles.soft}>`} ${message.channel.toString()} ${message.url}`,
                 {
                     embed: await Guild.messageToEmbed(message)
                 }
