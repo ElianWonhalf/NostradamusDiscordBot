@@ -18,6 +18,9 @@ model:
     adminList:
       description: "Liste les membres actuels de l'équipe d'administration"
       answer: "Il y a en ce moment %% administrateurs :"
+    animatorList:
+      description: "Liste les membres actuels de l'équipe d'animation"
+      answer: "Il y a en ce moment %% animateurs :"
     anonymous:
       description: "Envoie un message anonyme à l'équipe de modération"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"

@@ -34,6 +34,9 @@ model:
     adminList:
       description: "Lists the current members of the administration team"
       answer: "There are currently %% administrators:"
+    animatorList:
+      description: "Lists the current members of the animation team"
+      answer: "There are currently %% animators:"
     anonymous:
       description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
