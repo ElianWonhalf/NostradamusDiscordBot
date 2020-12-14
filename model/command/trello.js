@@ -30,7 +30,7 @@ class Trello
      */
     async process(message, args) {
         if (args.length > 0) {
-            const action = args.shift();
+            const action = args.shift().toLowerCase();
 
             switch (action) {
                 case 'todo':
