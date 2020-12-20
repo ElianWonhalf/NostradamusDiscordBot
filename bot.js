@@ -4,6 +4,7 @@ const Dotenv = require('dotenv');
 require('./model/datetime');
 require('./model/array');
 require('./model/regex');
+require('./model/string');
 
 Dotenv.config();
 
