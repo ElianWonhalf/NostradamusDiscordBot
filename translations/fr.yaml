@@ -39,6 +39,10 @@ model:
     committee:
       description: "Liste les membres actuels du comité"
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
+    correction:
+      description: "Explique le système de correction et permet aux membres d'ajouter l'emoji correspondant à leur pseudo"
+      reply: "Malgré le fait qu'on encourage les gens à se corriger, on comprend que ce ne'st pas toujours désirable vu que ça peut déranger la conversation et créer de la frustration infructueuse. C'est pour ça que le serveur a une convention où les membres peuvent ajouter une astérisque (\%%) à la fin de leur pseudo pour montrer qu'ils ne veulent pas être directement corrigés sans qu'ils le demandent. À la place, les autres peuvent réagir avec une astérisque (:smallcorrection: pour les petites corrections, :bigcorrection: pour les corrections plus grosses) au besoin, après quoi le membre peut se corriger lui-même, ou demander des corrections.\n\n**Est-ce que tu veux ajouter une astérisque à la fin de ton pseudo pour montrer que tu préfères ne pas directement avoir de correction ?**"
+      error: "On dirait qu'il y a un pépin ! Assure-toi que ton pseudo ne soit pas trop long !"
     correspondence:
       description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
       audit:
