@@ -44,8 +44,8 @@ module.exports = async (oldVoiceState, newVoiceState) => {
         }
 
         // Handle private voice channel deletion
-        const requestedPrivateChannelID = PrivateVC.list[member.id];
-        if (requestedPrivateChannelID !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === requestedPrivateChannelID) {
+        const requestedChannelIDs = PrivateVC.list[member.id];
+        if (requestedChannelIDs !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === requestedChannelIDs[0]) {
             PrivateVC.privateVoiceChatDeletionHandler(oldVoiceState);
         }
 
