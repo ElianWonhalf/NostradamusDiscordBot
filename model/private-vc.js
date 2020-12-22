@@ -1,3 +1,4 @@
+const Logger = require('@lilywonhalf/pretty-logger');
 const db = require('./db');
 const Guild = require('./guild');
 
