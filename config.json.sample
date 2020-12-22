@@ -79,7 +79,8 @@
         "correspondenceInformation": "",
         "correspondenceLearners": "",
         "correspondenceNatives": "",
-        "memberModificationLog": ""
+        "memberModificationLog": "",
+        "lessonOfTheDay": ""
     },
     "channelCategories": {
         "mod": [],

@@ -237,6 +237,13 @@ model:
       notFound: "I don't know who that is"
     post:
       description: "Sends a message to the server from the bot"
+    questionOfTheDay:
+      description: "To post a new question of the day based off of Lawless French's word of the day"
+      footer: "\nReply in the french-speaking channels to practice!"
+      reply: "**%model.command.questionOfTheDay.replyParts.wordTitle%**\n%%\n\n**%model.command.questionOfTheDay.replyParts.questionTitle%**\n%%\n\n*%%*"
+      replyParts:
+        wordTitle: "Word of the day"
+        questionTitle: "Question of the day"
     quote:
       description: "Creates a quote of a member"
     quotes:
@@ -357,6 +364,9 @@ model:
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
+  lawlessFrench:
+    intervalHandler:
+      newWord: "**New word of the day by LawlessFrench:** %%"
   memberRolesFlow:
     noSpeakOnlyAnswer: "\n\n**__English__**\n> Sorry, I can't understand what you're saying :pensive: . But don't worry, you only need to **react** to the upcoming message :) !"
     start: "\n\n**__English__**\n> Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
