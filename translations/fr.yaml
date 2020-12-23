@@ -142,6 +142,9 @@ model:
       noMembersGiven: "Tu n'as donné aucun membre à qui attribuer un rôle."
       roleNotFound: "Aucun nom de rôle de niveau existant trouvé dans ton message"
       setRole: "J'ai attribué le rôle \"%%\" aux membres donnés !"
+    linguistList:
+      description: "Liste les linguistes:tm: du serveur"
+      answer: "Il y a en ce moment %% linguistes:tm: du serveur :"
     loadRoles:
       description: "Ajoute des rôles au serveur depuis la base de données"
     logs:
