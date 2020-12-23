@@ -210,6 +210,9 @@ model:
       noMembersGiven: "You did not give any member for whom level role must be set."
       roleNotFound: "Did not find any existing level role name in your message"
       setRole: "Set role \"%%\" to given member(s)!"
+    linguistList:
+      description: "Lists the current linguists:tm: of the server"
+      answer: "There are currently %% linguists:tm: of the server:"
     loadRoles:
       description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
