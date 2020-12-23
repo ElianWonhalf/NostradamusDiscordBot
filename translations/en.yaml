@@ -182,6 +182,7 @@ model:
         usernames: "Number of past usernames:"
         nicknames: "Number of past nicknames:"
         avatars: "Number of past avatars:"
+        customStatus: "Custom status:"
       usernames:
         none: "No past usernames found."
       nicknames:
