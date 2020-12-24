@@ -1,4 +1,5 @@
 const Logger = require('@lilywonhalf/pretty-logger');
+const Config = require('../config.json');
 const db = require('./db');
 const Guild = require('./guild');
 
@@ -81,6 +82,11 @@ const PrivateVC = {
                 parent: Guild.smallVoiceCategoryChannel,
             })
         ]).then(async ([voiceChannel, waitingRoomChannel, textChannel]) => {
+            await Promise.all([
+                voiceChannel.updateOverwrite(Config.roles.realEveryone, {CONNECT: false}),
+                textChannel.updateOverwrite(Config.roles.realEveryone, {SEND_MESSAGES: false}),
+                textChannel.updateOverwrite(member, {SEND_MESSAGES: true}),
+            ]);
             await member.voice.setChannel(voiceChannel);
             return PrivateVC.add(member.id, voiceChannel.id, textChannel.id).catch(exception => {
                 exception.payload = [ voiceChannel, waitingRoomChannel, textChannel ];
