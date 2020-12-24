@@ -343,7 +343,7 @@ const Guild = {
     rolePingHandler: async (message) => {
         const roleMentions = message.mentions.roles.keyArray();
 
-        if (roleMentions.includes(Config.roles.everyone)) {
+        if (roleMentions.includes(Config.roles.fakeEveryone)) {
             Guild.everyonePingHandler(message);
         }
 
@@ -359,7 +359,7 @@ const Guild = {
 
     everyonePingHandler: (message) => {
         if (message.guild !== null && message.cleanContent.includes('@everyone')) { // Could be @here
-            message.member.roles.add([Config.roles.everyone]);
+            message.member.roles.add([Config.roles.fakeEveryone]);
         }
     },
 
