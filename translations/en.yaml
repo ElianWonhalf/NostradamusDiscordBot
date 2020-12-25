@@ -365,6 +365,9 @@ model:
         member: "Hi! I'm sorry, I failed to create your private VC :( Maybe you can try again?"
         mods: "%% asked for a private VC but I failed to create it"
       deletionFailed: "Couldn't delete private voice channel with ID %% from database, requested by %%."
+      modificationFailed:
+        member: "I failed to make your VC public, panicked and deleted your channels in the process :( Can you try again?"
+        mods: "%% wanted to make their VC public, but I encountered an error doing so"
   blacklist:
     semi:
       triggered: "Semi-blacklist triggered by %% in %%\n%%"
