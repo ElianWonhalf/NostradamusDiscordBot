@@ -104,13 +104,15 @@ const PrivateVC = {
                 const guestMember = await Guild.getMemberFromMention(message.embeds[0].description);
                 if (guestMember === null) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
-                } else {
-                    if (reaction.emoji.name === 'pollyes') {
-                        await guestMember.voice.setChannel(channels[1]);
-                        await channels[0].updateOverwrite(guestMember, {SEND_MESSAGES: true});
-                    }
+                    return;
                 }
-                return;
+
+                if (reaction.emoji.name === 'pollyes') {
+                    await guestMember.voice.setChannel(channels[1]);
+                    await channels[0].updateOverwrite(guestMember, {SEND_MESSAGES: true});
+                } else {
+                    await guestMember.voice.setChannel(null);
+                }
             } else if (reaction.emoji.name === '🔓') { // Make channel public or not?
                 const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
@@ -190,6 +192,7 @@ const PrivateVC = {
     },
 
     /**
+     * @param {Snowflake} requestor
      * @param {VoiceState} newVoiceState
      */
     privateVoiceChatJoinHandler: async (requestor, newVoiceState) => {
@@ -214,6 +217,19 @@ const PrivateVC = {
             embed: embed,
         });
         emojis.forEach(async emoji => await sentMessage.react(emoji));
+    },
+
+    /**
+     * @param {Snowflake} requestor
+     * @param {VoiceState} oldVoiceState
+     */
+    privateVoiceChatLeaveHandler: async (requestor, oldVoiceState) => {
+        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const guestMember = oldVoiceState.member;
+        const overwrites = channels[0].permissionOverwrites;
+        if (channels[2] !== undefined) {
+            await channels[0].overwritePermissions(overwrites.filter(overwrite => overwrite.id !== guestMember.id));
+        }
     },
 }
 

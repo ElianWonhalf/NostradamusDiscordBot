@@ -38,23 +38,22 @@ module.exports = async (oldVoiceState, newVoiceState) => {
             }
         }
 
-        // Handle private voice channel requests
-        if (newVoiceState.channel !== undefined && newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
+        // Private VC handlers
+        const channelIDs = PrivateVC.list[member.id];
+        if (newVoiceState.channel !== undefined && newVoiceState.channelID === Config.channels.smallVoiceChatRequest) { // Request new VC
             PrivateVC.privateVoiceChatRequestHandler(oldVoiceState);
-        }
-
-        // Handle private voice channel join
-        if (newVoiceState.channel !== null) {
-            const requestor = Object.keys(PrivateVC.list).filter(id => PrivateVC.list[id] !== undefined).find(id => PrivateVC.list[id][2] === newVoiceState.channelID);
+        } else if (channelIDs !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === channelIDs[1]) { // Delete VC
+            PrivateVC.privateVoiceChatDeletionHandler(oldVoiceState);
+        } else if (newVoiceState.channel !== null) { // Join private VC
+            const requestor = Object.keys(PrivateVC.list).find(id => PrivateVC.list[id][2] === newVoiceState.channelID);
             if (requestor !== undefined) {
                 PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState);
             }
-        }
-
-        // Handle private voice channel deletion
-        const channelIDs = PrivateVC.list[member.id];
-        if (channelIDs !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === channelIDs[1]) {
-            PrivateVC.privateVoiceChatDeletionHandler(oldVoiceState);
+        } else if (oldVoiceState.channel !== null) { // Leave VC
+            const requestor = Object.keys(PrivateVC.list).find(id => PrivateVC.list[id][1] === oldVoiceState.channelID);
+            if (requestor !== undefined) {
+                PrivateVC.privateVoiceChatLeaveHandler(requestor, oldVoiceState);
+            }
         }
 
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
