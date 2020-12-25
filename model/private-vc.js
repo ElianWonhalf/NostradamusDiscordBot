@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../config.json');
 const db = require('./db');
@@ -65,6 +66,34 @@ const PrivateVC = {
     },
 
     /**
+     * @param {MessageReaction} reaction
+     * @param {User} user
+     */
+    handleReaction: async (reaction, user) => {
+        const channelIDs = PrivateVC.list[user.id];
+        const message = reaction.message;
+        const hasEmbeds = message.embeds.length > 0;
+        const isByMe = message.author.id === bot.user.id;
+        const requestorReacted = user.id !== bot.user.id && channelIDs !== undefined && channelIDs[1] === message.channel.id;
+
+        if (hasEmbeds && isByMe && requestorReacted) {
+            await message.delete();
+            switch (reaction.emoji.name) {
+                case '🔓':
+                    const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+                    const waitingRoomChannel = Guild.discordGuild.channels.cache.find(channel => channel.rawPosition === channels[0].rawPosition + 1);
+                    const newVoiceChannelName = channels[0].name.replace('[Private] ', '');
+                    await channels.forEach(channel => channel.lockPermissions());
+                    await waitingRoomChannel.delete();
+                    await channels[0].setName(newVoiceChannelName);
+                    break;
+                default:
+                    break;
+            }
+        }
+    },
+
+    /**
      * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatRequestHandler: async (oldVoiceState) => {
@@ -88,10 +117,17 @@ const PrivateVC = {
                 textChannel.updateOverwrite(member, {SEND_MESSAGES: true}),
             ]);
             await member.voice.setChannel(voiceChannel);
-            return PrivateVC.add(member.id, voiceChannel.id, textChannel.id).catch(exception => {
+            await PrivateVC.add(member.id, voiceChannel.id, textChannel.id).catch(exception => {
                 exception.payload = [ voiceChannel, waitingRoomChannel, textChannel ];
                 throw exception;
             });
+
+            const embed = new Discord.MessageEmbed().addFields([
+                {name: '🔓', value: 'Public', inline: true},
+                {name: '🔒', value: 'Private', inline: true},
+            ]).setTitle('Public or private channel?').setFooter('React below!').setColor(0x00FF00);
+            const sentMessage = await textChannel.send({content: member, embed: embed});
+            await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
         }).catch(async (exception) => {
             Logger.exception(exception);
             await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()]));
@@ -99,6 +135,8 @@ const PrivateVC = {
             await member.voice.setChannel(oldVoiceState.channel);
             await Promise.all(exception.payload.map(channel => channel.delete()));
         });
+
+
     },
 
     /**
@@ -108,11 +146,15 @@ const PrivateVC = {
         const member = oldVoiceState.member;
         const channels = PrivateVC.list[member.id].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
         const waitingRoomChannel = Guild.discordGuild.channels.cache.find(channel => channel.rawPosition === channels[0].rawPosition + 1);
-        await Promise.all([channels[0].delete(), waitingRoomChannel.delete(), channels[1].delete()]).then(async () => {
-            return PrivateVC.remove(member.id).catch(async exception => {
-                Logger.exception(exception);
-                await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
-            });
+
+        await channels.forEach(channel => channel.delete());
+        if (waitingRoomChannel !== undefined) {
+            await waitingRoomChannel.delete();
+        }
+
+        return PrivateVC.remove(member.id).catch(async exception => {
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
         });
     }
 }
