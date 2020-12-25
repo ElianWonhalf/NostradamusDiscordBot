@@ -93,8 +93,9 @@ const PrivateVC = {
         const hasEmbeds = message.embeds.length > 0;
         const isByMe = message.author.id === bot.user.id;
         const requestorReacted = user.id !== bot.user.id && channelIDs !== undefined && channelIDs[0] === message.channel.id;
+        const validReactionEmojis = ['🔓', '🔒'];
 
-        if (hasEmbeds && isByMe && requestorReacted) {
+        if (hasEmbeds && isByMe && requestorReacted && validReactionEmojis.includes(reaction.emoji.name)) {
             await message.delete();
             switch (reaction.emoji.name) {
                 case '🔓':
