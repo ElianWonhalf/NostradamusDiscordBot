@@ -43,6 +43,14 @@ module.exports = async (oldVoiceState, newVoiceState) => {
             PrivateVC.privateVoiceChatRequestHandler(oldVoiceState);
         }
 
+        // Handle private voice channel join
+        if (newVoiceState.channel !== null) {
+            const requestor = Object.keys(PrivateVC.list).filter(id => PrivateVC.list[id] !== undefined).find(id => PrivateVC.list[id][2] === newVoiceState.channelID);
+            if (requestor !== undefined) {
+                PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState);
+            }
+        }
+
         // Handle private voice channel deletion
         const channelIDs = PrivateVC.list[member.id];
         if (channelIDs !== undefined && oldVoiceState.channel !== undefined && oldVoiceState.channelID === channelIDs[1]) {
