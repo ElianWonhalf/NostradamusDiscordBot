@@ -224,6 +224,29 @@ const Guild = {
         });
     },
 
+    /**
+     * @param mention
+     * @returns {Promise.<GuildMember|null>}
+     */
+    getMemberFromMention: async (mention) => {
+        if (!mention) {
+            return null;
+        }
+
+        if (mention.startsWith('<@') && mention.endsWith('>')) {
+            mention = mention.slice(2, -1);
+            if (mention.startsWith('!')) {
+                mention = mention.slice(1);
+            }
+        }
+
+        return await Guild.discordGuild.members.fetch(mention).catch(exception => {
+            Logger.error(exception.toString());
+
+            return null;
+        });
+    },
+
     createRole: (name) => {
         return Guild.discordGuild.roles.create({data: {name: name, permissions: []}});
     },
