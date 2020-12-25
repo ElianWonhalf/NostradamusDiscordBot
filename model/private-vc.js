@@ -105,7 +105,10 @@ const PrivateVC = {
                 if (guestMember === null) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
                 } else {
-                    await guestMember.voice.setChannel(reaction.emoji.name === 'pollyes' ? channels[1] : null);
+                    if (reaction.emoji.name === 'pollyes') {
+                        await guestMember.voice.setChannel(channels[1]);
+                        await channels[0].updateOverwrite(guestMember, {SEND_MESSAGES: true});
+                    }
                 }
                 return;
             } else if (reaction.emoji.name === '🔓') { // Make channel public or not?
