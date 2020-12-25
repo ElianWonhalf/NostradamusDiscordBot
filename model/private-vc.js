@@ -90,32 +90,39 @@ const PrivateVC = {
     handleReaction: async (reaction, user) => {
         const channelIDs = PrivateVC.list[user.id];
         const message = reaction.message;
-        const hasEmbeds = message.embeds.length > 0;
+        const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
         const requestorReacted = user.id !== bot.user.id && channelIDs !== undefined && channelIDs[0] === message.channel.id;
-        const validReactionEmojis = ['🔓', '🔒'];
+        const validReactionEmojis = ['🔓', '🔒', 'pollyes', 'pollno'];
 
-        if (hasEmbeds && isByMe && requestorReacted && validReactionEmojis.includes(reaction.emoji.name)) {
+        if (hasSingleEmbed && isByMe && requestorReacted && validReactionEmojis.includes(reaction.emoji.name)) {
+            const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+
             await message.delete();
-            switch (reaction.emoji.name) {
-                case '🔓':
-                    const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
-                    const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
-                    await channels[2].delete();
-                    channels.pop();
+            if (['pollyes', 'pollno'].includes(reaction.emoji.name)) { // Let member knocking on door in or not?
+                const guestMember = await Guild.getMemberFromMention(message.embeds[0].description);
+                if (guestMember === null) {
+                    await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
+                } else {
+                    await guestMember.voice.setChannel(reaction.emoji.name === 'pollyes' ? channels[1] : null);
+                }
+                return;
+            } else if (reaction.emoji.name === '🔓') { // Make channel public or not?
+                const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
-                    await channels.forEach(channel => channel.lockPermissions());
-                    await channels[1].setName(newVoiceChannelName);
+                await channels[2].delete();
+                channels.pop();
 
-                    await PrivateVC.makePublic(user.id).catch(async exception => {
-                        Logger.exception(exception);
-                        await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()]));
-                        await user.send(trans('model.privateVC.errors.modificationFailed.member'));
-                        channels.forEach(async channel => await channel.delete());
-                    });
-                default:
-                    break;
+                await channels.forEach(channel => channel.lockPermissions());
+                await channels[1].setName(newVoiceChannelName);
+
+                await PrivateVC.makePublic(user.id).catch(async exception => {
+                    Logger.exception(exception);
+                    await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()]));
+                    await user.send(trans('model.privateVC.errors.modificationFailed.member'));
+                    channels.forEach(async channel => await channel.delete());
+                });
             }
         }
     },
@@ -177,7 +184,34 @@ const PrivateVC = {
             Logger.exception(exception);
             await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
         });
-    }
+    },
+
+    /**
+     * @param {VoiceState} newVoiceState
+     */
+    privateVoiceChatJoinHandler: async (requestor, newVoiceState) => {
+        const hostMember = await Guild.discordGuild.members.fetch(requestor);
+
+        const guestMember = newVoiceState.member;
+        const guestUser = guestMember.user;
+
+        const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
+        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+
+        const embed = new Discord.MessageEmbed()
+            .setAuthor(
+                `${guestUser.username}#${guestUser.discriminator}`,
+                guestUser.displayAvatarURL({ dynamic: true })
+            )
+            .setDescription(guestMember.toString())
+            .setColor(0x00FF00)
+            .setFooter('Open the door?');
+        const sentMessage = await channels[0].send({
+            content: `${hostMember}, someone wants to join your room!`,
+            embed: embed,
+        });
+        emojis.forEach(async emoji => await sentMessage.react(emoji));
+    },
 }
 
 module.exports = PrivateVC;
