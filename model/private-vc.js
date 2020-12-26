@@ -22,6 +22,47 @@ const PrivateVC = {
     },
 
     /**
+     * @param {GuildMember} member
+     * @param {VoiceState} oldVoiceState
+     * @param {VoiceState} newVoiceState
+     */
+    privateVCHandler: (member, oldVoiceState, newVoiceState) => {
+        const channelIDs = PrivateVC.list[member.id];
+
+        if (newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
+            // Request new VC
+            PrivateVC.privateVoiceChatRequestHandler(member, oldVoiceState);
+        }
+
+        if (newVoiceState.channel) {
+            // Join private VC
+            const requestor = Object.keys(PrivateVC.list).find(
+                id => PrivateVC.list[id][2] === newVoiceState.channelID
+            );
+
+            if (requestor && requestor !== member.id) {
+                PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState);
+            }
+        }
+
+        if (oldVoiceState.channel) {
+            // Leave VC
+            const requestor = Object.keys(PrivateVC.list).find(
+                id => PrivateVC.list[id][1] === oldVoiceState.channelID
+            );
+
+            if (requestor) {
+                PrivateVC.privateVoiceChatLeaveHandler(member, requestor, oldVoiceState);
+            }
+        }
+
+        if (channelIDs && oldVoiceState.channelID === channelIDs[1]) {
+            // Delete VC
+            PrivateVC.privateVoiceChatDeletionHandler(member, oldVoiceState);
+        }
+    },
+
+    /**
      * @param {string} requestor
      * @param {string} textChannel
      * @param {string} voiceChannel
@@ -48,7 +89,7 @@ const PrivateVC = {
      */
     remove: (requestor) => {
         return new Promise((resolve, reject) => {
-            db.query(`DELETE FROM private_vc WHERE requestor=?`, [requestor], (error) => {
+            db.query(`DELETE FROM private_vc WHERE requestor = ?`, [requestor], (error) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -65,11 +106,11 @@ const PrivateVC = {
      */
     makePublic: (requestor) => {
         return new Promise((resolve, reject) => {
-            db.query(`UPDATE private_vc SET waiting_channel=NULL WHERE requestor=?`, [requestor], (error) => {
+            db.query(`UPDATE private_vc SET waiting_channel = NULL WHERE requestor = ?`, [requestor], (error) => {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor][2] = null;
+                    PrivateVC.list[requestor].pop();
                     resolve();
                 }
             });
@@ -92,7 +133,7 @@ const PrivateVC = {
         const message = reaction.message;
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
-        const requestorReacted = user.id !== bot.user.id && channelIDs !== undefined && channelIDs[0] === message.channel.id;
+        const requestorReacted = user.id !== bot.user.id && channelIDs && channelIDs[0] === message.channel.id;
         const validReactionEmojis = ['🔓', '🔒', 'pollyes', 'pollno'];
 
         if (hasSingleEmbed && isByMe && requestorReacted && validReactionEmojis.includes(reaction.emoji.name)) {
@@ -109,27 +150,26 @@ const PrivateVC = {
 
                 if (reaction.emoji.name === 'pollyes') {
                     await guestMember.voice.setChannel(channels[1]);
-                    await channels[0].updateOverwrite(guestMember, {SEND_MESSAGES: true});
+                    await channels[0].updateOverwrite(guestMember, {VIEW_CHANNEL: true});
                 } else {
                     await guestMember.voice.setChannel(null);
                 }
             } else if (reaction.emoji.name === '🔓') { // Make channel public or not?
-                await PrivateVC.makePublic(user.id).then(() => {
-                    throw {};
-                    /*const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
+                await PrivateVC.makePublic(user.id).then(async () => {
+                    const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
                     await channels[2].delete();
                     channels.pop();
 
                     await channels.forEach(channel => channel.lockPermissions());
-                    await channels[1].setName(newVoiceChannelName);*/
+                    await channels[1].setName(newVoiceChannelName);
                 }).catch(async exception => {
                     Logger.exception(exception);
-                    await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()]));
+                    await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
                     await user.send(trans('model.privateVC.errors.modificationFailed.member'));
 
                     // Kicking the host member from the voice chat will trigger deletion of channels.
-                    const hostMember = await Guild.discordGuild.members.fetch(user.id);
+                    const hostMember = await Guild.discordGuild.member(user.id);
                     hostMember.voice.setChannel(null);
                 });
             }
@@ -137,31 +177,43 @@ const PrivateVC = {
     },
 
     /**
+     * @param {GuildMember} member
      * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatRequestHandler: async (oldVoiceState) => {
-        const member = oldVoiceState.member;
-        await Promise.all([
-            member.guild.channels.create(`${member.displayName}`, {
+    privateVoiceChatRequestHandler: async (member, oldVoiceState) => {
+        let textChannel, voiceChannel, waitingChannel;
+
+        try {
+            textChannel = await member.guild.channels.create(`${member.displayName}`, {
                 parent: Guild.smallVoiceCategoryChannel,
-            }),
-            member.guild.channels.create(`[Private] ${member.displayName}`, {
+            });
+
+            voiceChannel = await member.guild.channels.create(`[Private] ${member.displayName}`, {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
-            }),
-            member.guild.channels.create("[Waiting room] ⬆️", {
+            });
+
+            waitingChannel = await member.guild.channels.create("[Waiting room] ⬆️", {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
-            }),
-        ]).then(async ([textChannel, voiceChannel, waitingChannel]) => {
+            });
+        } catch (exception) {
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()], 'en'));
+            await member.send(trans('model.privateVC.errors.creationFailed.member'));
+            await member.voice.setChannel(oldVoiceState.channel);
+            exception.payload.forEach(channel => channel.delete());
+        }
+
+        if (textChannel && voiceChannel && waitingChannel) {
             await Promise.all([
-                textChannel.updateOverwrite(Config.roles.realEveryone, {SEND_MESSAGES: false}),
-                textChannel.updateOverwrite(member, {SEND_MESSAGES: true}),
-                voiceChannel.updateOverwrite(Config.roles.realEveryone, {CONNECT: false}),
+                textChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
+                voiceChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
             ]);
             await member.voice.setChannel(voiceChannel);
             await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
-                exception.payload = [ textChannel, voiceChannel, waitingChannel ];
+                exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
             });
 
@@ -169,30 +221,33 @@ const PrivateVC = {
                 {name: '🔓', value: 'Public', inline: true},
                 {name: '🔒', value: 'Private', inline: true},
             ]).setTitle('Public or private channel?').setFooter('React below!').setColor(0x00FF00);
-            const sentMessage = await textChannel.send({content: member, embed: embed});
+            const sentMessage = await textChannel.send({content: member, embed: embed});
             await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
-        }).catch(async (exception) => {
-            Logger.exception(exception);
-            await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()]));
-            await member.send(trans('model.privateVC.errors.creationFailed.member'));
-            await member.voice.setChannel(oldVoiceState.channel);
-            exception.payload.forEach(async channel => await channel.delete());
-        });
+        }
     },
 
     /**
+     * @param {GuildMember} member
      * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatDeletionHandler: async (oldVoiceState) => {
-        Logger.debug("beacon: VC deletion handler");
-        const member = oldVoiceState.member;
-        const channels = PrivateVC.list[member.id].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+    privateVoiceChatDeletionHandler: async (member, oldVoiceState) => {
+        const channels = PrivateVC.list[member.id].map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
 
-        channels.filter(channel => channel !== undefined).forEach(async channel => await channel.delete());
+        await Promise.all(channels.filter(channel => channel !== undefined).map(
+            channel => channel.delete()
+        ));
 
         return PrivateVC.remove(member.id).catch(async exception => {
             Logger.exception(exception);
-            await Guild.botChannel.send(trans('model.privateVC.errors.deletionFailed', [privateChannel.id, member.toString()]));
+            await Guild.botChannel.send(
+                trans(
+                    'model.privateVC.errors.deletionFailed',
+                    [member.id, member.toString()],
+                    'en'
+                )
+            );
         });
     },
 
@@ -225,14 +280,14 @@ const PrivateVC = {
     },
 
     /**
+     * @param {GuildMember} guestMember
      * @param {Snowflake} requestor
      * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatLeaveHandler: async (requestor, oldVoiceState) => {
+    privateVoiceChatLeaveHandler: async (guestMember, requestor, oldVoiceState) => {
         const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
-        const guestMember = oldVoiceState.member;
         const overwrites = channels[0].permissionOverwrites;
-        if (channels[2] !== undefined) {
+        if (channels[2]) {
             await channels[0].overwritePermissions(overwrites.filter(overwrite => overwrite.id !== guestMember.id));
         }
     },

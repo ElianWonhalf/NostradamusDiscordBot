@@ -395,7 +395,7 @@ model:
       creationFailed:
         member: "Hi! I'm sorry, I failed to create your VC :( Maybe you can try again?"
         mods: "%% asked for a private VC but I failed to create it"
-      deletionFailed: "Couldn't delete private voice channel with ID %% from database, requested by %%."
+      deletionFailed: "Couldn't delete private voice channels for member ID %% from database, requested by %%."
       memberNotFound: "Sorry, I don't recognize the member who wants to join the room, I cannot let them in."
       modificationFailed:
         member: "I failed to make your VC public, panicked and deleted your channels in the process :( Can you try again?"
