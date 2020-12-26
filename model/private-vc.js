@@ -114,19 +114,23 @@ const PrivateVC = {
                     await guestMember.voice.setChannel(null);
                 }
             } else if (reaction.emoji.name === '🔓') { // Make channel public or not?
-                const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
+                await PrivateVC.makePublic(user.id).then(() => {
+                    throw {};
+                    /*const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
-                await channels[2].delete();
-                channels.pop();
+                    await channels[2].delete();
+                    channels.pop();
 
-                await channels.forEach(channel => channel.lockPermissions());
-                await channels[1].setName(newVoiceChannelName);
-
-                await PrivateVC.makePublic(user.id).catch(async exception => {
+                    await channels.forEach(channel => channel.lockPermissions());
+                    await channels[1].setName(newVoiceChannelName);*/
+                }).catch(async exception => {
                     Logger.exception(exception);
                     await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()]));
                     await user.send(trans('model.privateVC.errors.modificationFailed.member'));
-                    channels.forEach(async channel => await channel.delete());
+
+                    // Kicking the host member from the voice chat will trigger deletion of channels.
+                    const hostMember = await Guild.discordGuild.members.fetch(user.id);
+                    hostMember.voice.setChannel(null);
                 });
             }
         }
@@ -180,6 +184,7 @@ const PrivateVC = {
      * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatDeletionHandler: async (oldVoiceState) => {
+        Logger.debug("beacon: VC deletion handler");
         const member = oldVoiceState.member;
         const channels = PrivateVC.list[member.id].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
