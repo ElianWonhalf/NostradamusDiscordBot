@@ -6,6 +6,7 @@ const DM = require('../../model/dm');
 const PrivateVC = require('../../model/private-vc');
 const WatchedMember = require('../../model/watched-member');
 const ActivityManager = require('../../model/activity-manager');
+const LawlessFrench = require('../../model/lawlessfrench');
 
 module.exports = async () => {
     Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
@@ -45,6 +46,9 @@ module.exports = async () => {
 
     DM.init();
     WatchedMember.init();
+
+    setInterval(LawlessFrench.intervalHandler, 2 * HOUR);
+    LawlessFrench.intervalHandler();
 
     if (process.argv.includes('--reboot')) {
         Guild.botChannel.send('I\'m back :) .');

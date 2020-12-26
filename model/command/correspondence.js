@@ -60,6 +60,7 @@ class Correspondence
                 case 'done':
                 case 'deny':
                 case 'check':
+                case 'wait':
                     (cachelessRequire('./correspondence/' + action + '.js'))(message, args);
             }
         } else {

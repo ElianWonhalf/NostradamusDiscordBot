@@ -110,6 +110,9 @@ const Guild = {
     /** {VoiceChannel} */
     smallVoiceChatRequestChannel: null,
 
+    /** {TextChannel} */
+    lessonOfTheDayChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -145,6 +148,7 @@ const Guild = {
         Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
         Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
+        Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
 
         // Categories
         Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallGroupVocal);
@@ -363,7 +367,11 @@ const Guild = {
         };
     },
 
-    rolePingHandler: async (message) => {
+    /**
+     * @param {Message} message
+     * @param {boolean} edited
+     */
+    rolePingHandler: async (message, edited = false) => {
         const roleMentions = message.mentions.roles.keyArray();
 
         if (roleMentions.includes(Config.roles.fakeEveryone)) {
@@ -372,7 +380,7 @@ const Guild = {
 
         if (roleMentions.includes(Config.roles.mod) && !Config.channelCategories.mod.includes(message.channel.parent.id)) {
             Guild.softChannel.send(
-                `<@&${Config.roles.soft}> ${message.channel.toString()} ${message.url}`,
+                `${edited ? '**Edited:**' : `<@&${Config.roles.soft}>`} ${message.channel.toString()} ${message.url}`,
                 {
                     embed: await Guild.messageToEmbed(message)
                 }

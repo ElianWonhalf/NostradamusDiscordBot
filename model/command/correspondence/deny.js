@@ -1,5 +1,6 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../../config.json');
+const CommandPermission = require('../../command-permission');
 const Guild = require('../../guild');
 
 /**
