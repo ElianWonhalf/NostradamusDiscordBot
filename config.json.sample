@@ -46,7 +46,11 @@
         "realEveryone": "",
         "soft": "",
         "seekingCorrespondence": "",
-        "corresponding": ""
+        "corresponding": "",
+        "offers": "",
+        "hideSeek": "",
+        "animator": "",
+        "linguist": ""
     },
     "channels": {
         "welcome": "",
@@ -78,7 +82,8 @@
         "correspondenceLearners": "",
         "correspondenceNatives": "",
         "memberModificationLog": "",
-        "smallVoiceChatRequest": ""
+        "smallVoiceChatRequest": "",
+        "lessonOfTheDay": ""
     },
     "channelCategories": {
         "mod": [],

@@ -1,6 +1,7 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const { MessageEmbed, MessageReaction } = require('discord.js');
 const Config = require('../../../config.json');
+const CommandPermission = require('../../command-permission');
 const Guild = require('../../guild');
 const Correspondence = require('../../correspondence');
 const StatMessages = require('../../stat-messages');

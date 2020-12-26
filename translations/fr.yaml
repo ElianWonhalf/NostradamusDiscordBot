@@ -18,6 +18,9 @@ model:
     adminList:
       description: "Liste les membres actuels de l'équipe d'administration"
       answer: "Il y a en ce moment %% administrateurs :"
+    animatorList:
+      description: "Liste les membres actuels de l'équipe d'animation"
+      answer: "Il y a en ce moment %% animateurs :"
     anonymous:
       description: "Envoie un message anonyme à l'équipe de modération"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"
@@ -36,14 +39,20 @@ model:
     committee:
       description: "Liste les membres actuels du comité"
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
+    correction:
+      description: "Explique le système de correction et permet aux membres d'ajouter l'emoji correspondant à leur pseudo"
+      reply: "\nMalgré le fait qu'on encourage les gens à se corriger, on comprend que ce ne'st pas toujours désirable vu que ça peut déranger la conversation et créer de la frustration infructueuse. C'est pour ça que le serveur a une convention où les membres peuvent ajouter une astérisque (\\%%) à la fin de leur pseudo pour montrer qu'ils ne veulent pas être directement corrigés sans qu'ils le demandent. À la place, les autres peuvent réagir avec une astérisque (:smallcorrection: pour les petites corrections, :bigcorrection: pour les corrections plus grosses) au besoin, après quoi le membre peut se corriger lui-même, ou demander des corrections.\n\n**Est-ce que tu veux ajouter une astérisque à la fin de ton pseudo pour montrer que tu préfères ne pas directement avoir de correction ?**\n"
+      error: "On dirait qu'il y a un pépin ! Assure-toi que ton pseudo ne soit pas trop long !"
     correspondence:
       description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
       audit:
         dm: "\nSalut !\n\nTu participes au système de correspondance et ceci est un audit qu'on fait pour s'assurer que tout se passe bien. (Donc oui, c'est un message préécrit, mais on est à l'écoute derrière !)\n\nEst-ce que ta (ou tes) correspondance est toujours active ? Ça se passe bien ? Aurais-tu des suggestions à faire ou des questions à poser ? En tout cas, n'hésite pas, on est là pour t'aider.\n\nMerci pour ta participation !\n — Le staff de French\n"
       check:
         alreadyInCorrespondence: "Mais qu'est-ce que tu fais, patate ?! T'es déjà dans le système de correspondance, pas besoin de te vérifier !"
-        eligible: "Youpi ! On dirait bien que t'es éligible pour le système de correspondance ! Il suffit d'aller suivre les instructions dans %% pour postuler."
-        ineligible: "\nOn dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun.\n"
+        selfEligible: "Youpi ! On dirait bien que t'es éligible pour le système de correspondance ! Il suffit d'aller suivre les instructions dans %% pour postuler."
+        selfIneligible: "\nOn dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun.\n"
+        eligible: "On dirait bien que %% est éligible pour le système de correspondance ! Cette personne peut aller suivre les instructions dans %% pour postuler."
+        ineligible: "\nOn dirait que %% a besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que cette personne ait été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages ou avoir passé au moins 10 heures en vocal pour être éligible.\n"
       deny:
         dm: "Merci de ton intérêt pour le système de correspondance. Actuellement, pour l'intégrer, il est nécessaire d'avoir 10 jours d'ancienneté sur le serveur et d'y avoir envoyé au moins 100 messages (tu peux voir ce nombre en tapant .info dans #bot-fun). Tu devrais atteindre ce seuil assez vite si tu viens de temps en temps dans les salons de discussion."
       done:
@@ -104,6 +113,10 @@ model:
       description: "Donne une liste des commandes"
       timeout: "Trop tard ! Tu peux renvoyer la commande si tu veux :eowynsheep: ."
       embedTitle: "Commande help"
+    hideSeek:
+      description: "Pour montrer que vous voulez jouer à cache-cache dans l'évènement à venir sur le serveur."
+      alertsOn: "Tu as maintenant le rôle !"
+      alertsOff: "Tu n'as maintenant plus le rôle."
     homework:
       description: "Explique la règle numéro 2 du serveur."
       reply: "\nCe serveur est destiné à l'apprentissage et n'est pas un outil pour tricher sur les travaux académiques. L'aide aux devoirs n'est pas autorisée. Vous pouvez poser des questions sur les concepts liés aux devoirs, mais aucune question sur un devoir spécifique ne devrait être posée.\n"
@@ -129,6 +142,9 @@ model:
       noMembersGiven: "Tu n'as donné aucun membre à qui attribuer un rôle."
       roleNotFound: "Aucun nom de rôle de niveau existant trouvé dans ton message"
       setRole: "J'ai attribué le rôle \"%%\" aux membres donnés !"
+    linguistList:
+      description: "Liste les linguistes:tm: du serveur"
+      answer: "Il y a en ce moment %% linguistes:tm: du serveur :"
     loadRoles:
       description: "Ajoute des rôles au serveur depuis la base de données"
     logs:
@@ -141,6 +157,10 @@ model:
     native:
       description: "Explique la différence du rôle Francophone natif par rapport aux rôles de niveau"
       reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
+    offers:
+      description: "Pour être mentionné quand une nouvelle offre est postée"
+      alertsOn: "Tu seras maintenant mentionné quand une nouvelle offre sera postée. Merci :lovehug:"
+      alertsOff: "Tu ne seras plus mentionné quand une nouvelle offre sera postée."
     panic:
       description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
     preventSuicide:
@@ -149,6 +169,13 @@ model:
       nonNative: "Bonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nL'équipe de modération de French"
     post:
       description: "Envoie un message sur le serveur depuis le bot"
+    questionOfTheDay:
+      description: "Pour poster une nouvelle question du jour basée sur le mot du jour de Lawless French"
+      footer: "\nRépondez dans les canaux dédiés au français pour pratiquer !"
+      reply: "**%model.command.questionOfTheDay.replyParts.wordTitle%**\n%%\n\n**%model.command.questionOfTheDay.replyParts.questionTitle%**\n%%\n\n*%%*"
+      replyParts:
+        wordTitle: "Mot du jour"
+        questionTitle: "Question du jour"
     quote:
       description: "Crée une citation d'un membre"
     quotes:

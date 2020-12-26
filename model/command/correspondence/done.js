@@ -1,5 +1,6 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../../config.json');
+const CommandPermission = require('../../command-permission');
 const Guild = require('../../guild');
 const Correspondence = require('../../correspondence');
 
@@ -25,7 +26,7 @@ module.exports = async (message, args) => {
             const learner = members[!nativeIndex ? 1 : 0];
 
             const nativeLang = Config.learntLanguagePrefix;
-            const learnerLang = Guild.isMemberNative(learner) || Guild.isMemberTutor(member) ? 'fr' : null;
+            const learnerLang = Guild.isMemberNative(learner) || Guild.isMemberTutor(learner) ? 'fr' : null;
             const learnerIntroduction = await Correspondence.findIntroduction(learner.id);
 
             await learner.roles.remove(Config.roles.seekingCorrespondence);

@@ -34,6 +34,9 @@ model:
     adminList:
       description: "Lists the current members of the administration team"
       answer: "There are currently %% administrators:"
+    animatorList:
+      description: "Lists the current members of the animation team"
+      answer: "There are currently %% animators:"
     anonymous:
       description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
@@ -64,14 +67,20 @@ model:
     committee:
       description: "Lists the current committee members"
       answer: "There is/are currently %% member(s) in the Decision Committee:"
+    correction:
+      description: "Explains the correction system and allows members to add the corresponding emoji to their nickname"
+      reply: "\nWhile we encourage members to correct each other, we understand this isn't always desirable as it can disrupt the flow of conversation and cause unnecessary frustration. This is why the server has a convention where members can add an asterisk (%%) to the end of their name to express that they would not like to be outright corrected unless they ask. Instead, others may react to their message with an asterisk (:smallcorrection: for small corrections, :bigcorrection: for bigger corrections) as needed, after which the member can make the corrections themself or ask for a correction.\n\n**Would you like me to add an asterisk after your nickname, to show that you prefer not to be corrected outright?**\n"
+      error: "Looks like something went wrong! Make sure your nickname isn't too long!"
     correspondence:
       description: "To manage the Correspondence System. .c (audit) (other params)"
       audit:
         dm: "\nHello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French\n"
       check:
         alreadyInCorrespondence: "What are you doing silly?! You're already in the correspondence system, no need to verify yourself!"
-        eligible: "Yay! Looks like you're eligible for the correspondence system! You can follow the steps in %% to apply."
-        ineligible: "\nLooks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel.\n"
+        selfEligible: "Yay! Looks like you're eligible for the correspondence system! You can follow the steps in %% to apply."
+        selfIneligible: "\nLooks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel.\n"
+        eligible: "Looks like %% is eligible for the correspondence system! They can follow the steps in %% to apply."
+        ineligible: "\nLooks like %% needs to spend more time in the server to be eligible for the correspondence system. They need to have been on the server for at least 10 days and have sent at least 100 messages or having spent ten hours in a voice chat in order to be eligible.\n"
       deny:
         dm: "Thank you for your interest in the correspondent system. Currently, to be able to apply, you need to have sent at least 100 messages (you can check this by typing `%%info` in the #bot-fun channel) and have been on the server for at least 10 days. You will easily reach this number if you come and talk in the discussion channels from time to time."
       done:
@@ -149,6 +158,10 @@ model:
       notice: "%% seems to need help in %%.\n%%"
       timeout: "Timed out! You may send the command again :eowynsheep: ."
       embedTitle: "Help command"
+    hideSeek:
+      description: "To show that you want to play the hide and seek game in the upcoming event"
+      alertsOn: "You now have the role!"
+      alertsOff: "You now no longer have the role."
     homework:
       description: "Explains rule 2 of our server"
       reply: "\nThis server is for learning, and not meant as a tool for cheating on academic assignments. Homework help is not allowed. You can ask about concepts related to homework, but no specific homework questions should be discussed.\n"
@@ -169,6 +182,7 @@ model:
         usernames: "Number of past usernames:"
         nicknames: "Number of past nicknames:"
         avatars: "Number of past avatars:"
+        customStatus: "Custom status:"
       usernames:
         none: "No past usernames found."
       nicknames:
@@ -197,6 +211,9 @@ model:
       noMembersGiven: "You did not give any member for whom level role must be set."
       roleNotFound: "Did not find any existing level role name in your message"
       setRole: "Set role \"%%\" to given member(s)!"
+    linguistList:
+      description: "Lists the current linguists:tm: of the server"
+      answer: "There are currently %% linguists:tm: of the server:"
     loadRoles:
       description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
@@ -212,6 +229,10 @@ model:
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
+    offers:
+      description: "To be notified when a new offer is posted"
+      alertsOn: "You will now be notified when there's a new offer. Thank you :lovehug:"
+      alertsOff: "You will now no longer be notified when there's a new offer."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
     preventSuicide:
@@ -220,6 +241,13 @@ model:
       notFound: "I don't know who that is"
     post:
       description: "Sends a message to the server from the bot"
+    questionOfTheDay:
+      description: "To post a new question of the day based off of Lawless French's word of the day"
+      footer: "\nReply in the french-speaking channels to practice!"
+      reply: "**%model.command.questionOfTheDay.replyParts.wordTitle%**\n%%\n\n**%model.command.questionOfTheDay.replyParts.questionTitle%**\n%%\n\n*%%*"
+      replyParts:
+        wordTitle: "Word of the day"
+        questionTitle: "Question of the day"
     quote:
       description: "Creates a quote of a member"
     quotes:
@@ -340,6 +368,9 @@ model:
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
+  lawlessFrench:
+    intervalHandler:
+      newWord: "**New word of the day by LawlessFrench:** %%"
   memberRolesFlow:
     noSpeakOnlyAnswer: "\n\n**__English__**\n> Sorry, I can't understand what you're saying :pensive: . But don't worry, you only need to **react** to the upcoming message :) !"
     start: "\n\n**__English__**\n> Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
