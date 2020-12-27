@@ -286,7 +286,7 @@ const PrivateVC = {
             content: `${hostMember}, someone wants to join your room!`,
             embed: embed,
         });
-        emojis.forEach(async emoji => await sentMessage.react(emoji));
+        emojis.forEach(emoji => sentMessage.react(emoji));
     },
 
     /**
