@@ -180,7 +180,7 @@ const PrivateVC = {
 
                     // Kicking the host member from the voice chat will trigger deletion of channels.
                     const hostMember = await Guild.discordGuild.member(user.id);
-                    hostMember.voice.setChannel(null);
+                    await hostMember.voice.setChannel(null);
                 });
             }
         }
