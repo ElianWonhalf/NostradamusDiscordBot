@@ -8,6 +8,9 @@ const PrivateVC = {
     /** {Object} */
     list: {},
 
+    /** {Object} */
+    pendingJoinRequests: {},
+
     /**
      * @returns {Promise}
      */
@@ -165,6 +168,7 @@ const PrivateVC = {
 
             // Make channel public or not?
             if (reaction.emoji.name === '🔓') {
+                PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
                 await PrivateVC.makePublic(user.id).then(async () => {
                     const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
 
@@ -184,6 +188,21 @@ const PrivateVC = {
                 });
             }
         }
+    },
+
+    moveWaitingGuestsToVoiceChannel: (voiceChannel) => {
+        if (!PrivateVC.pendingJoinRequests[voiceChannel.id]) {
+            return;
+        }
+
+        Object.entries(PrivateVC.pendingJoinRequests[voiceChannel.id]).forEach(async pair => {
+            const [memberID, message] = pair;
+            const member = Guild.discordGuild.member(memberID);
+            await member.voice.setChannel(voiceChannel);
+            await message.delete();
+        });
+
+        delete PrivateVC.pendingJoinRequests[voiceChannel.id];
     },
 
     /**
@@ -266,7 +285,7 @@ const PrivateVC = {
      * @param {VoiceState} newVoiceState
      */
     privateVoiceChatJoinHandler: async (requestor, newVoiceState) => {
-        const hostMember = await Guild.discordGuild.members.fetch(requestor);
+        const hostMember = Guild.discordGuild.member(requestor);
 
         const guestMember = newVoiceState.member;
         const guestUser = guestMember.user;
@@ -287,6 +306,9 @@ const PrivateVC = {
             embed: embed,
         });
         emojis.forEach(emoji => sentMessage.react(emoji));
+
+        PrivateVC.pendingJoinRequests[channels[1].id] = PrivateVC.pendingJoinRequests[channels[1].id] || {};
+        Object.assign(PrivateVC.pendingJoinRequests[channels[1].id], {[guestMember.id]: sentMessage});
     },
 
     /**
