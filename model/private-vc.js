@@ -247,9 +247,11 @@ const PrivateVC = {
             });
 
             const embed = new Discord.MessageEmbed().addFields([
-                {name: '🔓', value: 'Public', inline: true},
-                {name: '🔒', value: 'Private', inline: true},
-            ]).setTitle('Public or private channel?').setFooter('React below!').setColor(0x00FF00);
+                {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
+                {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
+            ]).setTitle(trans('model.privateVC.channelType.embed.title'))
+            .setFooter(trans('model.privateVC.channelType.embed.footer'))
+            .setColor(0x00FF00);
             const sentMessage = await textChannel.send({content: member, embed: embed});
             await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
         }
@@ -300,9 +302,9 @@ const PrivateVC = {
             )
             .setDescription(guestMember.toString())
             .setColor(0x00FF00)
-            .setFooter('Open the door?');
+            .setFooter(trans('model.privateVC.joinRequest.prompt'));
         const sentMessage = await channels[0].send({
-            content: `${hostMember}, someone wants to join your room!`,
+            content: trans('model.privateVC.joinRequest.notification', [hostMember]),
             embed: embed,
         });
         emojis.forEach(emoji => sentMessage.react(emoji));
