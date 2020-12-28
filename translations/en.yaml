@@ -412,6 +412,7 @@ model:
     joinRequest:
       notification: "%%, someone wants to join your room!"
       prompt: "Open the door?"
+    waitingRoomLabel: "Waiting room"
   blacklist:
     semi:
       triggered: "Semi-blacklist triggered by %% in %%\n%%"
