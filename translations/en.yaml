@@ -392,6 +392,9 @@ model:
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
   privateVC:
     channelType:
+      complete:
+        public: "%%, I made your voice chat public!"
+        private: "%%, I made your voice chat private!"
       embed:
         title: "Public or private channel?"
         footer: "React below!"
