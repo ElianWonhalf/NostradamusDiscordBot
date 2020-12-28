@@ -186,6 +186,10 @@ const PrivateVC = {
                     const hostMember = await Guild.discordGuild.member(user.id);
                     await hostMember.voice.setChannel(null);
                 });
+
+                await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
+            } else if (reaction.emoji.name === '🔒') {
+                await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
             }
         }
     },
