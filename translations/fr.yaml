@@ -284,3 +284,4 @@ model:
     joinRequest:
       notification: "%%, quelqu'un veut rejoindre ton salon !"
       prompt: "Ouvrir la porte ?"
+    waitingRoomLabel: "Attente"

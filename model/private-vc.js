@@ -170,13 +170,10 @@ const PrivateVC = {
             if (reaction.emoji.name === '🔓') {
                 PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
                 await PrivateVC.makePublic(user.id).then(async () => {
-                    const newVoiceChannelName = channels[1].name.replace('[Private] ', '');
-
                     await channels[2].delete();
                     channels.pop();
 
                     await channels.forEach(channel => channel.lockPermissions());
-                    await channels[1].setName(newVoiceChannelName);
                 }).catch(async exception => {
                     Logger.exception(exception);
                     await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
@@ -221,12 +218,12 @@ const PrivateVC = {
                 parent: Guild.smallVoiceCategoryChannel,
             });
 
-            voiceChannel = await member.guild.channels.create(`[Private] ${member.displayName}`, {
+            voiceChannel = await member.guild.channels.create(`${member.displayName}`, {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
             });
 
-            waitingChannel = await member.guild.channels.create("[Waiting room] ⬆️", {
+            waitingChannel = await member.guild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
             });
