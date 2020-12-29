@@ -86,7 +86,8 @@
     },
     "channelCategories": {
         "mod": [],
-        "smallGroupVocal": "",
+        "smallVoice": "",
+        "smallVoiceText": "",
         "vocal": []
     },
     "warnCommand": "!warn %id %reason",
