@@ -107,6 +107,9 @@ const Guild = {
     /** {CategoryChannel} */
     smallVoiceCategoryChannel: null,
 
+    /** {CategoryChannel} */
+    smallVoiceTextCategoryChannel: null,
+
     /** {VoiceChannel} */
     smallVoiceChatRequestChannel: null,
 
@@ -151,7 +154,8 @@ const Guild = {
         Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
 
         // Categories
-        Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallGroupVocal);
+        Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoice);
+        Guild.smallVoiceTextCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoiceText);
 
         // Level roles
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');

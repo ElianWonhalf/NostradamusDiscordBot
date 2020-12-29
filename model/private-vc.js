@@ -215,7 +215,7 @@ const PrivateVC = {
 
         try {
             textChannel = await member.guild.channels.create(`${member.displayName}`, {
-                parent: Guild.smallVoiceCategoryChannel,
+                parent: Guild.smallVoiceTextCategoryChannel,
             });
 
             voiceChannel = await member.guild.channels.create(`${member.displayName}`, {
