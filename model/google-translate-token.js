@@ -81,16 +81,20 @@ function updateTKK() {
             resolve();
         } else {
             got('https://translate.google.com').then(function (res) {
-                const code = res.body.match(/tkk:'([^']+)'/g)[0].replace(/tkk:'([^']+)'/, '$1');
+                const matches = res.body.match(/tkk:'([^']+)'/g);
 
-                if (code) {
-                    const TKK = code;
-                    /* eslint-disable no-undef */
-                    if (typeof TKK !== 'undefined') {
-                        window.TKK = TKK;
-                        config.set('TKK', TKK);
+                if (matches.length > 0) {
+                    const code = matches[0].replace(/tkk:'([^']+)'/, '$1');
+
+                    if (code) {
+                        const TKK = code;
+                        /* eslint-disable no-undef */
+                        if (typeof TKK !== 'undefined') {
+                            window.TKK = TKK;
+                            config.set('TKK', TKK);
+                        }
+                        /* eslint-enable no-undef */
                     }
-                    /* eslint-enable no-undef */
                 }
 
                 /**
