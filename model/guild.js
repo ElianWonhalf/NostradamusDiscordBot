@@ -107,6 +107,9 @@ const Guild = {
     /** {TextChannel} */
     lessonOfTheDayChannel: null,
 
+    /** {TextChannel} */
+    selfieChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -140,6 +143,7 @@ const Guild = {
         Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
         Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
+        Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
 
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
