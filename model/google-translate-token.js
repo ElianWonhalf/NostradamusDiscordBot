@@ -83,7 +83,7 @@ function updateTKK() {
             got('https://translate.google.com').then(function (res) {
                 const matches = res.body.match(/tkk:'([^']+)'/g);
 
-                if (matches.length > 0) {
+                if (matches && matches.length > 0) {
                     const code = matches[0].replace(/tkk:'([^']+)'/, '$1');
 
                     if (code) {
