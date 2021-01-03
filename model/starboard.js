@@ -68,17 +68,16 @@ const Starboard = {
     },
 
     /**
-     * @param {int} starCount
      * @param {Message} message
      */
-    postMessageToStarboard: async (starCount, message) => {
+    postMessageToStarboard: async (message) => {
         const embed = await Guild.messageToEmbed(message);
 
         embed.setDescription(`${embed.description}\n\n[Message 👀](${message.url})`);
         embed.setTimestamp(message.createdTimestamp);
 
         const starboardMessage = await Guild.starboardChannel.send(
-            `⭐ ${starCount}\n${message.channel.toString()}`,
+            `⭐ ${message.channel.toString()}`,
             { embed }
         );
 
@@ -96,7 +95,7 @@ const Starboard = {
 
             if (starReactions && starReactions.count >= Starboard.MIN_NB_STARS) {
                 if (!starboardMessage) {
-                    await Starboard.postMessageToStarboard(starReactions.count, message);
+                    await Starboard.postMessageToStarboard(message);
                 }
             } else {
                 if (starboardMessage) {
