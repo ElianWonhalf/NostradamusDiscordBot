@@ -2,6 +2,7 @@ const SocialNetworkIntegration = require('../../model/social-network-integration
 const MemberRolesFlow = require('../../model/member-roles-flow');
 const DM = require('../../model/dm');
 const Correction = require('../../model/correction');
+const Starboard = require('../../model/starboard');
 
 /**
  * @param {MessageReaction} reaction
@@ -13,5 +14,6 @@ module.exports = async (reaction, user) => {
         MemberRolesFlow.handleReaction(reaction, user);
         DM.handleReaction(reaction, user);
         Correction.handleReaction(reaction, user);
+        Starboard.handleReaction(reaction);
     }
 };
