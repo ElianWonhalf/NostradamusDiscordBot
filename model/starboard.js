@@ -1,3 +1,4 @@
+const { MessageAttachment } = require('discord.js');
 const Config = require('../config.json');
 const db = require('./db');
 const Guild = require('./guild');
@@ -78,7 +79,12 @@ const Starboard = {
 
         const starboardMessage = await Guild.starboardChannel.send(
             `⭐ ${message.channel.toString()}`,
-            { embed }
+            {
+                embed,
+                files: message.attachments.map(messageAttachment => {
+                    return new MessageAttachment(messageAttachment.url, messageAttachment.filename);
+                })
+            }
         );
 
         await Starboard.add(message.id, starboardMessage.id);
