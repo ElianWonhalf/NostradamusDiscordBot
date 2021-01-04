@@ -227,15 +227,7 @@ const PrivateVC = {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
             });
-        } catch (exception) {
-            Logger.exception(exception);
-            await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()], 'en'));
-            await member.send(trans('model.privateVC.errors.creationFailed.member'));
-            await member.voice.setChannel(oldVoiceState.channel);
-            exception.payload.forEach(channel => channel.delete());
-        }
 
-        if (textChannel && voiceChannel && waitingChannel) {
             await Promise.all([
                 textChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
                 textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
@@ -246,16 +238,25 @@ const PrivateVC = {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
             });
-
-            const embed = new Discord.MessageEmbed().addFields([
-                {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
-                {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
-            ]).setTitle(trans('model.privateVC.channelType.embed.title'))
-            .setFooter(trans('model.privateVC.channelType.embed.footer'))
-            .setColor(0x00FF00);
-            const sentMessage = await textChannel.send({content: member, embed: embed});
-            await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
+        } catch (exception) {
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()], 'en'));
+            await member.send(trans('model.privateVC.errors.creationFailed.member'));
+            await member.voice.setChannel(oldVoiceState.channel);
+            if (exception.payload) {
+                exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+            }
+            return;
         }
+
+        const embed = new Discord.MessageEmbed().addFields([
+            {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
+            {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
+        ]).setTitle(trans('model.privateVC.channelType.embed.title'))
+        .setFooter(trans('model.privateVC.channelType.embed.footer'))
+        .setColor(0x00FF00);
+        const sentMessage = await textChannel.send({content: member, embed: embed});
+        await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
     },
 
     /**
