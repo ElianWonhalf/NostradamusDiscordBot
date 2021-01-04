@@ -412,6 +412,9 @@ model:
     joinRequest:
       notification: "%%, someone wants to join your room!"
       prompt: "Open the door?"
+    requestChannelName:
+      available: "Create room"
+      full: "Full"
     waitingRoomLabel: "Waiting room"
   blacklist:
     semi:

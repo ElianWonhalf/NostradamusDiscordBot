@@ -284,4 +284,7 @@ model:
     joinRequest:
       notification: "%%, quelqu'un veut rejoindre ton salon !"
       prompt: "Ouvrir la porte ?"
+    requestChannelName:
+      available: "Créer salon"
+      full: "Complet"
     waitingRoomLabel: "Attente"
