@@ -79,7 +79,7 @@ model:
         usito: "[**Usito**](https://usito.usherbrooke.ca/) est un dictionnaire monolingue avec beaucoup d'autres informations, incluant les particularités de différents dialectes."
         deepl: "[**Deepl**](https://www.deepl.com/translator) est un traducteur qui marche bien pour les phrases et paragraphes, mais pas vraiment pour les mots individuels."
         googleTranslate: "[**Google Translate**](https://translate.google.com/) traduit assez bien quand il n'y a qu'un ou deux mots, mais moins bien pour les phrases plus longues."
-        reversoContextAndLinguee: "[**Reverso Context**](https://context.reverso.net/traduction/) et [**Linguee**](https://www.linguee.fr/) sont des dictionnaires qui marchent bien pour voir comment d'autres personnes ont traduit des expressions ou des mots en contexte, mais il faut être prudent car ces traductions sont rarement vérifiés."
+        reversoContextAndLinguee: "[**Reverso Context**](https://context.reverso.net/traduction/) et [**Linguee**](https://www.linguee.fr/) sont des dictionnaires qui marchent bien pour voir comment d'autres personnes ont traduit des expressions ou des mots en contexte, mais il faut être prudent car ces traductions sont rarement vérifiées."
     dm:
       description: "Permet aux Modos de répondre aux Messages Privés envoyés au bot"
       noMessage: "N'oublie pas d'ajouter ton message, sinon j'ai rien à envoyer !"

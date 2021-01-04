@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const Config = require('../../../config.json');
 const CommandPermission = require('../../command-permission');
+const Guild = require('../../guild');
 const StatMessages = require('../../stat-messages');
 const StatMemberFlow = require('../../stat-member-flow');
 const StatVocal = require('../../stat-vocal');
@@ -190,7 +191,11 @@ module.exports = async (message, target) => {
     }
 
     if (target.user) {
-        description = `${description}\n\n${target.roles.cache.array().join(' ')}`;
+        const roles = target.roles.cache.filter(
+            role => role.id !== Guild.discordGuild.roles.everyone.id
+        ).array().join(' ');
+
+        description = `${description}\n\n${roles}`;
     }
 
     description += `\n\n${information.join('\n')}`;
