@@ -116,6 +116,9 @@ const Guild = {
     /** {TextChannel} */
     lessonOfTheDayChannel: null,
 
+    /** {TextChannel} */
+    selfieChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -152,6 +155,7 @@ const Guild = {
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
         Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
         Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
+        Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
 
         // Categories
         Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoice);
