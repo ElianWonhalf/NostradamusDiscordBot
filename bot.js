@@ -64,6 +64,7 @@ const botProcess = () => {
     const CallerId = require('caller-id');
 
     global.bot = new Client({ fetchAllMembers: true });
+    global.perCategoryChannelLimit = 50;
     global.isRightGuild = (guildSnowflake) => guildSnowflake === Config.guild;
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {

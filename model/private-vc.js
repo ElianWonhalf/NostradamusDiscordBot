@@ -168,12 +168,20 @@ const PrivateVC = {
 
             // Make channel public or not?
             if (reaction.emoji.name === '🔓') {
+                const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
                 PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
                 await PrivateVC.makePublic(user.id).then(async () => {
                     await channels[2].delete();
                     channels.pop();
 
                     await channels.forEach(channel => channel.lockPermissions());
+                    await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
+
+                    // If deleting waiting channel for target private VC leaves room for two new channels,
+                    // unlock VC request channel.
+                    if (voiceChannelsCount - 1 <= perCategoryChannelLimit - 2) {
+                        PrivateVC.unlockRequestChannel();
+                    }
                 }).catch(async exception => {
                     Logger.exception(exception);
                     await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
@@ -183,14 +191,25 @@ const PrivateVC = {
                     const hostMember = await Guild.discordGuild.member(user.id);
                     await hostMember.voice.setChannel(null);
                 });
-
-                await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
             } else if (reaction.emoji.name === '🔒') {
                 await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
             }
         }
     },
 
+    lockRequestChannel: async () => {
+        await Guild.smallVoiceChatRequestChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false, CONNECT: false});
+        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.full'));
+    },
+
+    unlockRequestChannel: async () => {
+        await Guild.smallVoiceChatRequestChannel.lockPermissions();
+        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.available'));
+    },
+
+    /**
+     * @param {VoiceChannel} voiceChannel
+     */
     moveWaitingGuestsToVoiceChannel: (voiceChannel) => {
         if (!PrivateVC.pendingJoinRequests[voiceChannel.id]) {
             return;
@@ -211,6 +230,7 @@ const PrivateVC = {
      * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatRequestHandler: async (member, oldVoiceState) => {
+        const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
         let textChannel, voiceChannel, waitingChannel;
 
         try {
@@ -249,6 +269,12 @@ const PrivateVC = {
             return;
         }
 
+        // If fulfilling current private VC request doesn't leave room for two new channels,
+        // lock VC request channel.
+        if (voiceChannelsCount + 2 > perCategoryChannelLimit - 2) {
+            PrivateVC.lockRequestChannel();
+        }
+
         const embed = new Discord.MessageEmbed().addFields([
             {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
             {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
@@ -264,15 +290,15 @@ const PrivateVC = {
      * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatDeletionHandler: async (member, oldVoiceState) => {
+        const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
         const channels = PrivateVC.list[member.id].map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
+        const foundChannels = channels.filter(channel => channel !== undefined);
+        const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
-        await Promise.all(channels.filter(channel => channel !== undefined).map(
-            channel => channel.delete()
-        ));
-
-        return PrivateVC.remove(member.id).catch(async exception => {
+        await Promise.all(foundChannels.map(channel => channel.delete()));
+        await PrivateVC.remove(member.id).catch(async exception => {
             Logger.exception(exception);
             await Guild.botChannel.send(
                 trans(
@@ -282,6 +308,12 @@ const PrivateVC = {
                 )
             );
         });
+
+        // If deleting channel(s) for current private VC leaves room for two new channels,
+        // unlock VC request channel.
+        if (voiceChannelsCount - voiceChannelsToDeleteCount <= perCategoryChannelLimit - 2) {
+            PrivateVC.unlockRequestChannel();
+        }
     },
 
     /**
