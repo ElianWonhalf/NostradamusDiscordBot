@@ -11,6 +11,9 @@ const PrivateVC = {
     /** {Object} */
     pendingJoinRequests: {},
 
+    /** {bool} */
+    shutdown: false,
+
     /**
      * @returns {Promise}
      */
@@ -198,13 +201,28 @@ const PrivateVC = {
     },
 
     lockRequestChannel: async () => {
+        if (PrivateVC.shutdown) {
+            await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.closed'));
+        } else {
+            await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.full'));
+        }
         await Guild.smallVoiceChatRequestChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false, CONNECT: false});
-        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.full'));
     },
 
     unlockRequestChannel: async () => {
-        await Guild.smallVoiceChatRequestChannel.lockPermissions();
         await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.available'));
+        await Guild.smallVoiceChatRequestChannel.lockPermissions();
+    },
+
+    emergencyShutdown: async () => {
+        PrivateVC.shutdown = true;
+        PrivateVC.lockRequestChannel();
+        PrivateVC.pendingJoinRequests = {};
+
+        Object.keys(PrivateVC.list).forEach(async memberID => {
+            const member = await Guild.discordGuild.member(memberID);
+            await member.voice.setChannel(null);
+        });
     },
 
     /**
@@ -316,7 +334,7 @@ const PrivateVC = {
 
         // If deleting channel(s) for current private VC leaves room for two new channels,
         // unlock VC request channel.
-        if (voiceChannelsCount - voiceChannelsToDeleteCount <= channelPerCategoryLimit - 2) {
+        if (!PrivateVC.shutdown && voiceChannelsCount - voiceChannelsToDeleteCount <= channelPerCategoryLimit - 2) {
             PrivateVC.unlockRequestChannel();
         }
     },

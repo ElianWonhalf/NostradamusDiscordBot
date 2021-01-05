@@ -235,12 +235,16 @@ model:
       alertsOff: "You will now no longer be notified when there's a new offer."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
+    post:
+      description: "Sends a message to the server from the bot"
     preventSuicide:
       description: "Sends a DM to a user with all the useful resource to prevent suicide"
       nonNative: "Hello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team"
       notFound: "I don't know who that is"
-    post:
-      description: "Sends a message to the server from the bot"
+    privateVc:
+      description: "Manage on-demand private VC system"
+      error:
+        missingAction: "You must specify an action."
     questionOfTheDay:
       description: "To post a new question of the day based off of Lawless French's word of the day"
       footer: "\nReply in the french-speaking channels to practice!"
@@ -414,6 +418,7 @@ model:
       prompt: "Open the door?"
     requestChannelName:
       available: "Create room"
+      closed: "Closed"
       full: "Full"
     waitingRoomLabel: "Waiting room"
   blacklist:
