@@ -201,17 +201,17 @@ const PrivateVC = {
     },
 
     lockRequestChannel: async () => {
+        await Guild.smallVoiceChatRequestChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false, CONNECT: false});
         if (PrivateVC.shutdown) {
             await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.closed'));
         } else {
             await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.full'));
         }
-        await Guild.smallVoiceChatRequestChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false, CONNECT: false});
     },
 
     unlockRequestChannel: async () => {
-        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.available'));
         await Guild.smallVoiceChatRequestChannel.lockPermissions();
+        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.available'));
     },
 
     emergencyShutdown: async () => {
