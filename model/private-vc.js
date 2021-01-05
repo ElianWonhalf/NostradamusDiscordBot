@@ -179,7 +179,7 @@ const PrivateVC = {
 
                     // If deleting waiting channel for target private VC leaves room for two new channels,
                     // unlock VC request channel.
-                    if (voiceChannelsCount - 1 <= perCategoryChannelLimit - 2) {
+                    if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
                         PrivateVC.unlockRequestChannel();
                     }
                 }).catch(async exception => {
@@ -263,24 +263,29 @@ const PrivateVC = {
             await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()], 'en'));
             await member.send(trans('model.privateVC.errors.creationFailed.member'));
             await member.voice.setChannel(oldVoiceState.channel);
+
             if (exception.payload) {
                 exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
             }
+
             return;
         }
 
         // If fulfilling current private VC request doesn't leave room for two new channels,
         // lock VC request channel.
-        if (voiceChannelsCount + 2 > perCategoryChannelLimit - 2) {
+        if (voiceChannelsCount + 2 > channelPerCategoryLimit - 2) {
             PrivateVC.lockRequestChannel();
         }
 
-        const embed = new Discord.MessageEmbed().addFields([
-            {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
-            {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
-        ]).setTitle(trans('model.privateVC.channelType.embed.title'))
-        .setFooter(trans('model.privateVC.channelType.embed.footer'))
-        .setColor(0x00FF00);
+        const embed = new Discord.MessageEmbed()
+            .addFields([
+                {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
+                {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
+            ])
+            .setTitle(trans('model.privateVC.channelType.embed.title'))
+            .setFooter(trans('model.privateVC.channelType.embed.footer'))
+            .setColor(0x00FF00);
+
         const sentMessage = await textChannel.send({content: member, embed: embed});
         await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
     },
@@ -311,7 +316,7 @@ const PrivateVC = {
 
         // If deleting channel(s) for current private VC leaves room for two new channels,
         // unlock VC request channel.
-        if (voiceChannelsCount - voiceChannelsToDeleteCount <= perCategoryChannelLimit - 2) {
+        if (voiceChannelsCount - voiceChannelsToDeleteCount <= channelPerCategoryLimit - 2) {
             PrivateVC.unlockRequestChannel();
         }
     },
