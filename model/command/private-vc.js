@@ -23,6 +23,7 @@ class PrivateVc
     async process(message, args) {
         if (args.length > 0) {
             const action = args.shift().toLowerCase();
+            const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
 
             switch (action) {
                 case 'lock':
@@ -39,6 +40,8 @@ class PrivateVc
                 case 'shutdown':
                     PrivateVC.emergencyShutdown();
             }
+
+            await message.react(emoji);
         } else {
             message.reply(trans('model.command.privateVc.error.missingAction', [], 'en'));
         }
