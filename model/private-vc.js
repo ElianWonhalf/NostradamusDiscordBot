@@ -61,7 +61,7 @@ const PrivateVC = {
 
         if (channelIDs && oldVoiceState.channelID === channelIDs[1]) {
             // Delete VC
-            PrivateVC.privateVoiceChatDeletionHandler(member, oldVoiceState);
+            PrivateVC.privateVoiceChatDeletionHandler(member);
         }
     },
 
@@ -294,7 +294,7 @@ const PrivateVC = {
      * @param {GuildMember} member
      * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatDeletionHandler: async (member, oldVoiceState) => {
+    privateVoiceChatDeletionHandler: async (member) => {
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
         const channels = PrivateVC.list[member.id].map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
