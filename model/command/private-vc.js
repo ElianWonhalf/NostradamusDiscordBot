@@ -1,14 +1,14 @@
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
-const PrivateVC = require('../private-vc');
+const PrivateVCModel = require('../private-vc');
 
-class PrivateVc
+class PrivateVC
 {
     static instance = null;
 
     constructor() {
-        if (PrivateVc.instance !== null) {
-            return PrivateVc.instance;
+        if (PrivateVC.instance !== null) {
+            return PrivateVC.instance;
         }
 
         this.aliases = ['privatevc', 'pvc'];
@@ -28,17 +28,20 @@ class PrivateVc
             switch (action) {
                 case 'lock':
                 case 'close':
-                    PrivateVC.lockRequestChannel();
+                    PrivateVCModel.lockRequestChannel();
                     break;
 
                 case 'unlock':
                 case 'open':
-                    PrivateVC.shutdown = false;
-                    PrivateVC.unlockRequestChannel();
+                    PrivateVCModel.shutdown = false;
+                    PrivateVCModel.unlockRequestChannel();
                     break;
 
                 case 'shutdown':
-                    PrivateVC.emergencyShutdown();
+                    PrivateVCModel.emergencyShutdown();
+
+                default:
+                    message.reply(trans('model.command.privateVC.error.unknownAction', [action], 'en'));
             }
 
             await message.react(emoji);

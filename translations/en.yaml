@@ -241,10 +241,11 @@ model:
       description: "Sends a DM to a user with all the useful resource to prevent suicide"
       nonNative: "Hello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team"
       notFound: "I don't know who that is"
-    privateVc:
+    privateVC:
       description: "Manage on-demand private VC system"
       error:
         missingAction: "You must specify an action."
+        unknownAction: "%% is not a valid action."
     questionOfTheDay:
       description: "To post a new question of the day based off of Lawless French's word of the day"
       footer: "\nReply in the french-speaking channels to practice!"
