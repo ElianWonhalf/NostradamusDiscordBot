@@ -161,6 +161,11 @@ const PrivateVC = {
                     return;
                 }
 
+                if (guestMember.voice.channelID !== channelIDs[2]) {
+                    await channels[0].send(trans('model.privateVC.errors.memberNotWaiting', [guestMember.displayName]));
+                    return;
+                }
+
                 if (reaction.emoji.name === 'pollyes') {
                     await guestMember.voice.setChannel(channels[1]);
                     await channels[0].updateOverwrite(guestMember, {VIEW_CHANNEL: true});
