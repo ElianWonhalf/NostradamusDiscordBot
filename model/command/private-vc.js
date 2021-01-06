@@ -46,9 +46,9 @@ class PrivateVC
 
             await message.react(emoji);
         } else {
-            message.reply(trans('model.command.privateVc.error.missingAction', [], 'en'));
+            message.reply(trans('model.command.privateVC.error.missingAction', [], 'en'));
         }
     }
 }
 
-module.exports = new PrivateVc();
+module.exports = new PrivateVC();
