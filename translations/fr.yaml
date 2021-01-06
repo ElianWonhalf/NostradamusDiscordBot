@@ -281,6 +281,7 @@ model:
       creationFailed:
         member: "Salut ! Désolé, je n'ai pas pu créer ton VC :( Tu peux réessayer, s'il te plaît ?"
       memberNotFound: "Désolé, je ne reconnais pas le membre qui veut rejoindre le salon, je ne peux pas le faire rentrer."
+      memberNotWaiting: "%% a quitté la salle d'attente, je ne vais pas le déplacer dans ton salon."
       modificationFailed:
         member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
     joinRequest:
