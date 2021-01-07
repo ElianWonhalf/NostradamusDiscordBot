@@ -33,6 +33,10 @@ const PrivateVC = {
      * @param {VoiceState} newVoiceState
      */
     privateVCHandler: (member, oldVoiceState, newVoiceState) => {
+        if (oldVoiceState.channelID === newVoiceState.channelID) {
+            return;
+        }
+
         const channelIDs = PrivateVC.list[member.id];
 
         if (newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
