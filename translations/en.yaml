@@ -245,6 +245,7 @@ model:
       description: "Manage on-demand private VC system"
       error:
         missingAction: "You must specify an action."
+        misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
         unknownAction: "%% is not a valid action."
     questionOfTheDay:
       description: "To post a new question of the day based off of Lawless French's word of the day"
