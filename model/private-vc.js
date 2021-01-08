@@ -128,6 +128,14 @@ const PrivateVC = {
     },
 
     /**
+     * @param {TextChannel} channel
+     */
+    deleteTextChannelMessages: async (channel) => {
+        const messages = await channel.messages.fetch();
+        await Promise.all(messages.filter(message => message.author.id !== bot.user.id).map(message => message.delete()));
+    },
+
+    /**
      * @returns {Array}
      */
     getPrivateChannelsList: () => {
@@ -328,6 +336,8 @@ const PrivateVC = {
         );
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
+
+        await PrivateVC.deleteTextChannelMessages(channels[0]);
 
         await Promise.all(foundChannels.map(channel => channel.delete()));
         await PrivateVC.remove(member.id).catch(async exception => {
