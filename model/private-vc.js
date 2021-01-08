@@ -341,11 +341,8 @@ const PrivateVC = {
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
-        await Promise.all([
-            channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
-            channels[0].updateOverwrite(member, {VIEW_CHANNEL: false}),
-        ]);
-        
+        await channels[0].lockPermissions();
+        await channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false});
         await PrivateVC.deleteTextChannelMessages(channels[0]);
         await Promise.all(foundChannels.map(channel => channel.delete()));
         await PrivateVC.remove(member.id).catch(async exception => {
