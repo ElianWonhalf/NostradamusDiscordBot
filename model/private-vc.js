@@ -128,6 +128,17 @@ const PrivateVC = {
     },
 
     /**
+     * @param {TextChannel} channel
+     */
+    deleteTextChannelMessages: async (channel) => {
+        let deletedMessages;
+
+        do {
+            deletedMessages = await channel.bulkDelete(100);
+        } while (deletedMessages.size > 0);
+    },
+
+    /**
      * @returns {Array}
      */
     getPrivateChannelsList: () => {
@@ -280,6 +291,7 @@ const PrivateVC = {
                 textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
                 voiceChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
             ]);
+
             await member.voice.setChannel(voiceChannel);
             await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
@@ -329,6 +341,9 @@ const PrivateVC = {
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
+        await channels[0].lockPermissions();
+        await channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false});
+        await PrivateVC.deleteTextChannelMessages(channels[0]);
         await Promise.all(foundChannels.map(channel => channel.delete()));
         await PrivateVC.remove(member.id).catch(async exception => {
             Logger.exception(exception);
