@@ -345,8 +345,8 @@ const PrivateVC = {
             channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
             channels[0].updateOverwrite(member, {VIEW_CHANNEL: false}),
         ]);
+        
         await PrivateVC.deleteTextChannelMessages(channels[0]);
-
         await Promise.all(foundChannels.map(channel => channel.delete()));
         await PrivateVC.remove(member.id).catch(async exception => {
             Logger.exception(exception);
