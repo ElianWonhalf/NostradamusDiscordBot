@@ -131,8 +131,10 @@ const PrivateVC = {
      * @param {TextChannel} channel
      */
     deleteTextChannelMessages: async (channel) => {
-        const messages = await channel.messages.fetch();
-        await Promise.all(messages.filter(message => message.author.id !== bot.user.id).map(message => message.delete()));
+        let deletedMessages;
+        do {
+            deletedMessages = await channel.bulkDelete(100);
+        } while (deletedMessages.size > 0);
     },
 
     /**
@@ -337,6 +339,10 @@ const PrivateVC = {
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
+        await Promise.all([
+            channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+            channels[0].updateOverwrite(member, {VIEW_CHANNEL: true}),
+        ]);
         await PrivateVC.deleteTextChannelMessages(channels[0]);
 
         await Promise.all(foundChannels.map(channel => channel.delete()));
