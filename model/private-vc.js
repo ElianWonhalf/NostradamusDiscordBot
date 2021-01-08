@@ -132,6 +132,7 @@ const PrivateVC = {
      */
     deleteTextChannelMessages: async (channel) => {
         let deletedMessages;
+
         do {
             deletedMessages = await channel.bulkDelete(100);
         } while (deletedMessages.size > 0);
@@ -290,6 +291,7 @@ const PrivateVC = {
                 textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
                 voiceChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
             ]);
+
             await member.voice.setChannel(voiceChannel);
             await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
