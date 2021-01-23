@@ -128,6 +128,32 @@ const PrivateVC = {
     },
 
     /**
+     * @param {string} requestor
+     * @param {string} waitingChannelID
+     * @returns {Promise}
+     */
+    makePrivate: (requestor, waitingChannelID) => {
+        return new Promise((resolve, reject) => {
+            db.query(`UPDATE private_vc SET waiting_channel = ? WHERE requestor = ?`, [waitingChannelID, requestor], (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    PrivateVC.list[requestor].push(waitingChannelID);
+                    resolve();
+                }
+            });
+        });
+    },
+
+    /**
+     * @param {string} requestor
+     * @returns {bool}
+     */
+    isPrivate: (requestor) => {
+        return PrivateVC.list[requestor][2] !== undefined;
+    },
+
+    /**
      * @param {TextChannel} channel
      */
     deleteTextChannelMessages: async (channel) => {
@@ -155,6 +181,7 @@ const PrivateVC = {
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
         const requestorReacted = user.id !== bot.user.id && channelIDs && channelIDs[0] === message.channel.id;
+        const channelTypeReactionEmojis = ['🔒', '🔓'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
         if (hasSingleEmbed && isByMe && requestorReacted) {
@@ -165,11 +192,12 @@ const PrivateVC = {
             }
 
             const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
-
-            await message.delete();
+            const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
 
             // Let member knocking on door in or not?
             if (joinRequestReactionEmojis.includes(reaction.emoji.name)) {
+                await message.delete();
+
                 const guestMember = await Guild.getMemberFromMention(message.embeds[0].description);
                 if (guestMember === null) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
@@ -189,33 +217,70 @@ const PrivateVC = {
                 }
             }
 
-            // Make channel public or not?
-            if (reaction.emoji.name === '🔓') {
-                const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
-                PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
-                await PrivateVC.makePublic(user.id).then(async () => {
-                    await channels[2].delete();
-                    channels.pop();
+            // Make channel public or private
+            if (channelTypeReactionEmojis.includes(reaction.emoji.name)) {
+                if (reaction.emoji.name === '🔓' && PrivateVC.isPrivate(user.id)) {
+                    PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
+                    await PrivateVC.makePublic(user.id).then(async () => {
+                        await channels[2].delete();
+                        channels.pop();
 
-                    await channels.forEach(channel => channel.lockPermissions());
-                    await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
+                        await channels.forEach(channel => channel.lockPermissions());
+                        await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
 
-                    // If deleting waiting channel for target private VC leaves room for two new channels,
-                    // unlock VC request channel.
-                    if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
-                        PrivateVC.unlockRequestChannel();
+                        // If deleting waiting channel for target private VC leaves room for two new channels,
+                        // unlock VC request channel.
+                        if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
+                            PrivateVC.unlockRequestChannel();
+                        }
+                    }).catch(async exception => {
+                        Logger.exception(exception);
+                        await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
+                        await user.send(trans('model.privateVC.errors.modificationFailed.member'));
+
+                        // Kicking the host member from the voice chat will trigger deletion of channels.
+                        const hostMember = await Guild.discordGuild.member(user.id);
+                        await hostMember.voice.setChannel(null);
+                    });
+                } else if (reaction.emoji.name === '🔒' && !PrivateVC.isPrivate(user.id)) {
+                    let waitingChannel;
+
+                    try {
+                        waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
+                            type: 'voice',
+                            parent: Guild.smallVoiceCategoryChannel,
+                            position: channels[1].rawPosition,
+                        });
+
+                        await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
+                            exception.payload = [channels[0], channels[1], waitingChannel];
+                            throw exception;
+                        });
+                    } catch (exception) {
+                        const hostMember = await Guild.discordGuild.member(user.id);
+
+                        Logger.exception(exception);
+                        await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [member.toString()], 'en'));
+                        await hostMember.send(trans('model.privateVC.errors.modificationFailed.member'));
+                        await hostMember.voice.setChannel(oldVoiceState.channel);
+
+                        if (exception.payload) {
+                            exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+                        }
+
+                        return;
                     }
-                }).catch(async exception => {
-                    Logger.exception(exception);
-                    await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
-                    await user.send(trans('model.privateVC.errors.modificationFailed.member'));
 
-                    // Kicking the host member from the voice chat will trigger deletion of channels.
-                    const hostMember = await Guild.discordGuild.member(user.id);
-                    await hostMember.voice.setChannel(null);
-                });
-            } else if (reaction.emoji.name === '🔒') {
-                await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
+                    // If fulfilling current private VC request doesn't leave room for two new channels,
+                    // lock VC request channel.
+                    if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
+                        PrivateVC.lockRequestChannel();
+                    }
+
+                    await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
+                }
+
+                await reaction.users.remove(user);
             }
         }
     },
@@ -327,6 +392,7 @@ const PrivateVC = {
 
         const sentMessage = await textChannel.send({content: member, embed: embed});
         await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
+        await sentMessage.pin();
     },
 
     /**

@@ -245,6 +245,7 @@ model:
       description: "Manage on-demand private VC system"
       error:
         missingAction: "You must specify an action."
+        misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
         unknownAction: "%% is not a valid action."
     pronouns:
       description: "To add one's pronoun roles"
@@ -418,8 +419,8 @@ model:
       memberNotFound: "Sorry, I don't recognize the member who wants to join the room, I cannot let them in."
       memberNotWaiting: "%% has left the waiting room, I will not move them to your room."
       modificationFailed:
-        member: "I failed to make your VC public, panicked and deleted your channels in the process :( Can you try again?"
-        mods: "%% wanted to make their VC public, but I encountered an error doing so"
+        member: "I failed to change the type of your VC, panicked and deleted your channels in the process :( Can you try again?"
+        mods: "%% wanted to change the type of their VC, but I encountered an error doing so"
     joinRequest:
       notification: "%%, someone wants to join your room!"
       prompt: "Open the door?"

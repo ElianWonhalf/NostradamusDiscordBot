@@ -171,6 +171,8 @@ model:
       nonNative: "Bonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nL'équipe de modération de French"
     privateVC:
       description: "Pour gérer le système de salons vocaux privés sur demande."
+      error:
+        misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
     pronouns:
       description: "Pour s'assigner les rôles de pronoms"
       reply: "Pour t'assigner des rôles de pronoms, tape `.il`, `.elle` ou `.iel` selon le(s) rôle(s) que tu veux t'assigner"
