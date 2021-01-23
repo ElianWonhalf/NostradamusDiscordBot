@@ -4,12 +4,14 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
 /**
+ * @param {GuildMember} member
+ * @param {Message} message
  * @param {string} roleSnowflake
- * @param {boolean} adding 
+ * @param {boolean} adding
  */
-const handlePronoun = async (roleSnowflake, adding) => {
+const handlePronoun = async (member, message, roleSnowflake, adding) => {
     const role = Guild.discordGuild.roles.cache.get(roleSnowflake);
-        
+
     if (member.roles.cache.has(role.id)) {
         if (!adding) {
             await member.roles.remove(role.id).then(() => {
@@ -75,7 +77,7 @@ class Pronouns
             pronounsToHandle.push(roleMap[calledCommand]);
             adding = adding || !member.roles.cache.has(roleMap[calledCommand]);
         }
-        
+
         for (let arg of args.map(arg => arg.toLowerCase())) {
             if (Object.keys(roleMap).includes(arg) && !pronounsToHandle.includes(roleMap[arg])) {
                 pronounsToHandle.push(roleMap[arg]);
@@ -85,7 +87,7 @@ class Pronouns
 
         if (pronounsToHandle.length > 0) {
             for (let roleSnowflake of pronounsToHandle) {
-                await handlePronoun(roleSnowflake, adding);
+                await handlePronoun(member, message, roleSnowflake, adding);
             }
         } else {
             message.reply(trans('model.command.pronouns.reply'));
