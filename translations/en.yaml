@@ -196,8 +196,8 @@ model:
       description: "Set native language"
       request: "Language tag requested by %%: %%"
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
-      added: ":eowynsheep: All good, I **added** the role \"%%\" to your profile !"
-      removed: ":eowynsheep: All good, I **removed** the role \"%%\" from your profile !"
+      added: ":eowynsheep: All good, I **gave** you the role \"%%\"!"
+      removed: ":eowynsheep: All good, I **removed** the role \"%%\" for you!"
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
@@ -246,6 +246,11 @@ model:
       error:
         missingAction: "You must specify an action."
         unknownAction: "%% is not a valid action."
+    pronouns:
+      description: "To add one's pronoun roles"
+      reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
+      added: ":eowynsheep: All good, I **gave** you the role(s) \"%%\"!"
+      removed: ":eowynsheep: All good, I **removed** the role(s) \"%%\" for you!"
     questionOfTheDay:
       description: "To post a new question of the day based off of Lawless French's word of the day"
       footer: "\nReply in the french-speaking channels to practice!"
