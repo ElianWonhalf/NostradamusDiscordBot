@@ -67,7 +67,7 @@ const Command = {
                     const commandInstance = cachelessRequire(Command.commandList.get(commandName));
 
                     if (commandInstance !== null) {
-                        commandInstance.process(message, args, Command);
+                        commandInstance.process(message, args, calledCommand, Command);
 
                         if (commandName !== 'anonymous') {
                             Logger.info(`Command ${commandName} called by ${message.author.tag}`);
