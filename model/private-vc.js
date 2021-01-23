@@ -397,7 +397,6 @@ const PrivateVC = {
 
     /**
      * @param {GuildMember} member
-     * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatDeletionHandler: async (member) => {
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
@@ -467,9 +466,13 @@ const PrivateVC = {
      */
     privateVoiceChatLeaveHandler: async (guestMember, requestor, oldVoiceState) => {
         const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
-        const overwrites = channels[0].permissionOverwrites;
-        if (channels[2]) {
-            await channels[0].overwritePermissions(overwrites.filter(overwrite => overwrite.id !== guestMember.id));
+
+        if (channels[0]) {
+            const overwrites = channels[0].permissionOverwrites;
+
+            if (channels[2]) {
+                await channels[0].overwritePermissions(overwrites.filter(overwrite => overwrite.id !== guestMember.id));
+            }
         }
     },
 }
