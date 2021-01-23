@@ -239,7 +239,7 @@ model:
       description: "Sends a message to the server from the bot"
     preventSuicide:
       description: "Sends a DM to a user with all the useful resource to prevent suicide"
-      nonNative: "Hello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team"
+      nonNative: "\nHello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team\n"
       notFound: "I don't know who that is"
     privateVC:
       description: "Manage on-demand private VC system"
