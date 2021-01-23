@@ -252,6 +252,12 @@ const PrivateVC = {
                             position: channels[1].rawPosition,
                         });
 
+                        await Promise.all([
+                            channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                            channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
+                        ]);
+                        await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
+
                         await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
                             exception.payload = [channels[0], channels[1], waitingChannel];
                             throw exception;
