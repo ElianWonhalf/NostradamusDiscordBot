@@ -242,45 +242,47 @@ const PrivateVC = {
                         const hostMember = await Guild.discordGuild.member(user.id);
                         await hostMember.voice.setChannel(null);
                     });
-                } else if (reaction.emoji.name === '🔒' && !PrivateVC.isPrivate(user.id)) {
-                    let waitingChannel;
+                } else if (reaction.emoji.name === '🔒') {
+                    if (!PrivateVC.isPrivate(user.id)) {
+                        let waitingChannel;
 
-                    try {
-                        waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
-                            type: 'voice',
-                            parent: Guild.smallVoiceCategoryChannel,
-                            position: channels[1].rawPosition,
-                        });
+                        try {
+                            waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
+                                type: 'voice',
+                                parent: Guild.smallVoiceCategoryChannel,
+                                position: channels[1].rawPosition,
+                            });
 
-                        await Promise.all([
-                            channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
-                            channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
-                        ]);
-                        await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
+                            await Promise.all([
+                                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                                channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
+                            ]);
+                            await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
 
-                        await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
-                            exception.payload = [channels[0], channels[1], waitingChannel];
-                            throw exception;
-                        });
-                    } catch (exception) {
-                        const hostMember = await Guild.discordGuild.member(user.id);
+                            await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
+                                exception.payload = [channels[0], channels[1], waitingChannel];
+                                throw exception;
+                            });
+                        } catch (exception) {
+                            const hostMember = await Guild.discordGuild.member(user.id);
 
-                        Logger.exception(exception);
-                        await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [member.toString()], 'en'));
-                        await hostMember.send(trans('model.privateVC.errors.modificationFailed.member'));
-                        await hostMember.voice.setChannel(oldVoiceState.channel);
+                            Logger.exception(exception);
+                            await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [member.toString()], 'en'));
+                            await hostMember.send(trans('model.privateVC.errors.modificationFailed.member'));
+                            await hostMember.voice.setChannel(oldVoiceState.channel);
 
-                        if (exception.payload) {
-                            exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+                            if (exception.payload) {
+                                exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+                            }
+
+                            return;
                         }
 
-                        return;
-                    }
-
-                    // If fulfilling current private VC request doesn't leave room for two new channels,
-                    // lock VC request channel.
-                    if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
-                        PrivateVC.lockRequestChannel();
+                        // If fulfilling current private VC request doesn't leave room for two new channels,
+                        // lock VC request channel.
+                        if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
+                            PrivateVC.lockRequestChannel();
+                        }
                     }
 
                     await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
