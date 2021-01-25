@@ -56,13 +56,21 @@ const PrivateVC = {
         }
 
         if (oldVoiceState.channel) {
-            // Leave VC
-            const requestor = Object.keys(PrivateVC.list).find(
+            const vcRequestor = Object.keys(PrivateVC.list).find(
                 id => PrivateVC.list[id][1] === oldVoiceState.channelID
             );
+            const waitingRoomRequestor = Object.keys(PrivateVC.list).find(
+                id => PrivateVC.list[id][2] === oldVoiceState.channelID
+            );
 
-            if (requestor) {
-                PrivateVC.privateVoiceChatLeaveHandler(member, requestor, oldVoiceState);
+            // Leave VC
+            if (vcRequestor) {
+                PrivateVC.privateVoiceChatLeaveHandler(member, vcRequestor, oldVoiceState);
+            }
+
+            // Leave waiting room
+            if (waitingRoomRequestor) {
+                PrivateVC.waitingRoomLeaveHandler(member, waitingRoomRequestor);
             }
         }
 
@@ -196,8 +204,6 @@ const PrivateVC = {
 
             // Let member knocking on door in or not?
             if (joinRequestReactionEmojis.includes(reaction.emoji.name)) {
-                await message.delete();
-
                 const guestMember = await Guild.getMemberFromMention(message.embeds[0].description);
                 if (guestMember === null) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
@@ -481,6 +487,21 @@ const PrivateVC = {
             if (channels[2]) {
                 await channels[0].overwritePermissions(overwrites.filter(overwrite => overwrite.id !== guestMember.id));
             }
+        }
+    },
+
+    /**
+     * @param {GuildMember} guestMember
+     * @param {Snowflake} requestor
+     */
+    waitingRoomLeaveHandler: async (guestMember, requestor) => {
+        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+
+        if (channels[1]) {
+            const message = PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
+
+            await message.delete();
+            delete PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
         }
     },
 }
