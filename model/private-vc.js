@@ -65,7 +65,7 @@ const PrivateVC = {
 
             // Leave VC
             if (vcRequestor) {
-                PrivateVC.privateVoiceChatLeaveHandler(member, vcRequestor, oldVoiceState);
+                PrivateVC.privateVoiceChatLeaveHandler(member, vcRequestor);
             }
 
             // Leave waiting room
@@ -476,9 +476,8 @@ const PrivateVC = {
     /**
      * @param {GuildMember} guestMember
      * @param {Snowflake} requestor
-     * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatLeaveHandler: async (guestMember, requestor, oldVoiceState) => {
+    privateVoiceChatLeaveHandler: async (guestMember, requestor) => {
         const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         if (channels[0]) {
