@@ -373,7 +373,10 @@ const PrivateVC = {
                 voiceChannel.updateOverwrite(member, {MOVE_MEMBERS: true}),
             ]);
 
-            await member.voice.setChannel(voiceChannel);
+            await member.voice.setChannel(voiceChannel).catch(exception => {
+                exception.payload = [textChannel, voiceChannel, waitingChannel];
+                throw exception;
+            });
             await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
