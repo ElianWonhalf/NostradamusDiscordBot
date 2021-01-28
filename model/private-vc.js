@@ -19,8 +19,8 @@ const PrivateVC = {
      */
     init: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT requestor, text_channel, voice_channel, waiting_channel FROM private_vc').on('result', row => {
-                PrivateVC.list[row.requestor] = [row.text_channel, row.voice_channel, row.waiting_channel];
+            db.query('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM private_vc').on('result', row => {
+                PrivateVC.list[row.requestor] = [row.text_channel, row.voice_channel, row.waiting_channel, row.renamed];
             }).on('error', (error) => {
                 reject(`Error loading private VCs: ${error}`);
             }).on('end', resolve);
@@ -37,7 +37,7 @@ const PrivateVC = {
             return;
         }
 
-        const channelIDs = PrivateVC.list[member.id];
+        const privateVCData = PrivateVC.list[member.id];
 
         if (newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
             // Request new VC
@@ -74,7 +74,7 @@ const PrivateVC = {
             }
         }
 
-        if (channelIDs && oldVoiceState.channelID === channelIDs[1]) {
+        if (privateVCData && oldVoiceState.channelID === privateVCData[1]) {
             // Delete VC
             PrivateVC.privateVoiceChatDeletionHandler(member);
         }
@@ -94,7 +94,7 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel];
+                    PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
                     resolve();
                 }
             });
@@ -128,7 +128,7 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor].pop();
+                    PrivateVC.list[requestor].splice(2, 1, undefined);
                     resolve();
                 }
             });
@@ -146,7 +146,7 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor].push(waitingChannelID);
+                    PrivateVC.list[requestor].splice(2, 1, waitingChannelID);
                     resolve();
                 }
             });
@@ -184,11 +184,11 @@ const PrivateVC = {
      * @param {User} user
      */
     handleReaction: async (reaction, user) => {
-        const channelIDs = PrivateVC.list[user.id];
+        const privateVCData = PrivateVC.list[user.id];
         const message = reaction.message;
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
-        const requestorReacted = user.id !== bot.user.id && channelIDs && channelIDs[0] === message.channel.id;
+        const requestorReacted = user.id !== bot.user.id && privateVCData && privateVCData[0] === message.channel.id;
         const channelTypeReactionEmojis = ['🔒', '🔓'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
@@ -199,7 +199,7 @@ const PrivateVC = {
                 return;
             }
 
-            const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+            const channels = privateVCData.slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
             const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
 
             // Let member knocking on door in or not?
@@ -210,7 +210,7 @@ const PrivateVC = {
                     return;
                 }
 
-                if (guestMember.voice.channelID !== channelIDs[2]) {
+                if (guestMember.voice.channelID !== privateVCData[2]) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotWaiting', [guestMember.displayName]));
                     return;
                 }
@@ -421,7 +421,7 @@ const PrivateVC = {
      */
     privateVoiceChatDeletionHandler: async (member) => {
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
-        const channels = PrivateVC.list[member.id].map(
+        const channels = PrivateVC.list[member.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
         const foundChannels = channels.filter(channel => channel !== undefined);
@@ -460,7 +460,7 @@ const PrivateVC = {
         const guestUser = guestMember.user;
 
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         const embed = new Discord.MessageEmbed()
             .setAuthor(
@@ -485,7 +485,7 @@ const PrivateVC = {
      * @param {Snowflake} requestor
      */
     privateVoiceChatLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         if (channels[0]) {
             const overwrites = channels[0].permissionOverwrites;
@@ -501,7 +501,7 @@ const PrivateVC = {
      * @param {Snowflake} requestor
      */
     waitingRoomLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         if (channels[1]) {
             const message = PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
