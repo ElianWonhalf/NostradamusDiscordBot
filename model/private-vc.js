@@ -517,7 +517,7 @@ const PrivateVC = {
      * @param {GuildMember} currentHostMember
      */
     privateVoiceChatPropertyTransferHandler: async (currentHostMember, channels) => {
-        const memberPermissionLevels = new Map();
+        const memberPermissionLevels = new Discord.Collection();
         const permissionLevelRoles = Guild.permissionLevels.keyArray().map(roleID => Guild.discordGuild.roles.cache.get(roleID));
         let highestPermissionLevelRole;
 
