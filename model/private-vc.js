@@ -19,8 +19,8 @@ const PrivateVC = {
      */
     init: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT requestor, text_channel, voice_channel, waiting_channel FROM private_vc').on('result', row => {
-                PrivateVC.list[row.requestor] = [row.text_channel, row.voice_channel, row.waiting_channel];
+            db.query('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM private_vc').on('result', row => {
+                PrivateVC.list[row.requestor] = [row.text_channel, row.voice_channel, row.waiting_channel, row.renamed];
             }).on('error', (error) => {
                 reject(`Error loading private VCs: ${error}`);
             }).on('end', resolve);
@@ -37,7 +37,7 @@ const PrivateVC = {
             return;
         }
 
-        const channelIDs = PrivateVC.list[member.id];
+        const privateVCData = PrivateVC.list[member.id];
 
         if (newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
             // Request new VC
@@ -74,9 +74,9 @@ const PrivateVC = {
             }
         }
 
-        if (channelIDs && oldVoiceState.channelID === channelIDs[1]) {
-            // Delete VC
-            PrivateVC.privateVoiceChatDeletionHandler(member);
+        if (privateVCData && oldVoiceState.channelID === privateVCData[1]) {
+            // Transfer property (if applicable)
+            PrivateVC.propertyTransferSwitch(member);
         }
     },
 
@@ -94,7 +94,7 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel];
+                    PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
                     resolve();
                 }
             });
@@ -128,7 +128,7 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor].pop();
+                    PrivateVC.list[requestor].splice(2, 1, undefined);
                     resolve();
                 }
             });
@@ -146,10 +146,29 @@ const PrivateVC = {
                 if (error) {
                     reject(error);
                 } else {
-                    PrivateVC.list[requestor].push(waitingChannelID);
+                    PrivateVC.list[requestor].splice(2, 1, waitingChannelID);
                     resolve();
                 }
             });
+        });
+    },
+
+    /**
+     * @param {string} previousOwner
+     * @param {string} newOwner
+     * @returns {Promise}
+     */
+    setOwner: (previousOwner, newOwner) => {
+        return new Promise((resolve, reject) => {
+            db.query(`UPDATE private_vc SET requestor = ? WHERE requestor = ?`, [newOwner, previousOwner], (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    PrivateVC.list[newOwner] = PrivateVC.list[previousOwner];
+                    delete PrivateVC.list[previousOwner];
+                    resolve();
+                }
+            })
         });
     },
 
@@ -184,11 +203,11 @@ const PrivateVC = {
      * @param {User} user
      */
     handleReaction: async (reaction, user) => {
-        const channelIDs = PrivateVC.list[user.id];
+        const privateVCData = PrivateVC.list[user.id];
         const message = reaction.message;
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
-        const requestorReacted = user.id !== bot.user.id && channelIDs && channelIDs[0] === message.channel.id;
+        const requestorReacted = user.id !== bot.user.id && privateVCData && privateVCData[0] === message.channel.id;
         const channelTypeReactionEmojis = ['🔒', '🔓'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
@@ -199,7 +218,7 @@ const PrivateVC = {
                 return;
             }
 
-            const channels = channelIDs.map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+            const channels = privateVCData.slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
             const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
 
             // Let member knocking on door in or not?
@@ -210,7 +229,7 @@ const PrivateVC = {
                     return;
                 }
 
-                if (guestMember.voice.channelID !== channelIDs[2]) {
+                if (guestMember.voice.channelID !== privateVCData[2]) {
                     await channels[0].send(trans('model.privateVC.errors.memberNotWaiting', [guestMember.displayName]));
                     return;
                 }
@@ -263,6 +282,7 @@ const PrivateVC = {
                                 channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
                                 channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                                 channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
+                                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false}),
                             ]);
                             await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
 
@@ -371,9 +391,13 @@ const PrivateVC = {
                 textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
                 voiceChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                 voiceChannel.updateOverwrite(member, {MOVE_MEMBERS: true}),
+                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false}),
             ]);
 
-            await member.voice.setChannel(voiceChannel);
+            await member.voice.setChannel(voiceChannel).catch(exception => {
+                exception.payload = [textChannel, voiceChannel, waitingChannel];
+                throw exception;
+            });
             await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
@@ -413,12 +437,10 @@ const PrivateVC = {
 
     /**
      * @param {GuildMember} member
+     * @param {Array} channels
      */
-    privateVoiceChatDeletionHandler: async (member) => {
+    privateVoiceChatDeletionHandler: async (member, channels) => {
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
-        const channels = PrivateVC.list[member.id].map(
-            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
-        );
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
@@ -455,7 +477,7 @@ const PrivateVC = {
         const guestUser = guestMember.user;
 
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         const embed = new Discord.MessageEmbed()
             .setAuthor(
@@ -480,7 +502,7 @@ const PrivateVC = {
      * @param {Snowflake} requestor
      */
     privateVoiceChatLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         if (channels[0]) {
             const overwrites = channels[0].permissionOverwrites;
@@ -492,11 +514,88 @@ const PrivateVC = {
     },
 
     /**
+     * @param {GuildMember} currentHostMember
+     */
+    privateVoiceChatPropertyTransferHandler: async (currentHostMember, channels) => {
+        const memberPermissionLevels = new Discord.Collection();
+        const permissionLevelRoles = Guild.permissionLevels.keyArray().map(roleID => Guild.discordGuild.roles.cache.get(roleID));
+        let highestPermissionLevelRole;
+
+        channels[1].members.filter(member => member.id !== currentHostMember.id).each(member => {
+            highestPermissionLevelRole = null;
+            const memberPermissionLevelRoles = member.roles.cache.array().filter(role => permissionLevelRoles.includes(role));
+
+            memberPermissionLevelRoles.forEach(role => {
+                if (highestPermissionLevelRole === null || Guild.permissionLevels.get(role.id) > Guild.permissionLevels.get(highestPermissionLevelRole.id)) {
+                    highestPermissionLevelRole = role;
+                }
+            });
+
+            const permissionLevel = Guild.permissionLevels.get(highestPermissionLevelRole.id);
+            const currentMembers = memberPermissionLevels.get(permissionLevel) || [];
+            memberPermissionLevels.set(permissionLevel, [...currentMembers, member]);
+        });
+
+        const permissionLevelsWithMembers = Guild.permissionLevels.filter(level => memberPermissionLevels.get(level));
+        const highestRankedMembers = memberPermissionLevels.get(permissionLevelsWithMembers.first());
+        const newHostMember = highestRankedMembers[Math.floor(Math.random() * highestRankedMembers.length)];
+
+        try {
+            await PrivateVC.setOwner(currentHostMember.id, newHostMember.id).catch(exception => {
+                exception.payload = channels;
+                throw exception;
+            });
+            PrivateVC.renameTransferredChannels(channels, newHostMember);
+            await channels[0].send(trans('model.privateVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
+        } catch (exception) {
+            Logger.exception(exception);
+            await Guild.botChannel.send(
+                trans(
+                    'model.privateVC.errors.propertyTransferFailed',
+                    [currentHostMember.toString(), newHostMember.toString()],
+                    'en'
+                )
+            );
+
+            channels.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+        }
+    },
+
+    /**
+     * @param {GuildMember} member
+     */
+    propertyTransferSwitch: async (member) => {
+        const channels = PrivateVC.list[member.id].slice(0, 3).map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
+
+        if (channels[1].members.size === 0) {
+            PrivateVC.privateVoiceChatDeletionHandler(member, channels);
+        } else {
+            PrivateVC.privateVoiceChatPropertyTransferHandler(member, channels);
+        }
+    },
+
+    /**
+     * @param {Array} channels
+     * @param {GuildMember} newHostMember
+     */
+    renameTransferredChannels: async (channels, newHostMember) => {
+        const renamed = PrivateVC.list[newHostMember.id][3] === 1;
+        if (!renamed) {
+            await Promise.all([
+                channels[0].setName(newHostMember.displayName),
+                channels[1].setName(newHostMember.displayName),
+            ]);
+        }
+    },
+
+    /**
      * @param {GuildMember} guestMember
      * @param {Snowflake} requestor
      */
     waitingRoomLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         if (channels[1]) {
             const message = PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
