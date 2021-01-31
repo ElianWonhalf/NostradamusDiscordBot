@@ -581,7 +581,7 @@ const PrivateVC = {
      * @param {GuildMember} newHostMember
      */
     renameTransferredChannels: async (channels, newHostMember) => {
-        const renamed = PrivateVC.list[newHostMember.id][4] === 1;
+        const renamed = PrivateVC.list[newHostMember.id][3] === 1;
         if (!renamed) {
             await Promise.all([
                 channels[0].setName(newHostMember.displayName),
