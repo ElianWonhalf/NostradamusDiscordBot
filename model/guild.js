@@ -172,6 +172,7 @@ const Guild = {
         Guild.levelRoles.set(Config.roles.bornFrancophone, 'Francophone de naissance');
 
         // Permission levels
+        // Levels MUST be set in descending order!
         Guild.permissionLevels.set(Config.roles.mod, 10);
         Guild.permissionLevels.set(Config.roles.soft, 7);
         Guild.permissionLevels.set(Config.roles.tutor, 4);
