@@ -17,13 +17,16 @@ const PrivateVC = {
     /**
      * @returns {Promise}
      */
-    init: () => {
-        return new Promise((resolve, reject) => {
-            db.query('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM private_vc').on('result', row => {
-                PrivateVC.list[row.requestor] = [row.text_channel, row.voice_channel, row.waiting_channel, row.renamed];
-            }).on('error', (error) => {
-                reject(`Error loading private VCs: ${error}`);
-            }).on('end', resolve);
+    init: async () => {
+        const rows = await db.asyncQuery('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM private_vc');
+
+        rows.forEach(row => {
+            PrivateVC.list[row.requestor] = [
+                row.text_channel,
+                row.voice_channel,
+                row.waiting_channel,
+                row.renamed
+            ];
         });
     },
 
@@ -87,52 +90,32 @@ const PrivateVC = {
      * @param {string} waitingChannel
      * @returns {Promise}
      */
-    add: (requestor, textChannel, voiceChannel, waitingChannel) => {
-        return new Promise((resolve, reject) => {
-            db.query('SET NAMES utf8mb4');
-            db.query(`INSERT INTO private_vc (requestor, text_channel, voice_channel, waiting_channel) VALUES (?, ?, ?, ?)`, [requestor, textChannel, voiceChannel, waitingChannel], (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
-                    resolve();
-                }
-            });
-        });
+    add: async (requestor, textChannel, voiceChannel, waitingChannel) => {
+        await db.asyncQuery('SET NAMES utf8mb4');
+        await db.asyncQuery(
+            `INSERT INTO private_vc (requestor, text_channel, voice_channel, waiting_channel) VALUES (?, ?, ?, ?)`,
+            [requestor, textChannel, voiceChannel, waitingChannel]
+        );
+
+        PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
     },
 
     /**
      * @param {string} requestor
      * @returns {Promise}
      */
-    remove: (requestor) => {
-        return new Promise((resolve, reject) => {
-            db.query(`DELETE FROM private_vc WHERE requestor = ?`, [requestor], (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    delete PrivateVC.list[requestor];
-                    resolve();
-                }
-            });
-        });
+    remove: async (requestor) => {
+        await db.asyncQuery(`DELETE FROM private_vc WHERE requestor = ?`, [requestor]);
+        delete PrivateVC.list[requestor];
     },
 
     /**
      * @param {string} requestor
      * @returns {Promise}
      */
-    makePublic: (requestor) => {
-        return new Promise((resolve, reject) => {
-            db.query(`UPDATE private_vc SET waiting_channel = NULL WHERE requestor = ?`, [requestor], (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    PrivateVC.list[requestor].splice(2, 1, undefined);
-                    resolve();
-                }
-            });
-        });
+    makePublic: async (requestor) => {
+        await db.asyncQuery(`UPDATE private_vc SET waiting_channel = NULL WHERE requestor = ?`, [requestor]);
+        PrivateVC.list[requestor].splice(2, 1, undefined);
     },
 
     /**
@@ -140,17 +123,13 @@ const PrivateVC = {
      * @param {string} waitingChannelID
      * @returns {Promise}
      */
-    makePrivate: (requestor, waitingChannelID) => {
-        return new Promise((resolve, reject) => {
-            db.query(`UPDATE private_vc SET waiting_channel = ? WHERE requestor = ?`, [waitingChannelID, requestor], (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    PrivateVC.list[requestor].splice(2, 1, waitingChannelID);
-                    resolve();
-                }
-            });
-        });
+    makePrivate: async (requestor, waitingChannelID) => {
+        await db.asyncQuery(
+            `UPDATE private_vc SET waiting_channel = ? WHERE requestor = ?`,
+            [waitingChannelID, requestor]
+        );
+
+        PrivateVC.list[requestor].splice(2, 1, waitingChannelID);
     },
 
     /**
@@ -158,23 +137,15 @@ const PrivateVC = {
      * @param {string} newOwner
      * @returns {Promise}
      */
-    setOwner: (previousOwner, newOwner) => {
-        return new Promise((resolve, reject) => {
-            db.query(`UPDATE private_vc SET requestor = ? WHERE requestor = ?`, [newOwner, previousOwner], (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    PrivateVC.list[newOwner] = PrivateVC.list[previousOwner];
-                    delete PrivateVC.list[previousOwner];
-                    resolve();
-                }
-            })
-        });
+    setOwner: async (previousOwner, newOwner) => {
+        await db.asyncQuery(`UPDATE private_vc SET requestor = ? WHERE requestor = ?`, [newOwner, previousOwner]);
+        PrivateVC.list[newOwner] = PrivateVC.list[previousOwner];
+        delete PrivateVC.list[previousOwner];
     },
 
     /**
      * @param {string} requestor
-     * @returns {bool}
+     * @returns {boolean}
      */
     isPrivate: (requestor) => {
         return PrivateVC.list[requestor][2] !== undefined;
