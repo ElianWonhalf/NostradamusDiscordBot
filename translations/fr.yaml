@@ -298,4 +298,5 @@ model:
       available: "Créer salon"
       closed: "Fermé"
       full: "Complet"
+    transferredProperty: "%%, comme le précédent hôte %% est parti, j'ai fait de toi le nouvel hôte !"
     waitingRoomLabel: "Attente"
