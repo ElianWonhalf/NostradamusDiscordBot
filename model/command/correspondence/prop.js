@@ -12,17 +12,8 @@ module.exports = async (message, args) => {
         const pickedMembers = Guild.findDesignatedMemberInMessage(message);
 
         if (pickedMembers.certain === true && pickedMembers.foundMembers.length === 2) {
-            const members = [
-                await Guild.discordGuild.members.fetch(pickedMembers.foundMembers[0].id),
-                await Guild.discordGuild.members.fetch(pickedMembers.foundMembers[1].id)
-            ];
-
-            let pickedIndex = members.findIndex(
-                member => Guild.isMemberNative(member) || Guild.isMemberTutor(member)
-            ) || 0;
-
-            const picked = members[pickedIndex];
-            const picker = members[!pickedIndex ? 1 : 0];
+            const picked = await Guild.discordGuild.members.fetch(pickedMembers.foundMembers[0].id);
+            const picker = await Guild.discordGuild.members.fetch(pickedMembers.foundMembers[1].id);
 
             const pickedLang = Guild.isMemberNative(picked) || Guild.isMemberTutor(picked) ? 'fr' : null;
             const pickerIntroduction = await Correspondence.findIntroduction(picker.id);
