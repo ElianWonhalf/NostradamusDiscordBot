@@ -85,7 +85,9 @@
         "correspondenceNatives": "",
         "memberModificationLog": "",
         "smallVoiceChatRequest": "",
-        "lessonOfTheDay": ""
+        "lessonOfTheDay": "",
+        "selfie": "",
+        "eventChat": ""
     },
     "channelCategories": {
         "mod": [],
