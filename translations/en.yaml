@@ -421,6 +421,7 @@ model:
       modificationFailed:
         member: "I failed to change the type of your VC, panicked and deleted your channels in the process :( Can you try again?"
         mods: "%% wanted to change the type of their VC, but I encountered an error doing so"
+      propertyTransferFailed: "Couldn't transfer on-demand VC property from %% to %%, deleting channels."
     joinRequest:
       notification: "%%, someone wants to join your room!"
       prompt: "Open the door?"
@@ -428,6 +429,7 @@ model:
       available: "Create room"
       closed: "Closed"
       full: "Full"
+    transferredProperty: "%%, since previous host %% left, I made you the new host!"
     waitingRoomLabel: "Waiting room"
   blacklist:
     semi:
