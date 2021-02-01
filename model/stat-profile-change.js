@@ -39,11 +39,7 @@ class StatProfileChange extends StatEntity
                 [snowflake, type]
             );
 
-            if (data !== undefined && !Array.isArray(data)) {
-                data = [data];
-            }
-
-            return data === undefined ? [] : data.map(datum => datum.data);
+            return data.map(datum => datum.data);
         }
     }
 
@@ -59,11 +55,7 @@ class StatProfileChange extends StatEntity
                 [snowflake, type]
             );
 
-            if (data !== undefined && Array.isArray(data)) {
-                data = data[0];
-            }
-
-            return typeof data === 'undefined' || typeof data.count === 'undefined' ? 0 : data.count;
+            return data.count;
         }
     }
 
