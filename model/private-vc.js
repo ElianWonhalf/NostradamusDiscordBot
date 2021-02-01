@@ -144,6 +144,14 @@ const PrivateVC = {
     },
 
     /**
+     * @param {string} owner
+     */
+    setRenamed: async (owner) => {
+        await db.asyncQuery(`UPDATE private_vc SET renamed = 1 WHERE requestor = ?`, [owner]);
+        PrivateVC.list[owner][3] = 1;
+    },
+
+    /**
      * @param {string} requestor
      * @returns {boolean}
      */
@@ -559,6 +567,30 @@ const PrivateVC = {
                 channels[1].setName(newHostMember.displayName),
             ]);
         }
+    },
+
+    /**
+     * @param {GuildMember} hostMember
+     * @param {string} name
+     */
+    renameChannels: async (hostMember, name) => {
+        const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
+
+        try {
+            PrivateVC.setRenamed(hostMember.id);
+        } catch (exception) {
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.privateVC.errors.renameFailed.mods', [hostMember.toString()], 'en'));
+            await channels[0].send(trans('model.privateVC.errors.renameFailed'));
+            return;
+        }
+
+        await Promise.all([
+            channels[0].setName(name),
+            channels[1].setName(name),
+        ]);
     },
 
     /**
