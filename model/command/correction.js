@@ -29,10 +29,10 @@ class Correction extends Heat
         if (this.canCall()) {
             this.registerCall();
 
-            const member = await Guild.getMemberFromMessage(messageReaction.message);
+            const member = await Guild.getMemberFromMessage(message);
 
             if (message.channel.id === Config.channels.roles) {
-                if (Correction.memberNicknameHasEmoji(member)) {
+                if (CorrectionModel.memberNicknameHasEmoji(member)) {
                     await CorrectionModel.removeEmojiFromNickname(member);
                 } else {
                     await CorrectionModel.addEmojiToNickname(member).catch(exception => {
@@ -48,7 +48,7 @@ class Correction extends Heat
                     embed.setDescription(`${description} [](correction)`).setColor(0x00FF00)
                 );
 
-                await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
+                await sentMessage.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
             }
         } else {
             message.react('⌛');

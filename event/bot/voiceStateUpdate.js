@@ -1,11 +1,14 @@
+const Logger = require('@lilywonhalf/pretty-logger');
+const Config = require('../../config.json');
 const Guild = require('../../model/guild');
+const PrivateVC = require('../../model/private-vc');
 const WatchedMember = require('../../model/watched-member');
 
 /**
  * @param {VoiceState} oldVoiceState
  * @param {VoiceState} newVoiceState
  */
-module.exports = (oldVoiceState, newVoiceState) => {
+module.exports = async (oldVoiceState, newVoiceState) => {
     const member = oldVoiceState.member;
 
     if (typeof oldVoiceState.channelID === 'undefined') {
@@ -35,6 +38,7 @@ module.exports = (oldVoiceState, newVoiceState) => {
             }
         }
 
+        PrivateVC.privateVCHandler(member, oldVoiceState, newVoiceState);
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
     }
 };

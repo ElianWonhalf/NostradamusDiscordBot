@@ -17,7 +17,7 @@ class StatVocal extends StatEntity
             [snowflake]
         );
 
-        return data.amount === null ? 0 : parseInt(data.amount);
+        return data[0].amount === null ? 0 : parseInt(data[0].amount);
     }
 }
 

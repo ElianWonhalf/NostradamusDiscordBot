@@ -42,10 +42,17 @@
         "logs": "",
         "raid": "",
         "patreonBooster": "",
-        "everyone": "",
+        "fakeEveryone": "",
         "soft": "",
         "seekingCorrespondence": "",
-        "corresponding": ""
+        "corresponding": "",
+        "offers": "",
+        "hideSeek": "",
+        "animator": "",
+        "linguist": "",
+        "he": "",
+        "she": "",
+        "they": ""
     },
     "channels": {
         "welcome": "",
@@ -76,10 +83,14 @@
         "correspondenceInformation": "",
         "correspondenceLearners": "",
         "correspondenceNatives": "",
-        "memberModificationLog": ""
+        "memberModificationLog": "",
+        "smallVoiceChatRequest": "",
+        "lessonOfTheDay": ""
     },
     "channelCategories": {
         "mod": [],
+        "smallVoice": "",
+        "smallVoiceText": "",
         "vocal": []
     },
     "warnCommand": "!warn %id %reason",

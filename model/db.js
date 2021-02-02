@@ -74,13 +74,7 @@ const connection = {
             this.query(...queryArgs).on('result', row => {
                 result.push(row);
             }).on('error', reject).on('end', () => {
-                if (result.length < 1) {
-                    resolve();
-                } else if (result.length < 2) {
-                    resolve(result[0]);
-                } else {
-                    resolve(result);
-                }
+                resolve(result);
             });
         });
     },
