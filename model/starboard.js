@@ -6,7 +6,8 @@ const Guild = require('./guild');
 const Starboard = {
     MIN_NB_STARS: 7,
     IGNORED_CHANNELS: [
-        Config.channels.selfie
+        Config.channels.selfie,
+        Config.channels.starboard
     ],
 
     /**
