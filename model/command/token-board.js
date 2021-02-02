@@ -17,7 +17,7 @@ const emojiLeft = '⬅';
 let page = 0;
 let maxPages = 1;
 const rowByPage = 5;
-const arrayEmbeds = [];//this will maybe cause to not refresh token count after giving a token
+const arrayEmbeds = [];
 
 function getEmbed(message, tokenRanking) {
     if (arrayEmbeds[page] !== undefined) {
@@ -32,7 +32,6 @@ function getEmbed(message, tokenRanking) {
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
         .setDescription(`Every token is a chance to win a lifetime subscription to ${emojiKwiziq} Kwiziq or a ${emojiDiscordNitro} Discord Nitro subscriptions !`)
         .setTimestamp(new Date());
-
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
         if (tokenRanking[i] !== undefined) {
