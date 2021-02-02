@@ -291,6 +291,8 @@ model:
       memberNotWaiting: "%% a quitté la salle d'attente, je ne vais pas le déplacer dans ton salon."
       modificationFailed:
         member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
+      renameFailed:
+        member: "Désolé, je n'ai pas pu renommer ton salon."
     joinRequest:
       notification: "%%, quelqu'un veut rejoindre ton salon !"
       prompt: "Ouvrir la porte ?"

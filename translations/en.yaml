@@ -244,9 +244,7 @@ model:
     privateVC:
       description: "Manage on-demand private VC system"
       error:
-        missingAction: "You must specify an action."
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
-        unknownAction: "%% is not a valid action."
     pronouns:
       description: "To add one's pronoun roles"
       reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
@@ -422,6 +420,9 @@ model:
         member: "I failed to change the type of your VC, panicked and deleted your channels in the process :( Can you try again?"
         mods: "%% wanted to change the type of their VC, but I encountered an error doing so"
       propertyTransferFailed: "Couldn't transfer on-demand VC property from %% to %%, deleting channels."
+      renameFailed:
+        member: "Sorry, I couldn't rename your room."
+        mods: "%% wanted to rename their VC, but the database operation failed."
     joinRequest:
       notification: "%%, someone wants to join your room!"
       prompt: "Open the door?"
