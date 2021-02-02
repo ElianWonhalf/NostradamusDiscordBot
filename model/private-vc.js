@@ -583,7 +583,7 @@ const PrivateVC = {
         } catch (exception) {
             Logger.exception(exception);
             await Guild.botChannel.send(trans('model.privateVC.errors.renameFailed.mods', [hostMember.toString()], 'en'));
-            await channels[0].send(trans('model.privateVC.errors.renameFailed'));
+            await channels[0].send(trans('model.privateVC.errors.renameFailed.member'));
             return;
         }
 
