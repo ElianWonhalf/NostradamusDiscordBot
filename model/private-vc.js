@@ -524,6 +524,7 @@ const PrivateVC = {
                 exception.payload = channels;
                 throw exception;
             });
+            PrivateVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
             PrivateVC.renameTransferredChannels(channels, newHostMember);
             await channels[0].send(trans('model.privateVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
         } catch (exception) {
@@ -591,6 +592,21 @@ const PrivateVC = {
             channels[0].setName(name),
             channels[1].setName(name),
         ]);
+    },
+
+    /**
+     * @param {Array} channels
+     * @param {GuildMember} currentHostMember
+     * @param {GuildMember} newHostMember
+     */
+    transferChannelPermissions: async (channels, currentHostMember, newHostMember) => {
+        const overwrites = channels[1].permissionOverwrites;
+        if (channels[2]) {
+            await Promise.all([
+                overwrites.get(currentHostMember.id).delete(),
+                channels[1].updateOverwrite(newHostMember, {MOVE_MEMBERS: true}),
+            ]);
+        }
     },
 
     /**
