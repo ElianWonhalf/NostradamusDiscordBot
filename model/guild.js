@@ -11,6 +11,9 @@ const Guild = {
     /** {Collection<String>} */
     levelRoles: new Collection(),
 
+    /** {Collection<int>} */
+    permissionLevels: new Collection(),
+
     /** {Collection<Collection>} */
     channelMessages: new Collection(),
 
@@ -104,11 +107,28 @@ const Guild = {
     /** {TextChannel} */
     correspondenceNativesChannel: null,
 
+    /** {CategoryChannel} */
+    smallVoiceCategoryChannel: null,
+
+    /** {CategoryChannel} */
+    smallVoiceTextCategoryChannel: null,
+
+    /** {VoiceChannel} */
+    smallVoiceChatRequestChannel: null,
+
+    /** {TextChannel} */
+    lessonOfTheDayChannel: null,
+
+    /** {TextChannel} */
+    selfieChannel: null,
+
     /**
      * @param {Client} bot
      */
     init: async (bot) => {
         Guild.discordGuild = bot.guilds.cache.find(guild => guild.id === Config.guild);
+
+        // Channels
         Guild.welcomeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.welcome);
         Guild.publicModLogChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.publicModLog);
         Guild.anonymousMessagesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.anonymousMessages);
@@ -136,12 +156,28 @@ const Guild = {
         Guild.correspondenceInformationChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceInformation);
         Guild.correspondenceLearnersChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceLearners);
         Guild.correspondenceNativesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceNatives);
+        Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
+        Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
+        Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
 
+        // Categories
+        Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoice);
+        Guild.smallVoiceTextCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoiceText);
+
+        // Level roles
         Guild.levelRoles.set(Config.roles.native, 'Francophone Natif');
         Guild.levelRoles.set(Config.roles.advanced, 'Avancé');
         Guild.levelRoles.set(Config.roles.intermediate, 'Intermédiaire');
         Guild.levelRoles.set(Config.roles.beginner, 'Débutant');
         Guild.levelRoles.set(Config.roles.bornFrancophone, 'Francophone de naissance');
+
+        // Permission levels
+        // Levels MUST be set in descending order!
+        Guild.permissionLevels.set(Config.roles.mod, 10);
+        Guild.permissionLevels.set(Config.roles.soft, 7);
+        Guild.permissionLevels.set(Config.roles.tutor, 4);
+        Guild.permissionLevels.set(Config.roles.animator, 3);
+        Guild.permissionLevels.set(Config.roles.officialMember, 1);
 
         Guild.kickInactiveNewMembers();
         setInterval(() => {
@@ -205,6 +241,29 @@ const Guild = {
      */
     getMemberFromMessage: async (message) => {
         return await Guild.discordGuild.members.fetch(message.author).catch(exception => {
+            Logger.error(exception.toString());
+
+            return null;
+        });
+    },
+
+    /**
+     * @param mention
+     * @returns {Promise.<GuildMember|null>}
+     */
+    getMemberFromMention: async (mention) => {
+        if (!mention) {
+            return null;
+        }
+
+        if (mention.startsWith('<@') && mention.endsWith('>')) {
+            mention = mention.slice(2, -1);
+            if (mention.startsWith('!')) {
+                mention = mention.slice(1);
+            }
+        }
+
+        return await Guild.discordGuild.members.fetch(mention).catch(exception => {
             Logger.error(exception.toString());
 
             return null;
@@ -327,16 +386,20 @@ const Guild = {
         };
     },
 
-    rolePingHandler: async (message) => {
+    /**
+     * @param {Message} message
+     * @param {boolean} edited
+     */
+    rolePingHandler: async (message, edited = false) => {
         const roleMentions = message.mentions.roles.keyArray();
 
-        if (roleMentions.includes(Config.roles.everyone)) {
+        if (roleMentions.includes(Config.roles.fakeEveryone)) {
             Guild.everyonePingHandler(message);
         }
 
         if (roleMentions.includes(Config.roles.mod) && !Config.channelCategories.mod.includes(message.channel.parent.id)) {
             Guild.softChannel.send(
-                `<@&${Config.roles.soft}> ${message.channel.toString()} ${message.url}`,
+                `${edited ? '**Edited:**' : `<@&${Config.roles.soft}>`} ${message.channel.toString()} ${message.url}`,
                 {
                     embed: await Guild.messageToEmbed(message)
                 }
@@ -346,7 +409,7 @@ const Guild = {
 
     everyonePingHandler: (message) => {
         if (message.guild !== null && message.cleanContent.includes('@everyone')) { // Could be @here
-            message.member.roles.add([Config.roles.everyone]);
+            message.member.roles.add([Config.roles.fakeEveryone]);
         }
     },
 

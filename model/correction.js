@@ -1,22 +1,23 @@
-const Logger = require('@lilywonhalf/pretty-logger');
-const Discord = require('discord.js');
 const Guild = require('./guild');
 
 const Correction = {
-    CORRECTION_EMOJI_NAME: '️✱',
+    CORRECTION_EMOJI_NAME: '\u2731',
 
     /**
      * @param {MessageReaction} messageReaction
      * @param {User} user
      */
     handleReaction: async (messageReaction, user) => {
-        const member = await Guild.getMemberFromMessage(messageReaction.message);
-        const messageHasEmbeds = message.embeds && message.embeds.length > 0;
-        const messageIsCorrectionResponse = messageHasEmbeds && /\[\]\(correction\)/gu.test(message.embeds[0].description);
-        const nicknameAlreadyHasEmoji = Correction.memberNicknameHasEmoji(member);
+        if (!user.bot) {
+            const member = await Guild.discordGuild.member(user);
+            const message = messageReaction.message;
+            const messageHasEmbeds = message.embeds && message.embeds.length > 0;
+            const messageIsCorrectionResponse = messageHasEmbeds && /\[\]\(correction\)/gu.test(message.embeds[0].description);
+            const nicknameAlreadyHasEmoji = Correction.memberNicknameHasEmoji(member);
 
-        if (messageReaction.emoji.name === 'pollyes' && !nicknameAlreadyHasEmoji && messageIsCorrectionResponse) {
-            await Correction.addEmojiToNickname(member);
+            if (messageReaction.emoji.name === 'pollyes' && !nicknameAlreadyHasEmoji && messageIsCorrectionResponse) {
+                await Correction.addEmojiToNickname(member);
+            }
         }
     },
 
@@ -25,18 +26,21 @@ const Correction = {
      * @param {User} user
      */
     handleReactionRemove: async (messageReaction, user) => {
-        const member = await Guild.getMemberFromMessage(messageReaction.message);
-        const messageHasEmbeds = message.embeds && message.embeds.length > 0;
-        const messageIsCorrectionResponse = messageHasEmbeds && /\[\]\(correction\)/gu.test(message.embeds[0].description);
-        const nicknameAlreadyHasEmoji = Correction.memberNicknameHasEmoji(member);
+        if (!user.bot) {
+            const member = await Guild.discordGuild.member(user);
+            const message = messageReaction.message;
+            const messageHasEmbeds = message.embeds && message.embeds.length > 0;
+            const messageIsCorrectionResponse = messageHasEmbeds && /\[\]\(correction\)/gu.test(message.embeds[0].description);
+            const nicknameAlreadyHasEmoji = Correction.memberNicknameHasEmoji(member);
 
-        if (messageReaction.emoji.name === 'pollyes' && nicknameAlreadyHasEmoji && messageIsCorrectionResponse) {
-            await Correction.removeEmojiFromNickname(member);
+            if (messageReaction.emoji.name === 'pollyes' && nicknameAlreadyHasEmoji && messageIsCorrectionResponse) {
+                await Correction.removeEmojiFromNickname(member);
+            }
         }
     },
 
     /**
-     * @param {Member} member
+     * @param {GuildMember} member
      * @returns {boolean}
      */
     memberNicknameHasEmoji: (member) => {
@@ -44,7 +48,7 @@ const Correction = {
     },
 
     /**
-     * @param {Member} member
+     * @param {GuildMember} member
      * @returns {Promise<GuildMember>}
      */
     addEmojiToNickname: (member) => {
@@ -52,7 +56,7 @@ const Correction = {
     },
 
     /**
-     * @param {Member} member
+     * @param {GuildMember} member
      * @returns {Promise<GuildMember>}
      */
     removeEmojiFromNickname: (member) => {

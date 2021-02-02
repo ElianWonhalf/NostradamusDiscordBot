@@ -4,6 +4,7 @@ const Dotenv = require('dotenv');
 require('./model/datetime');
 require('./model/array');
 require('./model/regex');
+require('./model/string');
 
 Dotenv.config();
 
@@ -63,6 +64,7 @@ const botProcess = () => {
     const CallerId = require('caller-id');
 
     global.bot = new Client({ fetchAllMembers: true });
+    global.channelPerCategoryLimit = 50;
     global.isRightGuild = (guildSnowflake) => guildSnowflake === Config.guild;
     global.debug = (message) => {
         if (process.env.NOSTRADAMUS_DEBUG === '1') {

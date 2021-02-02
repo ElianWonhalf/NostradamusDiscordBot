@@ -177,9 +177,10 @@ class Help
     /**
      * @param {Message} message
      * @param {Array} args
+     * @param {string} calledCommand
      * @param {Command} Command
      */
-    async process(message, args, Command) {
+    async process(message, args, calledCommand, Command) {
         const dialog = new HelpDialog(message);
         dialog.init(Command);
     }

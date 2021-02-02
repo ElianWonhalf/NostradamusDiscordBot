@@ -23,7 +23,7 @@ module.exports = async (oldMessage, message) => {
         }
 
         if (message.mentions.roles.size > 0) {
-            Guild.rolePingHandler(message);
+            Guild.rolePingHandler(message, true);
         }
 
         if (message.guild !== null) {

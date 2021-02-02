@@ -6,7 +6,7 @@ const StatVocal = require('./stat-vocal');
 
 const REQUIRED_DAYS = 10;
 const REQUIRED_MESSAGE_AMOUNT = 100;
-const CORRESPONDENCE_RELATED_REGEXP = /correspond[ea]nce|syst[èe]me?/gu;
+const CORRESPONDENCE_RELATED_REGEXP = /correspond[ea]nce|syst[èe]me?|penpal/gu;
 
 /**
  * @param {GuildMember} member

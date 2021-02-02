@@ -34,6 +34,9 @@ model:
     adminList:
       description: "Lists the current members of the administration team"
       answer: "There are currently %% administrators:"
+    animatorList:
+      description: "Lists the current members of the animation team"
+      answer: "There are currently %% animators:"
     anonymous:
       description: "Allows members to send anonymous messages to the moderation team"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
@@ -74,8 +77,10 @@ model:
         dm: "\nHello!\n\nYou are registered in the Correspondence System and this is an audit we're doing to make sure everything is going alright. (So yeah, we didn't write this message just for you, but we're still listening from the back-end!)\n\nIs/Are your correspondence(s) still ongoing? Is everything good? Do you have any suggestions to make or questions to ask? Either way, don't hesitate, we're here to help.\n\nThanks for your participation!\n — The Staff of French\n"
       check:
         alreadyInCorrespondence: "What are you doing silly?! You're already in the correspondence system, no need to verify yourself!"
-        eligible: "Yay! Looks like you're eligible for the correspondence system! You can follow the steps in %% to apply."
-        ineligible: "\nLooks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel.\n"
+        selfEligible: "Yay! Looks like you're eligible for the correspondence system! You can follow the steps in %% to apply."
+        selfIneligible: "\nLooks like you need to spend more time in the server to be eligible for the correspondence system. You need to have been on the server for at least 10 days and have sent at least 100 messages in order to be eligible. You can check this by typing `%%info` in the #bot-fun channel.\n"
+        eligible: "Looks like %% is eligible for the correspondence system! They can follow the steps in %% to apply."
+        ineligible: "\nLooks like %% needs to spend more time in the server to be eligible for the correspondence system. They need to have been on the server for at least 10 days and have sent at least 100 messages or having spent ten hours in a voice chat in order to be eligible.\n"
       deny:
         dm: "Thank you for your interest in the correspondent system. Currently, to be able to apply, you need to have sent at least 100 messages (you can check this by typing `%%info` in the #bot-fun channel) and have been on the server for at least 10 days. You will easily reach this number if you come and talk in the discussion channels from time to time."
       done:
@@ -153,6 +158,10 @@ model:
       notice: "%% seems to need help in %%.\n%%"
       timeout: "Timed out! You may send the command again :eowynsheep: ."
       embedTitle: "Help command"
+    hideSeek:
+      description: "To show that you want to play the hide and seek game in the upcoming event"
+      alertsOn: "You now have the role!"
+      alertsOff: "You now no longer have the role."
     homework:
       description: "Explains rule 2 of our server"
       reply: "\nThis server is for learning, and not meant as a tool for cheating on academic assignments. Homework help is not allowed. You can ask about concepts related to homework, but no specific homework questions should be discussed.\n"
@@ -173,6 +182,7 @@ model:
         usernames: "Number of past usernames:"
         nicknames: "Number of past nicknames:"
         avatars: "Number of past avatars:"
+        customStatus: "Custom status:"
       usernames:
         none: "No past usernames found."
       nicknames:
@@ -186,8 +196,8 @@ model:
       description: "Set native language"
       request: "Language tag requested by %%: %%"
       missingArgument: "You need to enter a language. The command `%%language` alone does not tell me what your native language is. For example: `%%language English`"
-      added: ":eowynsheep: All good, I **added** the role \"%%\" to your profile !"
-      removed: ":eowynsheep: All good, I **removed** the role \"%%\" from your profile !"
+      added: ":eowynsheep: All good, I **gave** you the role \"%%\"!"
+      removed: ":eowynsheep: All good, I **removed** the role \"%%\" for you!"
       missingRole: "That role doesn't seem to exist :ThirstyKitteh: . Maybe you mispelled it? Anyways, I told the mods about it."
       illegal: ":roocop: You have to ask the mods if you want to change your level in %%"
       callMods: ":BongoKitteh: You have to ask the mods if you want more than one native language. You're currently tagged as native %% speaker. You also have to ask the mods if you want to get that changed."
@@ -201,6 +211,9 @@ model:
       noMembersGiven: "You did not give any member for whom level role must be set."
       roleNotFound: "Did not find any existing level role name in your message"
       setRole: "Set role \"%%\" to given member(s)!"
+    linguistList:
+      description: "Lists the current linguists:tm: of the server"
+      answer: "There are currently %% linguists:tm: of the server:"
     loadRoles:
       description: "Adds roles to server from database"
       dryRoleCreation: "would create role %%"
@@ -216,14 +229,36 @@ model:
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
+    offers:
+      description: "To be notified when a new offer is posted"
+      alertsOn: "You will now be notified when there's a new offer. Thank you :lovehug:"
+      alertsOff: "You will now no longer be notified when there's a new offer."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
-    preventSuicide:
-      description: "Sends a DM to a user with all the useful resource to prevent suicide"
-      nonNative: "Hello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team"
-      notFound: "I don't know who that is"
     post:
       description: "Sends a message to the server from the bot"
+    preventSuicide:
+      description: "Sends a DM to a user with all the useful resource to prevent suicide"
+      nonNative: "\nHello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team\n"
+      notFound: "I don't know who that is"
+    privateVC:
+      description: "Manage on-demand private VC system"
+      error:
+        missingAction: "You must specify an action."
+        misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
+        unknownAction: "%% is not a valid action."
+    pronouns:
+      description: "To add one's pronoun roles"
+      reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
+      added: ":eowynsheep: All good, I **gave** you the role(s) \"%%\"!"
+      removed: ":eowynsheep: All good, I **removed** the role(s) \"%%\" for you!"
+    questionOfTheDay:
+      description: "To post a new question of the day based off of Lawless French's word of the day"
+      footer: "\nReply in the french-speaking channels to practice!"
+      reply: "**%model.command.questionOfTheDay.replyParts.wordTitle%**\n%%\n\n**%model.command.questionOfTheDay.replyParts.questionTitle%**\n%%\n\n*%%*"
+      replyParts:
+        wordTitle: "Word of the day"
+        questionTitle: "Question of the day"
     quote:
       description: "Creates a quote of a member"
     quotes:
@@ -344,6 +379,9 @@ model:
   hardcoreLearning:
     warning: "I detected a high number of non-%% messages! Please go back to speaking %% or I will call the police :roocop: !"
     secondWarning: "If you want to speak another language so badly, you can go to the other language channels. If it's for teaching English, then you should go to the classroom channels. This channel is for **practicing** speaking **English**!"
+  lawlessFrench:
+    intervalHandler:
+      newWord: "**New word of the day by LawlessFrench:** %%"
   memberRolesFlow:
     noSpeakOnlyAnswer: "\n\n**__English__**\n> Sorry, I can't understand what you're saying :pensive: . But don't worry, you only need to **react** to the upcoming message :) !"
     start: "\n\n**__English__**\n> Ok %%, first things first, let's talk about your proficiency. Are you a native %% speaker?"
@@ -363,6 +401,36 @@ model:
     unbanned: "unbanned"
     reason: "for the following reason: %%"
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
+  privateVC:
+    channelType:
+      complete:
+        public: "%%, I made your voice chat public!"
+        private: "%%, I made your voice chat private!"
+      embed:
+        title: "Public or private channel?"
+        footer: "React below!"
+      public: "Public"
+      private: "Private"
+    errors:
+      creationFailed:
+        member: "Hi! I'm sorry, I failed to create your VC :( Maybe you can try again?"
+        mods: "%% asked for a private VC but I failed to create it"
+      deletionFailed: "Couldn't delete private voice channels for member ID %% from database, requested by %%."
+      memberNotFound: "Sorry, I don't recognize the member who wants to join the room, I cannot let them in."
+      memberNotWaiting: "%% has left the waiting room, I will not move them to your room."
+      modificationFailed:
+        member: "I failed to change the type of your VC, panicked and deleted your channels in the process :( Can you try again?"
+        mods: "%% wanted to change the type of their VC, but I encountered an error doing so"
+      propertyTransferFailed: "Couldn't transfer on-demand VC property from %% to %%, deleting channels."
+    joinRequest:
+      notification: "%%, someone wants to join your room!"
+      prompt: "Open the door?"
+    requestChannelName:
+      available: "Create room"
+      closed: "Closed"
+      full: "Full"
+    transferredProperty: "%%, since previous host %% left, I made you the new host!"
+    waitingRoomLabel: "Waiting room"
   blacklist:
     semi:
       triggered: "Semi-blacklist triggered by %% in %%\n%%"

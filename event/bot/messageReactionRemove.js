@@ -1,7 +1,5 @@
-const SocialNetworkIntegration = require('../../model/social-network-integration');
-const MemberRolesFlow = require('../../model/member-roles-flow');
-const DM = require('../../model/dm');
 const Correction = require('../../model/correction');
+const Starboard = require('../../model/starboard');
 
 /**
  * @param {MessageReaction} reaction
@@ -10,5 +8,6 @@ const Correction = require('../../model/correction');
 module.exports = async (reaction, user) => {
     if (reaction.message.guild === null || isRightGuild(reaction.message.guild.id)) {
         Correction.handleReactionRemove(reaction, user);
+        Starboard.handleReaction(reaction);
     }
 };
