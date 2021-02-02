@@ -177,6 +177,8 @@ const Guild = {
         Guild.permissionLevels.set(Config.roles.soft, 7);
         Guild.permissionLevels.set(Config.roles.tutor, 4);
         Guild.permissionLevels.set(Config.roles.animator, 3);
+        Guild.permissionLevels.set(Config.roles.patreonBooster, 2);
+        Guild.permissionLevels.set(Config.roles.nitroBooster, 2);
         Guild.permissionLevels.set(Config.roles.officialMember, 1);
 
         Guild.kickInactiveNewMembers();
