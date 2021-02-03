@@ -38,7 +38,6 @@ module.exports = async (oldVoiceState, newVoiceState) => {
             }
         }
 
-        PrivateVC.privateVCHandler(member, oldVoiceState, newVoiceState);
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
     }
 };
