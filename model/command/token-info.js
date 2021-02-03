@@ -54,9 +54,8 @@ class TokenInfo
             amountToken = tokenInfo.amount_token;
         }
 
-        const boardEmbed = new Discord.MessageEmbed();
-
-        boardEmbed.setColor('#ffb8e6')
+        const boardEmbed = new Discord.MessageEmbed()
+            .setColor('#ffb8e6')
             .setTitle(`${emojiLongFox}[Token info]${emojiLongFox}`)
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
