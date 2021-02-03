@@ -49,7 +49,7 @@ function getEmbed(message) {
                 .addField(`.token-board`, `To see who has the most tokens`)
                 .addField(`.token-info`, `To see how many tokens you have`)
                 .addField(`.token-help`, `You are right in it`)
-                .addField(`.xof-ykcul`, `... wait, what is this?`)
+                .addField(`.xof-ykcul`, `? siht si tahw ...tiaW`)
                 .setFooter(`React with ${emojiLeft} for more info`)
                 .setTimestamp(new Date());
         break;
