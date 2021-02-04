@@ -261,7 +261,7 @@ const PrivateVC = {
                                 channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
                                 channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                                 channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
-                                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false}),
+                                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
                             ]);
                             await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
 
@@ -370,7 +370,7 @@ const PrivateVC = {
                 textChannel.updateOverwrite(member, {VIEW_CHANNEL: true}),
                 voiceChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                 voiceChannel.updateOverwrite(member, {MOVE_MEMBERS: true}),
-                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false}),
+                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
             ]);
 
             await member.voice.setChannel(voiceChannel).catch(exception => {
