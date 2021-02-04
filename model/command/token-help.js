@@ -1,14 +1,14 @@
-const Logger = require('@lilywonhalf/pretty-logger');
 const Discord = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
+const Guild = require('../guild');
 
 const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
 const emojiDiscordNitro = bot.emojis.cache.find(emoji => emoji.name === 'nitro');
-const emojiFoxAss = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
+const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
-const emojiLongFox = `${emojiFoxAss}${emojiFoxBody}${emojiFoxHead}`;
+const emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
 const emojiRight = '➡';
 const emojiLeft = '⬅';
 const emojiDown = '⬇';
@@ -19,6 +19,12 @@ const arrayEmojis = [];
 arrayEmojis.push([emojiRight]);
 arrayEmojis.push([emojiLeft]);
 
+/**
+ * 
+ * @param {Message} message 
+ * 
+ * @return {Embed}
+ */
 function getEmbed(message) {
     if (arrayEmbeds[page] !== undefined) {
         return arrayEmbeds[page];
@@ -36,7 +42,8 @@ function getEmbed(message) {
                 .setDescription(`Every token is a chance to win a lifetime subscription to ${emojiKwiziq} Kwiziq or a ${emojiDiscordNitro} Discord Nitro subscriptions !`)
                 .addField(`More info below ${emojiDown}`, `https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641`)
                 .addField(`Plus d'info ici ${emojiDown}`, `https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150`)
-                .setFooter(`React with ${emojiRight} for the command list`)
+                .addField(`Looking for the command list ?`, `React with ${emojiRight}`)
+                .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
         case 1:
@@ -50,7 +57,8 @@ function getEmbed(message) {
                 .addField(`.token-info`, `To see how many tokens you have`)
                 .addField(`.token-help`, `You are right in it`)
                 .addField(`.xof-ykcul`, `? siht si tahw ...tiaW`)
-                .setFooter(`React with ${emojiLeft} for more info`)
+                .addField(`For more info about the event`, `React with ${emojiLeft}`)
+                .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
     }
@@ -59,6 +67,11 @@ function getEmbed(message) {
     return embed;
 }
 
+/**
+ * 
+ * @param {Message} message
+ * @param {Message} embededMsg
+ */
 const addReactToEmbed = (message, embededMsg) => {
     arrayEmojis[page].map(emoji => embededMsg.react(emoji));
 
@@ -77,6 +90,10 @@ const addReactToEmbed = (message, embededMsg) => {
     });
 };
 
+/**
+ * 
+ * @param {Emoji} emoji 
+ */
 function checkReaction(emoji) {
     if (emoji) {
         switch (emoji) {

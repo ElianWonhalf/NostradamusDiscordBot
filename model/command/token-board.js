@@ -7,10 +7,10 @@ const Guild = require('../guild');
 
 const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
 const emojiDiscordNitro = bot.emojis.cache.find(emoji => emoji.name === 'nitro');
-const emojiFoxAss = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
+const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
-const emojiLongFox = `${emojiFoxAss}${emojiFoxBody}${emojiFoxHead}`;
+const emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
 const emojiRight = '➡';
 const emojiLeft = '⬅';
 
@@ -19,6 +19,13 @@ let maxPages = 1;
 const rowByPage = 5;
 const arrayEmbeds = [];
 
+/**
+ * 
+ * @param {Message} message 
+ * @param {Array} tokenRanking 
+ * 
+ * @return {Embed}
+ */
 function getEmbed(message, tokenRanking) {
     if (arrayEmbeds[page] !== undefined) {
         return arrayEmbeds[page];
@@ -39,13 +46,18 @@ function getEmbed(message, tokenRanking) {
         }
     }
 
+    boardEmbed.addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+
     arrayEmbeds.push(boardEmbed);
     return boardEmbed;
 }
 
+/**
+ * @return {Array}
+ */
 function getReactEmojis() {
     if (page < 1 && maxPages === 1) {
-        return [emojiFoxAss, emojiFoxBody, emojiFoxHead];
+        return [emojiFoxBottom, emojiFoxBody, emojiFoxHead];
     } else if (page < 1) {
         return[emojiRight];
     } else if (page === maxPages - 1) {
@@ -55,6 +67,12 @@ function getReactEmojis() {
     }
 }
 
+/**
+ * 
+ * @param {Message} message 
+ * @param {Embed} embededMsg 
+ * @param {Array} tokenRanking 
+ */
 const addReactToEmbed = (message, embededMsg, tokenRanking) => {
     getReactEmojis().map(emoji => embededMsg.react(emoji));
 
@@ -73,6 +91,10 @@ const addReactToEmbed = (message, embededMsg, tokenRanking) => {
     });
 };
 
+/**
+ * 
+ * @param {Emoji} emoji 
+ */
 function checkReaction(emoji) {
     if (emoji) {
         switch (emoji) {

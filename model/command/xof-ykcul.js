@@ -1,4 +1,3 @@
-const Logger = require('@lilywonhalf/pretty-logger');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
@@ -10,6 +9,11 @@ arrayEmojis.push(bot.emojis.cache.find(emoji => emoji.name === 'foxlong2'));
 arrayEmojis.push(bot.emojis.cache.find(emoji => emoji.name === 'foxlong3'));
 arrayEmojis.push('🍀');
 
+/**
+ * 
+ * @param {Message} botMessage 
+ * @param {Message} message 
+ */
 const addReact = (botMessage, message) => {
     message.react(emojiClue);
 
