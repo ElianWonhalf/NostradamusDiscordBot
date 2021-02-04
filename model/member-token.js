@@ -1,8 +1,4 @@
-const Discord = require('discord.js');
-const Logger = require('@lilywonhalf/pretty-logger');
-const Config = require('../config.json');
 const db = require('./db');
-const Guild = require('./guild');
 
 const MemberToken = {
     /**

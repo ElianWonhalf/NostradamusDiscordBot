@@ -1,4 +1,4 @@
-const Logger = require('@lilywonhalf/pretty-logger');
+const fs = require('fs');
 const Discord = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
@@ -7,19 +7,49 @@ const Guild = require('../guild');
 
 const emojiLuckyLeaf = ('🍀');
 const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
-const emojiFoxAss = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
+const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
-const emojiLongFox = `${emojiFoxAss}${emojiFoxBody}${emojiFoxHead}`;
+const emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
 
-const arrayEmojis = [emojiFoxAss, emojiFoxBody, emojiFoxHead, emojiFoxAss, emojiFoxBody, emojiFoxHead, emojiFoxAss, emojiLuckyLeaf, emojiFoxBody, emojiFoxHead];
+const arrayEmojis = [emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiLuckyLeaf, emojiFoxBody, emojiFoxHead];
 
-let editedMessageContent = "";
+const MAX_ATTEMPT = 5;
+const COOLDOWN_DURATION = 43200000;
 
+const saveAttempts = (data) => {
+    fs.writeFileSync('./cache/attempts-lucky-fox/attempts.json', JSON.stringify(data));
+};
+
+/**
+ * @returns {object|null}
+ */
+const getAttempts = () => {
+    let data = null;
+
+    if (fs.existsSync('./cache/attempts-lucky-fox/attempts.json')) {
+        data = require('../../cache/attempts-lucky-fox/attempts.json');
+    }
+
+    return data;
+};
+
+/**
+ * 
+ * @param {Int} max 
+ * 
+ * @return {Int}
+ */
 function getRandomNumber(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+/**
+ * 
+ * @param {Int} amount 
+ * 
+ * @return {Array}
+ */
 function getRandomEmoji(amount) {
     const arrayKwiziqResult = [6, 9, 96, 69];
     let arrayResult = [];
@@ -36,33 +66,28 @@ function getRandomEmoji(amount) {
     return arrayResult;
 }
 
-const displayEmojis = (botMessage, message, result, emojis) => {
-    const arrayEmojis = emojis;
-    editedMessageContent += `${arrayEmojis.shift()}`;
+/**
+ * 
+ * @param {Message} botMessage 
+ * @param {Emoji} emoji 
+ * 
+ * @return {Promise}
+ */
+function displayEmojis(botMessage, emoji) {
+    return new Promise(async (resolve, reject) => {
+        await botMessage.edit(`${botMessage.content}${emoji}`);
+        setTimeout(resolve, 500);
+    });
+}
 
-    botMessage.edit(editedMessageContent);
-
-    if (arrayEmojis.length < 1) {
-        editedMessageContent = "";
-        editEmbedWithResult(botMessage, message, result);
-    } else {
-        setTimeout(() => {
-            displayEmojis(botMessage, message, result, arrayEmojis);
-        }, 1000);
-    }
-};
-
+/**
+ * 
+ * @param {Array} emojis 
+ * 
+ * @return {Object}
+ */
 function getDrawResult(emojis) {
-    let result = {
-        kwiziq: false,
-        tokenAmount: 0,
-        longfox: {
-            baby: 0,
-            small: 0,
-            medium: 0,
-            large: 0
-        }
-    };
+    const result = { kwiziq: false, tokenAmount: 0, luckyLeafAmount: 0, longfox: { large: 0, medium: 0, small: 0, baby: { amount: 0, index: [] } } };
 
     for (let i = 0; i < emojis.length; i++) {
         let currentEmoji = emojis[i];
@@ -70,7 +95,7 @@ function getDrawResult(emojis) {
         if (currentEmoji === emojiKwiziq) {
             result.tokenAmount++;
             result.kwiziq = true;
-        } else if (isFoxAss(currentEmoji)) {
+        } else if (isFoxBottom(currentEmoji)) {
             let nextEmoji = emojis[i + 1];
 
             if (isFoxBody(nextEmoji)) {
@@ -89,46 +114,128 @@ function getDrawResult(emojis) {
                         nextEmoji = emojis[i + 4];
 
                         if (isFoxhead(nextEmoji)) {
-                            result.tokenAmount += 4;
+                            result.tokenAmount = 4;
                             result.longfox.large++;
+                            result.luckyLeafAmount = transformLuckyLeaf(i + 4, 'large', emojis);
+                            return result;
                         } else if (isFourLeaf(previousEmoji)) {
-                            result.tokenAmount += 2;
+                            result.tokenAmount = 2;
                             result.longfox.medium++;
+                            result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
+                            return result;
                         }
                     } else if (isFoxhead(nextEmoji)) {
-                        result.tokenAmount += 2;
+                        result.tokenAmount = 2;
                         result.longfox.medium++;
+                        result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
+                        return result;
                     } else if (isFourLeaf(previousEmoji)) {
-                        result.tokenAmount++;
+                        result.tokenAmount = 1;
                         result.longfox.small++;
+                        result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
+                        return result;
                     }
                 } else if (isFoxhead(nextEmoji)) {
-                    result.tokenAmount++;
+                    result.tokenAmount = 1;
                     result.longfox.small++;
+                    result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
+                    return result;
                 } else if (isFourLeaf(previousEmoji)) {
-                    result.longfox.baby++;
+                    result.longfox.baby.amount++;
+                    result.longfox.baby.index.push(i + 1);
                 }
             } else if (isFoxhead(nextEmoji)) {
-                result.longfox.baby++;
+                result.longfox.baby.amount++;
+                result.longfox.baby.index.push(i + 1);
             }
         }
     }
 
-    if (result.longfox.baby > 1) {
-        result.tokenAmount++;
+    if (result.longfox.baby.amount > 1) {
+        result.tokenAmount = 1;
+        result.luckyLeafAmount = transformLuckyLeaf(result.longfox.baby.index[0], 'baby', emojis);
+        result.luckyLeafAmount += transformLuckyLeaf(result.longfox.baby.index[1], 'baby', emojis);
     }
 
     return result;
 }
 
-function isFoxAss(emoji) {
-    if (emoji && (emoji === emojiFoxAss || emoji === emojiLuckyLeaf)) {
+/**
+ * 
+ * @param {Int} index 
+ * @param {String} longFoxType 
+ * @param {Array} emojis 
+ * 
+ * @return {Int}
+ */
+function transformLuckyLeaf(index, longFoxType, emojis) {
+    let luckyLeafAmount = 0;
+
+    switch (longFoxType) {
+        case 'large':
+            luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1], emojis[index - 2], emojis[index - 3], emojis[index - 4]]);
+            emojis[index] = emojiFoxHead;
+            emojis[index - 1] = emojiFoxBody;
+            emojis[index - 2] = emojiFoxBody;
+            emojis[index - 3] = emojiFoxBody;
+            emojis[index - 4] = emojiFoxBottom;
+        break;
+
+        case 'medium':
+            luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1], emojis[index - 2], emojis[index - 3]]);
+            emojis[index] = emojiFoxHead;
+            emojis[index - 1] = emojiFoxBody;
+            emojis[index - 2] = emojiFoxBody;
+            emojis[index - 3] = emojiFoxBottom;
+        break;
+
+        case 'small':
+            luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1], emojis[index - 2]]);
+            emojis[index] = emojiFoxHead;
+            emojis[index - 1] = emojiFoxBody;
+            emojis[index - 2] = emojiFoxBottom;
+        break;
+
+        case 'baby':
+            luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1]]);
+            emojis[index] = emojiFoxHead;
+            emojis[index - 1] = emojiFoxBottom;
+        break;
+    }
+    return luckyLeafAmount;
+}
+
+/**
+ * 
+ * @param {Array} emojis
+ * 
+ * @return {int}
+ */
+function getLuckyLeafAmount(emojis) {
+    const result = emojis.filter(emoji => emoji === emojiLuckyLeaf);
+    return result.length;
+}
+
+/**
+ * 
+ * @param {Emoji} emoji 
+ * 
+ * @return {boolean}
+ */
+function isFoxBottom(emoji) {
+    if (emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf)) {
         return true;
     }
 
     return false;
 }
 
+/**
+ * 
+ * @param {Emoji} emoji 
+ * 
+ * @return {boolean}
+ */
 function isFoxBody(emoji) {
     if (emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf)) {
         return true;
@@ -137,6 +244,12 @@ function isFoxBody(emoji) {
     return false;
 }
 
+/**
+ * 
+ * @param {Emoji} emoji 
+ * 
+ * @return {boolean}
+ */
 function isFoxhead(emoji) {
     if (emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf)) {
         return true;
@@ -145,6 +258,12 @@ function isFoxhead(emoji) {
     return false;
 }
 
+/**
+ * 
+ * @param {Emoji} emoji 
+ * 
+ * @return {boolean}
+ */
 function isFourLeaf(emoji) {
     if (emoji && emoji === emojiLuckyLeaf) {
         return true;
@@ -153,17 +272,25 @@ function isFourLeaf(emoji) {
     return false;
 }
 
-async function editEmbedWithResult(botMessage, message, result) {
+/**
+ * 
+ * @param {Message} message 
+ * @param {Object} result 
+ * 
+ * @return {Embed}
+ */
+async function editEmbedWithResult(message, result) {
     const embedResult = new Discord.MessageEmbed()
         .setColor('#ffb8e6')
         .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
         .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-        .setFooter(`${emojiLuckyLeaf} = JOKER`)
+        .setFooter('.lfox is faster')
         .setTimestamp(new Date());
 
     if (result.tokenAmount > 0) {
-        embedResult.setDescription(`Hey, you won ${result.tokenAmount} token(s) !`);
+        const totalToken = result.tokenAmount + result.luckyLeafAmount;
+        embedResult.setDescription(`Hey, you won ${totalToken} token(s) !`);
     } else {
         embedResult.setDescription(`Tough luck...`);
     }
@@ -172,29 +299,74 @@ async function editEmbedWithResult(botMessage, message, result) {
         embedResult.addField(`${emojiKwiziq}`, 'Kwiziq give you a hand ! ... and 1 token');
     }
 
-    if (result.longfox.baby > 1) {
-        embedResult.addField(`${emojiFoxAss}${emojiFoxHead}`, 'Those baby longfox give you 1 token !');
+    if (result.longfox.baby.amount > 1) {
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, 'These babies longfox gave you 1 token !');
     }
 
     if (result.longfox.small > 0) {
-        embedResult.addField(`${emojiFoxAss}${emojiFoxBody}${emojiFoxHead}`, 'This longfox give you 1 token !');
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`, 'This longfox give you 1 token !');
     }
 
     if (result.longfox.medium > 0) {
-        embedResult.addField(`${emojiFoxAss}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, 'This prettylongfox give you 2 token !!');
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, 'This prettylongfox give you 2 token !!');
     }
 
     if (result.longfox.large > 0) {
-        embedResult.addField(`${emojiFoxAss}${emojiFoxBody}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, 'This damnbigboylongfox give you 4 token !!!!');
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, 'This damnbigboylongfox give you 4 token !!!!');
     }
 
-    botMessage.edit(embedResult);
-
-    for (let i = 0; i < result.tokenAmount; i++) {
-        await MemberToken.add([message.author.id]).then(async () => {
-            await Guild.eventChatChannel.send(`${message.author.username} a gagné un jeton !`);
-        });
+    if (result.luckyLeafAmount > 0) {
+        embedResult.addField(`${emojiLuckyLeaf}`, `These four leaf clovers turn into ${result.luckyLeafAmount} token(s)`);
     }
+
+    embedResult.addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+
+    return embedResult;
+}
+
+/**
+ * 
+ * @param {int} userId 
+ * 
+ * @return {boolean} 
+ */
+function canPlay(userId) {
+    let dataAttempts = getAttempts();
+    if (!dataAttempts) {
+        dataAttempts = {};
+    }
+
+    if (!dataAttempts[userId]) {
+        dataAttempts[userId] = {numberAttempts: 0, firstAttempt: Date.now()};
+    }
+
+    if (dataAttempts[userId].numberAttempts >= MAX_ATTEMPT) {
+        if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
+            dataAttempts[userId].numberAttempts = 0;
+        } else {
+            return false;
+        }
+    }
+
+    dataAttempts[userId].numberAttempts += 1;
+    saveAttempts(dataAttempts);
+    return true;
+}
+
+/**
+ * 
+ * @param {int} timestampFirstAttempt 
+ * 
+ * @return {boolean}
+ */
+function canResetAttempt(timestampFirstAttempt) {
+    const now = Date.now();
+
+    if (now - timestampFirstAttempt >= COOLDOWN_DURATION) {
+        return true;
+    }
+
+    return false;
 }
 
 class LuckyFox
@@ -215,8 +387,15 @@ class LuckyFox
      * @param {Message} message
      */
     async process(message) {
+        if (!canPlay(message.author.id)) {
+            return message.channel.send(`I take a break, wait a little like ... 12 hour`);
+        }
 
-        const randomEmojis = getRandomEmoji(5);
+        // contains random emojis and will be show first
+        const initialRandomEmojis = getRandomEmoji(5);
+        // contains same as randomEmojis array but will be edited to transform four leaf into part of the fox
+        const randomEmojis = initialRandomEmojis.filter(() => true);
+
         const result = getDrawResult(randomEmojis);
 
         const embed = new Discord.MessageEmbed()
@@ -225,11 +404,26 @@ class LuckyFox
             .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
             .setDescription(`Ok, Let's try something ...`)
-            .setFooter(`${emojiLuckyLeaf} = JOKER`)
+            .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .setFooter('.lfox is faster')
             .setTimestamp(new Date());
 
-        message.channel.send(embed).then(botMessage => {
-            displayEmojis(botMessage, message, result, randomEmojis);
+        message.channel.send(embed).then(async botMessage => {
+            for (let emoji of initialRandomEmojis) {
+                await displayEmojis(botMessage, emoji);
+            }
+
+            const editedEmbed = await editEmbedWithResult(message, result);
+
+            await botMessage.edit(editedEmbed);
+            await botMessage.edit(`${randomEmojis[0]}${randomEmojis[1]}${randomEmojis[2]}${randomEmojis[3]}${randomEmojis[4]}`);
+
+            const totalToken = result.tokenAmount + result.luckyLeafAmount;
+            for (let i = 0; i < totalToken; i++) {
+                await MemberToken.add([message.author.id]).then(async () => {
+                    await Guild.eventChatChannel.send(`${message.author.username} a gagné un jeton !`);
+                });
+            }
         });
     }
 }
