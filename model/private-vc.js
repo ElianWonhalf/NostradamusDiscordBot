@@ -38,7 +38,7 @@ const PrivateVC = {
             delete PrivateVC.list[owner];
         }
 
-        PrivateVC.init();
+        await PrivateVC.init();
     },
 
     /**
@@ -564,8 +564,8 @@ const PrivateVC = {
         }
     },
 
-    cleanUnboundChannels: () => {
-        PrivateVC.dbSync();
+    cleanUnboundChannels: async () => {
+        await PrivateVC.dbSync();
 
         const channelIDs = Object.values(PrivateVC.list)
             .map(data => [data[0], data[1], data[2]])
@@ -580,8 +580,8 @@ const PrivateVC = {
             .map(channel => channel.delete());
     },
 
-    channelHousekeeping: () => {
-        PrivateVC.cleanUnboundChannels();
+    channelHousekeeping: async () => {
+        await PrivateVC.cleanUnboundChannels();
 
         const privateVCListCopy = {};
         Object.keys(PrivateVC.list).forEach(memberID => {
