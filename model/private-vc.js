@@ -556,7 +556,7 @@ const PrivateVC = {
         }
     },
 
-    channelHousekeeping: async () => {
+    channelHousekeeping: () => {
         const privateVCListCopy = {};
         Object.keys(PrivateVC.list).forEach(memberID => {
             const channelIDs = PrivateVC.list[memberID].slice(0, 3);
@@ -590,10 +590,30 @@ const PrivateVC = {
             if (channels[1].members.size === 0) {
                 // No one left in the voice channel: delete on-demand VC
                 PrivateVC.privateVoiceChatDeletionHandler(hostMember, channels);
-            } else if (channels[1].members.size >= 1 && !channels[1].members.has(hostMember.id)) {
-                // One or more members in the voice channel but the host member: transfer property
-                PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+            } else {
+                if (!channels[1].members.has(hostMember.id)) {
+                    // Host member left the voice channel: transfer property
+                    PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+                }
+
+                PrivateVC.fixChannelPermissions(channels);
             }
+        }
+    },
+
+    /**
+     * @param {Array} channels
+     */
+    fixChannelPermissions: async (channels) => {
+        if (channels[2] === undefined) {
+            channels.filter(channel => channel !== undefined).forEach(channel => channel.lockPermissions());
+        } else {
+            channels[1].members
+                .filter(member => !channels[0].permissionOverwrites.has(member.id))
+                .forEach(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true}));
+
+            await channels[0].overwritePermissions(channels[0].permissionOverwrites
+                .filter(overwrite => channels[1].members.has(overwrite.id)));
         }
     },
 
