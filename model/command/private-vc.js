@@ -24,7 +24,7 @@ class PrivateVC
     async process(message, args) {
         if (args.length > 0) {
             const action = args.shift().toLowerCase();
-            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['rename']};
+            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['limit', 'rename']};
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
 
             if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
@@ -54,6 +54,12 @@ class PrivateVC
                         PrivateVCModel.channelHousekeeping();
                         break;
 
+                    case 'limit':
+                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
+                            return;
+                        };
+                        break;
+
                     case 'rename':
                         if (args.length > 0) {
                             PrivateVCModel.renameChannels(message.member, args.join(" "));
@@ -68,6 +74,12 @@ class PrivateVC
                 }
 
                 switch (action) {
+                    case 'limit':
+                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
+                            return;
+                        }
+                        break;
+
                     case 'rename':
                         if (args.length > 0) {
                             PrivateVCModel.renameChannels(message.member, args.join(" "));

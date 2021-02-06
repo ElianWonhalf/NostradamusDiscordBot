@@ -564,6 +564,36 @@ const PrivateVC = {
         }
     },
 
+    /**
+     * @param {GuildMember} hostMember
+     * @param {Array} args
+     * @returns {bool}
+     */
+    setChannelUserLimit: async (hostMember, args) => {
+        const limit = parseInt(args[0]);
+        const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
+
+        if (args.length !== 1 || isNaN(limit)) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.incorrectSyntax', [Config.prefix]));
+            return false;
+        }
+
+        if (channels[2]) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.wrongAccessLevel'));
+            return false;
+        }
+
+        if (limit < 1 || limit > 99) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.invalidLimit'));
+            return false;
+        }
+
+        await channels[1].setUserLimit(limit);
+        return true;
+    },
+
     cleanUnboundChannels: async () => {
         await PrivateVC.dbSync();
 
