@@ -226,6 +226,14 @@ model:
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
+    modLog:
+      description: "For posting and editing messages in the public moderation log"
+      error:
+        memberNotFound: "I... Have no idea who that could be, sorry."
+        messageNotFound: "I couldn't find the message you're trying to edit, sorry."
+        missingAction: "You must specify an action."
+        missingArgs: "Looks like you're missing something!"
+        missingReason: "You must provide a reason."
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
