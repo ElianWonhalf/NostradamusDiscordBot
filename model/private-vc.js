@@ -273,11 +273,11 @@ const PrivateVC = {
 
                             await Promise.all([
                                 channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
                                 channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                                 channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
                                 waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
                             ]);
-                            await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
 
                             await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
                                 exception.payload = [channels[0], channels[1], waitingChannel];
@@ -631,15 +631,17 @@ const PrivateVC = {
      * @param {Array} channels
      */
     fixChannelPermissions: async (channels) => {
-        if (channels[2] === undefined) {
+        if (!channels[2]) {
             channels.filter(channel => channel !== undefined).forEach(channel => channel.lockPermissions());
         } else {
-            channels[1].members
-                .filter(member => !channels[0].permissionOverwrites.has(member.id))
-                .forEach(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true}));
+            const outdatedOverwrites = channels[0].permissionOverwrites
+                .filter(overwrite => overwrite.type !== 'role' && !channels[1].members.has(overwrite.id));
 
-            await channels[0].overwritePermissions(channels[0].permissionOverwrites
-                .filter(overwrite => channels[1].members.has(overwrite.id)));
+            await Promise.all([
+                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                ...outdatedOverwrites.map(overwrite => overwrite.delete()),
+                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
+            ]);
         }
     },
 
