@@ -11,6 +11,9 @@ const PrivateVC = {
     /** {Object} */
     pendingJoinRequests: {},
 
+    /** {Discord.Collection} */
+    pendingLeaveFollowupActions: new Discord.Collection(),
+
     /** {bool} */
     shutdown: false,
 
@@ -67,7 +70,7 @@ const PrivateVC = {
             );
 
             // Leave VC
-            if (vcRequestor) {
+            if (vcRequestor && vcRequestor !== member.id) {
                 PrivateVC.privateVoiceChatLeaveHandler(member, vcRequestor);
             }
 
@@ -78,8 +81,11 @@ const PrivateVC = {
         }
 
         if (privateVCData && oldVoiceState.channelID === privateVCData[1]) {
-            // Transfer property (if applicable)
-            PrivateVC.propertyTransferSwitch(member);
+            // Owner leaves room: schedule on-demand channels housekeeping if not already scheduled
+            if (PrivateVC.pendingLeaveFollowupActions.size === 0) {
+                const followupActionTimeout = setTimeout(PrivateVC.channelHousekeeping, 5000);
+                PrivateVC.pendingLeaveFollowupActions.set(member.id, followupActionTimeout);
+            }
         }
     },
 
@@ -483,6 +489,15 @@ const PrivateVC = {
     privateVoiceChatLeaveHandler: async (guestMember, requestor) => {
         const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
+        let followupActionTimeout = PrivateVC.pendingLeaveFollowupActions.get(requestor);
+
+        if (followupActionTimeout) {
+            clearTimeout(followupActionTimeout);
+            PrivateVC.pendingLeaveFollowupActions.delete(requestor);
+            followupActionTimeout = setTimeout(PrivateVC.channelHousekeeping, 5000);
+            PrivateVC.pendingLeaveFollowupActions.set(requestor, followupActionTimeout);
+        }
+
         if (channels[0]) {
             const overwrites = channels[0].permissionOverwrites;
 
@@ -541,18 +556,44 @@ const PrivateVC = {
         }
     },
 
-    /**
-     * @param {GuildMember} member
-     */
-    propertyTransferSwitch: async (member) => {
-        const channels = PrivateVC.list[member.id].slice(0, 3).map(
-            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
-        );
+    channelHousekeeping: async () => {
+        const privateVCListCopy = {};
+        Object.keys(PrivateVC.list).forEach(memberID => {
+            const channelIDs = PrivateVC.list[memberID].slice(0, 3);
+            const channels = [
+                Guild.smallVoiceTextCategoryChannel.children.get(channelIDs[0]),
+                Guild.smallVoiceCategoryChannel.children.get(channelIDs[1]),
+                Guild.smallVoiceCategoryChannel.children.get(channelIDs[2])
+            ];
 
-        if (channels[1].members.size === 0) {
-            PrivateVC.privateVoiceChatDeletionHandler(member, channels);
-        } else {
-            PrivateVC.privateVoiceChatPropertyTransferHandler(member, channels);
+            if (channels.slice(0, 2).every(channel => channel === undefined)) {
+                return;
+            }
+
+            privateVCListCopy[memberID] = channels;
+        });
+
+        Object.keys(privateVCListCopy).forEach(memberID => {
+            const member = Guild.discordGuild.member(memberID);
+
+            PrivateVC.synchronizeChannels(member, privateVCListCopy[memberID]);
+            PrivateVC.pendingLeaveFollowupActions.delete(memberID);
+        });
+    },
+
+    /**
+     * @param {GuildMember} hostMember
+     * @param {Array} channels
+     */
+    synchronizeChannels: (hostMember, channels) => {
+        if (channels[1]) {
+            if (channels[1].members.size === 0) {
+                // No one left in the voice channel: delete on-demand VC
+                PrivateVC.privateVoiceChatDeletionHandler(hostMember, channels);
+            } else if (channels[1].members.size >= 1 && !channels[1].members.has(hostMember.id)) {
+                // One or more members in the voice channel but the host member: transfer property
+                PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+            }
         }
     },
 
