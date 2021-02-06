@@ -24,7 +24,7 @@ class PrivateVC
     async process(message, args) {
         if (args.length > 0) {
             const action = args.shift().toLowerCase();
-            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown'], 'member': ['rename']};
+            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['rename']};
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
 
             if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
@@ -48,6 +48,10 @@ class PrivateVC
 
                     case 'shutdown':
                         PrivateVCModel.emergencyShutdown();
+                        break;
+
+                    case 'sync':
+                        PrivateVCModel.channelHousekeeping();
                         break;
 
                     case 'rename':
