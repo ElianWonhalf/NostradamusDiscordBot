@@ -33,6 +33,14 @@ const PrivateVC = {
         });
     },
 
+    dbSync: async () => {
+        for (let owner in PrivateVC.list) {
+            delete PrivateVC.list[owner];
+        }
+
+        PrivateVC.init();
+    },
+
     /**
      * @param {GuildMember} member
      * @param {VoiceState} oldVoiceState
@@ -556,7 +564,25 @@ const PrivateVC = {
         }
     },
 
+    cleanUnboundChannels: () => {
+        PrivateVC.dbSync();
+
+        const channelIDs = Object.values(PrivateVC.list)
+            .map(data => [data[0], data[1], data[2]])
+            .flat()
+            .filter(id => Guild.discordGuild.channels.cache.get(id));
+
+        Guild.smallVoiceCategoryChannel.children
+            .filter(channel => channel.id !== Guild.smallVoiceChatRequestChannel.id && !channelIDs.includes(channel.id))
+            .map(channel => channel.delete());
+        Guild.smallVoiceTextCategoryChannel.children
+            .filter(channel => !channelIDs.includes(channel.id))
+            .map(channel => channel.delete());
+    },
+
     channelHousekeeping: () => {
+        PrivateVC.cleanUnboundChannels();
+
         const privateVCListCopy = {};
         Object.keys(PrivateVC.list).forEach(memberID => {
             const channelIDs = PrivateVC.list[memberID].slice(0, 3);
