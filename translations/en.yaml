@@ -253,6 +253,10 @@ model:
       description: "Manage on-demand private VC system"
       error:
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
+      userLimit:
+        incorrectSyntax: "You need to provide the limit as a number, e.g. `%%pvc limit 10`."
+        invalidLimit: "The limit must be between 1 and 99 (included)."
+        wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     pronouns:
       description: "To add one's pronoun roles"
       reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
