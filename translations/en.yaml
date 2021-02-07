@@ -255,7 +255,7 @@ model:
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
       userLimit:
         incorrectSyntax: "You need to provide the limit as a number, e.g. `%%pvc limit 10`."
-        invalidLimit: "The limit must be between 1 and 99 (included)."
+        invalidLimit: "The limit must be between 1 and 99 (included), or 0 for no limit."
         wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     pronouns:
       description: "To add one's pronoun roles"

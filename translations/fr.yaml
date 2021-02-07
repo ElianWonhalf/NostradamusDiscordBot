@@ -177,7 +177,7 @@ model:
         misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
       userLimit:
         incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%pvc limit 10`."
-        invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus)."
+        invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus), ou 0 pour retirer la limite."
         wrongAccessLevel: "La limite d'utilisateurs peut uniquement être mise en place sur un salon sur demande public."
     pronouns:
       description: "Pour s'assigner les rôles de pronoms"
