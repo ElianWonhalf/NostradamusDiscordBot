@@ -300,7 +300,9 @@ model:
       renameFailed:
         member: "Désolé, je n'ai pas pu renommer ton salon."
     joinRequest:
-      notification: "%%, quelqu'un veut rejoindre ton salon !"
+      notification:
+        withPing: "%%, quelqu'un veut rejoindre ton salon !"
+        withoutPing: "Quelqu'un veut rejoindre le salon !"
       prompt: "Ouvrir la porte ?"
     requestChannelName:
       available: "Créer salon"
