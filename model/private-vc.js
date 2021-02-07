@@ -598,10 +598,17 @@ const PrivateVC = {
      * @returns {bool}
      */
     setChannelUserLimit: async (hostMember, args) => {
-        const limit = parseInt(args[0]);
         const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
+        const unsetLimitKeywords = ['unset', 'off', 'none', 'remove', 'delete'];
+
+        if (unsetLimitKeywords.includes(args[0])) {
+            await channels[1].setUserLimit(0);
+            return true;
+        }
+
+        const limit = parseInt(args[0]);
 
         if (args.length !== 1 || isNaN(limit)) {
             await channels[0].send(trans('model.command.privateVC.userLimit.incorrectSyntax', [Config.prefix]));
@@ -613,7 +620,7 @@ const PrivateVC = {
             return false;
         }
 
-        if (limit < 1 || limit > 99) {
+        if (limit < 0 || limit > 99) {
             await channels[0].send(trans('model.command.privateVC.userLimit.invalidLimit'));
             return false;
         }
