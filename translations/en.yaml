@@ -253,6 +253,10 @@ model:
       description: "Manage on-demand private VC system"
       error:
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
+      userLimit:
+        incorrectSyntax: "You need to provide the limit as a number, e.g. `%%pvc limit 10`."
+        invalidLimit: "The limit must be between 1 and 99 (included)."
+        wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     pronouns:
       description: "To add one's pronoun roles"
       reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
@@ -431,8 +435,11 @@ model:
       renameFailed:
         member: "Sorry, I couldn't rename your room."
         mods: "%% wanted to rename their VC, but the database operation failed."
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>`\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, move or disconnect members\n"
     joinRequest:
-      notification: "%%, someone wants to join your room!"
+      notification:
+        withPing: "%%, someone wants to join your room!"
+        withoutPing: "Someone wants to join the room!"
       prompt: "Open the door?"
     requestChannelName:
       available: "Create room"

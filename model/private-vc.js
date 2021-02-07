@@ -9,6 +9,12 @@ const PrivateVC = {
     list: {},
 
     /** {Object} */
+    deniedMembers: {},
+
+    /** {Object} */
+    introMessages: {},
+
+    /** {Object} */
     pendingJoinRequests: {},
 
     /** {Discord.Collection} */
@@ -227,10 +233,15 @@ const PrivateVC = {
                     return;
                 }
 
+                PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id] || [];
                 if (reaction.emoji.name === 'pollyes') {
+                    PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id].filter(id => id !== guestMember.id);
                     await guestMember.voice.setChannel(channels[1]);
                     await channels[0].updateOverwrite(guestMember, {VIEW_CHANNEL: true});
                 } else {
+                    if (!PrivateVC.deniedMembers[user.id].includes(guestMember.id)) {
+                        PrivateVC.deniedMembers[user.id] = [...PrivateVC.deniedMembers[user.id], guestMember.id];
+                    }
                     await guestMember.voice.setChannel(null);
                 }
             }
@@ -273,11 +284,11 @@ const PrivateVC = {
 
                             await Promise.all([
                                 channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
                                 channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
                                 channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
                                 waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
                             ]);
-                            await Promise.all(channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})));
 
                             await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
                                 exception.payload = [channels[0], channels[1], waitingChannel];
@@ -414,6 +425,9 @@ const PrivateVC = {
             PrivateVC.lockRequestChannel();
         }
 
+        const sentIntroMessage = await textChannel.send(trans('model.privateVC.introMessage', [member.toString(), Config.prefix, Config.prefix]));
+        PrivateVC.introMessages[member.id] = sentIntroMessage;
+
         const embed = new Discord.MessageEmbed()
             .addFields([
                 {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
@@ -423,9 +437,9 @@ const PrivateVC = {
             .setFooter(trans('model.privateVC.channelType.embed.footer'))
             .setColor(0x00FF00);
 
-        const sentMessage = await textChannel.send({content: member, embed: embed});
-        await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
-        await sentMessage.pin();
+        const sentPrompt = await textChannel.send(embed);
+        await Promise.all([sentPrompt.react('🔓'), sentPrompt.react('🔒')]);
+        await sentPrompt.pin();
     },
 
     /**
@@ -472,6 +486,13 @@ const PrivateVC = {
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
         const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
+        let content;
+        if (PrivateVC.deniedMembers[requestor] && PrivateVC.deniedMembers[requestor].includes(guestMember.id)) {
+            content = trans('model.privateVC.joinRequest.notification.withoutPing');
+        } else {
+            content = trans('model.privateVC.joinRequest.notification.withPing', [hostMember]);
+        }
+
         const embed = new Discord.MessageEmbed()
             .setAuthor(
                 `${guestUser.username}#${guestUser.discriminator}`,
@@ -480,10 +501,8 @@ const PrivateVC = {
             .setDescription(guestMember.toString())
             .setColor(0x00FF00)
             .setFooter(trans('model.privateVC.joinRequest.prompt'));
-        const sentMessage = await channels[0].send({
-            content: trans('model.privateVC.joinRequest.notification', [hostMember]),
-            embed: embed,
-        });
+        const sentMessage = await channels[0].send({content: content, embed: embed});
+
         emojis.forEach(emoji => sentMessage.react(emoji));
 
         PrivateVC.pendingJoinRequests[channels[1].id] = PrivateVC.pendingJoinRequests[channels[1].id] || {};
@@ -549,6 +568,15 @@ const PrivateVC = {
             });
             PrivateVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
             PrivateVC.renameTransferredChannels(channels, newHostMember);
+
+            if (PrivateVC.introMessages[currentHostMember.id]) {
+                PrivateVC.introMessages[newHostMember.id] = PrivateVC.introMessages[currentHostMember.id];
+                delete PrivateVC.introMessages[currentHostMember.id];
+                await PrivateVC.introMessages[newHostMember.id].edit(trans(
+                    'model.privateVC.introMessage',
+                    [newHostMember.toString(), Config.prefix, Config.prefix]
+                ));
+            }
             await channels[0].send(trans('model.privateVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
         } catch (exception) {
             Logger.exception(exception);
@@ -562,6 +590,36 @@ const PrivateVC = {
 
             channels.filter(channel => channel !== undefined).forEach(channel => channel.delete());
         }
+    },
+
+    /**
+     * @param {GuildMember} hostMember
+     * @param {Array} args
+     * @returns {bool}
+     */
+    setChannelUserLimit: async (hostMember, args) => {
+        const limit = parseInt(args[0]);
+        const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
+
+        if (args.length !== 1 || isNaN(limit)) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.incorrectSyntax', [Config.prefix]));
+            return false;
+        }
+
+        if (channels[2]) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.wrongAccessLevel'));
+            return false;
+        }
+
+        if (limit < 1 || limit > 99) {
+            await channels[0].send(trans('model.command.privateVC.userLimit.invalidLimit'));
+            return false;
+        }
+
+        await channels[1].setUserLimit(limit);
+        return true;
     },
 
     cleanUnboundChannels: async () => {
@@ -631,15 +689,17 @@ const PrivateVC = {
      * @param {Array} channels
      */
     fixChannelPermissions: async (channels) => {
-        if (channels[2] === undefined) {
+        if (!channels[2]) {
             channels.filter(channel => channel !== undefined).forEach(channel => channel.lockPermissions());
         } else {
-            channels[1].members
-                .filter(member => !channels[0].permissionOverwrites.has(member.id))
-                .forEach(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true}));
+            const outdatedOverwrites = channels[0].permissionOverwrites
+                .filter(overwrite => overwrite.type !== 'role' && !channels[1].members.has(overwrite.id));
 
-            await channels[0].overwritePermissions(channels[0].permissionOverwrites
-                .filter(overwrite => channels[1].members.has(overwrite.id)));
+            await Promise.all([
+                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                ...outdatedOverwrites.map(overwrite => overwrite.delete()),
+                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
+            ]);
         }
     },
 
