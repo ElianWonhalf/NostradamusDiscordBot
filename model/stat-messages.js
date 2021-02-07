@@ -17,7 +17,7 @@ class StatMessages extends StatEntity
             [snowflake]
         );
 
-        return data.amount === null ? 0 : parseInt(data.amount);
+        return data[0].amount === null ? 0 : parseInt(data[0].amount);
     }
 
     /**
@@ -31,8 +31,8 @@ class StatMessages extends StatEntity
             [snowflake]
         );
 
-        if (data.date !== null) {
-            const dateParts = data.date.split('-');
+        if (data[0].date !== null) {
+            const dateParts = data[0].date.split('-');
 
             dateParts.pop();
             date.setFullYear(dateParts[0]);

@@ -15,7 +15,7 @@ const mainProcess = () => {
 
     Logger.info('Spawning bot subprocess...');
     const args = [process.argv[1], 'bot'];
-    let botProcess = ChildProcess.spawn(process.argv[0], args);
+    let child = ChildProcess.spawn(process.argv[0], args);
 
     const stdLog = (callback) => {
         return (data) => {
@@ -29,33 +29,33 @@ const mainProcess = () => {
 
             if (wantToDie) {
                 Logger.info('Asked to kill');
-                botProcess.kill('SIGHUP');
+                child.kill('SIGHUP'); // Anakin'd
                 process.exit(0);
             }
 
             if (reboot) {
-                botProcess.kill();
+                child.kill(); // Anakin'd again
             }
         };
     };
 
-    const bindProcess = (subprocess) => {
+    const bindProcess = (subprocess) => { // Umbilical cording
         subprocess.stdout.on('data', stdLog(console.log));
         subprocess.stderr.on('data', stdLog(console.error));
         subprocess.on('close', (code) => {
             Logger.error(`Bot subprocess exited with code ${code}`);
 
             if (code !== 0) {
-                botProcess = ChildProcess.spawn(
+                child = ChildProcess.spawn(
                     process.argv[0],
                     args.concat(['--reboot'])
                 );
-                bindProcess(botProcess);
+                bindProcess(child);
             }
         });
     };
 
-    bindProcess(botProcess);
+    bindProcess(child);
     Logger.info('Bot subprocess spawned');
 };
 

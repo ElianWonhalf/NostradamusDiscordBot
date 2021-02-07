@@ -22,10 +22,17 @@ class PrivateVC
      * @param {Array} args
      */
     async process(message, args) {
-        if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
-            if (args.length > 0) {
-                const action = args.shift().toLowerCase();
-                const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
+        if (args.length > 0) {
+            const action = args.shift().toLowerCase();
+            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['limit', 'rename']};
+            const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
+
+            if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
+                const validActions = actions['mod'] + actions['member'];
+                if (!validActions.includes(action)) {
+                    await message.reply(trans('model.command.privateVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
+                    return;
+                }
 
                 switch (action) {
                     case 'lock':
@@ -41,17 +48,47 @@ class PrivateVC
 
                     case 'shutdown':
                         PrivateVCModel.emergencyShutdown();
+                        break;
 
-                    default:
-                        message.reply(trans('model.command.privateVC.error.unknownAction', [action], 'en'));
+                    case 'sync':
+                        PrivateVCModel.channelHousekeeping();
+                        break;
+
+                    case 'limit':
+                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
+                            return;
+                        };
+                        break;
+
+                    case 'rename':
+                        if (args.length > 0) {
+                            PrivateVCModel.renameChannels(message.member, args.join(" "));
+                        }
+                        break;
+                }
+            } else {
+                const validActions = actions['member'];
+                if (!validActions.includes(action)) {
+                    await message.reply(trans('model.command.privateVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
+                    return;
                 }
 
-                await message.react(emoji);
-            } else {
-                message.reply(trans('model.command.privateVC.error.missingAction', [], 'en'));
+                switch (action) {
+                    case 'limit':
+                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
+                            return;
+                        }
+                        break;
+
+                    case 'rename':
+                        if (args.length > 0) {
+                            PrivateVCModel.renameChannels(message.member, args.join(" "));
+                        }
+                        break;
+                }
             }
-        } else {
-            message.reply(trans('model.command.privateVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
+
+            await message.react(emoji);
         }
     }
 }
