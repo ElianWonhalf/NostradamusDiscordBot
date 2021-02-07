@@ -22,17 +22,22 @@ class AddToken
      * @param {Message} message
      */
     async process(message, args) {
+        const emojiPollNo = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
         const member = await Guild.getMemberFromMessage(message);
         let searchResult;
 
         if (args.length > 0) {
-            searchResult = Guild.findDesignatedMemberInMessage(message).foundMembers;
+            searchResult = Guild.findDesignatedMemberInMessage(message).foundMembers.filter(member => member.user);
         } else if (member.voice.channelID) {
             const activeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === member.voice.channelID);
             searchResult = activeChannel.members.filter(member => member.id !== message.author.id);
         } else {
-            await message.react('❌');
+            await message.react(emojiPollNo);
             return;
+        }
+
+        if (searchResult.length < 1) {
+            return message.react(emojiPollNo);
         }
 
         await MemberToken.add(searchResult.map(member => member.id)).then(async () => {
@@ -43,7 +48,7 @@ class AddToken
             });
             await message.react(emoji);
         }).catch(async (error) => {
-            await message.react('❌');
+            await message.react(emojiPollNo);
             Logger.exception(error);
         });
     }

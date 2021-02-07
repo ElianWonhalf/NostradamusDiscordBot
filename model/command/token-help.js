@@ -46,6 +46,7 @@ function getEmbed(message) {
                 .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
+        
         case 1:
             embed = new Discord.MessageEmbed()
                 .setColor('#ffb8e6')
@@ -100,6 +101,7 @@ function checkReaction(emoji) {
             case '➡':
                 page++;
             break;
+
             case '⬅':
                 page--;
             break;

@@ -1,11 +1,19 @@
-const fs = require('fs');
-const Discord = require('discord.js');
+const { writeFileSync, existsSync } = require('fs');
+const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
 const Guild = require('../guild');
 
-const emojiLuckyLeaf = ('🍀');
+const cachelessRequire = (path) => {
+    if (typeof path === 'string') {
+        delete require.cache[require.resolve(path)];
+    }
+
+    return typeof path === 'string' ? require(path) : null;
+};
+
+const emojiLuckyLeaf = '🍀';
 const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
 const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
@@ -18,7 +26,7 @@ const MAX_ATTEMPT = 5;
 const COOLDOWN_DURATION = 43200000;
 
 const saveAttempts = (data) => {
-    fs.writeFileSync('./cache/attempts-lucky-fox/attempts.json', JSON.stringify(data));
+    writeFileSync('./cache/attempts-lucky-fox/attempts.json', JSON.stringify(data));
 };
 
 /**
@@ -27,8 +35,8 @@ const saveAttempts = (data) => {
 const getAttempts = () => {
     let data = null;
 
-    if (fs.existsSync('./cache/attempts-lucky-fox/attempts.json')) {
-        data = require('../../cache/attempts-lucky-fox/attempts.json');
+    if (existsSync('./cache/attempts-lucky-fox/attempts.json')) {
+        data = cachelessRequire('../../cache/attempts-lucky-fox/attempts.json');
     }
 
     return data;
@@ -41,7 +49,7 @@ const getAttempts = () => {
  * @return {Int}
  */
 function getRandomNumber(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+    return Math.floor(Math.random() * max);
 }
 
 /**
@@ -87,7 +95,20 @@ function displayEmojis(botMessage, emoji) {
  * @return {Object}
  */
 function getDrawResult(emojis) {
-    const result = { kwiziq: false, tokenAmount: 0, luckyLeafAmount: 0, longfox: { large: 0, medium: 0, small: 0, baby: { amount: 0, index: [] } } };
+    const result = {
+        kwiziq: false,
+        tokenAmount: 0,
+        luckyLeafAmount: 0,
+        longfox: {
+            large: 0,
+            medium: 0,
+            small: 0,
+            baby: {
+                amount: 0,
+                index: []
+            }
+        }
+    };
 
     for (let i = 0; i < emojis.length; i++) {
         let currentEmoji = emojis[i];
@@ -114,29 +135,29 @@ function getDrawResult(emojis) {
                         nextEmoji = emojis[i + 4];
 
                         if (isFoxhead(nextEmoji)) {
-                            result.tokenAmount = 4;
+                            result.tokenAmount += 4;
                             result.longfox.large++;
                             result.luckyLeafAmount = transformLuckyLeaf(i + 4, 'large', emojis);
                             return result;
                         } else if (isFourLeaf(previousEmoji)) {
-                            result.tokenAmount = 2;
+                            result.tokenAmount += 2;
                             result.longfox.medium++;
                             result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
                             return result;
                         }
                     } else if (isFoxhead(nextEmoji)) {
-                        result.tokenAmount = 2;
+                        result.tokenAmount += 2;
                         result.longfox.medium++;
                         result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
                         return result;
                     } else if (isFourLeaf(previousEmoji)) {
-                        result.tokenAmount = 1;
+                        result.tokenAmount += 1;
                         result.longfox.small++;
                         result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
                         return result;
                     }
                 } else if (isFoxhead(nextEmoji)) {
-                    result.tokenAmount = 1;
+                    result.tokenAmount += 1;
                     result.longfox.small++;
                     result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
                     return result;
@@ -152,7 +173,7 @@ function getDrawResult(emojis) {
     }
 
     if (result.longfox.baby.amount > 1) {
-        result.tokenAmount = 1;
+        result.tokenAmount += 1;
         result.luckyLeafAmount = transformLuckyLeaf(result.longfox.baby.index[0], 'baby', emojis);
         result.luckyLeafAmount += transformLuckyLeaf(result.longfox.baby.index[1], 'baby', emojis);
     }
@@ -202,6 +223,7 @@ function transformLuckyLeaf(index, longFoxType, emojis) {
             emojis[index - 1] = emojiFoxBottom;
         break;
     }
+
     return luckyLeafAmount;
 }
 
@@ -223,11 +245,7 @@ function getLuckyLeafAmount(emojis) {
  * @return {boolean}
  */
 function isFoxBottom(emoji) {
-    if (emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf)) {
-        return true;
-    }
-
-    return false;
+    return emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf);
 }
 
 /**
@@ -237,11 +255,7 @@ function isFoxBottom(emoji) {
  * @return {boolean}
  */
 function isFoxBody(emoji) {
-    if (emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf)) {
-        return true;
-    }
-
-    return false;
+    return emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf);
 }
 
 /**
@@ -251,11 +265,7 @@ function isFoxBody(emoji) {
  * @return {boolean}
  */
 function isFoxhead(emoji) {
-    if (emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf)) {
-        return true;
-    }
-
-    return false;
+    return emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf);
 }
 
 /**
@@ -265,11 +275,7 @@ function isFoxhead(emoji) {
  * @return {boolean}
  */
 function isFourLeaf(emoji) {
-    if (emoji && emoji === emojiLuckyLeaf) {
-        return true;
-    }
-
-    return false;
+    return emoji && emoji === emojiLuckyLeaf;
 }
 
 /**
@@ -280,7 +286,7 @@ function isFourLeaf(emoji) {
  * @return {Embed}
  */
 async function editEmbedWithResult(message, result) {
-    const embedResult = new Discord.MessageEmbed()
+    const embedResult = new MessageEmbed()
         .setColor('#ffb8e6')
         .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
         .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
@@ -361,12 +367,7 @@ function canPlay(userId) {
  */
 function canResetAttempt(timestampFirstAttempt) {
     const now = Date.now();
-
-    if (now - timestampFirstAttempt >= COOLDOWN_DURATION) {
-        return true;
-    }
-
-    return false;
+    return now - timestampFirstAttempt >= COOLDOWN_DURATION;
 }
 
 class LuckyFox
@@ -398,7 +399,7 @@ class LuckyFox
 
         const result = getDrawResult(randomEmojis);
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
             .setColor('#ffb8e6')
             .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
@@ -421,7 +422,7 @@ class LuckyFox
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
             for (let i = 0; i < totalToken; i++) {
                 await MemberToken.add([message.author.id]).then(async () => {
-                    await Guild.eventChatChannel.send(`${message.author.username} a gagné un jeton !`);
+                    return Guild.eventChatChannel.send(`${message.author.username} a gagné un jeton !`);
                 });
             }
         });

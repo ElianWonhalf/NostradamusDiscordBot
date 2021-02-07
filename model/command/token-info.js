@@ -32,9 +32,9 @@ class TokenInfo
         let user;
 
         if (args.length === 1) {
-            member = Guild.findDesignatedMemberInMessage(message).foundMembers[0];
+            const member = Guild.findDesignatedMemberInMessage(message).foundMembers[0];
 
-            if (member === undefined) {
+            if (!member || !member.user) {
                 return message.reply(`J'ai... Aucune idée de qui ça pourrait être, désolé. / I... Have no idea who that could be, sorry.`);
             }
 
@@ -47,7 +47,7 @@ class TokenInfo
 
         const tokenInfo = await MemberToken.getCount(user.id);
         let amountToken;
-        if (tokenInfo === undefined) {
+        if (!tokenInfo) {
             amountToken = 0;
         } else {
             amountToken = tokenInfo.amount_token;

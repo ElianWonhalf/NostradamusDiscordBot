@@ -58,7 +58,6 @@ const CommandPermission = {
      */
     isMemberAnimator: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
-        const animatorRole = await Guild.getRoleByName('Animateur / Animatrice');
 
         return await Guild.isMemberAnimator(member);
     },
@@ -69,7 +68,6 @@ const CommandPermission = {
      */
     isMemberModOrSoftOrAnimator: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
-        const animatorRole = await Guild.getRoleByName('Animateur / Animatrice');
 
         return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member) || await Guild.isMemberAnimator(member);
     },

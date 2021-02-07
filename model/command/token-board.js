@@ -27,7 +27,7 @@ const arrayEmbeds = [];
  * @return {Embed}
  */
 function getEmbed(message, tokenRanking) {
-    if (arrayEmbeds[page] !== undefined) {
+    if (arrayEmbeds[page]) {
         return arrayEmbeds[page];
     }
 
@@ -41,9 +41,7 @@ function getEmbed(message, tokenRanking) {
         .setTimestamp(new Date());
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
-        if (tokenRanking[i] !== undefined) {
-            boardEmbed.addField(`${tokenRanking[i].member.user.username}`, `${tokenRanking[i].amount_token} token(s)`);
-        }
+        boardEmbed.addField(`${tokenRanking[i].member.user.username}`, `${tokenRanking[i].amount_token} token(s)`);
     }
 
     boardEmbed.addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
@@ -74,7 +72,7 @@ function getReactEmojis() {
  * @param {Array} tokenRanking 
  */
 const addReactToEmbed = (message, embededMsg, tokenRanking) => {
-    getReactEmojis().map(emoji => embededMsg.react(emoji));
+    getReactEmojis().forEach(emoji => embededMsg.react(emoji));
 
     const reactFilter = (reaction, user) => user.id === message.author.id && getReactEmojis().includes(reaction.emoji.name);
 
@@ -102,12 +100,13 @@ function checkReaction(emoji) {
                 if (page < maxPages) {
                     page++;
                 }
-                break;
+            break;
+
             case '⬅':
                 if (page > 0) {
                     page--;
                 }
-                break;
+            break;
         }
     }
 }
@@ -130,9 +129,9 @@ class TokenBoard
      * @param {Message} message
      */
     async process(message) {
-        const tokenRanking = await MemberToken.getCount();
+        let tokenRanking = await MemberToken.getCount();
 
-        if (tokenRanking === undefined) {
+        if (!tokenRanking) {
             return;
         }
 
@@ -143,6 +142,8 @@ class TokenBoard
                 return null;
             });
         }
+
+        tokenRanking = tokenRanking.filter(row => row && row.member);
 
         maxPages = Math.ceil(tokenRanking.length / rowByPage);
 
