@@ -9,6 +9,9 @@ const PrivateVC = {
     list: {},
 
     /** {Object} */
+    deniedMembers: {},
+
+    /** {Object} */
     pendingJoinRequests: {},
 
     /** {Discord.Collection} */
@@ -227,10 +230,15 @@ const PrivateVC = {
                     return;
                 }
 
+                PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id] || [];
                 if (reaction.emoji.name === 'pollyes') {
+                    PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id].filter(id => id !== guestMember.id);
                     await guestMember.voice.setChannel(channels[1]);
                     await channels[0].updateOverwrite(guestMember, {VIEW_CHANNEL: true});
                 } else {
+                    if (!PrivateVC.deniedMembers[user.id].includes(guestMember.id)) {
+                        PrivateVC.deniedMembers[user.id] = [...PrivateVC.deniedMembers[user.id], guestMember.id];
+                    }
                     await guestMember.voice.setChannel(null);
                 }
             }
@@ -472,6 +480,13 @@ const PrivateVC = {
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
         const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
+        let content;
+        if (PrivateVC.deniedMembers[requestor] && PrivateVC.deniedMembers[requestor].includes(guestMember.id)) {
+            content = trans('model.privateVC.joinRequest.notification.withoutPing');
+        } else {
+            content = trans('model.privateVC.joinRequest.notification.withPing', [hostMember]);
+        }
+
         const embed = new Discord.MessageEmbed()
             .setAuthor(
                 `${guestUser.username}#${guestUser.discriminator}`,
@@ -480,10 +495,8 @@ const PrivateVC = {
             .setDescription(guestMember.toString())
             .setColor(0x00FF00)
             .setFooter(trans('model.privateVC.joinRequest.prompt'));
-        const sentMessage = await channels[0].send({
-            content: trans('model.privateVC.joinRequest.notification', [hostMember]),
-            embed: embed,
-        });
+        const sentMessage = await channels[0].send({content: content, embed: embed});
+
         emojis.forEach(emoji => sentMessage.react(emoji));
 
         PrivateVC.pendingJoinRequests[channels[1].id] = PrivateVC.pendingJoinRequests[channels[1].id] || {};
