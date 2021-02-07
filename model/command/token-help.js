@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
@@ -34,7 +34,7 @@ function getEmbed(message) {
 
     switch (page) {
         case 0:
-            embed = new Discord.MessageEmbed()
+            embed = new MessageEmbed()
                 .setColor('#ffb8e6')
                 .setTitle(`${emojiLongFox}[Token help]${emojiLongFox}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
@@ -46,9 +46,9 @@ function getEmbed(message) {
                 .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
-        
+
         case 1:
-            embed = new Discord.MessageEmbed()
+            embed = new MessageEmbed()
                 .setColor('#ffb8e6')
                 .setTitle(`${emojiLongFox}[Token command]${emojiLongFox}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
@@ -65,6 +65,7 @@ function getEmbed(message) {
     }
 
     arrayEmbeds.push(embed);
+
     return embed;
 }
 
@@ -83,9 +84,11 @@ const addReactToEmbed = (message, embededMsg) => {
             embededMsg.reactions.removeAll();
         } else {
             checkReaction(collectedReactions.first()._emoji.name);
+
             embededMsg.reactions.removeAll().then(addReactToEmbed(message, embededMsg));
 
             const newEmbed = getEmbed(message);
+            
             embededMsg.edit(newEmbed);
         }
     });

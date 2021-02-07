@@ -138,28 +138,33 @@ function getDrawResult(emojis) {
                             result.tokenAmount += 4;
                             result.longfox.large++;
                             result.luckyLeafAmount = transformLuckyLeaf(i + 4, 'large', emojis);
+
                             return result;
                         } else if (isFourLeaf(previousEmoji)) {
                             result.tokenAmount += 2;
                             result.longfox.medium++;
                             result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
+
                             return result;
                         }
                     } else if (isFoxhead(nextEmoji)) {
                         result.tokenAmount += 2;
                         result.longfox.medium++;
                         result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
+
                         return result;
                     } else if (isFourLeaf(previousEmoji)) {
                         result.tokenAmount += 1;
                         result.longfox.small++;
                         result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
+
                         return result;
                     }
                 } else if (isFoxhead(nextEmoji)) {
                     result.tokenAmount += 1;
                     result.longfox.small++;
                     result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
+
                     return result;
                 } else if (isFourLeaf(previousEmoji)) {
                     result.longfox.baby.amount++;
@@ -356,6 +361,7 @@ function canPlay(userId) {
 
     dataAttempts[userId].numberAttempts += 1;
     saveAttempts(dataAttempts);
+    
     return true;
 }
 

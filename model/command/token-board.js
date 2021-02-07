@@ -1,5 +1,5 @@
 const Logger = require('@lilywonhalf/pretty-logger');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
@@ -31,7 +31,7 @@ function getEmbed(message, tokenRanking) {
         return arrayEmbeds[page];
     }
 
-    const boardEmbed = new Discord.MessageEmbed();
+    const boardEmbed = new MessageEmbed();
 
     boardEmbed.setColor('#ffb8e6')
         .setTitle(`${emojiLongFox}[Token board]${emojiLongFox}`)
@@ -41,12 +41,15 @@ function getEmbed(message, tokenRanking) {
         .setTimestamp(new Date());
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
-        boardEmbed.addField(`${tokenRanking[i].member.user.username}`, `${tokenRanking[i].amount_token} token(s)`);
+        if (tokenRanking[i]) {
+            boardEmbed.addField(`${tokenRanking[i].member.user.username}`, `${tokenRanking[i].amount_token} token(s)`);
+        }
     }
 
     boardEmbed.addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
 
     arrayEmbeds.push(boardEmbed);
+
     return boardEmbed;
 }
 
@@ -81,9 +84,11 @@ const addReactToEmbed = (message, embededMsg, tokenRanking) => {
             embededMsg.reactions.removeAll();
         } else {
             checkReaction(collectedReactions.first()._emoji.name);
+
             embededMsg.reactions.removeAll().then(addReactToEmbed(message, embededMsg, tokenRanking));
 
             const newEmbed = getEmbed(message, tokenRanking);
+            
             embededMsg.edit(newEmbed);
         }
     });
