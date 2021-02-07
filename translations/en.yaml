@@ -69,7 +69,7 @@ model:
       answer: "There is/are currently %% member(s) in the Decision Committee:"
     correction:
       description: "Explains the correction system and allows members to add the corresponding emoji to their nickname"
-      reply: "\nWhile we encourage members to correct each other, we understand this isn't always desirable as it can disrupt the flow of conversation and cause unnecessary frustration. This is why the server has a convention where members can add an asterisk (%%) to the end of their name to express that they would not like to be outright corrected unless they ask. Instead, others may react to their message with an asterisk (:smallcorrection: for small corrections, :bigcorrection: for bigger corrections) as needed, after which the member can make the corrections themself or ask for a correction.\n\n**Would you like me to add an asterisk after your nickname, to show that you prefer not to be corrected outright?**\n"
+      reply: "\nWhile we encourage members to correct each other, we understand this isn't always desirable as it can disrupt the flow of conversation and cause unnecessary frustration. This is why the server has a convention where members can add an asterisk (\\%%) to the end of their name to express that they would not like to be outright corrected unless they ask. Instead, others may react to their message with an asterisk (:smallcorrection: for small corrections, :bigcorrection: for bigger corrections) as needed, after which the member can make the corrections themself or ask for a correction.\n\n**Would you like me to add an asterisk after your nickname, to show that you prefer not to be corrected outright?**\n"
       error: "Looks like something went wrong! Make sure your nickname isn't too long!"
     correspondence:
       description: "To manage the Correspondence System. .c (audit) (other params)"
@@ -226,6 +226,14 @@ model:
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
+    modLog:
+      description: "For posting and editing messages in the public moderation log"
+      error:
+        memberNotFound: "I... Have no idea who that could be, sorry."
+        messageNotFound: "I couldn't find the message you're trying to edit, sorry."
+        missingAction: "You must specify an action."
+        missingArgs: "Looks like you're missing something!"
+        missingReason: "You must provide a reason."
     native:
       description: "Explains how the Native French speaker role differs from level roles"
       reply: "Francophone Natif is not a level per se, it's a state. Either you are a native speaker or you are not. It is not \"better than\" nor \"above\" advanced. It's a completely separate thing."
@@ -244,9 +252,11 @@ model:
     privateVC:
       description: "Manage on-demand private VC system"
       error:
-        missingAction: "You must specify an action."
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
-        unknownAction: "%% is not a valid action."
+      userLimit:
+        incorrectSyntax: "You need to provide the limit as a number, e.g. `%%pvc limit 10`."
+        invalidLimit: "The limit must be between 1 and 99 (included), or 0 for no limit."
+        wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     pronouns:
       description: "To add one's pronoun roles"
       reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
@@ -421,13 +431,21 @@ model:
       modificationFailed:
         member: "I failed to change the type of your VC, panicked and deleted your channels in the process :( Can you try again?"
         mods: "%% wanted to change the type of their VC, but I encountered an error doing so"
+      propertyTransferFailed: "Couldn't transfer on-demand VC property from %% to %%, deleting channels."
+      renameFailed:
+        member: "Sorry, I couldn't rename your room."
+        mods: "%% wanted to rename their VC, but the database operation failed."
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, move or disconnect members\n"
     joinRequest:
-      notification: "%%, someone wants to join your room!"
+      notification:
+        withPing: "%%, someone wants to join your room!"
+        withoutPing: "Someone wants to join the room!"
       prompt: "Open the door?"
     requestChannelName:
       available: "Create room"
       closed: "Closed"
       full: "Full"
+    transferredProperty: "%%, since previous host %% left, I made you the new host!"
     waitingRoomLabel: "Waiting room"
   blacklist:
     semi:

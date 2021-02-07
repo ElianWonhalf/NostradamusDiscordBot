@@ -11,7 +11,7 @@ class Edit
             return Edit.instance;
         }
 
-        this.aliases = ['send'];
+        this.aliases = ['editer', 'modifier', 'modify'];
         this.category = CommandCategory.BOT_MANAGEMENT;
         this.isAllowedForContext = CommandPermission.isMemberMod;
     }

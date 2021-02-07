@@ -41,7 +41,7 @@ model:
       answer: "Il y a en ce moment %% membre(s) dans le Comité de Décision :"
     correction:
       description: "Explique le système de correction et permet aux membres d'ajouter l'emoji correspondant à leur pseudo"
-      reply: "\nMalgré le fait qu'on encourage les gens à se corriger, on comprend que ce ne'st pas toujours désirable vu que ça peut déranger la conversation et créer de la frustration infructueuse. C'est pour ça que le serveur a une convention où les membres peuvent ajouter une astérisque (\\%%) à la fin de leur pseudo pour montrer qu'ils ne veulent pas être directement corrigés sans qu'ils le demandent. À la place, les autres peuvent réagir avec une astérisque (:smallcorrection: pour les petites corrections, :bigcorrection: pour les corrections plus grosses) au besoin, après quoi le membre peut se corriger lui-même, ou demander des corrections.\n\n**Est-ce que tu veux ajouter une astérisque à la fin de ton pseudo pour montrer que tu préfères ne pas directement avoir de correction ?**\n"
+      reply: "\nMalgré le fait qu'on encourage les gens à se corriger, on comprend que ce n'est pas toujours désirable vu que ça peut déranger la conversation et créer de la frustration infructueuse. C'est pour ça que le serveur a une convention où les membres peuvent ajouter une astérisque (\\%%) à la fin de leur pseudo pour montrer qu'ils ne veulent pas être directement corrigés sans qu'ils le demandent. À la place, les autres peuvent réagir avec une astérisque (:smallcorrection: pour les petites corrections, :bigcorrection: pour les corrections plus grosses) au besoin, après quoi le membre peut se corriger lui-même, ou demander des corrections.\n\n**Est-ce que tu veux ajouter une astérisque à la fin de ton pseudo pour montrer que tu préfères ne pas directement avoir de correction ?**\n"
       error: "On dirait qu'il y a un pépin ! Assure-toi que ton pseudo ne soit pas trop long !"
     correspondence:
       description: "Permet de faire un audit avec un membre inscrit au système de correspondance"
@@ -154,6 +154,8 @@ model:
     modList:
       description: "Liste les membres actuels de l'équipe de modération"
       answer: "Il y a en ce moment %% modérateurs :"
+    modLog:
+      description: "Pour poster et éditer des messages dans le journal de modération public"
     native:
       description: "Explique la différence du rôle Francophone natif par rapport aux rôles de niveau"
       reply: "\nFrancophone Natif n'est pas un niveau en soi, c'est un état. Soit tu es francophone natif soit tu ne l'es pas. Ce n'est pas \"mieux\" ou \"plus fort\" que avancé. C'est à côté.\n"
@@ -173,6 +175,10 @@ model:
       description: "Pour gérer le système de salons vocaux privés sur demande."
       error:
         misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
+      userLimit:
+        incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%pvc limit 10`."
+        invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus), ou 0 pour retirer la limite."
+        wrongAccessLevel: "La limite d'utilisateurs peut uniquement être mise en place sur un salon sur demande public."
     pronouns:
       description: "Pour s'assigner les rôles de pronoms"
       reply: "Pour t'assigner des rôles de pronoms, tape `.il`, `.elle` ou `.iel` selon le(s) rôle(s) que tu veux t'assigner"
@@ -291,11 +297,17 @@ model:
       memberNotWaiting: "%% a quitté la salle d'attente, je ne vais pas le déplacer dans ton salon."
       modificationFailed:
         member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
+      renameFailed:
+        member: "Désolé, je n'ai pas pu renommer ton salon."
+    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%pvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%pvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
     joinRequest:
-      notification: "%%, quelqu'un veut rejoindre ton salon !"
+      notification:
+        withPing: "%%, quelqu'un veut rejoindre ton salon !"
+        withoutPing: "Quelqu'un veut rejoindre le salon !"
       prompt: "Ouvrir la porte ?"
     requestChannelName:
       available: "Créer salon"
       closed: "Fermé"
       full: "Complet"
+    transferredProperty: "%%, comme le précédent hôte %% est parti, j'ai fait de toi le nouvel hôte !"
     waitingRoomLabel: "Attente"

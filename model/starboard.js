@@ -6,7 +6,8 @@ const Guild = require('./guild');
 const Starboard = {
     MIN_NB_STARS: 7,
     IGNORED_CHANNELS: [
-        Config.channels.selfie
+        Config.channels.selfie,
+        Config.channels.starboard
     ],
 
     /**
@@ -16,6 +17,7 @@ const Starboard = {
      */
     add: async (messageId, starboardMessageId) => {
         await db.asyncQuery('SET NAMES utf8mb4');
+
         return db.asyncQuery(
             `INSERT INTO starboard_message (message_id, starboard_message_id) VALUES (?, ?)`,
             [messageId, starboardMessageId]
@@ -38,8 +40,9 @@ const Starboard = {
      * @param {string} messageId
      * @returns {Promise<{ message_id: string, starboard_message_id: string }>}
      */
-    get: (messageId) => {
-        return db.asyncQuery(`SELECT * FROM starboard_message WHERE message_id = ?`, [messageId]);
+    get: async (messageId) => {
+        const rows = await db.asyncQuery(`SELECT * FROM starboard_message WHERE message_id = ?`, [messageId]);
+        return rows[0];
     },
 
     /**
