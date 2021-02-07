@@ -32,8 +32,7 @@ class AddToken
             const activeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === member.voice.channelID);
             searchResult = activeChannel.members.filter(member => member.id !== message.author.id);
         } else {
-            await message.react(emojiPollNo);
-            return;
+            return message.react(emojiPollNo);
         }
 
         if (searchResult.length < 1) {
@@ -46,6 +45,7 @@ class AddToken
             searchResult.map(async member => {
                 await Guild.eventChatChannel.send(`${member.user.username} a gagné un jeton !`);
             });
+
             await message.react(emoji);
         }).catch(async (error) => {
             await message.react(emojiPollNo);

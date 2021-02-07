@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
@@ -47,13 +47,14 @@ class TokenInfo
 
         const tokenInfo = await MemberToken.getCount(user.id);
         let amountToken;
-        if (!tokenInfo) {
+
+        if (!tokenInfo.amount_token) {
             amountToken = 0;
         } else {
             amountToken = tokenInfo.amount_token;
         }
 
-        const boardEmbed = new Discord.MessageEmbed()
+        const boardEmbed = new MessageEmbed()
             .setColor('#ffb8e6')
             .setTitle(`${emojiLongFox}[Token info]${emojiLongFox}`)
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
