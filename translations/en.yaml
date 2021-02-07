@@ -435,6 +435,7 @@ model:
       renameFailed:
         member: "Sorry, I couldn't rename your room."
         mods: "%% wanted to rename their VC, but the database operation failed."
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>`\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, move or disconnect members\n"
     joinRequest:
       notification:
         withPing: "%%, someone wants to join your room!"

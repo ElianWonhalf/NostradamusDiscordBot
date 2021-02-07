@@ -12,6 +12,9 @@ const PrivateVC = {
     deniedMembers: {},
 
     /** {Object} */
+    introMessages: {},
+
+    /** {Object} */
     pendingJoinRequests: {},
 
     /** {Discord.Collection} */
@@ -422,6 +425,9 @@ const PrivateVC = {
             PrivateVC.lockRequestChannel();
         }
 
+        const sentIntroMessage = await textChannel.send(trans('model.privateVC.introMessage', [member.toString(), Config.prefix, Config.prefix]));
+        PrivateVC.introMessages[member.id] = sentIntroMessage;
+
         const embed = new Discord.MessageEmbed()
             .addFields([
                 {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
@@ -431,9 +437,9 @@ const PrivateVC = {
             .setFooter(trans('model.privateVC.channelType.embed.footer'))
             .setColor(0x00FF00);
 
-        const sentMessage = await textChannel.send({content: member, embed: embed});
-        await Promise.all([sentMessage.react('🔓'), sentMessage.react('🔒')]);
-        await sentMessage.pin();
+        const sentPrompt = await textChannel.send(embed);
+        await Promise.all([sentPrompt.react('🔓'), sentPrompt.react('🔒')]);
+        await sentPrompt.pin();
     },
 
     /**
@@ -562,6 +568,15 @@ const PrivateVC = {
             });
             PrivateVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
             PrivateVC.renameTransferredChannels(channels, newHostMember);
+
+            if (PrivateVC.introMessages[currentHostMember.id]) {
+                PrivateVC.introMessages[newHostMember.id] = PrivateVC.introMessages[currentHostMember.id];
+                delete PrivateVC.introMessages[currentHostMember.id];
+                await PrivateVC.introMessages[newHostMember.id].edit(trans(
+                    'model.privateVC.introMessage',
+                    [newHostMember.toString(), Config.prefix, Config.prefix]
+                ));
+            }
             await channels[0].send(trans('model.privateVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
         } catch (exception) {
             Logger.exception(exception);
