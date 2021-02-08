@@ -50,7 +50,7 @@ model:
       check:
         alreadyInCorrespondence: "Mais qu'est-ce que tu fais, patate ?! T'es déjà dans le système de correspondance, pas besoin de te vérifier !"
         selfEligible: "Youpi ! On dirait bien que t'es éligible pour le système de correspondance ! Il suffit d'aller suivre les instructions dans %% pour postuler."
-        selfIneligible: "\nOn dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant %%info dans #bot-fun.\n"
+        selfIneligible: "\nOn dirait que t'as besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que t'aies été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages pour être éligible. Tu peux vérifier cela en tapant `%%info` dans #bot-fun.\n"
         eligible: "On dirait bien que %% est éligible pour le système de correspondance ! Cette personne peut aller suivre les instructions dans %% pour postuler."
         ineligible: "\nOn dirait que %% a besoin de passer plus de temps sur le serveur pour être éligible pour le système de correspondance. Il faut que cette personne ait été sur le serveur depuis au moins 10 jours et avoir envoyé au moins 100 messages ou avoir passé au moins 10 heures en vocal pour être éligible.\n"
       deny:
