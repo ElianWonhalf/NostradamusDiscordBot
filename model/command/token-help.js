@@ -3,8 +3,6 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
 
-const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
-const emojiDiscordNitro = bot.emojis.cache.find(emoji => emoji.name === 'nitro');
 const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
@@ -39,10 +37,10 @@ function getEmbed(message) {
                 .setTitle(`${emojiLongFox}[Token help]${emojiLongFox}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
                 .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription(trans('model.command.tokenHelp.reward', [emojiKwiziq, emojiDiscordNitro]))
-                .addField(trans('model.command.tokenHelp.moreInfo.infoBelow', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641')
-                .addField(trans('model.command.tokenHelp.moreInfo.infoBelowFrench', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150')
-                .addField(trans('model.command.tokenHelp.moreInfo.lookingForList'), trans('model.command.tokenHelp.moreInfo.reactRight', [emojiRight]))
+                .setDescription(trans('model.command.tokenHelp.reward'))
+                .addField(trans('model.command.tokenHelp.moreInfo.infoBelow'), 'https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641')
+                .addField(trans('model.command.tokenHelp.moreInfo.infoBelowFrench'), 'https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150')
+                .addField(trans('model.command.tokenHelp.moreInfo.lookingForList'), trans('model.command.tokenHelp.moreInfo.reactRight'))
                 .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
             break;
@@ -58,7 +56,7 @@ function getEmbed(message) {
                 .addField('.token-info', (trans('model.command.tokenHelp.commands.tokenInfo')))
                 .addField('.token-help', (trans('model.command.tokenHelp.commands.tokenHelp')))
                 .addField('.xof-ykcul', (trans('model.command.tokenHelp.commands.xofYkcul')))
-                .addField(trans('model.command.tokenHelp.moreInfo.forMoreInfo'), trans('model.command.tokenHelp.moreInfo.reactLeft', [emojiLeft]))
+                .addField(trans('model.command.tokenHelp.moreInfo.forMoreInfo'), trans('model.command.tokenHelp.moreInfo.reactLeft'))
                 .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
             break;
