@@ -79,6 +79,7 @@
         "roles": "",
         "starboard": "",
         "announcements": "",
+        "eventAnnouncements": "",
         "meta": "",
         "soft": "",
         "correspondenceInformation": "",
@@ -87,7 +88,8 @@
         "memberModificationLog": "",
         "smallVoiceChatRequest": "",
         "lessonOfTheDay": "",
-        "selfie": ""
+        "selfie": "",
+        "eventChat": ""
     },
     "channelCategories": {
         "mod": [],
