@@ -59,7 +59,7 @@ function getRandomNumber(max) {
  * @return {Array}
  */
 function getRandomEmoji(amount) {
-    const arrayKwiziqResult = [4, 24, 42, 86];
+    const arrayKwiziqResult = [4, 13, 24, 42];
     let arrayResult = [];
 
     for (let i = 0; i < amount; i++) {
@@ -300,36 +300,36 @@ async function editEmbedWithResult(message, result) {
 
     if (result.tokenAmount > 0) {
         const totalToken = result.tokenAmount + result.luckyLeafAmount;
-        embedResult.setDescription(trans('model.command.longFox.result.win', [totalToken]));
+        embedResult.setDescription(trans('model.command.luckyFox.result.win', [totalToken]));
     } else {
-        embedResult.setDescription(trans('model.command.longFox.result.lose'));
+        embedResult.setDescription(trans('model.command.luckyFox.result.lose'));
     }
 
     if (result.kwiziq) {
-        embedResult.addField(`${emojiKwiziq}`, trans('model.command.longFox.result.kwiziq'));
+        embedResult.addField(`${emojiKwiziq}`, trans('model.command.luckyFox.result.kwiziq'));
     }
 
     if (result.longfox.baby.amount > 1) {
-        embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, trans('model.command.longFox.result.babyFox'));
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, trans('model.command.luckyFox.result.babyFox'));
     }
 
     if (result.longfox.small > 0) {
-        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.longFox.result.logFoxSmall'));
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxSmall'));
     }
 
     if (result.longfox.medium > 0) {
-        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.longFox.result.logFoxMedium'));
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxMedium'));
     }
 
     if (result.longfox.large > 0) {
-        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.longFox.result.longFoxLarge'));
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxLarge'));
     }
 
     if (result.luckyLeafAmount > 0) {
-        embedResult.addField(`${emojiLuckyLeaf}`, trans('model.command.longFox.result.luckyLeaf', [result.luckyLeafAmount]));
+        embedResult.addField(`${emojiLuckyLeaf}`, trans('model.command.luckyFox.result.luckyLeaf', [result.luckyLeafAmount]));
     }
 
-    embedResult.addField(trans('model.command.longFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+    embedResult.addField(trans('model.command.luckyFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
 
     return embedResult;
 }
@@ -395,7 +395,7 @@ class LuckyFox
      */
     async process(message) {
         if (!canPlay(message.author.id)) {
-            return message.channel.send(trans('model.command.longFox.pleaseWait'));
+            return message.channel.send(trans('model.command.luckyFox.pleaseWait'));
         }
 
         // contains random emojis and will be shown first
@@ -410,8 +410,8 @@ class LuckyFox
             .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-            .setDescription(trans('model.command.longFox.result.loadingResult'))
-            .addField(trans('model.command.longFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .setDescription(trans('model.command.luckyFox.loadingResult'))
+            .addField(trans('model.command.luckyFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setTimestamp(new Date());
 
         message.channel.send(embed).then(async botMessage => {
@@ -427,7 +427,7 @@ class LuckyFox
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
             for (let i = 0; i < totalToken; i++) {
                 await MemberToken.add([message.author.id]).then(async () => {
-                    return Guild.eventChatChannel.send(trans('model.command.longFox.wonAToken', [message.author.username]));
+                    return Guild.eventChatChannel.send(trans('model.command.luckyFox.wonAToken', [message.author.username]));
                 });
             }
         });

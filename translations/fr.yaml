@@ -156,7 +156,7 @@ model:
       channelOff: "Tu n'as plus accès au canal des logs d'arrivée et de départ des membres."
     luckyFox:
       description: "Tente ta chance sur cette machine sans sou à emojis : \"Lucky Fox\" !"
-      gameOfTheDay: "Va jeter un coup d'œuil au jeu du jour !"
+      gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       loadingResult: "Ok, essayons un petit quelque chose..."
       pleaseWait: "Je prends une petite pause maintenant, n'oublie pas que tu ne peux jouer qu'une fois toutes les 12 heures !"
       wonAToken: "%% a gagné un jeton !"
@@ -246,13 +246,13 @@ model:
       error: "Désolé, j'ai un gros mal de gorge. On dirait que j'ai assez parlé pour aujourd'hui ! Lily, sirop pour la toux s'il te plaît !"
     tokenBoard:
       description: "Montre le classement par jetons"
-      reward: "Chaque jeton est une chance à une souscription à vie à %% Kwiziq, ou un abonnement Nitro %% Discord !"
-      gameOfTheDay: "Va jeter un coup d'œuil au jeu du jour !"
+      reward: "Chaque jeton est une chance à une souscription à vie à :kwiziq: Kwiziq, ou un abonnement :nitro: Nitro Discord !"
+      gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       tokenRanking: "%% jeton(s)"
     tokenHelp:
       description: "De l'aide pour les commandes de l'évènement"
-      reward: "Chaque jeton est une chance à une souscription à vie à %% Kwiziq, ou un abonnement Nitro %% Discord !"
-      gameOfTheDay: "Va jeter un coup d'œuil au jeu du jour !"
+      reward: "Chaque jeton est une chance à une souscription à vie à :kwiziq: Kwiziq, ou un abonnement :nitro: Nitro Discord !"
+      gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       commandList: "Voilà une liste de commandes pour l'évènement"
       commands:
         tokenBoard: "Pour voir qui a gagné le plus de jetons"
@@ -260,16 +260,16 @@ model:
         tokenHelp: "Tu es ici"
         xofYkcul: "? essap es iuq ec-tse'uq ...sdnettA"
       moreInfo:
-        infoBelowFrench: "Plus d'info ici %%"
+        infoBelowFrench: "Plus d'info ici :arrow_down:"
         forMoreInfo: "Pour plus d'info sur l'évènement"
-        reactLeft: "Réagis avec %%"
+        reactLeft: "Réagis avec :arrow_left:"
         lookingForList: "Tu cherches la liste des commandes?"
-        reactRight: "Réagis avec %%"
+        reactRight: "Réagis avec :arrow_right:"
     tokenInfo:
       description: "Pour voir combien de jetons tu as gagnés"
       memberNotFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
-      reward: "Chaque jeton est une chance à une souscription à vie à %% Kwiziq, ou un abonnement Nitro %% Discord !"
-      gameOfTheDay: "Va jeter un coup d'œuil au jeu du jour !"
+      reward: "Chaque jeton est une chance à une souscription à vie à :kwiziq: Kwiziq, ou un abonnement :nitro: Nitro Discord !"
+      gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       tokens:
         user: "Hé %% !"
         amount: "T'as %% jeton(s) !"

@@ -5,8 +5,6 @@ const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
 const Guild = require('../guild');
 
-const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
-const emojiDiscordNitro = bot.emojis.cache.find(emoji => emoji.name === 'nitro');
 const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
@@ -37,7 +35,7 @@ function getEmbed(message, tokenRanking) {
         .setTitle(`${emojiLongFox}[Token board]${emojiLongFox}`)
         .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-        .setDescription(trans('model.command.tokenBoard.reward', [emojiKwiziq, emojiDiscordNitro]))
+        .setDescription(trans('model.command.tokenBoard.reward'))
         .setTimestamp(new Date());
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {

@@ -337,12 +337,12 @@ model:
         done: "Messages stat backfilling complete!"
     tokenBoard:
       description: "Check the token leaderboard"
-      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
       gameOfTheDay: "Check out the game of the day!"
       tokenRanking: "%% token(s)"
     tokenHelp:
       description: "For help with event commands"
-      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
       gameOfTheDay: "Check out the game of the day!"
       commandList: "Here is a list of the commands for the event"
       commands:
@@ -351,15 +351,15 @@ model:
         tokenHelp: "You are here"
         xofYkcul: "? siht si tahw ...tiaW"
       moreInfo:
-        infoBelow: "More info below %%"
+        infoBelow: "More info below :arrow_down:"
         forMoreInfo: "For more info about the event"
-        reactLeft: "React with %%"
+        reactLeft: "React with :arrow_left:"
         lookingForList: "Looking for the command list?"
-        reactRight: "React with %%"
+        reactRight: "React with :arrow_right:"
     tokenInfo:
       description: "To see how many tokens you have"
       memberNotFound: "I... Have no idea who that could be, sorry."
-      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
       gameOfTheDay: "Check out the game of the day!"
       tokens:
         user: "Hey %%!"

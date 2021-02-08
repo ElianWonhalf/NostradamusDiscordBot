@@ -4,8 +4,6 @@ const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
 const Guild = require('../guild');
 
-const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
-const emojiDiscordNitro = bot.emojis.cache.find(emoji => emoji.name === 'nitro');
 const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
 const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
@@ -60,7 +58,7 @@ class TokenInfo
             .setTitle(`${emojiLongFox}[Token info]${emojiLongFox}`)
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
-            .setDescription(trans('model.command.tokenInfo.reward', [emojiKwiziq, emojiDiscordNitro]))
+            .setDescription(trans('model.command.tokenInfo.reward'))
             .addField(trans('model.command.tokenInfo.tokens.user', [user.username]), trans('model.command.tokenInfo.tokens.amount', [amountToken]))
             .addField(trans('model.command.tokenInfo.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setTimestamp(new Date());
