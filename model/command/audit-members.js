@@ -117,7 +117,7 @@ class CheckCustomStatuses
             )}**\n${fullBlacklistTriggered.sort().join('\n')}\n\n`;
         }
 
-        message.channel.send(finalMessage);
+        await message.channel.send(finalMessage, { split: true });
     }
 }
 
