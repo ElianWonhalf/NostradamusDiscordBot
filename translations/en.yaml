@@ -31,6 +31,9 @@ model:
       doesNotExist: "The role %% does not exist. You have to create it first in order to add aliases to it."
       success: "The alias has been successfully added!"
       error: "The alias could not be added! Check the log for more info."
+    addToken:
+      description: "Give a token to one or multiple people"
+      notification: "Congratulations to the following for winning a token!"
     adminList:
       description: "Lists the current members of the administration team"
       answer: "There are currently %% administrators:"
@@ -351,6 +354,7 @@ model:
         infoBelow: "More info below %%"
         forMoreInfo: "For more info about the event"
         reactLeft: "React with %%"
+        lookingForList: "Looking for the command list?"
         reactRight: "React with %%"
     tokenInfo:
       description: "To see how many tokens you have"
