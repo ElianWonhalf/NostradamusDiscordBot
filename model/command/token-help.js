@@ -39,27 +39,27 @@ function getEmbed(message) {
                 .setTitle(`${emojiLongFox}[Token help]${emojiLongFox}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
                 .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription(`Every token is a chance to win a lifetime subscription to ${emojiKwiziq} Kwiziq or a ${emojiDiscordNitro} Discord Nitro subscriptions !`)
-                .addField(`More info below ${emojiDown}`, `https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641`)
-                .addField(`Plus d'info ici ${emojiDown}`, `https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150`)
-                .addField(`Looking for the command list ?`, `React with ${emojiRight}`)
-                .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+                .setDescription(trans('model.command.tokenHelp.reward', [emojiKwiziq, emojiDiscordNitro]))
+                .addField(trans('model.command.tokenHelp.moreInfo.infoBelow', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641')
+                .addField(trans('model.command.tokenHelp.moreInfo.infoBelowFrench', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150')
+                .addField(`Looking for the command list ?`, trans('model.command.tokenHelp.moreInfo.reactRight', [emojiRight]))
+                .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
 
         case 1:
             embed = new MessageEmbed()
                 .setColor('#ffb8e6')
-                .setTitle(`${emojiLongFox}[Token command]${emojiLongFox}`)
+                .setTitle(`${emojiLongFox}[Token commands]${emojiLongFox}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
                 .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-                .setDescription(`Here is a list of the commands for the event`)
-                .addField(`.token-board`, `To see who has the most tokens`)
-                .addField(`.token-info`, `To see how many tokens you have`)
-                .addField(`.token-help`, `You are right in it`)
-                .addField(`.xof-ykcul`, `? siht si tahw ...tiaW`)
-                .addField(`For more info about the event`, `React with ${emojiLeft}`)
-                .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+                .setDescription((trans('model.command.tokenHelp.commandList')))
+                .addField('.token-board', (trans('model.command.tokenHelp.commands.tokenBoard')))
+                .addField('.token-info', (trans('model.command.tokenHelp.commands.tokenInfo')))
+                .addField('.token-help', (trans('model.command.tokenHelp.commands.tokenHelp')))
+                .addField('.xof-ykcul', (trans('model.command.tokenHelp.commands.xofYkcul')))
+                .addField(trans('model.command.tokenHelp.moreInfo.forMoreInfo'), trans('model.command.tokenHelp.moreInfo.reactLeft', [emojiLeft]))
+                .addField(trans('model.command.tokenHelp.gameOfTheDay')), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
         break;
     }
@@ -124,7 +124,7 @@ class TokenHelp
         }
 
         this.aliases = [];
-        this.category = CommandCategory.RESOURCE;
+        this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
 

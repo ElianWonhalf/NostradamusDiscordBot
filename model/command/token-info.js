@@ -21,7 +21,7 @@ class TokenInfo
         }
 
         this.aliases = [];
-        this.category = CommandCategory.RESOURCE;
+        this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
 
@@ -36,14 +36,14 @@ class TokenInfo
             const member = Guild.findDesignatedMemberInMessage(message).foundMembers[0];
 
             if (!member || !member.user) {
-                return message.reply(`J'ai... Aucune idée de qui ça pourrait être, désolé. / I... Have no idea who that could be, sorry.`);
+                return message.reply(trans('model.command.tokenInfo.memberNotFound'));
             }
 
             user = member.user;
         } else if (args.length < 1) {
             user = message.author;
         } else {
-            return message.reply(`J'ai... Aucune idée de qui ça pourrait être, désolé. / I... Have no idea who that could be, sorry.`);
+            return message.reply(trans('model.command.tokenInfo.memberNotFound'));
         }
 
         const tokenInfo = await MemberToken.getCount(user.id);
@@ -60,9 +60,9 @@ class TokenInfo
             .setTitle(`${emojiLongFox}[Token info]${emojiLongFox}`)
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
-            .setDescription(`Every token is a chance to win a lifetime subscription to ${emojiKwiziq} Kwiziq or a ${emojiDiscordNitro} Discord Nitro subscriptions !`)
-            .addField(`Hey ${user.username} !`, `You have ${amountToken} token(s) !`)
-            .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .setDescription(trans('model.command.tokenInfo.reward', [emojiKwiziq, emojiDiscordNitro]))
+            .addField(trans('model.command.tokenInfo.tokens.user', [user.username]), trans('model.command.tokenInfo.tokens.amount', [amountToken]))
+            .addField(trans('model.command.tokenInfo.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setTimestamp(new Date());
 
         await message.channel.send(boardEmbed);
