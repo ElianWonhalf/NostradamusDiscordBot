@@ -42,10 +42,10 @@ function getEmbed(message) {
                 .setDescription(trans('model.command.tokenHelp.reward', [emojiKwiziq, emojiDiscordNitro]))
                 .addField(trans('model.command.tokenHelp.moreInfo.infoBelow', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805119778511257641')
                 .addField(trans('model.command.tokenHelp.moreInfo.infoBelowFrench', [emojiDown]), 'https://discord.com/channels/254463427949494292/597607738549338122/805115990525870150')
-                .addField(`Looking for the command list ?`, trans('model.command.tokenHelp.moreInfo.reactRight', [emojiRight]))
+                .addField(trans('model.command.tokenHelp.moreInfo.lookingForList'), trans('model.command.tokenHelp.moreInfo.reactRight', [emojiRight]))
                 .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
-        break;
+            break;
 
         case 1:
             embed = new MessageEmbed()
@@ -59,9 +59,9 @@ function getEmbed(message) {
                 .addField('.token-help', (trans('model.command.tokenHelp.commands.tokenHelp')))
                 .addField('.xof-ykcul', (trans('model.command.tokenHelp.commands.xofYkcul')))
                 .addField(trans('model.command.tokenHelp.moreInfo.forMoreInfo'), trans('model.command.tokenHelp.moreInfo.reactLeft', [emojiLeft]))
-                .addField(trans('model.command.tokenHelp.gameOfTheDay')), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+                .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
-        break;
+            break;
     }
 
     arrayEmbeds.push(embed);
@@ -105,11 +105,11 @@ function checkReaction(emoji) {
         switch (emoji) {
             case '➡':
                 page++;
-            break;
+                break;
 
             case '⬅':
                 page--;
-            break;
+                break;
         }
     }
 }
