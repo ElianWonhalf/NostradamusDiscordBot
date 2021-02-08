@@ -84,7 +84,7 @@ const CommandPermission = {
         return async (message) => {
             const member = await Guild.getMemberFromMessage(message);
 
-            return await member.hasPermission(permission);
+            return member.hasPermission(permission);
         }
     },
 

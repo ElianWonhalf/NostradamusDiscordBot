@@ -27,6 +27,7 @@ class TokenInfo
 
     /**
      * @param {Message} message
+     * @param {Array} args
      */
     async process(message, args) {
         let user;
@@ -64,7 +65,7 @@ class TokenInfo
             .addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setTimestamp(new Date());
 
-        message.channel.send(boardEmbed);
+        await message.channel.send(boardEmbed);
     }
 }
 

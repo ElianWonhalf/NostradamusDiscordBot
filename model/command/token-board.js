@@ -20,11 +20,11 @@ const rowByPage = 5;
 const arrayEmbeds = [];
 
 /**
- * 
- * @param {Message} message 
- * @param {Array} tokenRanking 
- * 
- * @return {Embed}
+ *
+ * @param {Message} message
+ * @param {Array} tokenRanking
+ *
+ * @return {MessageEmbed}
  */
 function getEmbed(message, tokenRanking) {
     if (arrayEmbeds[page]) {
@@ -69,34 +69,35 @@ function getReactEmojis() {
 }
 
 /**
- * 
- * @param {Message} message 
- * @param {Embed} embededMsg 
- * @param {Array} tokenRanking 
+ *
+ * @param {Message} message
+ * @param {Message} embeddedMessage
+ * @param {Array} tokenRanking
  */
-const addReactToEmbed = (message, embededMsg, tokenRanking) => {
-    getReactEmojis().forEach(emoji => embededMsg.react(emoji));
+const addReactToEmbed = (message, embeddedMessage, tokenRanking) => {
+    getReactEmojis().forEach(emoji => embeddedMessage.react(emoji));
 
     const reactFilter = (reaction, user) => user.id === message.author.id && getReactEmojis().includes(reaction.emoji.name);
 
-    embededMsg.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(collectedReactions => {
+    embeddedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(collectedReactions => {
         if (!collectedReactions.first()) {
-            embededMsg.reactions.removeAll();
+            embeddedMessage.reactions.removeAll();
         } else {
-            checkReaction(collectedReactions.first()._emoji.name);
+            checkReaction(collectedReactions.first()._emoji.name); // TODO: remove usage of _emoji
 
-            embededMsg.reactions.removeAll().then(addReactToEmbed(message, embededMsg, tokenRanking));
+            embeddedMessage.reactions.removeAll().then(() => { // TODO: await?
+                addReactToEmbed(message, embeddedMessage, tokenRanking);
+            });
 
             const newEmbed = getEmbed(message, tokenRanking);
-            
-            embededMsg.edit(newEmbed);
+            embeddedMessage.edit(newEmbed);
         }
     });
 };
 
 /**
- * 
- * @param {Emoji} emoji 
+ *
+ * @param {Emoji|string} emoji
  */
 function checkReaction(emoji) {
     if (emoji) {
@@ -143,18 +144,18 @@ class TokenBoard
         for (let row of tokenRanking) {
             row.member = await Guild.discordGuild.members.fetch(row.user_id).catch(exception => {
                 Logger.error(exception.toString());
-    
+
                 return null;
             });
         }
 
         tokenRanking = tokenRanking.filter(row => row && row.member);
-
         maxPages = Math.ceil(tokenRanking.length / rowByPage);
 
         const boardEmbed = getEmbed(message, tokenRanking);
-
-        message.channel.send(boardEmbed).then(embededMsg => addReactToEmbed(message, embededMsg, tokenRanking));
+        message.channel.send(boardEmbed).then(
+            embeddedMessage => addReactToEmbed(message, embeddedMessage, tokenRanking)
+        );
     }
 }
 
