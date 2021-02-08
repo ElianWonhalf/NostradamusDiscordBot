@@ -53,6 +53,26 @@ const CommandPermission = {
     },
 
     /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
+    isMemberAnimator: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberAnimator(member);
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
+    isMemberModOrSoftOrAnimator: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member) || await Guild.isMemberAnimator(member);
+    },
+
+    /**
      * @param {string} permission
      * @returns {function}
      */
@@ -64,7 +84,7 @@ const CommandPermission = {
         return async (message) => {
             const member = await Guild.getMemberFromMessage(message);
 
-            return await member.hasPermission(permission);
+            return member.hasPermission(permission);
         }
     },
 

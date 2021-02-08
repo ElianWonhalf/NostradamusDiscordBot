@@ -122,6 +122,9 @@ const Guild = {
     /** {TextChannel} */
     selfieChannel: null,
 
+    /** {TextChannel} */
+    eventChatChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -151,6 +154,7 @@ const Guild = {
         Guild.rolesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.roles);
         Guild.starboardChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.starboard);
         Guild.announcementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.announcements);
+        Guild.eventAnnouncementsChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventAnnouncements);
         Guild.metaChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.meta);
         Guild.softChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.soft);
         Guild.correspondenceInformationChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.correspondenceInformation);
@@ -159,6 +163,7 @@ const Guild = {
         Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
         Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
         Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
+        Guild.eventChatChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventChat);
 
         // Categories
         Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoice);
@@ -316,6 +321,13 @@ const Guild = {
     },
 
     /**
+     * @param {GuildMember} member
+     */
+    isMemberAnimator: (member) => {
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.animator);
+    },
+
+    /**
      * @param {string} roleName
      * @returns {Role|null}
      */
@@ -351,8 +363,8 @@ const Guild = {
         let certain = true;
         const memberList = bot.users.cache.concat(Guild.discordGuild.members.cache);
 
-        if (message.content.match(/[0-9]{16,18}/u) !== null) {
-            const ids = message.content.match(/[0-9]{16,18}/gu);
+        if (message.content.match(/[0-9]{16,19}/u) !== null) {
+            const ids = message.content.match(/[0-9]{16,19}/gu);
 
             ids.map(id => {
                 if (memberList.has(id)) {
