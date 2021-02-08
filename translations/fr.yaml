@@ -164,7 +164,7 @@ model:
         babyFox: "Ces bébés longfoxes t'ont fait gagner 1 jeton !"
         longFoxSmall: "Ce longfox t'a fait gagner 1 jeton !"
         longFoxMedium: "Ce longerfox t'a fait gagner 2 jetons !!"
-        longFoxLarge: "Ce superlongfox t'a fait gagner 3 jetons !!!"
+        longFoxLarge: "Ce superlongfox t'a fait gagner 4 jetons !!!!"
         luckyLeaf: "Les trèfles à quatres feuilles t'ont fait gagner %% jeton(s) !"
     modList:
       description: "Liste les membres actuels de l'équipe de modération"

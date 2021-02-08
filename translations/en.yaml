@@ -236,7 +236,7 @@ model:
         babyFox: "These baby longfoxes earned you 1 token!"
         longFoxSmall: "This longfox earned you 1 token!"
         longFoxMedium: "This longerfox earned you 2 tokens!!"
-        longFoxLarge: "This superlongfox earned you 4 token!!!"
+        longFoxLarge: "This superlongfox earned you 4 tokens!!!!"
         luckyLeaf: "The four leaf clovers earned you %% token(s)!"
     modList:
       description: "Lists the current members of the moderation team"
