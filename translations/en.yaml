@@ -223,6 +223,21 @@ model:
       description: "Gives access to the member flow logging channel"
       channelOn: "You now have access to the member flow logging channel."
       channelOff: "You no longer have access to the member flow logging channel."
+    luckyFox:
+      description: "Try your luck with this emoji slots game: \"Lucky Fox\"!"
+      gameOfTheDay: "Check out the game of the day!"
+      loadingResult: "Ok, Let's try something..."
+      pleaseWait: "I'm taking a little break right now, remember you can only play once every 12 hours!"
+      wonAToken: "%% won a token!"
+      result:
+        win: "Hey, you won %% token(s)!"
+        lose: "Tough luck..."
+        kwiziq: "Kwiziq gave you a hand... and 1 token!"
+        babyFox: "These baby longfoxes earned you 1 token!"
+        longFoxSmall: "This longfox earned you 1 token!"
+        longFoxMedium: "This longerfox earned you 2 tokens!!"
+        longFoxLarge: "This superlongfox earned you 4 token!!!"
+        luckyLeaf: "The four leaf clovers earned you %% token(s)!"
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
@@ -317,6 +332,38 @@ model:
         gatheringStatus: "Gathered %% messages so far. Currently gathering messages from channel #%%"
         savingStatus: "Gathered %% messages in total. Currently saving information in database..."
         done: "Messages stat backfilling complete!"
+    tokenBoard:
+      description: "Check the token leaderboard"
+      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      gameOfTheDay: "Check out the game of the day!"
+      tokenRanking: "%% token(s)"
+    tokenHelp:
+      description: "For help with event commands"
+      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      gameOfTheDay: "Check out the game of the day!"
+      commandList: "Here is a list of the commands for the event"
+      commands:
+        tokenBoard: "To see who has the most tokens"
+        tokenInfo: "To see how many tokens you have"
+        tokenHelp: "You are here"
+        xofYkcul: "? siht si tahw ...tiaW"
+      moreInfo:
+        infoBelow: "More info below %%"
+        forMoreInfo: "For more info about the event"
+        reactLeft: "React with %%"
+        reactRight: "React with %%"
+    tokenInfo:
+      description: "To see how many tokens you have"
+      memberNotFound: "I... Have no idea who that could be, sorry."
+      reward: "Every token is a chance to win a lifetime subscription to %% Kwiziq or a %% Discord Nitro subscription!"
+      gameOfTheDay: "Check out the game of the day!"
+      tokens:
+        user: "Hey %%!"
+        amount: You have %% token(s)!"
+    xofYkcul:
+      description: "?siht si tahw ...tiaW"
+      unluckyFox: "? pleh uoy naC ...sdrawkcab s'eh ,ykculnu si xof sihT"
+      noIdea: "...aedi on evah i ,yrroS"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
       noAction: "You have to enter an action"

@@ -37,16 +37,16 @@ function getEmbed(message, tokenRanking) {
         .setTitle(`${emojiLongFox}[Token board]${emojiLongFox}`)
         .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-        .setDescription(`Every token is a chance to win a lifetime subscription to ${emojiKwiziq} Kwiziq or a ${emojiDiscordNitro} Discord Nitro subscriptions !`)
+        .setDescription(trans('model.command.tokenBoard.reward', [emojiKwiziq, emojiDiscordNitro]))
         .setTimestamp(new Date());
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
         if (tokenRanking[i]) {
-            boardEmbed.addField(`${tokenRanking[i].member.user.username}`, `${tokenRanking[i].amount_token} token(s)`);
+            boardEmbed.addField(tokenRanking[i].member.user.username, trans('model.command.tokenBoard.tokenRanking', [tokenRanking[i].amount_token]));
         }
     }
 
-    boardEmbed.addField(`check out the game of the day!`, `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+    boardEmbed.addField(trans('model.command.tokenBoard.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
 
     arrayEmbeds.push(boardEmbed);
 
@@ -127,7 +127,7 @@ class TokenBoard
         }
 
         this.aliases = [];
-        this.category = CommandCategory.RESOURCE;
+        this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
 

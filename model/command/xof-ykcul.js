@@ -28,7 +28,7 @@ const addReact = (botMessage, message) => {
                 message.react(emojiKayak);
             });
 
-            botMessage.edit(`? pleh uoy naC ...nwod edispu s'eh ,ykculnu si xof sihT`);
+            botMessage.edit(trans('model.command.xofYkcul.unluckyFox'));
         }
     });
 };
@@ -43,7 +43,7 @@ class XofYkcul
         }
 
         this.aliases = [];
-        this.category = CommandCategory.RESOURCE;
+        this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
 
@@ -51,7 +51,7 @@ class XofYkcul
      * @param {Message} message
      */
     async process(message) {
-        message.channel.send('...aedi on evah i ,yrroS').then(botMessage => addReact(botMessage, message));
+        message.channel.send(trans('model.command.xofYkcul.noIdea')).then(botMessage => addReact(botMessage, message));
     }
 }
 
