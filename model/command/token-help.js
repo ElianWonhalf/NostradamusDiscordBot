@@ -79,13 +79,13 @@ const addReactToEmbed = (message, embededMsg) => {
 
     const reactFilter = (reaction, user) => user.id === message.author.id && arrayEmojis[page].includes(reaction.emoji.name);
 
-    embededMsg.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(collectedReactions => {
+    embededMsg.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(async collectedReactions => {
         if (!collectedReactions.first()) {
             embededMsg.reactions.removeAll();
         } else {
-            checkReaction(collectedReactions.first()._emoji.name); // TODO: remove usage of _emoji
+            checkReaction(collectedReactions.first().emoji.name);
 
-            embededMsg.reactions.removeAll().then(() => { // TODO: await?
+            await embededMsg.reactions.removeAll().then(() => {
                 addReactToEmbed(message, embededMsg)
             });
 

@@ -57,7 +57,7 @@ function getEmbed(message, tokenRanking) {
  * @return {Array}
  */
 function getReactEmojis() {
-    if (page < 1 && maxPages === 1) {
+    if (page < 1 && maxPages < 2) {
         return [emojiFoxBottom, emojiFoxBody, emojiFoxHead];
     } else if (page < 1) {
         return[emojiRight];
@@ -79,13 +79,13 @@ const addReactToEmbed = (message, embeddedMessage, tokenRanking) => {
 
     const reactFilter = (reaction, user) => user.id === message.author.id && getReactEmojis().includes(reaction.emoji.name);
 
-    embeddedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(collectedReactions => {
+    embeddedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(async collectedReactions => {
         if (!collectedReactions.first()) {
             embeddedMessage.reactions.removeAll();
         } else {
-            checkReaction(collectedReactions.first()._emoji.name); // TODO: remove usage of _emoji
+            checkReaction(collectedReactions.first().emoji.name);
 
-            embeddedMessage.reactions.removeAll().then(() => { // TODO: await?
+            await embeddedMessage.reactions.removeAll().then(() => {
                 addReactToEmbed(message, embeddedMessage, tokenRanking);
             });
 
