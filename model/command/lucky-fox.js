@@ -1,4 +1,4 @@
-const { writeFileSync, existsSync } = require('fs');
+const { writeFileSync, existsSync, mkdirSync } = require('fs');
 const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
@@ -26,6 +26,14 @@ const MAX_ATTEMPT = 5;
 const COOLDOWN_DURATION = 43200000;
 
 const saveAttempts = (data) => {
+    if (!existsSync('cache')) {
+        mkdirSync('cache');
+    }
+
+    if (!existsSync('cache/attempts-lucky-fox')) {
+        mkdirSync('cache/attempts-lucky-fox');
+    }
+
     writeFileSync('./cache/attempts-lucky-fox/attempts.json', JSON.stringify(data));
 };
 
