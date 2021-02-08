@@ -161,10 +161,6 @@ model:
       notice: "%% seems to need help in %%.\n%%"
       timeout: "Timed out! You may send the command again :eowynsheep: ."
       embedTitle: "Help command"
-    hideSeek:
-      description: "To show that you want to play the hide and seek game in the upcoming event"
-      alertsOn: "You now have the role!"
-      alertsOff: "You now no longer have the role."
     homework:
       description: "Explains rule 2 of our server"
       reply: "\nThis server is for learning, and not meant as a tool for cheating on academic assignments. Homework help is not allowed. You can ask about concepts related to homework, but no specific homework questions should be discussed.\n"

@@ -10,9 +10,9 @@ arrayEmojis.push(bot.emojis.cache.find(emoji => emoji.name === 'foxlong3'));
 arrayEmojis.push('🍀');
 
 /**
- * 
- * @param {Message} botMessage 
- * @param {Message} message 
+ *
+ * @param {Message} botMessage
+ * @param {Message} message
  */
 const addReact = (botMessage, message) => {
     message.react(emojiClue);
