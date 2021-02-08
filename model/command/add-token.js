@@ -43,7 +43,7 @@ class AddToken
         await MemberToken.add(searchResult.map(member => member.id)).then(async () => {
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
 
-            searchResult.map(member => member.displayName);
+            searchResult = searchResult.map(member => member.displayName);
 
             await Guild.eventChatChannel.send(
                 `${trans('model.command.addToken.notification')}\n${searchResult.join(', ')}`
