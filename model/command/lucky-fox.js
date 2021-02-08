@@ -43,25 +43,25 @@ const getAttempts = () => {
 };
 
 /**
- * 
- * @param {Int} max 
- * 
- * @return {Int}
+ *
+ * @param {int} max
+ *
+ * @return {int}
  */
 function getRandomNumber(max) {
     return Math.floor(Math.random() * max);
 }
 
 /**
- * 
- * @param {Int} amount 
- * 
+ *
+ * @param {int} amount
+ *
  * @return {Array}
  */
 function getRandomEmoji(amount) {
-    const arrayKwiziqResult = [6, 9, 96, 69];
+    const arrayKwiziqResult = [4, 24, 42, 86];
     let arrayResult = [];
-    
+
     for (let i = 0; i < amount; i++) {
         const randomNumber = getRandomNumber(101);
         if (arrayKwiziqResult.includes(randomNumber) && !arrayResult.includes(emojiKwiziq)) {
@@ -75,23 +75,23 @@ function getRandomEmoji(amount) {
 }
 
 /**
- * 
- * @param {Message} botMessage 
- * @param {Emoji} emoji 
- * 
+ *
+ * @param {Message} botMessage
+ * @param {Emoji} emoji
+ *
  * @return {Promise}
  */
 function displayEmojis(botMessage, emoji) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async resolve => {
         await botMessage.edit(`${botMessage.content}${emoji}`);
         setTimeout(resolve, 500);
     });
 }
 
 /**
- * 
- * @param {Array} emojis 
- * 
+ *
+ * @param {Array} emojis
+ *
  * @return {Object}
  */
 function getDrawResult(emojis) {
@@ -154,14 +154,14 @@ function getDrawResult(emojis) {
 
                         return result;
                     } else if (isFourLeaf(previousEmoji)) {
-                        result.tokenAmount += 1;
+                        result.tokenAmount++;
                         result.longfox.small++;
                         result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
 
                         return result;
                     }
                 } else if (isFoxhead(nextEmoji)) {
-                    result.tokenAmount += 1;
+                    result.tokenAmount++;
                     result.longfox.small++;
                     result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
 
@@ -178,7 +178,7 @@ function getDrawResult(emojis) {
     }
 
     if (result.longfox.baby.amount > 1) {
-        result.tokenAmount += 1;
+        result.tokenAmount++;
         result.luckyLeafAmount = transformLuckyLeaf(result.longfox.baby.index[0], 'baby', emojis);
         result.luckyLeafAmount += transformLuckyLeaf(result.longfox.baby.index[1], 'baby', emojis);
     }
@@ -187,12 +187,12 @@ function getDrawResult(emojis) {
 }
 
 /**
- * 
- * @param {Int} index 
- * @param {String} longFoxType 
- * @param {Array} emojis 
- * 
- * @return {Int}
+ *
+ * @param {int} index
+ * @param {String} longFoxType
+ * @param {Array} emojis
+ *
+ * @return {int}
  */
 function transformLuckyLeaf(index, longFoxType, emojis) {
     let luckyLeafAmount = 0;
@@ -205,7 +205,7 @@ function transformLuckyLeaf(index, longFoxType, emojis) {
             emojis[index - 2] = emojiFoxBody;
             emojis[index - 3] = emojiFoxBody;
             emojis[index - 4] = emojiFoxBottom;
-        break;
+            break;
 
         case 'medium':
             luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1], emojis[index - 2], emojis[index - 3]]);
@@ -213,29 +213,29 @@ function transformLuckyLeaf(index, longFoxType, emojis) {
             emojis[index - 1] = emojiFoxBody;
             emojis[index - 2] = emojiFoxBody;
             emojis[index - 3] = emojiFoxBottom;
-        break;
+            break;
 
         case 'small':
             luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1], emojis[index - 2]]);
             emojis[index] = emojiFoxHead;
             emojis[index - 1] = emojiFoxBody;
             emojis[index - 2] = emojiFoxBottom;
-        break;
+            break;
 
         case 'baby':
             luckyLeafAmount = getLuckyLeafAmount([emojis[index], emojis[index - 1]]);
             emojis[index] = emojiFoxHead;
             emojis[index - 1] = emojiFoxBottom;
-        break;
+            break;
     }
 
     return luckyLeafAmount;
 }
 
 /**
- * 
+ *
  * @param {Array} emojis
- * 
+ *
  * @return {int}
  */
 function getLuckyLeafAmount(emojis) {
@@ -244,9 +244,9 @@ function getLuckyLeafAmount(emojis) {
 }
 
 /**
- * 
- * @param {Emoji} emoji 
- * 
+ *
+ * @param {Emoji|string} emoji
+ *
  * @return {boolean}
  */
 function isFoxBottom(emoji) {
@@ -254,9 +254,9 @@ function isFoxBottom(emoji) {
 }
 
 /**
- * 
- * @param {Emoji} emoji 
- * 
+ *
+ * @param {Emoji|string} emoji
+ *
  * @return {boolean}
  */
 function isFoxBody(emoji) {
@@ -264,9 +264,9 @@ function isFoxBody(emoji) {
 }
 
 /**
- * 
- * @param {Emoji} emoji 
- * 
+ *
+ * @param {Emoji|string} emoji
+ *
  * @return {boolean}
  */
 function isFoxhead(emoji) {
@@ -274,9 +274,9 @@ function isFoxhead(emoji) {
 }
 
 /**
- * 
- * @param {Emoji} emoji 
- * 
+ *
+ * @param {Emoji|string} emoji
+ *
  * @return {boolean}
  */
 function isFourLeaf(emoji) {
@@ -284,11 +284,11 @@ function isFourLeaf(emoji) {
 }
 
 /**
- * 
- * @param {Message} message 
- * @param {Object} result 
- * 
- * @return {Embed}
+ *
+ * @param {Message} message
+ * @param {Object} result
+ *
+ * @return {MessageEmbed}
  */
 async function editEmbedWithResult(message, result) {
     const embedResult = new MessageEmbed()
@@ -336,13 +336,14 @@ async function editEmbedWithResult(message, result) {
 }
 
 /**
- * 
- * @param {int} userId 
- * 
- * @return {boolean} 
+ *
+ * @param {string} userId
+ *
+ * @return {boolean}
  */
 function canPlay(userId) {
     let dataAttempts = getAttempts();
+
     if (!dataAttempts) {
         dataAttempts = {};
     }
@@ -359,16 +360,16 @@ function canPlay(userId) {
         }
     }
 
-    dataAttempts[userId].numberAttempts += 1;
+    dataAttempts[userId].numberAttempts++;
     saveAttempts(dataAttempts);
-    
+
     return true;
 }
 
 /**
- * 
- * @param {int} timestampFirstAttempt 
- * 
+ *
+ * @param {int} timestampFirstAttempt
+ *
  * @return {boolean}
  */
 function canResetAttempt(timestampFirstAttempt) {

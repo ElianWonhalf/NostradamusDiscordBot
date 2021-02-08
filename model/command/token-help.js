@@ -20,10 +20,10 @@ arrayEmojis.push([emojiRight]);
 arrayEmojis.push([emojiLeft]);
 
 /**
- * 
- * @param {Message} message 
- * 
- * @return {Embed}
+ *
+ * @param {Message} message
+ *
+ * @return {MessageEmbed}
  */
 function getEmbed(message) {
     if (arrayEmbeds[page] !== undefined) {
@@ -70,7 +70,7 @@ function getEmbed(message) {
 }
 
 /**
- * 
+ *
  * @param {Message} message
  * @param {Message} embededMsg
  */
@@ -83,20 +83,22 @@ const addReactToEmbed = (message, embededMsg) => {
         if (!collectedReactions.first()) {
             embededMsg.reactions.removeAll();
         } else {
-            checkReaction(collectedReactions.first()._emoji.name);
+            checkReaction(collectedReactions.first()._emoji.name); // TODO: remove usage of _emoji
 
-            embededMsg.reactions.removeAll().then(addReactToEmbed(message, embededMsg));
+            embededMsg.reactions.removeAll().then(() => { // TODO: await?
+                addReactToEmbed(message, embededMsg)
+            });
 
             const newEmbed = getEmbed(message);
-            
+
             embededMsg.edit(newEmbed);
         }
     });
 };
 
 /**
- * 
- * @param {Emoji} emoji 
+ *
+ * @param {Emoji|string} emoji
  */
 function checkReaction(emoji) {
     if (emoji) {
@@ -132,7 +134,7 @@ class TokenHelp
     async process(message) {
         const helpEmbed = getEmbed(message);
 
-        message.channel.send(helpEmbed).then(embededMsg => addReactToEmbed(message, embededMsg));
+        message.channel.send(helpEmbed).then(embeddedMessage => addReactToEmbed(message, embeddedMessage));
     }
 }
 

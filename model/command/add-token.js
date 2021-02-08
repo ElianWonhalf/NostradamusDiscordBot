@@ -20,6 +20,7 @@ class AddToken
 
     /**
      * @param {Message} message
+     * @param {Array} args
      */
     async process(message, args) {
         const emojiPollNo = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
