@@ -369,6 +369,10 @@ function canPlay(userId) {
         }
     }
 
+    if (dataAttempts[userId].numberAttempts === 0) {
+        dataAttempts[userId].firstAttempt = Date.now();
+    }
+
     dataAttempts[userId].numberAttempts++;
     saveAttempts(dataAttempts);
 
@@ -383,7 +387,7 @@ function canPlay(userId) {
  */
 function canResetAttempt(timestampFirstAttempt) {
     const now = Date.now();
-    return now - timestampFirstAttempt >= COOLDOWN_DURATION;
+    return now >= timestampFirstAttempt + COOLDOWN_DURATION;
 }
 
 class LuckyFox
