@@ -118,13 +118,15 @@ function getDrawResult(emojis) {
         }
     };
 
+    if (emojis.includes(emojiKwiziq)) {
+        result.tokenAmount++;
+        result.kwiziq = true;
+    }
+
     for (let i = 0; i < emojis.length; i++) {
         let currentEmoji = emojis[i];
 
-        if (currentEmoji === emojiKwiziq) {
-            result.tokenAmount++;
-            result.kwiziq = true;
-        } else if (isFoxBottom(currentEmoji)) {
+        if (isFoxBottom(currentEmoji)) {
             let nextEmoji = emojis[i + 1];
 
             if (isFoxBody(nextEmoji)) {
@@ -367,6 +369,10 @@ function canPlay(userId) {
         }
     }
 
+    if (dataAttempts[userId].numberAttempts === 0) {
+        dataAttempts[userId].firstAttempt = Date.now();
+    }
+
     dataAttempts[userId].numberAttempts++;
     saveAttempts(dataAttempts);
 
@@ -381,7 +387,7 @@ function canPlay(userId) {
  */
 function canResetAttempt(timestampFirstAttempt) {
     const now = Date.now();
-    return now - timestampFirstAttempt >= COOLDOWN_DURATION;
+    return now >= timestampFirstAttempt + COOLDOWN_DURATION;
 }
 
 class LuckyFox
