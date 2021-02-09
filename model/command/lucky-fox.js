@@ -365,12 +365,12 @@ function canPlay(userId) {
         dataAttempts[userId] = {numberAttempts: 0, firstAttempt: Date.now()};
     }
 
+    if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
+        dataAttempts[userId].numberAttempts = 0;
+    }
+
     if (dataAttempts[userId].numberAttempts >= MAX_ATTEMPT) {
-        if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
-            dataAttempts[userId].numberAttempts = 0;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     if (dataAttempts[userId].numberAttempts === 0) {
