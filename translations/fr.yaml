@@ -154,7 +154,7 @@ model:
       description: "Tente ta chance sur cette machine sans sou à emojis : \"Lucky Fox\" !"
       gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       loadingResult: "Ok, essayons un petit quelque chose..."
-      pleaseWait: "Je prends une petite pause maintenant, n'oublie pas que tu ne peux jouer qu'une fois toutes les 12 heures !"
+      pleaseWait: "Je prends une petite pause maintenant, n'oublie pas que tu ne peux jouer que cinq fois par tranche de 12 heures !"
       wonAToken: "%% a gagné un jeton !"
       result:
         win: "Hé, t'as gagné %% jeton(s) !"
@@ -268,7 +268,7 @@ model:
       gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       tokens:
         user: "Hé %% !"
-        amount: "T'as %% jeton(s) !"
+        amount: "T'as **%%** jeton(s) !"
     xofYkcul:
       description: "? essap es iuq ec-tse'uq ...sdnettA"
       unluckyFox: "? redia xuep uT ...srevne'l à tse li ,ykculnu tse xof eC"

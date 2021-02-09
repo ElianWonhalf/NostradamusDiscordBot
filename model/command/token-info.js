@@ -18,7 +18,7 @@ class TokenInfo
             return TokenInfo.instance;
         }
 
-        this.aliases = [];
+        this.aliases = ['tokeninfo', 'tinfo'];
         this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
@@ -47,10 +47,10 @@ class TokenInfo
         const tokenInfo = await MemberToken.getCount(user.id);
         let amountToken;
 
-        if (!tokenInfo.amount_token) {
+        if (!tokenInfo[0].amount_token) {
             amountToken = 0;
         } else {
-            amountToken = tokenInfo.amount_token;
+            amountToken = tokenInfo[0].amount_token;
         }
 
         const boardEmbed = new MessageEmbed()
