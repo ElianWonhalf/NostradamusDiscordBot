@@ -13,7 +13,7 @@ class AddToken
             return AddToken.instance;
         }
 
-        this.aliases = [];
+        this.aliases = ['addtoken', 'addt'];
         this.category = CommandCategory.RESOURCE;
         this.isAllowedForContext = CommandPermission.isMemberModOrSoftOrAnimator;
     }

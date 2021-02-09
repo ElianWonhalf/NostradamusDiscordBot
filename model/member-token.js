@@ -15,18 +15,23 @@ const MemberToken = {
     },
 
     /**
-     * @param {String<Snowflake>|null} snowflake
+     * @param {Snowflake|null} snowflake
      * @returns {Promise<Array>}
      */
     getCount: async (snowflake = null) => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
-        const clauseWHERE = snowflake === null ? "" : `WHERE user_id = (?) `;
-        const arraySnowflake = [snowflake];
+        const whereClause = snowflake === null ? '' : 'WHERE user_id = ?';
 
         return db.asyncQuery(
-            `SELECT COUNT(*) AS amount_token, user_id FROM member_token ${clauseWHERE}GROUP BY user_id ORDER BY amount_token DESC`,
-            arraySnowflake
+            `
+                SELECT COUNT(*) AS amount_token, user_id
+                FROM member_token
+                ${whereClause}
+                GROUP BY user_id
+                ORDER BY amount_token DESC
+            `,
+            [snowflake]
         );
     },
 }

@@ -121,7 +121,7 @@ class TokenHelp
             return TokenHelp.instance;
         }
 
-        this.aliases = [];
+        this.aliases = ['tokenhelp', 'thelp'];
         this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
