@@ -118,13 +118,15 @@ function getDrawResult(emojis) {
         }
     };
 
+    if (emojis.includes(emojiKwiziq)) {
+        result.tokenAmount++;
+        result.kwiziq = true;
+    }
+
     for (let i = 0; i < emojis.length; i++) {
         let currentEmoji = emojis[i];
 
-        if (currentEmoji === emojiKwiziq) {
-            result.tokenAmount++;
-            result.kwiziq = true;
-        } else if (isFoxBottom(currentEmoji)) {
+        if (isFoxBottom(currentEmoji)) {
             let nextEmoji = emojis[i + 1];
 
             if (isFoxBody(nextEmoji)) {
