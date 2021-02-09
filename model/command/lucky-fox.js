@@ -136,6 +136,7 @@ function getDrawResult(emojis) {
 
                 if (isFoxBody(nextEmoji)) {
                     // 2 body
+                    previousPreviousEmoji = emojis[i + 1];
                     previousEmoji = emojis[i + 2];
                     nextEmoji = emojis[i + 3];
 
@@ -169,6 +170,9 @@ function getDrawResult(emojis) {
                         result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
 
                         return result;
+                    } else if (isFourLeaf(previousPreviousEmoji)) {
+                        result.longfox.baby.amount++;
+                        result.longfox.baby.index.push(i + 1);
                     }
                 } else if (isFoxhead(nextEmoji)) {
                     result.tokenAmount++;
