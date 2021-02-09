@@ -136,6 +136,7 @@ function getDrawResult(emojis) {
 
                 if (isFoxBody(nextEmoji)) {
                     // 2 body
+                    previousPreviousEmoji = emojis[i + 1];
                     previousEmoji = emojis[i + 2];
                     nextEmoji = emojis[i + 3];
 
@@ -169,6 +170,9 @@ function getDrawResult(emojis) {
                         result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
 
                         return result;
+                    } else if (isFourLeaf(previousPreviousEmoji)) {
+                        result.longfox.baby.amount++;
+                        result.longfox.baby.index.push(i + 1);
                     }
                 } else if (isFoxhead(nextEmoji)) {
                     result.tokenAmount++;
@@ -361,12 +365,12 @@ function canPlay(userId) {
         dataAttempts[userId] = {numberAttempts: 0, firstAttempt: Date.now()};
     }
 
+    if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
+        dataAttempts[userId].numberAttempts = 0;
+    }
+
     if (dataAttempts[userId].numberAttempts >= MAX_ATTEMPT) {
-        if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
-            dataAttempts[userId].numberAttempts = 0;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     if (dataAttempts[userId].numberAttempts === 0) {
