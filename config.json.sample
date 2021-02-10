@@ -89,6 +89,7 @@
         "smallVoiceChatRequest": "",
         "lessonOfTheDay": "",
         "selfie": "",
+        "eventCategory": "",
         "eventChat": ""
     },
     "channelCategories": {

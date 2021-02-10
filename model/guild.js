@@ -163,6 +163,7 @@ const Guild = {
         Guild.smallVoiceChatRequestChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.smallVoiceChatRequest);
         Guild.lessonOfTheDayChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.lessonOfTheDay);
         Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
+        Guild.eventCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventCategory);
         Guild.eventChatChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventChat);
 
         // Categories
