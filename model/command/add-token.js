@@ -30,8 +30,20 @@ class AddToken
         if (args.length > 0) {
             searchResult = Guild.findDesignatedMemberInMessage(message).foundMembers.filter(member => member.user);
         } else if (member.voice.channelID) {
+            const eventChannels = Guild.eventCategoryChannel.children;
             const activeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === member.voice.channelID);
+
             searchResult = activeChannel.members.filter(member => member.id !== message.author.id);
+
+            eventChannels.forEach(channel => {
+                if (channel.id !== activeChannel.id && channel.type  === 'voice') {
+                    channel.members.forEach(member => {
+                        searchResult.set(member.user.id, member);
+                    });
+                }
+            });
+
+            searchResult = searchResult.array();
         } else {
             return message.react(emojiPollNo);
         }

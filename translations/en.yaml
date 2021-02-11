@@ -226,7 +226,8 @@ model:
       description: "Try your luck with this emoji slots game: \"Lucky Fox\"!"
       gameOfTheDay: "Check out the game of the day!"
       loadingResult: "Ok, Let's try something..."
-      pleaseWait: "I'm taking a little break right now, remember you can only play five times every 12 hours!"
+      pleaseWait: "I'm taking a little break right now"
+      timeLeft: "Come back in %% !"
       wonAToken: "%% won a token!"
       result:
         win: "Hey, you won %% token(s)!"

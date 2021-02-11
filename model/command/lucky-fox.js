@@ -13,14 +13,14 @@ const cachelessRequire = (path) => {
     return typeof path === 'string' ? require(path) : null;
 };
 
-const emojiLuckyLeaf = '🍀';
 const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
-const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
-const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
-const emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
-const emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
+let emojiLuckyLeaf = '🍀';
+let emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
+let emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
+let emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'foxlong1');
+let emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
 
-const arrayEmojis = [emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiLuckyLeaf, emojiFoxBody, emojiFoxHead];
+let arrayEmojis = [emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiLuckyLeaf, emojiFoxBody, emojiFoxHead];
 
 const MAX_ATTEMPT = 5;
 const COOLDOWN_DURATION = 43200000;
@@ -49,6 +49,75 @@ const getAttempts = () => {
 
     return data;
 };
+
+/**
+ *
+ * @param {int} timestampFirstAttempt
+ *
+ * @return {boolean}
+ */
+function canResetAttempt(timestampFirstAttempt) {
+    const now = Date.now();
+    return now >= timestampFirstAttempt + COOLDOWN_DURATION;
+}
+
+/**
+ *
+ * @param {string} userId
+ *
+ * @return {boolean}
+ */
+function canPlay(userId) {
+    let dataAttempts = getAttempts();
+
+    if (!dataAttempts) {
+        dataAttempts = {};
+    }
+
+    if (!dataAttempts[userId]) {
+        dataAttempts[userId] = {numberAttempts: 0, firstAttempt: Date.now()};
+    }
+
+    if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
+        dataAttempts[userId].numberAttempts = 0;
+    }
+
+    if (dataAttempts[userId].numberAttempts >= MAX_ATTEMPT) {
+        return false;
+    }
+
+    if (dataAttempts[userId].numberAttempts === 0) {
+        dataAttempts[userId].firstAttempt = Date.now();
+    }
+
+    dataAttempts[userId].numberAttempts++;
+    saveAttempts(dataAttempts);
+
+    return true;
+}
+
+/**
+ * 
+ * @param {string} timestamp 
+ * 
+ * @return {string}
+ */
+function getTimeLeft(userId) {
+    let dataAttempts = getAttempts();
+
+    timestampTimeLeft = (dataAttempts[userId].firstAttempt + COOLDOWN_DURATION) - Date.now();
+    timestampInSecond = Math.round(parseInt(timestampTimeLeft) / 1000);
+
+    const hours = Math.floor(timestampInSecond / 3600);
+    const minutes = Math.round((timestampInSecond % 3600) / 60);
+
+    if (minutes === 60) {
+        minutes = 0;
+        hours++;
+    }
+
+    return `${hours}h ${minutes}mn`;
+}
 
 /**
  *
@@ -83,6 +152,39 @@ function getRandomEmoji(amount) {
 }
 
 /**
+ * 
+ */
+function setupNewEmojis() {
+    emojiLongFox = `${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`;
+    arrayEmojis = [emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiFoxBody, emojiFoxHead, emojiFoxBottom, emojiLuckyLeaf, emojiFoxBody, emojiFoxHead];
+}
+
+/**
+ * 
+ * @param {string} arg 
+ */
+function changeLongfoxTo(arg) {
+    switch(arg) {
+        case 'lgbt' :
+            emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'lgbtfox1');
+            emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'lgbtfox2');
+            emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'lgbtfox3');
+            setupNewEmojis();
+            break;
+        
+        case 'frog' :
+            emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'frogchair3');
+            emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'frogchair2');
+            emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'frogchair1');
+            setupNewEmojis();
+            break;
+
+        default :
+            return;
+    }
+}
+
+/**
  *
  * @param {Message} botMessage
  * @param {Emoji} emoji
@@ -94,6 +196,46 @@ function displayEmojis(botMessage, emoji) {
         await botMessage.edit(`${botMessage.content}${emoji}`);
         setTimeout(resolve, 500);
     });
+}
+
+/**
+ *
+ * @param {Emoji|string} emoji
+ *
+ * @return {boolean}
+ */
+function isFoxBottom(emoji) {
+    return emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf);
+}
+
+/**
+ *
+ * @param {Emoji|string} emoji
+ *
+ * @return {boolean}
+ */
+function isFoxBody(emoji) {
+    return emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf);
+}
+
+/**
+ *
+ * @param {Emoji|string} emoji
+ *
+ * @return {boolean}
+ */
+function isFoxhead(emoji) {
+    return emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf);
+}
+
+/**
+ *
+ * @param {Emoji|string} emoji
+ *
+ * @return {boolean}
+ */
+function isFourLeaf(emoji) {
+    return emoji && emoji === emojiLuckyLeaf;
 }
 
 /**
@@ -259,46 +401,6 @@ function getLuckyLeafAmount(emojis) {
 
 /**
  *
- * @param {Emoji|string} emoji
- *
- * @return {boolean}
- */
-function isFoxBottom(emoji) {
-    return emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf);
-}
-
-/**
- *
- * @param {Emoji|string} emoji
- *
- * @return {boolean}
- */
-function isFoxBody(emoji) {
-    return emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf);
-}
-
-/**
- *
- * @param {Emoji|string} emoji
- *
- * @return {boolean}
- */
-function isFoxhead(emoji) {
-    return emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf);
-}
-
-/**
- *
- * @param {Emoji|string} emoji
- *
- * @return {boolean}
- */
-function isFourLeaf(emoji) {
-    return emoji && emoji === emojiLuckyLeaf;
-}
-
-/**
- *
  * @param {Message} message
  * @param {Object} result
  *
@@ -323,19 +425,13 @@ async function editEmbedWithResult(message, result) {
         embedResult.addField(`${emojiKwiziq}`, trans('model.command.luckyFox.result.kwiziq'));
     }
 
-    if (result.longfox.baby.amount > 1) {
-        embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, trans('model.command.luckyFox.result.babyFox'));
-    }
-
     if (result.longfox.small > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxSmall'));
-    }
-
-    if (result.longfox.medium > 0) {
+    } else if (result.longfox.baby.amount > 1) {
+        embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, trans('model.command.luckyFox.result.babyFox'));
+    } else if (result.longfox.medium > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxMedium'));
-    }
-
-    if (result.longfox.large > 0) {
+    } else if (result.longfox.large > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxLarge'));
     }
 
@@ -348,50 +444,17 @@ async function editEmbedWithResult(message, result) {
     return embedResult;
 }
 
-/**
- *
- * @param {string} userId
- *
- * @return {boolean}
- */
-function canPlay(userId) {
-    let dataAttempts = getAttempts();
+function getEmbedPleaseWait(userId) {
+    const embedResult = new MessageEmbed()
+        .setColor('#ffb8e6')
+        .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
+        .addField(
+            trans('model.command.luckyFox.pleaseWait'),
+            trans('model.command.luckyFox.timeLeft', [getTimeLeft(userId)])
+        )
+        .setTimestamp(new Date());
 
-    if (!dataAttempts) {
-        dataAttempts = {};
-    }
-
-    if (!dataAttempts[userId]) {
-        dataAttempts[userId] = {numberAttempts: 0, firstAttempt: Date.now()};
-    }
-
-    if (canResetAttempt(dataAttempts[userId].firstAttempt)) {
-        dataAttempts[userId].numberAttempts = 0;
-    }
-
-    if (dataAttempts[userId].numberAttempts >= MAX_ATTEMPT) {
-        return false;
-    }
-
-    if (dataAttempts[userId].numberAttempts === 0) {
-        dataAttempts[userId].firstAttempt = Date.now();
-    }
-
-    dataAttempts[userId].numberAttempts++;
-    saveAttempts(dataAttempts);
-
-    return true;
-}
-
-/**
- *
- * @param {int} timestampFirstAttempt
- *
- * @return {boolean}
- */
-function canResetAttempt(timestampFirstAttempt) {
-    const now = Date.now();
-    return now >= timestampFirstAttempt + COOLDOWN_DURATION;
+    return embedResult;
 }
 
 class LuckyFox
@@ -411,9 +474,13 @@ class LuckyFox
     /**
      * @param {Message} message
      */
-    async process(message) {
+    async process(message, args) {
+        if (args.length > 0) {
+            changeLongfoxTo(args[0]);
+        }
+        
         if (!canPlay(message.author.id)) {
-            return message.channel.send(trans('model.command.luckyFox.pleaseWait'));
+            return message.channel.send(getEmbedPleaseWait(message.author.id));
         }
 
         // contains random emojis and will be shown first
