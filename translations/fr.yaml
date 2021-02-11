@@ -154,7 +154,8 @@ model:
       description: "Tente ta chance sur cette machine sans sou à emojis : \"Lucky Fox\" !"
       gameOfTheDay: "Va jeter un coup d'œil au jeu du jour !"
       loadingResult: "Ok, essayons un petit quelque chose..."
-      pleaseWait: "Je prends une petite pause maintenant, reviens dans %% !"
+      pleaseWait: "Je prends une petite pause maintenant"
+      timeLeft: "Reviens dans %% !"
       wonAToken: "%% a gagné un jeton !"
       result:
         win: "Hé, t'as gagné %% jeton(s) !"

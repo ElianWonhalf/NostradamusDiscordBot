@@ -444,6 +444,19 @@ async function editEmbedWithResult(message, result) {
     return embedResult;
 }
 
+function getEmbedPleaseWait(userId) {
+    const embedResult = new MessageEmbed()
+        .setColor('#ffb8e6')
+        .setTitle(`${emojiLongFox}${emojiLuckyLeaf}[Lucky Fox]${emojiLuckyLeaf}${emojiLongFox}`)
+        .addField(
+            trans('model.command.luckyFox.pleaseWait'),
+            trans('model.command.luckyFox.timeLeft', [getTimeLeft(userId)])
+        )
+        .setTimestamp(new Date());
+
+    return embedResult;
+}
+
 class LuckyFox
 {
     static instance = null;
@@ -462,12 +475,12 @@ class LuckyFox
      * @param {Message} message
      */
     async process(message, args) {
-        if (!canPlay(message.author.id)) {
-            return message.channel.send(trans('model.command.luckyFox.pleaseWait', [getTimeLeft(message.author.id)]));
-        }
-
         if (args.length > 0) {
             changeLongfoxTo(args[0]);
+        }
+        
+        if (!canPlay(message.author.id)) {
+            return message.channel.send(getEmbedPleaseWait(message.author.id));
         }
 
         // contains random emojis and will be shown first
