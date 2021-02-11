@@ -97,6 +97,29 @@ function canPlay(userId) {
 }
 
 /**
+ * 
+ * @param {string} timestamp 
+ * 
+ * @return {string}
+ */
+function getTimeLeft(userId) {
+    let dataAttempts = getAttempts();
+
+    timestampTimeLeft = (dataAttempts[userId].firstAttempt + COOLDOWN_DURATION) - Date.now();
+    timestampInSecond = Math.round(parseInt(timestampTimeLeft) / 1000);
+
+    const hours = Math.floor(timestampInSecond / 3600);
+    const minutes = Math.round((timestampInSecond % 3600) / 60);
+
+    if (minutes === 60) {
+        minutes = 0;
+        hours++;
+    }
+
+    return `${hours}h ${minutes}mn`;
+}
+
+/**
  *
  * @param {int} max
  *
@@ -440,7 +463,7 @@ class LuckyFox
      */
     async process(message, args) {
         if (!canPlay(message.author.id)) {
-            return message.channel.send(trans('model.command.luckyFox.pleaseWait'));
+            return message.channel.send(trans('model.command.luckyFox.pleaseWait', [getTimeLeft(message.author.id)]));
         }
 
         if (args.length > 0) {
