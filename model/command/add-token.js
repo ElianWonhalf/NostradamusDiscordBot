@@ -42,11 +42,13 @@ class AddToken
                     });
                 }
             });
+
+            searchResult = searchResult.array();
         } else {
             return message.react(emojiPollNo);
         }
 
-        if (!searchResult.first()) {
+        if (searchResult.length < 1) {
             return message.react(emojiPollNo);
         }
 
