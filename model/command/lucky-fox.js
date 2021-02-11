@@ -116,7 +116,7 @@ function getTimeLeft(userId) {
         hours++;
     }
 
-    return `${hours}h ${minutes}mn`;
+    return `${hours}h ${minutes}min`;
 }
 
 /**
@@ -187,7 +187,7 @@ function changeLongfoxTo(arg) {
 /**
  *
  * @param {Message} botMessage
- * @param {Emoji} emoji
+ * @param {Emoji|string} emoji
  *
  * @return {Promise}
  */
@@ -239,6 +239,118 @@ function isFourLeaf(emoji) {
 }
 
 /**
+ * 
+ * @param {Array} emojis 
+ * 
+ * @return {Object}
+ */
+function includeSuperLongFox(emojis) {
+    const result = { exists: false, indexHead: null};
+
+    if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxBody(emojis[2]) && isFoxBody(emojis[3]) && isFoxhead(emojis[4])) {
+        result.exists = true;
+        result.indexHead = 4;
+    }
+
+    return result;
+}
+
+/**
+ * 
+ * @param {Array} emojis 
+ * 
+ * @return {Object}
+ */
+function includeLongerFox(emojis) {
+    const result = { exists: false, indexHead: null};
+
+    if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxBody(emojis[2]) && isFoxhead(emojis[3])) {
+        result.exists = true;
+        result.indexHead = 3;
+    } else if (isFoxBottom(emojis[1]) && isFoxBody(emojis[2]) && isFoxBody(emojis[3]) && isFoxhead(emojis[4])) {
+        result.exists = true;
+        result.indexHead = 4;
+    }
+
+    return result;
+}
+
+/**
+ * 
+ * @param {Array} emojis 
+ * 
+ * @return {Object}
+ */
+function includeLongFox(emojis) {
+    const result = { exists: false, indexHead: null};
+
+    if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxhead(emojis[2])) {
+        result.exists = true;
+        result.indexHead = 2;
+    } else if (isFoxBottom(emojis[1]) && isFoxBody(emojis[2]) && isFoxhead(emojis[3])) {
+        result.exists = true;
+        result.indexHead = 3;
+    } else if (isFoxBottom(emojis[2]) && isFoxBody(emojis[3]) && isFoxhead(emojis[4])) {
+        result.exists = true;
+        result.indexHead = 4;
+    }
+
+    return result;
+}
+
+/**
+ * 
+ * @param {Array} emojis 
+ * 
+ * @return {Object}
+ */
+function includeTwoBabyLongFox(emojis) {
+    const result = { exists: false, indexHead: []};
+    let emojisToString = '';
+
+    emojis.forEach(emoji => {
+        if (emoji === emojiLuckyLeaf) {
+            emojisToString += "0";
+        }
+        if (emoji === emojiFoxBottom) {
+            emojisToString += "1";
+        }
+        if (emoji === emojiFoxBody) {
+            emojisToString += "2";
+        }
+        if (emoji === emojiFoxHead) {
+            emojisToString += "3";
+        }
+    });
+    
+    const possibleMatch = [`13`, `10`, `03`, `00`];
+    let babyFoxAmount = 0;
+
+    for (let i = 0; i < possibleMatch.length; i++) {
+        let index = emojisToString.indexOf(possibleMatch[i]);
+        
+        if (index !== -1) {
+            babyFoxAmount++;
+            result.indexHead.push(index + 1);
+
+            let secondIndex = emojisToString.indexOf(possibleMatch[i], (index + 1));
+            console.log(possibleMatch[i]);
+            if (secondIndex !== -1) {
+                babyFoxAmount++;
+                result.indexHead.push(secondIndex + 1);
+            }
+        }
+
+        if (babyFoxAmount > 1) {
+            result.exists = true;
+            break;
+        }
+    }
+
+    return result;
+}
+
+/**
  *
  * @param {Array} emojis
  *
@@ -253,10 +365,7 @@ function getDrawResult(emojis) {
             large: 0,
             medium: 0,
             small: 0,
-            baby: {
-                amount: 0,
-                index: []
-            }
+            baby: 0
         }
     };
 
@@ -265,78 +374,41 @@ function getDrawResult(emojis) {
         result.kwiziq = true;
     }
 
-    for (let i = 0; i < emojis.length; i++) {
-        let currentEmoji = emojis[i];
+    const superLongFox = includeSuperLongFox(emojis);
 
-        if (isFoxBottom(currentEmoji)) {
-            let nextEmoji = emojis[i + 1];
-
-            if (isFoxBody(nextEmoji)) {
-                // 1 body
-                let previousEmoji = emojis[i + 1];
-                nextEmoji = emojis[i + 2];
-
-                if (isFoxBody(nextEmoji)) {
-                    // 2 body
-                    previousPreviousEmoji = emojis[i + 1];
-                    previousEmoji = emojis[i + 2];
-                    nextEmoji = emojis[i + 3];
-
-                    if (isFoxBody(nextEmoji)) {
-                        // 3 body
-                        previousEmoji = emojis[i + 3];
-                        nextEmoji = emojis[i + 4];
-
-                        if (isFoxhead(nextEmoji)) {
-                            result.tokenAmount += 4;
-                            result.longfox.large++;
-                            result.luckyLeafAmount = transformLuckyLeaf(i + 4, 'large', emojis);
-
-                            return result;
-                        } else if (isFourLeaf(previousEmoji)) {
-                            result.tokenAmount += 2;
-                            result.longfox.medium++;
-                            result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
-
-                            return result;
-                        }
-                    } else if (isFoxhead(nextEmoji)) {
-                        result.tokenAmount += 2;
-                        result.longfox.medium++;
-                        result.luckyLeafAmount = transformLuckyLeaf(i + 3, 'medium', emojis);
-
-                        return result;
-                    } else if (isFourLeaf(previousEmoji)) {
-                        result.tokenAmount++;
-                        result.longfox.small++;
-                        result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
-
-                        return result;
-                    } else if (isFourLeaf(previousPreviousEmoji)) {
-                        result.longfox.baby.amount++;
-                        result.longfox.baby.index.push(i + 1);
-                    }
-                } else if (isFoxhead(nextEmoji)) {
-                    result.tokenAmount++;
-                    result.longfox.small++;
-                    result.luckyLeafAmount = transformLuckyLeaf(i + 2, 'small', emojis);
-
-                    return result;
-                } else if (isFourLeaf(previousEmoji)) {
-                    result.longfox.baby.amount++;
-                    result.longfox.baby.index.push(i + 1);
-                }
-            } else if (isFoxhead(nextEmoji)) {
-                result.longfox.baby.amount++;
-                result.longfox.baby.index.push(i + 1);
-            }
-        }
+    if (superLongFox.exists) {
+        result.tokenAmount += 4;
+        result.longfox.large++;
+        result.luckyLeafAmount += transformLuckyLeaf(superLongFox.indexHead, 'large', emojis);
+        return result;
     }
 
-    if (result.longfox.baby.amount > 1) {
-        result.tokenAmount++;
-        result.luckyLeafAmount = transformLuckyLeaf(result.longfox.baby.index[0], 'baby', emojis);
-        result.luckyLeafAmount += transformLuckyLeaf(result.longfox.baby.index[1], 'baby', emojis);
+    const longerFox = includeLongerFox(emojis);
+
+    if (longerFox.exists) {
+        result.tokenAmount += 2;
+        result.longfox.medium++;
+        result.luckyLeafAmount += transformLuckyLeaf(longerFox.indexHead, 'medium', emojis);
+        return result;
+    }
+
+    const longFox = includeLongFox(emojis);
+
+    if (longFox.exists) {
+        result.tokenAmount += 1;
+        result.longfox.small++;
+        result.luckyLeafAmount += transformLuckyLeaf(longFox.indexHead, 'small', emojis);
+        return result;
+    }
+
+    const foxBabies = includeTwoBabyLongFox(emojis);
+
+    if (foxBabies.exists) {
+        result.tokenAmount += 1;
+        result.longfox.baby++;
+        result.luckyLeafAmount += transformLuckyLeaf(foxBabies.indexHead[0], 'baby', emojis);
+        result.luckyLeafAmount += transformLuckyLeaf(foxBabies.indexHead[1], 'baby', emojis);
+        return result;
     }
 
     return result;
@@ -427,7 +499,7 @@ async function editEmbedWithResult(message, result) {
 
     if (result.longfox.small > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxSmall'));
-    } else if (result.longfox.baby.amount > 1) {
+    } else if (result.longfox.baby > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxHead}`, trans('model.command.luckyFox.result.babyFox'));
     } else if (result.longfox.medium > 0) {
         embedResult.addField(`${emojiFoxBottom}${emojiFoxBody}${emojiFoxBody}${emojiFoxHead}`, trans('model.command.luckyFox.result.longFoxMedium'));
@@ -478,7 +550,7 @@ class LuckyFox
         if (args.length > 0) {
             changeLongfoxTo(args[0]);
         }
-        
+
         if (!canPlay(message.author.id)) {
             return message.channel.send(getEmbedPleaseWait(message.author.id));
         }
