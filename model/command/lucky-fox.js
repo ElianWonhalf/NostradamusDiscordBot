@@ -191,7 +191,7 @@ function changeLongfoxTo(arg) {
  *
  * @return {Promise}
  */
-function displayEmojis(botMessage, emoji) {
+function displayEmoji(botMessage, emoji) {
     return new Promise(async resolve => {
         await botMessage.edit(`${botMessage.content}${emoji}`);
         setTimeout(resolve, 500);
@@ -205,7 +205,7 @@ function displayEmojis(botMessage, emoji) {
  * @return {boolean}
  */
 function isFoxBottom(emoji) {
-    return emoji && (emoji === emojiFoxBottom || emoji === emojiLuckyLeaf);
+    return emoji && (emoji === emojiFoxBottom || isFourLeaf(emoji));
 }
 
 /**
@@ -215,7 +215,7 @@ function isFoxBottom(emoji) {
  * @return {boolean}
  */
 function isFoxBody(emoji) {
-    return emoji && (emoji === emojiFoxBody || emoji === emojiLuckyLeaf);
+    return emoji && (emoji === emojiFoxBody || isFourLeaf(emoji));
 }
 
 /**
@@ -225,7 +225,7 @@ function isFoxBody(emoji) {
  * @return {boolean}
  */
 function isFoxhead(emoji) {
-    return emoji && (emoji === emojiFoxHead || emoji === emojiLuckyLeaf);
+    return emoji && (emoji === emojiFoxHead || isFourLeaf(emoji));
 }
 
 /**
@@ -245,7 +245,7 @@ function isFourLeaf(emoji) {
  * @return {Object}
  */
 function includeSuperLongFox(emojis) {
-    const result = { exists: false, indexHead: null};
+    const result = { exists: false, indexHead: null };
 
     if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxBody(emojis[2]) && isFoxBody(emojis[3]) && isFoxhead(emojis[4])) {
         result.exists = true;
@@ -262,7 +262,7 @@ function includeSuperLongFox(emojis) {
  * @return {Object}
  */
 function includeLongerFox(emojis) {
-    const result = { exists: false, indexHead: null};
+    const result = { exists: false, indexHead: null };
 
     if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxBody(emojis[2]) && isFoxhead(emojis[3])) {
         result.exists = true;
@@ -282,7 +282,7 @@ function includeLongerFox(emojis) {
  * @return {Object}
  */
 function includeLongFox(emojis) {
-    const result = { exists: false, indexHead: null};
+    const result = { exists: false, indexHead: null };
 
     if (isFoxBottom(emojis[0]) && isFoxBody(emojis[1]) && isFoxhead(emojis[2])) {
         result.exists = true;
@@ -305,20 +305,23 @@ function includeLongFox(emojis) {
  * @return {Object}
  */
 function includeTwoBabyLongFox(emojis) {
-    const result = { exists: false, indexHead: []};
+    const result = { exists: false, indexHead: [] };
     let emojisToString = '';
 
     emojis.forEach(emoji => {
-        if (emoji === emojiLuckyLeaf) {
+        if (isFourLeaf(emoji)) {
             emojisToString += "0";
         }
-        if (emoji === emojiFoxBottom) {
+
+        if (isFoxBottom(emoji)) {
             emojisToString += "1";
         }
-        if (emoji === emojiFoxBody) {
+
+        if (isFoxBody(emoji)) {
             emojisToString += "2";
         }
-        if (emoji === emojiFoxHead) {
+
+        if (isFoxhead(emoji)) {
             emojisToString += "3";
         }
     });
@@ -334,7 +337,7 @@ function includeTwoBabyLongFox(emojis) {
             result.indexHead.push(index + 1);
 
             let secondIndex = emojisToString.indexOf(possibleMatch[i], (index + 1));
-            console.log(possibleMatch[i]);
+            
             if (secondIndex !== -1) {
                 babyFoxAmount++;
                 result.indexHead.push(secondIndex + 1);
@@ -467,7 +470,7 @@ function transformLuckyLeaf(index, longFoxType, emojis) {
  * @return {int}
  */
 function getLuckyLeafAmount(emojis) {
-    const result = emojis.filter(emoji => emoji === emojiLuckyLeaf);
+    const result = emojis.filter(emoji => isFourLeaf(emoji));
     return result.length;
 }
 
@@ -573,7 +576,7 @@ class LuckyFox
 
         message.channel.send(embed).then(async botMessage => {
             for (let emoji of initialRandomEmojis) {
-                await displayEmojis(botMessage, emoji);
+                await displayEmoji(botMessage, emoji);
             }
 
             const editedEmbed = await editEmbedWithResult(message, result);
