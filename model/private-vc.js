@@ -598,6 +598,10 @@ const PrivateVC = {
      * @returns {bool}
      */
     setChannelUserLimit: async (hostMember, args) => {
+        if (!PrivateVC.list[hostMember.id]) {
+            return false;
+        }
+
         const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
@@ -729,6 +733,10 @@ const PrivateVC = {
      * @param {string} name
      */
     renameChannels: async (hostMember, name) => {
+        if (!PrivateVC.list[hostMember.id]) {
+            return false;
+        }
+
         const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
@@ -739,13 +747,15 @@ const PrivateVC = {
             Logger.exception(exception);
             await Guild.botChannel.send(trans('model.privateVC.errors.renameFailed.mods', [hostMember.toString()], 'en'));
             await channels[0].send(trans('model.privateVC.errors.renameFailed.member'));
-            return;
+            return false;
         }
 
         await Promise.all([
             channels[0].setName(name),
             channels[1].setName(name),
         ]);
+
+        return true;
     },
 
     /**

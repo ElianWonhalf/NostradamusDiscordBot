@@ -26,6 +26,7 @@ class PrivateVC
             const action = args.shift().toLowerCase();
             const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['limit', 'rename']};
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
+            let success = true;
 
             if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
                 const validActions = actions['mod'] + actions['member'];
@@ -55,14 +56,12 @@ class PrivateVC
                         break;
 
                     case 'limit':
-                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
-                            return;
-                        };
+                        success = await PrivateVCModel.setChannelUserLimit(message.member, args);
                         break;
 
                     case 'rename':
                         if (args.length > 0) {
-                            PrivateVCModel.renameChannels(message.member, args.join(" "));
+                            success = await PrivateVCModel.renameChannels(message.member, args.join(" "));
                         }
                         break;
                 }
@@ -75,20 +74,20 @@ class PrivateVC
 
                 switch (action) {
                     case 'limit':
-                        if (!await PrivateVCModel.setChannelUserLimit(message.member, args)) {
-                            return;
-                        }
+                        success = await PrivateVCModel.setChannelUserLimit(message.member, args);
                         break;
 
                     case 'rename':
                         if (args.length > 0) {
-                            PrivateVCModel.renameChannels(message.member, args.join(" "));
+                            success = await PrivateVCModel.renameChannels(message.member, args.join(" "));
                         }
                         break;
                 }
             }
 
-            await message.react(emoji);
+            if (success) {
+                await message.react(emoji);
+            }
         }
     }
 }
