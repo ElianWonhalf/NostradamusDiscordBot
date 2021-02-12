@@ -311,21 +311,17 @@ function includeTwoBabyLongFox(emojis) {
     emojis.forEach(emoji => {
         if (isFourLeaf(emoji)) {
             emojisToString += "0";
-        }
-
-        if (isFoxBottom(emoji)) {
+        } else if (isFoxBottom(emoji)) {
             emojisToString += "1";
-        }
-
-        if (isFoxBody(emoji)) {
+        } else if (isFoxBody(emoji)) {
             emojisToString += "2";
-        }
-
-        if (isFoxhead(emoji)) {
+        } else if (isFoxhead(emoji)) {
             emojisToString += "3";
+        } else if (emoji === emojiKwiziq) {
+            emojisToString += "4";
         }
     });
-    
+
     const possibleMatch = [`13`, `10`, `03`, `00`];
     let babyFoxAmount = 0;
 
