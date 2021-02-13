@@ -787,7 +787,7 @@ const PrivateVC = {
     waitingRoomLeaveHandler: async (guestMember, requestor) => {
         const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
-        if (channels[1]) {
+        if (channels[1] && PrivateVC.pendingJoinRequests[channels[1].id]) {
             const message = PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
 
             await message.delete();
