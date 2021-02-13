@@ -372,6 +372,13 @@ const PrivateVC = {
      * @param {VoiceState} oldVoiceState
      */
     privateVoiceChatRequestHandler: async (member, oldVoiceState) => {
+        if (PrivateVC.list[member.id]) {
+            await Guild.botChannel.send(trans('model.privateVC.errors.alreadyExists.mods', [member.toString()], 'en'));
+            await member.send(trans('model.privateVC.errors.alreadyExists.member'));
+            await member.voice.setChannel(null);
+            return;
+        }
+
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
         let textChannel, voiceChannel, waitingChannel;
 
