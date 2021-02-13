@@ -71,7 +71,7 @@ const PrivateVC = {
             );
 
             if (requestor && requestor !== member.id) {
-                PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState);
+                PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState.member);
             }
         }
 
@@ -482,14 +482,11 @@ const PrivateVC = {
 
     /**
      * @param {Snowflake} requestor
-     * @param {VoiceState} newVoiceState
+     * @param {GuildMember} guestMember
      */
-    privateVoiceChatJoinHandler: async (requestor, newVoiceState) => {
+    privateVoiceChatJoinHandler: async (requestor, guestMember) => {
         const hostMember = Guild.discordGuild.member(requestor);
-
-        const guestMember = newVoiceState.member;
         const guestUser = guestMember.user;
-
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
         const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
@@ -543,6 +540,7 @@ const PrivateVC = {
 
     /**
      * @param {GuildMember} currentHostMember
+     * @returns {GuildMember}
      */
     privateVoiceChatPropertyTransferHandler: async (currentHostMember, channels) => {
         const memberPermissionLevels = new Discord.Collection();
@@ -597,6 +595,8 @@ const PrivateVC = {
 
             channels.filter(channel => channel !== undefined).forEach(channel => channel.delete());
         }
+
+        return newHostMember;
     },
 
     /**
@@ -687,7 +687,7 @@ const PrivateVC = {
      * @param {GuildMember} hostMember
      * @param {Array} channels
      */
-    synchronizeChannels: (hostMember, channels) => {
+    synchronizeChannels: async (hostMember, channels) => {
         if (channels[1]) {
             if (channels[1].members.size === 0) {
                 // No one left in the voice channel: delete on-demand VC
@@ -695,7 +695,12 @@ const PrivateVC = {
             } else {
                 if (!channels[1].members.has(hostMember.id)) {
                     // Host member left the voice channel: transfer property
-                    PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+                    const newHostMember = await PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+
+                    if (channels[2]) {
+                        // Late join request handling of members who joined waiting room during channel synchronization grace period
+                        channels[2].members.each(member => PrivateVC.privateVoiceChatJoinHandler(newHostMember.id, member));
+                    }
                 }
 
                 PrivateVC.fixChannelPermissions(channels);
