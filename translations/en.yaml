@@ -334,19 +334,19 @@ model:
         done: "Messages stat backfilling complete!"
     tokenBoard:
       description: "Check the token leaderboard"
-      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
+      reward: "Every token is a chance to ... Wait, the event is over? They must be used for something ..."
       gameOfTheDay: "Check out the game of the day!"
       tokenRanking: "%% token(s)"
     tokenHelp:
       description: "For help with event commands"
-      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
+      reward: "Every token is a chance to ... Wait, the event is over? They must be used for something ..."
       gameOfTheDay: "Check out the game of the day!"
       commandList: "Here is a list of the commands for the event"
       commands:
         tokenBoard: "To see who has the most tokens"
         tokenInfo: "To see how many tokens you have"
         tokenHelp: "You are here"
-        xofYkcul: "? siht si tahw ...tiaW"
+        luckyFox: "To try to win tokens"
       moreInfo:
         infoBelow: "More info below :arrow_down:"
         forMoreInfo: "For more info about the event"
@@ -356,15 +356,11 @@ model:
     tokenInfo:
       description: "To see how many tokens you have"
       memberNotFound: "I... Have no idea who that could be, sorry."
-      reward: "Every token is a chance to win a lifetime subscription to :kwiziq: Kwiziq or a :nitro: Discord Nitro subscription!"
+      reward: "Every token is a chance to ... Wait, the event is over? They must be used for something ..."
       gameOfTheDay: "Check out the game of the day!"
       tokens:
         user: "Hey %%!"
         amount: "You have **%%** token(s)!"
-    xofYkcul:
-      description: "?siht si tahw ...tiaW"
-      unluckyFox: "? pleh uoy naC ...sdrawkcab s'eh ,ykculnu si xof sihT"
-      noIdea: "...aedi on evah i ,yrroS"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
       noAction: "You have to enter an action"

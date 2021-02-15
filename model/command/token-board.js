@@ -14,7 +14,7 @@ const emojiLeft = '⬅';
 
 let page = 0;
 let maxPages = 1;
-const rowByPage = 5;
+const rowByPage = 8;
 const arrayEmbeds = [];
 
 /**
@@ -77,7 +77,7 @@ const addReactToEmbed = (message, embeddedMessage, tokenRanking) => {
 
     const reactFilter = (reaction, user) => user.id === message.author.id && getReactEmojis().includes(reaction.emoji.name);
 
-    embeddedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(async collectedReactions => {
+    embeddedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 60000 }).then(async collectedReactions => {
         if (!collectedReactions.first()) {
             embeddedMessage.reactions.removeAll();
         } else {
