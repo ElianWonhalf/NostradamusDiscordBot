@@ -335,6 +335,8 @@ model:
       public: "Public"
       private: "Privé"
     errors:
+      alreadyExists:
+        member: "Tu es encore propriétaire d'un VC sur demande, je ne peux pas en créer un autre. Réessaie une fois qu'il aura été supprimé ou transféré à quelqu'un d'autre !"
       creationFailed:
         member: "Salut ! Désolé, je n'ai pas pu créer ton VC :( Tu peux réessayer, s'il te plaît ?"
       memberNotFound: "Désolé, je ne reconnais pas le membre qui veut rejoindre le salon, je ne peux pas le faire rentrer."

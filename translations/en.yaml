@@ -466,6 +466,9 @@ model:
       public: "Public"
       private: "Private"
     errors:
+      alreadyExists:
+        member: "You're still the owner of an on-demand VC, I cannot create another one. Please retry once it is deleted or given to someone else!"
+        mods: "%% requested a new on-demand VC but already owns one."
       creationFailed:
         member: "Hi! I'm sorry, I failed to create your VC :( Maybe you can try again?"
         mods: "%% asked for a private VC but I failed to create it"
@@ -479,7 +482,7 @@ model:
       renameFailed:
         member: "Sorry, I couldn't rename your room."
         mods: "%% wanted to rename their VC, but the database operation failed."
-    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, move or disconnect members\n"
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, disconnect members\n"
     joinRequest:
       notification:
         withPing: "%%, someone wants to join your room!"
