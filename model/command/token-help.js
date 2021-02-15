@@ -55,7 +55,7 @@ function getEmbed(message) {
                 .addField('.token-board', (trans('model.command.tokenHelp.commands.tokenBoard')))
                 .addField('.token-info', (trans('model.command.tokenHelp.commands.tokenInfo')))
                 .addField('.token-help', (trans('model.command.tokenHelp.commands.tokenHelp')))
-                .addField('.xof-ykcul', (trans('model.command.tokenHelp.commands.xofYkcul')))
+                .addField('.lucky-fox', (trans('model.command.tokenHelp.commands.luckyFox')))
                 .addField(trans('model.command.tokenHelp.moreInfo.forMoreInfo'), trans('model.command.tokenHelp.moreInfo.reactLeft'))
                 .addField(trans('model.command.tokenHelp.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
                 .setTimestamp(new Date());
@@ -77,7 +77,7 @@ const addReactToEmbed = (message, embededMsg) => {
 
     const reactFilter = (reaction, user) => user.id === message.author.id && arrayEmojis[page].includes(reaction.emoji.name);
 
-    embededMsg.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15000 }).then(async collectedReactions => {
+    embededMsg.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 60000 }).then(async collectedReactions => {
         if (!collectedReactions.first()) {
             embededMsg.reactions.removeAll();
         } else {
