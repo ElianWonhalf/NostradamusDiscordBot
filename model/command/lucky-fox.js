@@ -108,8 +108,8 @@ function getTimeLeft(userId) {
     timestampTimeLeft = (dataAttempts[userId].firstAttempt + COOLDOWN_DURATION) - Date.now();
     timestampInSecond = Math.round(parseInt(timestampTimeLeft) / 1000);
 
-    const hours = Math.floor(timestampInSecond / 3600);
-    const minutes = Math.round((timestampInSecond % 3600) / 60);
+    let hours = Math.floor(timestampInSecond / 3600);
+    let minutes = Math.round((timestampInSecond % 3600) / 60);
 
     if (minutes === 60) {
         minutes = 0;
