@@ -510,7 +510,7 @@ async function editEmbedWithResult(message, result) {
         embedResult.addField(`${emojiLuckyLeaf}`, trans('model.command.luckyFox.result.luckyLeaf', [result.luckyLeafAmount]));
     }
 
-    embedResult.addField(trans('model.command.luckyFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+    embedResult.addField(trans('model.command.luckyFox.footerInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
 
     return embedResult;
 }
@@ -567,7 +567,8 @@ class LuckyFox
             .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
             .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
             .setDescription(trans('model.command.luckyFox.loadingResult'))
-            .addField(trans('model.command.luckyFox.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .addField(trans('model.command.luckyFox.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .setFooter(trans('model.command.luckyFox.footerInfo'))
             .setTimestamp(new Date());
 
         message.channel.send(embed).then(async botMessage => {
@@ -581,10 +582,15 @@ class LuckyFox
             await botMessage.edit(`${randomEmojis[0]}${randomEmojis[1]}${randomEmojis[2]}${randomEmojis[3]}${randomEmojis[4]}`);
 
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
-            for (let i = 0; i < totalToken; i++) {
-                await MemberToken.add([message.author.id]).then(async () => {
-                    return Guild.eventChatChannel.send(trans('model.command.luckyFox.wonAToken', [message.author.username]));
-                });
+
+            if (totalToken > 0) {
+                for (let i = 0; i < totalToken; i++) {
+                    await MemberToken.add([message.author.id]);
+                }
+
+                if (message.member.guild.channels.cache.has(Guild.eventChatChannel.id)) {
+                    return Guild.eventChatChannel.send(trans('model.command.luckyFox.wonAToken', [message.author.username, totalToken]));
+                }
             }
         });
     }

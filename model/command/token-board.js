@@ -14,7 +14,7 @@ const emojiLeft = '⬅';
 
 let page = 0;
 let maxPages = 1;
-const rowByPage = 8;
+const rowByPage = 7;
 const arrayEmbeds = [];
 
 /**
@@ -36,15 +36,16 @@ function getEmbed(message, tokenRanking) {
         .setAuthor(message.author.username, message.author.displayAvatarURL({ dynamic: true }))
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
         .setDescription(trans('model.command.tokenBoard.reward'))
+        .setFooter(trans('model.command.tokenBoard.footerInfo'))
         .setTimestamp(new Date());
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
         if (tokenRanking[i]) {
-            boardEmbed.addField(tokenRanking[i].member.user.username, trans('model.command.tokenBoard.tokenRanking', [tokenRanking[i].amount_token]));
+            boardEmbed.addField(tokenRanking[i].member.user.username, trans('model.command.tokenBoard.tokenRanking', [tokenRanking[i].actual_token_amount]));
         }
     }
 
-    boardEmbed.addField(trans('model.command.tokenBoard.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
+    boardEmbed.addField(trans('model.command.tokenBoard.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`);
 
     arrayEmbeds.push(boardEmbed);
 

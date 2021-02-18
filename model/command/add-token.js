@@ -55,11 +55,13 @@ class AddToken
         await MemberToken.add(searchResult.map(member => member.id)).then(async () => {
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
 
-            searchResult = searchResult.map(member => member.displayName);
+            if (searchResult[0].guild.channels.cache.has(Guild.eventChatChannel.id)) {
+                searchResult = searchResult.map(member => member.displayName);
 
-            await Guild.eventChatChannel.send(
-                `${trans('model.command.addToken.notification')}\n${searchResult.join(', ')}`
-            );
+                await Guild.eventChatChannel.send(
+                    `${trans('model.command.addToken.notification')}\n${searchResult.join(', ')}`
+                );
+            }
 
             await message.react(emoji);
         }).catch(async (error) => {

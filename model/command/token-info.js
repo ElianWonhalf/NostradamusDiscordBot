@@ -44,23 +44,20 @@ class TokenInfo
             return message.reply(trans('model.command.tokenInfo.memberNotFound'));
         }
 
-        const tokenInfo = await MemberToken.getCount(user.id);
-        let amountToken;
-
-        if (!tokenInfo[0].amount_token) {
-            amountToken = 0;
-        } else {
-            amountToken = tokenInfo[0].amount_token;
-        }
+        const tokenInfo = await MemberToken.getMemberTokenInfo(user.id);
+        const actualTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].actual_token_amount ?? 0) : 0;
+        const totalTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].total_token_amount ?? 0) : 0;
 
         const boardEmbed = new MessageEmbed()
             .setColor('#ffb8e6')
-            .setTitle(`${emojiLongFox}[Token info]${emojiLongFox}`)
+            .setTitle(`${emojiLongFox}[${user.username}'s token info]${emojiLongFox}`)
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
             .setDescription(trans('model.command.tokenInfo.reward'))
-            .addField(trans('model.command.tokenInfo.tokens.user', [user.username]), trans('model.command.tokenInfo.tokens.amount', [amountToken]))
-            .addField(trans('model.command.tokenInfo.gameOfTheDay'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .addField(trans('model.command.tokenInfo.tokens.actualTitle'), trans('model.command.tokenInfo.tokens.actualAmount', [actualTokenAmount]))
+            .addField(trans('model.command.tokenInfo.tokens.totalTitle'), trans('model.command.tokenInfo.tokens.totalAmount', [totalTokenAmount]))
+            .addField(trans('model.command.tokenInfo.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
+            .setFooter(trans('model.command.tokenInfo.footerInfo'))
             .setTimestamp(new Date());
 
         await message.channel.send(boardEmbed);
