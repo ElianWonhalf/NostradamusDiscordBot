@@ -41,7 +41,7 @@ function getEmbed(message, tokenRanking) {
 
     for (let i = page * rowByPage; i < (page + 1) * rowByPage; i++) {
         if (tokenRanking[i]) {
-            boardEmbed.addField(tokenRanking[i].member.user.username, trans('model.command.tokenBoard.tokenRanking', [tokenRanking[i].actual_token_amount]));
+            boardEmbed.addField(tokenRanking[i].member.user.username, trans('model.command.tokenBoard.tokenRanking', [tokenRanking[i].amount]));
         }
     }
 

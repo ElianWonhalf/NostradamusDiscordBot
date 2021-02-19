@@ -8,7 +8,7 @@ const MemberToken = {
      * @returns {Promise}
      */
     createMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`INSERT INTO ${TABLE_TOKEN} (user_id, actual_token_amount, total_token_amount) VALUES (${snowflake}, 1, 1)`);
+        return db.asyncQuery(`INSERT INTO ${TABLE_TOKEN} (user_id, amount, all_time_amount) VALUES (${snowflake}, 1, 1)`);
     },
 
     /**
@@ -17,7 +17,7 @@ const MemberToken = {
      * @returns {Promise}
      */
     getMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`SELECT user_id, actual_token_amount, total_token_amount FROM ${TABLE_TOKEN} WHERE user_id = '${snowflake}'`);
+        return db.asyncQuery(`SELECT user_id, amount, all_time_amount FROM ${TABLE_TOKEN} WHERE user_id = '${snowflake}'`);
     },
 
     /**
@@ -33,11 +33,11 @@ const MemberToken = {
             if (!membersTokenInfo[0]) {
                 MemberToken.createMemberTokenInfo(snowflakes[i]);
             } else {
-                const newActualAmount = membersTokenInfo[0].actual_token_amount + 1;
-                const newTotalAmount = membersTokenInfo[0].total_token_amount + 1;
+                const newCurrentAmount = membersTokenInfo[0].amount + 1;
+                const newTotalAmount = membersTokenInfo[0].all_time_amount + 1;
 
                 await db.asyncQuery(
-                    `UPDATE ${TABLE_TOKEN} SET actual_token_amount = ${newActualAmount}, total_token_amount = ${newTotalAmount} WHERE user_id = ${snowflakes[i]}`
+                    `UPDATE ${TABLE_TOKEN} SET amount = ${newCurrentAmount}, all_time_amount = ${newTotalAmount} WHERE user_id = ${snowflakes[i]}`
                 );
             }
         };
@@ -54,10 +54,10 @@ const MemberToken = {
 
         return db.asyncQuery(
             `
-                SELECT user_id, actual_token_amount
+                SELECT user_id, amount
                 FROM ${TABLE_TOKEN}
                 ${whereClause}
-                ORDER BY actual_token_amount DESC
+                ORDER BY amount DESC
             `,
             [snowflake]
         );

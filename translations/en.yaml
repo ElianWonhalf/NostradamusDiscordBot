@@ -356,10 +356,10 @@ model:
       announcementsInfo: "Check out the announcements!"
       footerInfo: "You're lost? [ .token-help ]"
       tokens:
-        actualTitle: "Actually"
-        actualAmount: "You have **%%** token(s)!"
-        totalTitle: "In total"
-        totalAmount: "You won **%%** token(s)!"
+        currentTokenTitle: "Actually"
+        currentTokenAmount: "You have **%%** token(s)!"
+        allTimeTokenTitle: "In total"
+        allTimeTokenAmount: "You won **%%** token(s)!"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
       noAction: "You have to enter an action"

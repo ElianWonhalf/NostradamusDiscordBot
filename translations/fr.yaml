@@ -265,10 +265,10 @@ model:
       announcementsInfo: "Va jeter un coup d'œil aux annonces !"
       footerInfo: "Vous êtes perdu ? [ .token-help ]"
       tokens:
-        actualTitle: "Actuellement"
-        actualAmount: "T'as **%%** jeton(s) !"
-        totalTitle: "Au total"
-        totalAmount: "T'as gagné **%%** jeton(s) !"
+        currentTokenTitle: "Actuellement"
+        currentTokenAmount: "T'as **%%** jeton(s) !"
+        allTimeTokenTitle: "Au total"
+        allTimeTokenAmount: "T'as gagné **%%** jeton(s) !"
     trombinoscope:
       description: "Explication du channel trombinoscope"
       reply: "\n**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies.\n"

@@ -45,8 +45,8 @@ class TokenInfo
         }
 
         const tokenInfo = await MemberToken.getMemberTokenInfo(user.id);
-        const actualTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].actual_token_amount ?? 0) : 0;
-        const totalTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].total_token_amount ?? 0) : 0;
+        const currentTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].amount ?? 0) : 0;
+        const allTimeTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].all_time_amount ?? 0) : 0;
 
         const boardEmbed = new MessageEmbed()
             .setColor('#ffb8e6')
@@ -54,8 +54,8 @@ class TokenInfo
             .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
             .setThumbnail(user.displayAvatarURL({ dynamic: true }))
             .setDescription(trans('model.command.tokenInfo.reward'))
-            .addField(trans('model.command.tokenInfo.tokens.actualTitle'), trans('model.command.tokenInfo.tokens.actualAmount', [actualTokenAmount]))
-            .addField(trans('model.command.tokenInfo.tokens.totalTitle'), trans('model.command.tokenInfo.tokens.totalAmount', [totalTokenAmount]))
+            .addField(trans('model.command.tokenInfo.tokens.currentTokenTitle'), trans('model.command.tokenInfo.tokens.currentTokenAmount', [currentTokenAmount]))
+            .addField(trans('model.command.tokenInfo.tokens.allTimeTokenTitle'), trans('model.command.tokenInfo.tokens.allTimeTokenAmount', [allTimeTokenAmount]))
             .addField(trans('model.command.tokenInfo.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setFooter(trans('model.command.tokenInfo.footerInfo'))
             .setTimestamp(new Date());
