@@ -1,14 +1,14 @@
 const db = require('./db');
-const TABLE_TOKEN = 'member_token_info';
 
 const MemberToken = {
+    TABLE_NAME: 'member_token_info',
     /**
      *
      * @param {Snowflake} snowflakes
      * @returns {Promise}
      */
     createMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`INSERT INTO ${TABLE_TOKEN} (user_id) VALUES (?)`, [snowflake]);
+        return db.asyncQuery(`INSERT INTO ${MemberToken.TABLE_NAME} (user_id) VALUES (?)`, [snowflake]);
     },
 
     /**
@@ -17,7 +17,7 @@ const MemberToken = {
      * @returns {Promise}
      */
     getMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`SELECT user_id, amount, all_time_amount FROM ${TABLE_TOKEN} WHERE user_id = ?`, [snowflake]);
+        return db.asyncQuery(`SELECT user_id, amount, all_time_amount FROM ${MemberToken.TABLE_NAME} WHERE user_id = ?`, [snowflake]);
     },
 
     /**
@@ -37,7 +37,7 @@ const MemberToken = {
                 const newAllTimeAmount = membersTokenInfo[0].all_time_amount + 1;
 
                 await db.asyncQuery(
-                    `UPDATE ${TABLE_TOKEN}
+                    `UPDATE ${MemberToken.TABLE_NAME}
                     SET amount = ?, all_time_amount = ?
                     WHERE user_id = ?`,
                     [newCurrentAmount, newAllTimeAmount, snowflakes[i]]
@@ -58,7 +58,7 @@ const MemberToken = {
         return db.asyncQuery(
             `
                 SELECT user_id, amount
-                FROM ${TABLE_TOKEN}
+                FROM ${MemberToken.TABLE_NAME}
                 ${whereClause}
                 ORDER BY amount DESC
             `,
