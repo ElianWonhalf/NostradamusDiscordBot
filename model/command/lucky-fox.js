@@ -179,6 +179,13 @@ function changeLongfoxTo(arg) {
             setupNewEmojis();
             break;
 
+        case 'hammer' :
+            emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'hammer3');
+            emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'hammer2');
+            emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'hammer1');
+            setupNewEmojis();
+            break;
+
         default :
             return;
     }
