@@ -206,7 +206,7 @@ const OnDemandVC = {
         const message = reaction.message;
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
-        const requestorReacted = user.id !== bot.user.id && onDemandVC && onDemandVCData[0] === message.channel.id;
+        const requestorReacted = user.id !== bot.user.id && onDemandVCData && onDemandVCData[0] === message.channel.id;
         const channelTypeReactionEmojis = ['🔒', '🔓'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
