@@ -1,4 +1,5 @@
 const Logger = require('@lilywonhalf/pretty-logger');
+const { Permissions } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
@@ -54,8 +55,9 @@ class AddToken
 
         await MemberToken.add(searchResult.map(member => member.id)).then(async () => {
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
+            const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 
-            if (searchResult[0].guild.channels.cache.has(Guild.eventChatChannel.id)) {
+            if (!chatPermissionOverwrites || !chatPermissionOverwrites.deny.has(Permissions.FLAGS.VIEW_CHANNEL)) {
                 searchResult = searchResult.map(member => member.displayName);
 
                 await Guild.eventChatChannel.send(

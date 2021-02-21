@@ -1,5 +1,5 @@
 const { writeFileSync, existsSync, mkdirSync } = require('fs');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
@@ -595,7 +595,9 @@ class LuckyFox
                     await MemberToken.add([message.author.id]);
                 }
 
-                if (message.member.guild.channels.cache.has(Guild.eventChatChannel.id)) {
+                const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
+
+                if (!chatPermissionOverwrites || !chatPermissionOverwrites.deny.has(Permissions.FLAGS.VIEW_CHANNEL)) {
                     return Guild.eventChatChannel.send(trans('model.command.luckyFox.wonAToken', [message.author.username, totalToken]));
                 }
             }
