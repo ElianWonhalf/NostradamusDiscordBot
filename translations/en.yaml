@@ -257,6 +257,14 @@ model:
       description: "To be notified when a new offer is posted"
       alertsOn: "You will now be notified when there's a new offer. Thank you :lovehug:"
       alertsOff: "You will now no longer be notified when there's a new offer."
+    onDemandVC:
+      description: "Manage on-demand VC system"
+      error:
+        misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
+      userLimit:
+        incorrectSyntax: "You need to provide the limit as a number, e.g. `%%odvc limit 10`."
+        invalidLimit: "The limit must be between 1 and 99 (included), or 0 for no limit."
+        wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     panic:
       description: "Prevents everyone in the server from writing (except mods of course) - %%panic over to cancel"
     post:
@@ -265,14 +273,6 @@ model:
       description: "Sends a DM to a user with all the useful resource to prevent suicide"
       nonNative: "\nHello %%, we are contacting you because we noticed one or more references to suicide in your custom status and/or your messages. If you need assistance, we recommend that you get in touch with one of the crisis lines right now, where you will find a sympathetic ear you will be able to talk to.\n\nThe list of suicide crisis lines, by country, is available on this page: <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nThe French moderation team\n"
       notFound: "I don't know who that is"
-    privateVC:
-      description: "Manage on-demand private VC system"
-      error:
-        misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
-      userLimit:
-        incorrectSyntax: "You need to provide the limit as a number, e.g. `%%pvc limit 10`."
-        invalidLimit: "The limit must be between 1 and 99 (included), or 0 for no limit."
-        wrongAccessLevel: "User limit can only be set on public on-demand VCs."
     pronouns:
       description: "To add one's pronoun roles"
       reply: "To add your pronoun roles, type `.he`, `.she` or `.they` depending on the role you wish to add"
@@ -454,7 +454,7 @@ model:
     unbanned: "unbanned"
     reason: "for the following reason: %%"
     missingReason: "Hey @everyone, I just posted an entry in the public mod log that doesn't have a reason. Remember to **ALWAYS** input a reason when you kick or ban someone! Can someone go to the public log channel and provide the reason, like \"Oh about @machin, he was banned because [REASON].\" please? Thank you ♥ !"
-  privateVC:
+  onDemandVC:
     channelType:
       complete:
         public: "%%, I made your voice chat public!"
@@ -470,8 +470,8 @@ model:
         mods: "%% requested a new on-demand VC but already owns one."
       creationFailed:
         member: "Hi! I'm sorry, I failed to create your VC :( Maybe you can try again?"
-        mods: "%% asked for a private VC but I failed to create it"
-      deletionFailed: "Couldn't delete private voice channels for member ID %% from database, requested by %%."
+        mods: "%% asked for an on-demand VC but I failed to create it"
+      deletionFailed: "Couldn't delete on-demand voice channels for member ID %% from database, requested by %%."
       memberNotFound: "Sorry, I don't recognize the member who wants to join the room, I cannot let them in."
       memberNotWaiting: "%% has left the waiting room, I will not move them to your room."
       modificationFailed:
@@ -481,7 +481,7 @@ model:
       renameFailed:
         member: "Sorry, I couldn't rename your room."
         mods: "%% wanted to rename their VC, but the database operation failed."
-    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%pvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%pvc limit <max users>`\n:item2: in private channels, disconnect members\n"
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%odvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%odvc limit <max users>`\n:item2: in private channels, disconnect members\n"
     joinRequest:
       notification:
         withPing: "%%, someone wants to join your room!"

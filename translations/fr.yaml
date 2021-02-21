@@ -179,6 +179,14 @@ model:
       description: "Pour être mentionné quand une nouvelle offre est postée"
       alertsOn: "Tu seras maintenant mentionné quand une nouvelle offre sera postée. Merci :lovehug:"
       alertsOff: "Tu ne seras plus mentionné quand une nouvelle offre sera postée."
+    onDemandVC:
+      description: "Pour gérer le système de salons vocaux privés sur demande."
+      error:
+        misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
+      userLimit:
+        incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%odvc limit 10`."
+        invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus), ou 0 pour retirer la limite."
+        wrongAccessLevel: "La limite d'utilisateurs peut uniquement être mise en place sur un salon sur demande public."
     panic:
       description: "Empêche tout le monde dans le serveur d'écrire (sauf les modos, bien sûr) - %%panic over pour annuler"
     post:
@@ -187,14 +195,6 @@ model:
       description: "Envoie un MP à un utilisateur avec toutes les ressources utiles pour la prévention au suicide"
       native: "\nBonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://fr.wikipedia.org/wiki/Pr%C3%A9vention_du_suicide#%C3%89coute_en_ligne_et_aide_directe>.\n\nL'équipe de modération de French\n"
       nonNative: "\nBonjour %%, nous te contactons car nous avons observé une ou plusieurs références au suicide dans ton statut et/ou dans tes messages. Si tu as besoin d'assistance, nous t'invitons à prendre contact dès maintenant avec un des services d'aide téléphonique, où tu trouveras une oreille attentive à ta situation et à qui tu pourras te confier.\n\nLes numéros de ces services, par pays, sont disponibles sur cette page : <https://en.wikipedia.org/wiki/List_of_suicide_crisis_lines>.\n\nL'équipe de modération de French\n"
-    privateVC:
-      description: "Pour gérer le système de salons vocaux privés sur demande."
-      error:
-        misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
-      userLimit:
-        incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%pvc limit 10`."
-        invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus), ou 0 pour retirer la limite."
-        wrongAccessLevel: "La limite d'utilisateurs peut uniquement être mise en place sur un salon sur demande public."
     pronouns:
       description: "Pour s'assigner les rôles de pronoms"
       reply: "Pour t'assigner des rôles de pronoms, tape `.il`, `.elle` ou `.iel` selon le(s) rôle(s) que tu veux t'assigner"
@@ -323,7 +323,7 @@ model:
     unbanned: "débanni"
     reason: "pour la raison suivante : %%"
     missingReason: "Hé @everyone, je viens de poster une entrée dans le journal de modération public qui n'a pas de raison. Rappelez-vous de **TOUJOURS** saisir une raison quand vous kickez ou bannissez quelqu'un ! Est-ce que quelqu'un peut aller dans le journal de modération public et fournir une raison, genre \"Oh à propos de @machin, il a été ban parce que [RAISON].\" SVP? Merci ♥ !"
-  privateVC:
+  onDemandVC:
     channelType:
       complete:
         public: "%%, j'ai rendu ton salon vocal public !"
@@ -344,7 +344,7 @@ model:
         member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
       renameFailed:
         member: "Désolé, je n'ai pas pu renommer ton salon."
-    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%pvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%pvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
+    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
     joinRequest:
       notification:
         withPing: "%%, quelqu'un veut rejoindre ton salon !"

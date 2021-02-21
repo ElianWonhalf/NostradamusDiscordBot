@@ -1,18 +1,18 @@
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
-const PrivateVCModel = require('../private-vc');
+const OnDemandVCModel = require('../on-demand-vc');
 
-class PrivateVC
+class OnDemandVC
 {
     static instance = null;
 
     constructor() {
-        if (PrivateVC.instance !== null) {
-            return PrivateVC.instance;
+        if (OnDemandVC.instance !== null) {
+            return OnDemandVC.instance;
         }
 
-        this.aliases = ['privatevc', 'pvc'];
+        this.aliases = ['ondemandvc', 'odvc'];
         this.category = CommandCategory.MODERATION;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
@@ -31,55 +31,55 @@ class PrivateVC
             if (Guild.isMemberMod(message.member) || Guild.isMemberSoft(message.member)) {
                 const validActions = actions['mod'] + actions['member'];
                 if (!validActions.includes(action)) {
-                    await message.reply(trans('model.command.privateVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
+                    await message.reply(trans('model.command.onDemandVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
                     return;
                 }
 
                 switch (action) {
                     case 'lock':
                     case 'close':
-                        PrivateVCModel.lockRequestChannel();
+                        OnDemandVCModel.lockRequestChannel();
                         break;
 
                     case 'unlock':
                     case 'open':
-                        PrivateVCModel.shutdown = false;
-                        PrivateVCModel.unlockRequestChannel();
+                        OnDemandVCModel.shutdown = false;
+                        OnDemandVCModel.unlockRequestChannel();
                         break;
 
                     case 'shutdown':
-                        PrivateVCModel.emergencyShutdown();
+                        OnDemandVCModel.emergencyShutdown();
                         break;
 
                     case 'sync':
-                        PrivateVCModel.channelHousekeeping();
+                        OnDemandVCModel.channelHousekeeping();
                         break;
 
                     case 'limit':
-                        success = await PrivateVCModel.setChannelUserLimit(message.member, args);
+                        success = await OnDemandVCModel.setChannelUserLimit(message.member, args);
                         break;
 
                     case 'rename':
                         if (args.length > 0) {
-                            success = await PrivateVCModel.renameChannels(message.member, args.join(" "));
+                            success = await OnDemandVCModel.renameChannels(message.member, args.join(" "));
                         }
                         break;
                 }
             } else {
                 const validActions = actions['member'];
                 if (!validActions.includes(action)) {
-                    await message.reply(trans('model.command.privateVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
+                    await message.reply(trans('model.command.onDemandVC.error.misused', [Guild.smallVoiceChatRequestChannel.name]));
                     return;
                 }
 
                 switch (action) {
                     case 'limit':
-                        success = await PrivateVCModel.setChannelUserLimit(message.member, args);
+                        success = await OnDemandVCModel.setChannelUserLimit(message.member, args);
                         break;
 
                     case 'rename':
                         if (args.length > 0) {
-                            success = await PrivateVCModel.renameChannels(message.member, args.join(" "));
+                            success = await OnDemandVCModel.renameChannels(message.member, args.join(" "));
                         }
                         break;
                 }
@@ -92,4 +92,4 @@ class PrivateVC
     }
 }
 
-module.exports = new PrivateVC();
+module.exports = new OnDemandVC();

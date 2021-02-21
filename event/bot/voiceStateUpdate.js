@@ -1,7 +1,7 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../../model/guild');
-const PrivateVC = require('../../model/private-vc');
+const OnDemandVC = require('../../model/on-demand-vc');
 const WatchedMember = require('../../model/watched-member');
 
 /**
@@ -38,7 +38,7 @@ module.exports = async (oldVoiceState, newVoiceState) => {
             }
         }
 
-        PrivateVC.privateVCHandler(member, oldVoiceState, newVoiceState);
+        OnDemandVC.onDemandVCHandler(member, oldVoiceState, newVoiceState);
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
     }
 };

@@ -3,7 +3,7 @@ const Guild = require('../../model/guild');
 const Language = require('../../model/language');
 const Country = require('../../model/country');
 const DM = require('../../model/dm');
-const PrivateVC = require('../../model/private-vc');
+const OnDemandVC = require('../../model/on-demand-vc');
 const WatchedMember = require('../../model/watched-member');
 const ActivityManager = require('../../model/activity-manager');
 const LawlessFrench = require('../../model/lawlessfrench');
@@ -32,9 +32,9 @@ module.exports = async () => {
 
     Logger.info('--------');
 
-    Logger.info('Initialising private VCs...');
-    await PrivateVC.init().catch(Logger.exception);
-    Logger.info(`${PrivateVC.getPrivateChannelsList().length} private VCs initialised.`);
+    Logger.info('Initialising on-demand VCs...');
+    await OnDemandVC.init().catch(Logger.exception);
+    Logger.info(`${OnDemandVC.getOnDemandChannelsList().length} on-demand VCs initialised.`);
 
     Logger.info('--------');
 
