@@ -12,7 +12,7 @@ class OnDemandVC
             return OnDemandVC.instance;
         }
 
-        this.aliases = ['ondemandvc', 'odvc'];
+        this.aliases = ['ondemandvc', 'odvc', 'privatevc', 'pvc'];
         this.category = CommandCategory.MODERATION;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
