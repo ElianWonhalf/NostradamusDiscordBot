@@ -1,7 +1,7 @@
 const SocialNetworkIntegration = require('../../model/social-network-integration');
 const MemberRolesFlow = require('../../model/member-roles-flow');
 const DM = require('../../model/dm');
-const PrivateVC = require('../../model/private-vc');
+const OnDemandVC = require('../../model/on-demand-vc');
 const Correction = require('../../model/correction');
 const Starboard = require('../../model/starboard');
 
@@ -14,7 +14,7 @@ module.exports = async (reaction, user) => {
         SocialNetworkIntegration.handleReaction(reaction, user);
         MemberRolesFlow.handleReaction(reaction, user);
         DM.handleReaction(reaction, user);
-        PrivateVC.handleReaction(reaction, user);
+        OnDemandVC.handleReaction(reaction, user);
         Correction.handleReaction(reaction, user);
         Starboard.handleReaction(reaction);
     }

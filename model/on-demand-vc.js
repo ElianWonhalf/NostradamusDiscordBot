@@ -4,7 +4,7 @@ const Config = require('../config.json');
 const db = require('./db');
 const Guild = require('./guild');
 
-const PrivateVC = {
+const OnDemandVC = {
     /** {Object} */
     list: {},
 
@@ -27,10 +27,10 @@ const PrivateVC = {
      * @returns {Promise}
      */
     init: async () => {
-        const rows = await db.asyncQuery('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM private_vc');
+        const rows = await db.asyncQuery('SELECT requestor, text_channel, voice_channel, waiting_channel, renamed FROM on_demand_vc');
 
         rows.forEach(row => {
-            PrivateVC.list[row.requestor] = [
+            OnDemandVC.list[row.requestor] = [
                 row.text_channel,
                 row.voice_channel,
                 row.waiting_channel,
@@ -40,11 +40,11 @@ const PrivateVC = {
     },
 
     dbSync: async () => {
-        for (let owner in PrivateVC.list) {
-            delete PrivateVC.list[owner];
+        for (let owner in OnDemandVC.list) {
+            delete OnDemandVC.list[owner];
         }
 
-        await PrivateVC.init();
+        await OnDemandVC.init();
     },
 
     /**
@@ -52,53 +52,53 @@ const PrivateVC = {
      * @param {VoiceState} oldVoiceState
      * @param {VoiceState} newVoiceState
      */
-    privateVCHandler: (member, oldVoiceState, newVoiceState) => {
+    onDemandVCHandler: (member, oldVoiceState, newVoiceState) => {
         if (oldVoiceState.channelID === newVoiceState.channelID) {
             return;
         }
 
-        const privateVCData = PrivateVC.list[member.id];
+        const onDemandVCData = OnDemandVC.list[member.id];
 
         if (newVoiceState.channelID === Config.channels.smallVoiceChatRequest) {
             // Request new VC
-            PrivateVC.privateVoiceChatRequestHandler(member, oldVoiceState);
+            OnDemandVC.requestHandler(member, oldVoiceState);
         }
 
         if (newVoiceState.channel) {
-            // Join private VC
-            const requestor = Object.keys(PrivateVC.list).find(
-                id => PrivateVC.list[id][2] === newVoiceState.channelID
+            // Join on-demand VC
+            const requestor = Object.keys(OnDemandVC.list).find(
+                id => OnDemandVC.list[id][2] === newVoiceState.channelID
             );
 
             if (requestor && requestor !== member.id) {
-                PrivateVC.privateVoiceChatJoinHandler(requestor, newVoiceState.member);
+                OnDemandVC.joinHandler(requestor, newVoiceState.member);
             }
         }
 
         if (oldVoiceState.channel) {
-            const vcRequestor = Object.keys(PrivateVC.list).find(
-                id => PrivateVC.list[id][1] === oldVoiceState.channelID
+            const vcRequestor = Object.keys(OnDemandVC.list).find(
+                id => OnDemandVC.list[id][1] === oldVoiceState.channelID
             );
-            const waitingRoomRequestor = Object.keys(PrivateVC.list).find(
-                id => PrivateVC.list[id][2] === oldVoiceState.channelID
+            const waitingRoomRequestor = Object.keys(OnDemandVC.list).find(
+                id => OnDemandVC.list[id][2] === oldVoiceState.channelID
             );
 
             // Leave VC
             if (vcRequestor && vcRequestor !== member.id) {
-                PrivateVC.privateVoiceChatLeaveHandler(member, vcRequestor);
+                OnDemandVC.leaveHandler(member, vcRequestor);
             }
 
             // Leave waiting room
             if (waitingRoomRequestor) {
-                PrivateVC.waitingRoomLeaveHandler(member, waitingRoomRequestor);
+                OnDemandVC.waitingRoomLeaveHandler(member, waitingRoomRequestor);
             }
         }
 
-        if (privateVCData && oldVoiceState.channelID === privateVCData[1]) {
+        if (onDemandVCData && oldVoiceState.channelID === onDemandVCData[1]) {
             // Owner leaves room: schedule on-demand channels housekeeping if not already scheduled
-            if (PrivateVC.pendingLeaveFollowupActions.size === 0) {
-                const followupActionTimeout = setTimeout(PrivateVC.channelHousekeeping, 5000);
-                PrivateVC.pendingLeaveFollowupActions.set(member.id, followupActionTimeout);
+            if (OnDemandVC.pendingLeaveFollowupActions.size === 0) {
+                const followupActionTimeout = setTimeout(OnDemandVC.channelHousekeeping, 5000);
+                OnDemandVC.pendingLeaveFollowupActions.set(member.id, followupActionTimeout);
             }
         }
     },
@@ -113,11 +113,11 @@ const PrivateVC = {
     add: async (requestor, textChannel, voiceChannel, waitingChannel) => {
         await db.asyncQuery('SET NAMES utf8mb4');
         await db.asyncQuery(
-            `INSERT INTO private_vc (requestor, text_channel, voice_channel, waiting_channel) VALUES (?, ?, ?, ?)`,
+            `INSERT INTO on_demand_vc (requestor, text_channel, voice_channel, waiting_channel) VALUES (?, ?, ?, ?)`,
             [requestor, textChannel, voiceChannel, waitingChannel]
         );
 
-        PrivateVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
+        OnDemandVC.list[requestor] = [textChannel, voiceChannel, waitingChannel, 0];
     },
 
     /**
@@ -125,8 +125,8 @@ const PrivateVC = {
      * @returns {Promise}
      */
     remove: async (requestor) => {
-        await db.asyncQuery(`DELETE FROM private_vc WHERE requestor = ?`, [requestor]);
-        delete PrivateVC.list[requestor];
+        await db.asyncQuery(`DELETE FROM on_demand_vc WHERE requestor = ?`, [requestor]);
+        delete OnDemandVC.list[requestor];
     },
 
     /**
@@ -134,8 +134,8 @@ const PrivateVC = {
      * @returns {Promise}
      */
     makePublic: async (requestor) => {
-        await db.asyncQuery(`UPDATE private_vc SET waiting_channel = NULL WHERE requestor = ?`, [requestor]);
-        PrivateVC.list[requestor].splice(2, 1, undefined);
+        await db.asyncQuery(`UPDATE on_demand_vc SET waiting_channel = NULL WHERE requestor = ?`, [requestor]);
+        OnDemandVC.list[requestor].splice(2, 1, undefined);
     },
 
     /**
@@ -145,11 +145,11 @@ const PrivateVC = {
      */
     makePrivate: async (requestor, waitingChannelID) => {
         await db.asyncQuery(
-            `UPDATE private_vc SET waiting_channel = ? WHERE requestor = ?`,
+            `UPDATE on_demand_vc SET waiting_channel = ? WHERE requestor = ?`,
             [waitingChannelID, requestor]
         );
 
-        PrivateVC.list[requestor].splice(2, 1, waitingChannelID);
+        OnDemandVC.list[requestor].splice(2, 1, waitingChannelID);
     },
 
     /**
@@ -158,17 +158,17 @@ const PrivateVC = {
      * @returns {Promise}
      */
     setOwner: async (previousOwner, newOwner) => {
-        await db.asyncQuery(`UPDATE private_vc SET requestor = ? WHERE requestor = ?`, [newOwner, previousOwner]);
-        PrivateVC.list[newOwner] = PrivateVC.list[previousOwner];
-        delete PrivateVC.list[previousOwner];
+        await db.asyncQuery(`UPDATE on_demand_vc SET requestor = ? WHERE requestor = ?`, [newOwner, previousOwner]);
+        OnDemandVC.list[newOwner] = OnDemandVC.list[previousOwner];
+        delete OnDemandVC.list[previousOwner];
     },
 
     /**
      * @param {string} owner
      */
     setRenamed: async (owner) => {
-        await db.asyncQuery(`UPDATE private_vc SET renamed = 1 WHERE requestor = ?`, [owner]);
-        PrivateVC.list[owner][3] = 1;
+        await db.asyncQuery(`UPDATE on_demand_vc SET renamed = 1 WHERE requestor = ?`, [owner]);
+        OnDemandVC.list[owner][3] = 1;
     },
 
     /**
@@ -176,7 +176,7 @@ const PrivateVC = {
      * @returns {boolean}
      */
     isPrivate: (requestor) => {
-        return PrivateVC.list[requestor][2] !== undefined;
+        return OnDemandVC.list[requestor][2] !== undefined;
     },
 
     /**
@@ -193,8 +193,8 @@ const PrivateVC = {
     /**
      * @returns {Array}
      */
-    getPrivateChannelsList: () => {
-        return Array.from(new Set(Object.values(PrivateVC.list)));
+    getOnDemandChannelsList: () => {
+        return Array.from(new Set(Object.values(OnDemandVC.list)));
     },
 
     /**
@@ -202,11 +202,11 @@ const PrivateVC = {
      * @param {User} user
      */
     handleReaction: async (reaction, user) => {
-        const privateVCData = PrivateVC.list[user.id];
+        const onDemandVCData = OnDemandVC.list[user.id];
         const message = reaction.message;
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
-        const requestorReacted = user.id !== bot.user.id && privateVCData && privateVCData[0] === message.channel.id;
+        const requestorReacted = user.id !== bot.user.id && onDemandVC && onDemandVCData[0] === message.channel.id;
         const channelTypeReactionEmojis = ['🔒', '🔓'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
@@ -217,30 +217,30 @@ const PrivateVC = {
                 return;
             }
 
-            const channels = privateVCData.slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+            const channels = onDemandVCData.slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
             const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
 
             // Let member knocking on door in or not?
             if (joinRequestReactionEmojis.includes(reaction.emoji.name)) {
                 const guestMember = await Guild.getMemberFromMention(message.embeds[0].description);
                 if (guestMember === null) {
-                    await channels[0].send(trans('model.privateVC.errors.memberNotFound'));
+                    await channels[0].send(trans('model.onDemandVC.errors.memberNotFound'));
                     return;
                 }
 
-                if (guestMember.voice.channelID !== privateVCData[2]) {
-                    await channels[0].send(trans('model.privateVC.errors.memberNotWaiting', [guestMember.displayName]));
+                if (guestMember.voice.channelID !== onDemandVCData[2]) {
+                    await channels[0].send(trans('model.onDemandVC.errors.memberNotWaiting', [guestMember.displayName]));
                     return;
                 }
 
-                PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id] || [];
+                OnDemandVC.deniedMembers[user.id] = OnDemandVC.deniedMembers[user.id] || [];
                 if (reaction.emoji.name === 'pollyes') {
-                    PrivateVC.deniedMembers[user.id] = PrivateVC.deniedMembers[user.id].filter(id => id !== guestMember.id);
+                    OnDemandVC.deniedMembers[user.id] = OnDemandVC.deniedMembers[user.id].filter(id => id !== guestMember.id);
                     await guestMember.voice.setChannel(channels[1]);
                     await channels[0].updateOverwrite(guestMember, {VIEW_CHANNEL: true});
                 } else {
-                    if (!PrivateVC.deniedMembers[user.id].includes(guestMember.id)) {
-                        PrivateVC.deniedMembers[user.id] = [...PrivateVC.deniedMembers[user.id], guestMember.id];
+                    if (!OnDemandVC.deniedMembers[user.id].includes(guestMember.id)) {
+                        OnDemandVC.deniedMembers[user.id] = [...OnDemandVC.deniedMembers[user.id], guestMember.id];
                     }
                     await guestMember.voice.setChannel(null);
                 }
@@ -248,35 +248,35 @@ const PrivateVC = {
 
             // Make channel public or private
             if (channelTypeReactionEmojis.includes(reaction.emoji.name)) {
-                if (reaction.emoji.name === '🔓' && PrivateVC.isPrivate(user.id)) {
-                    PrivateVC.moveWaitingGuestsToVoiceChannel(channels[1]);
-                    await PrivateVC.makePublic(user.id).then(async () => {
+                if (reaction.emoji.name === '🔓' && OnDemandVC.isPrivate(user.id)) {
+                    OnDemandVC.moveWaitingGuestsToVoiceChannel(channels[1]);
+                    await OnDemandVC.makePublic(user.id).then(async () => {
                         await channels[2].delete();
                         channels.pop();
 
                         await channels.forEach(channel => channel.lockPermissions());
-                        await channels[0].send(trans('model.privateVC.channelType.complete.public', [user.toString()]));
+                        await channels[0].send(trans('model.onDemandVC.channelType.complete.public', [user.toString()]));
 
-                        // If deleting waiting channel for target private VC leaves room for two new channels,
+                        // If deleting waiting channel for target on-demand VC leaves room for two new channels,
                         // unlock VC request channel.
                         if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
-                            PrivateVC.unlockRequestChannel();
+                            OnDemandVC.unlockRequestChannel();
                         }
                     }).catch(async exception => {
                         Logger.exception(exception);
-                        await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [user.toString()], 'en'));
-                        await user.send(trans('model.privateVC.errors.modificationFailed.member'));
+                        await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [user.toString()], 'en'));
+                        await user.send(trans('model.onDemandVC.errors.modificationFailed.member'));
 
                         // Kicking the host member from the voice chat will trigger deletion of channels.
                         const hostMember = await Guild.discordGuild.member(user.id);
                         await hostMember.voice.setChannel(null);
                     });
                 } else if (reaction.emoji.name === '🔒') {
-                    if (!PrivateVC.isPrivate(user.id)) {
+                    if (!OnDemandVC.isPrivate(user.id)) {
                         let waitingChannel;
 
                         try {
-                            waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
+                            waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.onDemandVC.waitingRoomLabel')}]`, {
                                 type: 'voice',
                                 parent: Guild.smallVoiceCategoryChannel,
                                 position: channels[1].rawPosition,
@@ -290,7 +290,7 @@ const PrivateVC = {
                                 waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
                             ]);
 
-                            await PrivateVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
+                            await OnDemandVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
                                 exception.payload = [channels[0], channels[1], waitingChannel];
                                 throw exception;
                             });
@@ -298,8 +298,8 @@ const PrivateVC = {
                             const hostMember = await Guild.discordGuild.member(user.id);
 
                             Logger.exception(exception);
-                            await Guild.botChannel.send(trans('model.privateVC.errors.modificationFailed.mods', [member.toString()], 'en'));
-                            await hostMember.send(trans('model.privateVC.errors.modificationFailed.member'));
+                            await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [member.toString()], 'en'));
+                            await hostMember.send(trans('model.onDemandVC.errors.modificationFailed.member'));
                             await hostMember.voice.setChannel(oldVoiceState.channel);
 
                             if (exception.payload) {
@@ -309,14 +309,14 @@ const PrivateVC = {
                             return;
                         }
 
-                        // If fulfilling current private VC request doesn't leave room for two new channels,
+                        // If fulfilling current on-demand VC request doesn't leave room for two new channels,
                         // lock VC request channel.
                         if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
-                            PrivateVC.lockRequestChannel();
+                            OnDemandVC.lockRequestChannel();
                         }
                     }
 
-                    await channels[0].send(trans('model.privateVC.channelType.complete.private', [user.toString()]));
+                    await channels[0].send(trans('model.onDemandVC.channelType.complete.private', [user.toString()]));
                 }
 
                 await reaction.users.remove(user);
@@ -326,24 +326,24 @@ const PrivateVC = {
 
     lockRequestChannel: async () => {
         await Guild.smallVoiceChatRequestChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false, CONNECT: false});
-        if (PrivateVC.shutdown) {
-            await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.closed'));
+        if (OnDemandVC.shutdown) {
+            await Guild.smallVoiceChatRequestChannel.setName(trans('model.onDemandVC.requestChannelName.closed'));
         } else {
-            await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.full'));
+            await Guild.smallVoiceChatRequestChannel.setName(trans('model.onDemandVC.requestChannelName.full'));
         }
     },
 
     unlockRequestChannel: async () => {
         await Guild.smallVoiceChatRequestChannel.lockPermissions();
-        await Guild.smallVoiceChatRequestChannel.setName(trans('model.privateVC.requestChannelName.available'));
+        await Guild.smallVoiceChatRequestChannel.setName(trans('model.onDemandVC.requestChannelName.available'));
     },
 
     emergencyShutdown: async () => {
-        PrivateVC.shutdown = true;
-        PrivateVC.lockRequestChannel();
-        PrivateVC.pendingJoinRequests = {};
+        OnDemandVC.shutdown = true;
+        OnDemandVC.lockRequestChannel();
+        OnDemandVC.pendingJoinRequests = {};
 
-        Object.keys(PrivateVC.list).forEach(async memberID => {
+        Object.keys(OnDemandVC.list).forEach(async memberID => {
             const member = await Guild.discordGuild.member(memberID);
             await member.voice.setChannel(null);
         });
@@ -353,28 +353,28 @@ const PrivateVC = {
      * @param {VoiceChannel} voiceChannel
      */
     moveWaitingGuestsToVoiceChannel: (voiceChannel) => {
-        if (!PrivateVC.pendingJoinRequests[voiceChannel.id]) {
+        if (!OnDemandVC.pendingJoinRequests[voiceChannel.id]) {
             return;
         }
 
-        Object.entries(PrivateVC.pendingJoinRequests[voiceChannel.id]).forEach(async pair => {
+        Object.entries(OnDemandVC.pendingJoinRequests[voiceChannel.id]).forEach(async pair => {
             const [memberID, message] = pair;
             const member = Guild.discordGuild.member(memberID);
             await member.voice.setChannel(voiceChannel);
             await message.delete();
         });
 
-        delete PrivateVC.pendingJoinRequests[voiceChannel.id];
+        delete OnDemandVC.pendingJoinRequests[voiceChannel.id];
     },
 
     /**
      * @param {GuildMember} member
      * @param {VoiceState} oldVoiceState
      */
-    privateVoiceChatRequestHandler: async (member, oldVoiceState) => {
-        if (PrivateVC.list[member.id]) {
-            await Guild.botChannel.send(trans('model.privateVC.errors.alreadyExists.mods', [member.toString()], 'en'));
-            await member.send(trans('model.privateVC.errors.alreadyExists.member'));
+    requestHandler: async (member, oldVoiceState) => {
+        if (OnDemandVC.list[member.id]) {
+            await Guild.botChannel.send(trans('model.onDemandVC.errors.alreadyExists.mods', [member.toString()], 'en'));
+            await member.send(trans('model.onDemandVC.errors.alreadyExists.member'));
             await member.voice.setChannel(null);
             return;
         }
@@ -392,7 +392,7 @@ const PrivateVC = {
                 parent: Guild.smallVoiceCategoryChannel,
             });
 
-            waitingChannel = await member.guild.channels.create(`⬆️ [${trans('model.privateVC.waitingRoomLabel')}]`, {
+            waitingChannel = await member.guild.channels.create(`⬆️ [${trans('model.onDemandVC.waitingRoomLabel')}]`, {
                 type: 'voice',
                 parent: Guild.smallVoiceCategoryChannel,
             });
@@ -409,14 +409,14 @@ const PrivateVC = {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
             });
-            await PrivateVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
+            await OnDemandVC.add(member.id, textChannel.id, voiceChannel.id, waitingChannel.id).catch(exception => {
                 exception.payload = [textChannel, voiceChannel, waitingChannel];
                 throw exception;
             });
         } catch (exception) {
             Logger.exception(exception);
-            await Guild.botChannel.send(trans('model.privateVC.errors.creationFailed.mods', [member.toString()], 'en'));
-            await member.send(trans('model.privateVC.errors.creationFailed.member'));
+            await Guild.botChannel.send(trans('model.onDemandVC.errors.creationFailed.mods', [member.toString()], 'en'));
+            await member.send(trans('model.onDemandVC.errors.creationFailed.member'));
             await member.voice.setChannel(oldVoiceState.channel);
 
             if (exception.payload) {
@@ -426,22 +426,22 @@ const PrivateVC = {
             return;
         }
 
-        // If fulfilling current private VC request doesn't leave room for two new channels,
+        // If fulfilling current on-demand VC request doesn't leave room for two new channels,
         // lock VC request channel.
         if (voiceChannelsCount + 2 > channelPerCategoryLimit - 2) {
-            PrivateVC.lockRequestChannel();
+            OnDemandVC.lockRequestChannel();
         }
 
-        const sentIntroMessage = await textChannel.send(trans('model.privateVC.introMessage', [member.toString(), Config.prefix, Config.prefix]));
-        PrivateVC.introMessages[member.id] = sentIntroMessage;
+        const sentIntroMessage = await textChannel.send(trans('model.onDemandVC.introMessage', [member.toString(), Config.prefix, Config.prefix]));
+        OnDemandVC.introMessages[member.id] = sentIntroMessage;
 
         const embed = new Discord.MessageEmbed()
             .addFields([
-                {name: '🔓', value: trans('model.privateVC.channelType.public'), inline: true},
-                {name: '🔒', value: trans('model.privateVC.channelType.private'), inline: true},
+                {name: '🔓', value: trans('model.onDemandVC.channelType.public'), inline: true},
+                {name: '🔒', value: trans('model.onDemandVC.channelType.private'), inline: true},
             ])
-            .setTitle(trans('model.privateVC.channelType.embed.title'))
-            .setFooter(trans('model.privateVC.channelType.embed.footer'))
+            .setTitle(trans('model.onDemandVC.channelType.embed.title'))
+            .setFooter(trans('model.onDemandVC.channelType.embed.footer'))
             .setColor(0x00FF00);
 
         const sentPrompt = await textChannel.send(embed);
@@ -453,30 +453,30 @@ const PrivateVC = {
      * @param {GuildMember} member
      * @param {Array} channels
      */
-    privateVoiceChatDeletionHandler: async (member, channels) => {
+    deletionHandler: async (member, channels) => {
         const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
         const foundChannels = channels.filter(channel => channel !== undefined);
         const voiceChannelsToDeleteCount = foundChannels.length - 1;
 
         await channels[0].lockPermissions();
         await channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false});
-        await PrivateVC.deleteTextChannelMessages(channels[0]);
+        await OnDemandVC.deleteTextChannelMessages(channels[0]);
         await Promise.all(foundChannels.map(channel => channel.delete()));
-        await PrivateVC.remove(member.id).catch(async exception => {
+        await OnDemandVC.remove(member.id).catch(async exception => {
             Logger.exception(exception);
             await Guild.botChannel.send(
                 trans(
-                    'model.privateVC.errors.deletionFailed',
+                    'model.onDemandVC.errors.deletionFailed',
                     [member.id, member.toString()],
                     'en'
                 )
             );
         });
 
-        // If deleting channel(s) for current private VC leaves room for two new channels,
+        // If deleting channel(s) for current on-demand VC leaves room for two new channels,
         // unlock VC request channel.
-        if (!PrivateVC.shutdown && voiceChannelsCount - voiceChannelsToDeleteCount <= channelPerCategoryLimit - 2) {
-            PrivateVC.unlockRequestChannel();
+        if (!OnDemandVC.shutdown && voiceChannelsCount - voiceChannelsToDeleteCount <= channelPerCategoryLimit - 2) {
+            OnDemandVC.unlockRequestChannel();
         }
     },
 
@@ -484,17 +484,17 @@ const PrivateVC = {
      * @param {Snowflake} requestor
      * @param {GuildMember} guestMember
      */
-    privateVoiceChatJoinHandler: async (requestor, guestMember) => {
+    joinHandler: async (requestor, guestMember) => {
         const hostMember = Guild.discordGuild.member(requestor);
         const guestUser = guestMember.user;
         const emojis = ['pollyes', 'pollno'].map(name => bot.emojis.cache.find(emoji => emoji.name === name));
-        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = OnDemandVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
         let content;
-        if (PrivateVC.deniedMembers[requestor] && PrivateVC.deniedMembers[requestor].includes(guestMember.id)) {
-            content = trans('model.privateVC.joinRequest.notification.withoutPing');
+        if (OnDemandVC.deniedMembers[requestor] && OnDemandVC.deniedMembers[requestor].includes(guestMember.id)) {
+            content = trans('model.onDemandVC.joinRequest.notification.withoutPing');
         } else {
-            content = trans('model.privateVC.joinRequest.notification.withPing', [hostMember]);
+            content = trans('model.onDemandVC.joinRequest.notification.withPing', [hostMember]);
         }
 
         const embed = new Discord.MessageEmbed()
@@ -504,29 +504,29 @@ const PrivateVC = {
             )
             .setDescription(guestMember.toString())
             .setColor(0x00FF00)
-            .setFooter(trans('model.privateVC.joinRequest.prompt'));
+            .setFooter(trans('model.onDemandVC.joinRequest.prompt'));
         const sentMessage = await channels[0].send({content: content, embed: embed});
 
         emojis.forEach(emoji => sentMessage.react(emoji));
 
-        PrivateVC.pendingJoinRequests[channels[1].id] = PrivateVC.pendingJoinRequests[channels[1].id] || {};
-        Object.assign(PrivateVC.pendingJoinRequests[channels[1].id], {[guestMember.id]: sentMessage});
+        OnDemandVC.pendingJoinRequests[channels[1].id] = OnDemandVC.pendingJoinRequests[channels[1].id] || {};
+        Object.assign(OnDemandVC.pendingJoinRequests[channels[1].id], {[guestMember.id]: sentMessage});
     },
 
     /**
      * @param {GuildMember} guestMember
      * @param {Snowflake} requestor
      */
-    privateVoiceChatLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+    leaveHandler: async (guestMember, requestor) => {
+        const channels = OnDemandVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
-        let followupActionTimeout = PrivateVC.pendingLeaveFollowupActions.get(requestor);
+        let followupActionTimeout = OnDemandVC.pendingLeaveFollowupActions.get(requestor);
 
         if (followupActionTimeout) {
             clearTimeout(followupActionTimeout);
-            PrivateVC.pendingLeaveFollowupActions.delete(requestor);
-            followupActionTimeout = setTimeout(PrivateVC.channelHousekeeping, 5000);
-            PrivateVC.pendingLeaveFollowupActions.set(requestor, followupActionTimeout);
+            OnDemandVC.pendingLeaveFollowupActions.delete(requestor);
+            followupActionTimeout = setTimeout(OnDemandVC.channelHousekeeping, 5000);
+            OnDemandVC.pendingLeaveFollowupActions.set(requestor, followupActionTimeout);
         }
 
         if (channels[0]) {
@@ -542,7 +542,7 @@ const PrivateVC = {
      * @param {GuildMember} currentHostMember
      * @returns {GuildMember}
      */
-    privateVoiceChatPropertyTransferHandler: async (currentHostMember, channels) => {
+    propertyTransferHandler: async (currentHostMember, channels) => {
         const memberPermissionLevels = new Discord.Collection();
         const permissionLevelRoles = Guild.permissionLevels.keyArray().map(roleID => Guild.discordGuild.roles.cache.get(roleID));
         let highestPermissionLevelRole;
@@ -567,27 +567,27 @@ const PrivateVC = {
         const newHostMember = highestRankedMembers[Math.floor(Math.random() * highestRankedMembers.length)];
 
         try {
-            await PrivateVC.setOwner(currentHostMember.id, newHostMember.id).catch(exception => {
+            await OnDemandVC.setOwner(currentHostMember.id, newHostMember.id).catch(exception => {
                 exception.payload = channels;
                 throw exception;
             });
-            PrivateVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
-            PrivateVC.renameTransferredChannels(channels, newHostMember);
+            OnDemandVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
+            OnDemandVC.renameTransferredChannels(channels, newHostMember);
 
-            if (PrivateVC.introMessages[currentHostMember.id]) {
-                PrivateVC.introMessages[newHostMember.id] = PrivateVC.introMessages[currentHostMember.id];
-                delete PrivateVC.introMessages[currentHostMember.id];
-                await PrivateVC.introMessages[newHostMember.id].edit(trans(
-                    'model.privateVC.introMessage',
+            if (OnDemandVC.introMessages[currentHostMember.id]) {
+                OnDemandVC.introMessages[newHostMember.id] = OnDemandVC.introMessages[currentHostMember.id];
+                delete OnDemandVC.introMessages[currentHostMember.id];
+                await OnDemandVC.introMessages[newHostMember.id].edit(trans(
+                    'model.onDemandVC.introMessage',
                     [newHostMember.toString(), Config.prefix, Config.prefix]
                 ));
             }
-            await channels[0].send(trans('model.privateVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
+            await channels[0].send(trans('model.onDemandVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
         } catch (exception) {
             Logger.exception(exception);
             await Guild.botChannel.send(
                 trans(
-                    'model.privateVC.errors.propertyTransferFailed',
+                    'model.onDemandVC.errors.propertyTransferFailed',
                     [currentHostMember.toString(), newHostMember.toString()],
                     'en'
                 )
@@ -605,11 +605,11 @@ const PrivateVC = {
      * @returns {bool}
      */
     setChannelUserLimit: async (hostMember, args) => {
-        if (!PrivateVC.list[hostMember.id]) {
+        if (!OnDemandVC.list[hostMember.id]) {
             return false;
         }
 
-        const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
+        const channels = OnDemandVC.list[hostMember.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
         const unsetLimitKeywords = ['unset', 'off', 'none', 'remove', 'delete'];
@@ -622,17 +622,17 @@ const PrivateVC = {
         const limit = parseInt(args[0]);
 
         if (args.length !== 1 || isNaN(limit)) {
-            await channels[0].send(trans('model.command.privateVC.userLimit.incorrectSyntax', [Config.prefix]));
+            await channels[0].send(trans('model.command.onDemandVC.userLimit.incorrectSyntax', [Config.prefix]));
             return false;
         }
 
         if (channels[2]) {
-            await channels[0].send(trans('model.command.privateVC.userLimit.wrongAccessLevel'));
+            await channels[0].send(trans('model.command.onDemandVC.userLimit.wrongAccessLevel'));
             return false;
         }
 
         if (limit < 0 || limit > 99) {
-            await channels[0].send(trans('model.command.privateVC.userLimit.invalidLimit'));
+            await channels[0].send(trans('model.command.onDemandVC.userLimit.invalidLimit'));
             return false;
         }
 
@@ -641,13 +641,13 @@ const PrivateVC = {
     },
 
     cleanUnboundChannels: async () => {
-        await PrivateVC.dbSync();
+        await OnDemandVC.dbSync();
 
-        const channelIDs = Object.values(PrivateVC.list).map(data => [data[0], data[1], data[2]]).flat();
+        const channelIDs = Object.values(OnDemandVC.list).map(data => [data[0], data[1], data[2]]).flat();
         const existingChannelIDs = channelIDs.filter(id => Guild.discordGuild.channels.cache.get(id));
         const nonExistingChannelIDs = channelIDs.filter(id => !existingChannelIDs.includes(id));
-        const ghostDatabaseEntries = Object.keys(PrivateVC.list)
-            .filter(memberID => PrivateVC.list[memberID].slice(0, 3).every(channelID => nonExistingChannelIDs.includes(channelID)));
+        const ghostDatabaseEntries = Object.keys(OnDemandVC.list)
+            .filter(memberID => OnDemandVC.list[memberID].slice(0, 3).every(channelID => nonExistingChannelIDs.includes(channelID)));
 
         // Delete orphaned channels (not tracked in the database)
         Guild.smallVoiceCategoryChannel.children
@@ -658,15 +658,15 @@ const PrivateVC = {
             .map(channel => channel.delete());
 
         // Delete ghost channel IDs from the database
-        ghostDatabaseEntries.forEach(memberID => PrivateVC.remove(memberID));
+        ghostDatabaseEntries.forEach(memberID => OnDemandVC.remove(memberID));
     },
 
     channelHousekeeping: async () => {
-        await PrivateVC.cleanUnboundChannels();
+        await OnDemandVC.cleanUnboundChannels();
 
-        const privateVCListCopy = {};
-        Object.keys(PrivateVC.list).forEach(memberID => {
-            const channelIDs = PrivateVC.list[memberID].slice(0, 3);
+        const onDemandVCListCopy = {};
+        Object.keys(OnDemandVC.list).forEach(memberID => {
+            const channelIDs = OnDemandVC.list[memberID].slice(0, 3);
             const channels = [
                 Guild.smallVoiceTextCategoryChannel.children.get(channelIDs[0]),
                 Guild.smallVoiceCategoryChannel.children.get(channelIDs[1]),
@@ -677,14 +677,14 @@ const PrivateVC = {
                 return;
             }
 
-            privateVCListCopy[memberID] = channels;
+            onDemandVCListCopy[memberID] = channels;
         });
 
-        Object.keys(privateVCListCopy).forEach(memberID => {
+        Object.keys(onDemandVCListCopy).forEach(memberID => {
             const member = Guild.discordGuild.member(memberID);
 
-            PrivateVC.synchronizeChannels(member, privateVCListCopy[memberID]);
-            PrivateVC.pendingLeaveFollowupActions.delete(memberID);
+            OnDemandVC.synchronizeChannels(member, onDemandVCListCopy[memberID]);
+            OnDemandVC.pendingLeaveFollowupActions.delete(memberID);
         });
     },
 
@@ -696,19 +696,19 @@ const PrivateVC = {
         if (channels[1]) {
             if (channels[1].members.size === 0) {
                 // No one left in the voice channel: delete on-demand VC
-                PrivateVC.privateVoiceChatDeletionHandler(hostMember, channels);
+                OnDemandVC.deletionHandler(hostMember, channels);
             } else {
                 if (!channels[1].members.has(hostMember.id)) {
                     // Host member left the voice channel: transfer property
-                    const newHostMember = await PrivateVC.privateVoiceChatPropertyTransferHandler(hostMember, channels);
+                    const newHostMember = await OnDemandVC.propertyTransferHandler(hostMember, channels);
 
                     if (channels[2]) {
                         // Late join request handling of members who joined waiting room during channel synchronization grace period
-                        channels[2].members.each(member => PrivateVC.privateVoiceChatJoinHandler(newHostMember.id, member));
+                        channels[2].members.each(member => OnDemandVC.joinHandler(newHostMember.id, member));
                     }
                 }
 
-                PrivateVC.fixChannelPermissions(channels);
+                OnDemandVC.fixChannelPermissions(channels);
             }
         }
     },
@@ -736,7 +736,7 @@ const PrivateVC = {
      * @param {GuildMember} newHostMember
      */
     renameTransferredChannels: async (channels, newHostMember) => {
-        const renamed = PrivateVC.list[newHostMember.id][3] === 1;
+        const renamed = OnDemandVC.list[newHostMember.id][3] === 1;
         if (!renamed) {
             await Promise.all([
                 channels[0].setName(newHostMember.displayName),
@@ -750,20 +750,20 @@ const PrivateVC = {
      * @param {string} name
      */
     renameChannels: async (hostMember, name) => {
-        if (!PrivateVC.list[hostMember.id]) {
+        if (!OnDemandVC.list[hostMember.id]) {
             return false;
         }
 
-        const channels = PrivateVC.list[hostMember.id].slice(0, 3).map(
+        const channels = OnDemandVC.list[hostMember.id].slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
 
         try {
-            PrivateVC.setRenamed(hostMember.id);
+            OnDemandVC.setRenamed(hostMember.id);
         } catch (exception) {
             Logger.exception(exception);
-            await Guild.botChannel.send(trans('model.privateVC.errors.renameFailed.mods', [hostMember.toString()], 'en'));
-            await channels[0].send(trans('model.privateVC.errors.renameFailed.member'));
+            await Guild.botChannel.send(trans('model.onDemandVC.errors.renameFailed.mods', [hostMember.toString()], 'en'));
+            await channels[0].send(trans('model.onDemandVC.errors.renameFailed.member'));
             return false;
         }
 
@@ -795,15 +795,15 @@ const PrivateVC = {
      * @param {Snowflake} requestor
      */
     waitingRoomLeaveHandler: async (guestMember, requestor) => {
-        const channels = PrivateVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const channels = OnDemandVC.list[requestor].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
 
-        if (channels[1] && PrivateVC.pendingJoinRequests[channels[1].id]) {
-            const message = PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
+        if (channels[1] && OnDemandVC.pendingJoinRequests[channels[1].id]) {
+            const message = OnDemandVC.pendingJoinRequests[channels[1].id][guestMember.id];
 
             await message.delete();
-            delete PrivateVC.pendingJoinRequests[channels[1].id][guestMember.id];
+            delete OnDemandVC.pendingJoinRequests[channels[1].id][guestMember.id];
         }
     },
 }
 
-module.exports = PrivateVC;
+module.exports = OnDemandVC;
