@@ -643,17 +643,22 @@ const PrivateVC = {
     cleanUnboundChannels: async () => {
         await PrivateVC.dbSync();
 
-        const channelIDs = Object.values(PrivateVC.list)
-            .map(data => [data[0], data[1], data[2]])
-            .flat()
-            .filter(id => Guild.discordGuild.channels.cache.get(id));
+        const channelIDs = Object.values(PrivateVC.list).map(data => [data[0], data[1], data[2]]).flat();
+        const existingChannelIDs = channelIDs.filter(id => Guild.discordGuild.channels.cache.get(id));
+        const nonExistingChannelIDs = channelIDs.filter(id => !existingChannelIDs.includes(id));
+        const ghostDatabaseEntries = Object.keys(PrivateVC.list)
+            .filter(memberID => PrivateVC.list[memberID].slice(0, 3).every(channelID => nonExistingChannelIDs.includes(channelID)));
 
+        // Delete orphaned channels (not tracked in the database)
         Guild.smallVoiceCategoryChannel.children
-            .filter(channel => channel.id !== Guild.smallVoiceChatRequestChannel.id && !channelIDs.includes(channel.id))
+            .filter(channel => channel.id !== Guild.smallVoiceChatRequestChannel.id && !existingChannelIDs.includes(channel.id))
             .map(channel => channel.delete());
         Guild.smallVoiceTextCategoryChannel.children
-            .filter(channel => !channelIDs.includes(channel.id))
+            .filter(channel => !existingChannelIDs.includes(channel.id))
             .map(channel => channel.delete());
+
+        // Delete ghost channel IDs from the database
+        ghostDatabaseEntries.forEach(memberID => PrivateVC.remove(memberID));
     },
 
     channelHousekeeping: async () => {
