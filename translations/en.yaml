@@ -264,6 +264,7 @@ model:
       manualTransfer:
         invalidMemberMentions: "I cannot determine who the new owner should be."
         noMembersGiven: "You did not give any member to transfer property to."
+        notOwner: "You're not the owner of any on-demand voice channels, there's no property to transfer."
         tooManyMembersGiven: "Property can only be given to one member."
       userLimit:
         incorrectSyntax: "You need to provide the limit as a number, e.g. `%%odvc limit 10`."
