@@ -24,7 +24,7 @@ class OnDemandVC
     async process(message, args) {
         if (args.length > 0) {
             const action = args.shift().toLowerCase();
-            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['limit', 'rename']};
+            const actions = {'mod': ['lock', 'close', 'unlock', 'open', 'shutdown', 'sync'], 'member': ['limit', 'rename', 'transfer']};
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
             let success = true;
 
@@ -55,6 +55,10 @@ class OnDemandVC
                         OnDemandVCModel.channelHousekeeping();
                         break;
 
+                    case 'transfer':
+                        OnDemandVCModel.manualChannelTransfer(message);
+                        break;
+
                     case 'limit':
                         success = await OnDemandVCModel.setChannelUserLimit(message.member, args);
                         break;
@@ -73,6 +77,10 @@ class OnDemandVC
                 }
 
                 switch (action) {
+                    case 'transfer':
+                        OnDemandVCModel.manualChannelTransfer(message);
+                        break;
+
                     case 'limit':
                         success = await OnDemandVCModel.setChannelUserLimit(message.member, args);
                         break;
