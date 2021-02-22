@@ -432,7 +432,7 @@ const OnDemandVC = {
             OnDemandVC.lockRequestChannel();
         }
 
-        const sentIntroMessage = await textChannel.send(trans('model.onDemandVC.introMessage', [member.toString(), Config.prefix, Config.prefix]));
+        const sentIntroMessage = await textChannel.send(trans('model.onDemandVC.introMessage', [member.toString(), Config.prefix, Config.prefix, Config.prefix]));
         OnDemandVC.introMessages[member.id] = sentIntroMessage;
 
         const embed = new Discord.MessageEmbed()
@@ -539,10 +539,56 @@ const OnDemandVC = {
     },
 
     /**
+     * @param {Array} channels
+     * @param {GuildMember} currentHostMember
+     * @param {GuildMember} targetHostMember
+     * @returns {GuildMember}
+     */
+    propertyTransferHandler: async (channels, currentHostMember, targetHostMember) => {
+        const newHostMember = targetHostMember ? targetHostMember : OnDemandVC.pickNewOwner(channels, currentHostMember);
+
+        try {
+            await OnDemandVC.setOwner(currentHostMember.id, newHostMember.id).catch(exception => {
+                exception.payload = channels;
+                throw exception;
+            });
+            OnDemandVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
+            OnDemandVC.renameTransferredChannels(channels, newHostMember);
+
+            if (OnDemandVC.introMessages[currentHostMember.id]) {
+                OnDemandVC.introMessages[newHostMember.id] = OnDemandVC.introMessages[currentHostMember.id];
+                delete OnDemandVC.introMessages[currentHostMember.id];
+                await OnDemandVC.introMessages[newHostMember.id].edit(trans(
+                    'model.onDemandVC.introMessage',
+                    [newHostMember.toString(), Config.prefix, Config.prefix]
+                ));
+            }
+
+            if (!targetHostMember) {
+                await channels[0].send(trans('model.onDemandVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
+            }
+        } catch (exception) {
+            Logger.exception(exception);
+            await Guild.botChannel.send(
+                trans(
+                    'model.onDemandVC.errors.propertyTransferFailed',
+                    [currentHostMember.toString(), newHostMember.toString()],
+                    'en'
+                )
+            );
+
+            channels.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+        }
+
+        return newHostMember;
+    },
+
+    /**
+     * @param {Array} channels
      * @param {GuildMember} currentHostMember
      * @returns {GuildMember}
      */
-    propertyTransferHandler: async (currentHostMember, channels) => {
+    pickNewOwner: (channels, currentHostMember) => {
         const memberPermissionLevels = new Discord.Collection();
         const permissionLevelRoles = Guild.permissionLevels.keyArray().map(roleID => Guild.discordGuild.roles.cache.get(roleID));
         let highestPermissionLevelRole;
@@ -564,39 +610,8 @@ const OnDemandVC = {
 
         const permissionLevelsWithMembers = Guild.permissionLevels.filter(level => memberPermissionLevels.get(level));
         const highestRankedMembers = memberPermissionLevels.get(permissionLevelsWithMembers.first());
-        const newHostMember = highestRankedMembers[Math.floor(Math.random() * highestRankedMembers.length)];
 
-        try {
-            await OnDemandVC.setOwner(currentHostMember.id, newHostMember.id).catch(exception => {
-                exception.payload = channels;
-                throw exception;
-            });
-            OnDemandVC.transferChannelPermissions(channels, currentHostMember, newHostMember);
-            OnDemandVC.renameTransferredChannels(channels, newHostMember);
-
-            if (OnDemandVC.introMessages[currentHostMember.id]) {
-                OnDemandVC.introMessages[newHostMember.id] = OnDemandVC.introMessages[currentHostMember.id];
-                delete OnDemandVC.introMessages[currentHostMember.id];
-                await OnDemandVC.introMessages[newHostMember.id].edit(trans(
-                    'model.onDemandVC.introMessage',
-                    [newHostMember.toString(), Config.prefix, Config.prefix]
-                ));
-            }
-            await channels[0].send(trans('model.onDemandVC.transferredProperty', [newHostMember.toString(), currentHostMember.toString()]));
-        } catch (exception) {
-            Logger.exception(exception);
-            await Guild.botChannel.send(
-                trans(
-                    'model.onDemandVC.errors.propertyTransferFailed',
-                    [currentHostMember.toString(), newHostMember.toString()],
-                    'en'
-                )
-            );
-
-            channels.filter(channel => channel !== undefined).forEach(channel => channel.delete());
-        }
-
-        return newHostMember;
+        return highestRankedMembers[Math.floor(Math.random() * highestRankedMembers.length)];
     },
 
     /**
@@ -702,7 +717,7 @@ const OnDemandVC = {
 
                 if (!channels[1].members.has(hostMember.id)) {
                     // Host member left the voice channel: transfer property
-                    newHostMember = await OnDemandVC.propertyTransferHandler(hostMember, channels);
+                    newHostMember = await OnDemandVC.propertyTransferHandler(channels, hostMember);
 
                     if (channels[2]) {
                         // Late join request handling of members who joined waiting room during channel synchronization grace period
@@ -735,6 +750,36 @@ const OnDemandVC = {
                 channels[2].updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
             ]);
         }
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {bool}
+     */
+    manualChannelTransfer: async (message) => {
+        const { certain, foundMembers } = Guild.findDesignatedMemberInMessage(message);
+
+        if (!certain) {
+            await message.reply(trans('model.command.onDemandVC.manualTransfer.invalidMemberMentions'));
+            return false;
+        }
+
+        if (foundMembers.length < 1) {
+            await message.reply(trans('model.command.onDemandVC.manualTransfer.noMembersGiven'));
+            return false;
+        }
+
+        if (foundMembers.length > 1) {
+            await message.reply(trans('model.command.onDemandVC.manualTransfer.tooManyMembersGiven'));
+            return false;
+        }
+
+        const channels = OnDemandVC.list[message.member.id].slice(0, 3).map(
+            id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
+        );
+
+        await OnDemandVC.propertyTransferHandler(channels, message.member, foundMembers[0]);
+        return true;
     },
 
     /**

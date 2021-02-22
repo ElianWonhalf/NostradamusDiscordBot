@@ -261,6 +261,10 @@ model:
       description: "Manage on-demand VC system"
       error:
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
+      manualTransfer:
+        invalidMemberMentions: "I cannot determine who the new owner should be."
+        noMembersGiven: "You did not give any member to transfer property to."
+        tooManyMembersGiven: "Property can only be given to one member."
       userLimit:
         incorrectSyntax: "You need to provide the limit as a number, e.g. `%%odvc limit 10`."
         invalidLimit: "The limit must be between 1 and 99 (included), or 0 for no limit."
@@ -481,7 +485,7 @@ model:
       renameFailed:
         member: "Sorry, I couldn't rename your room."
         mods: "%% wanted to rename their VC, but the database operation failed."
-    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%odvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: in public channels, set a user limit with `%%odvc limit <max users>`\n:item2: in private channels, disconnect members\n"
+    introMessage: "\nWelcome %% to your on-demand voice channel! Make sure to answer the question below to make your channels public or private.\nAs the owner, you can:\n:item2: rename your channels with the command `%%odvc rename <new name>` (limited to 2 times every 10 minutes)\n:item2: transfer property with `%%odvc transfer <new owner>`\n:item2: in public channels, set a user limit with `%%odvc limit <max users>`\n:item2: in private channels, disconnect members\n"
     joinRequest:
       notification:
         withPing: "%%, someone wants to join your room!"

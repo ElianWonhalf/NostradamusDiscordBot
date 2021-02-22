@@ -183,6 +183,10 @@ model:
       description: "Pour gérer le système de salons vocaux privés sur demande."
       error:
         misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
+      manualTransfer:
+        invalidMemberMentions: "Je n'arrive pas à savoir à quel membre transférer la propriété."
+        noMembersGiven: "Tu n'as donné aucun membre à qui transférer les salons."
+        tooManyMembersGiven: "La propriété ne peut être donnée qu'à un seul membre."
       userLimit:
         incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%odvc limit 10`."
         invalidLimit: "La limite doit être comprise entre 1 et 99 (inclus), ou 0 pour retirer la limite."
@@ -344,7 +348,7 @@ model:
         member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
       renameFailed:
         member: "Désolé, je n'ai pas pu renommer ton salon."
-    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
+    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: transférer la propriété avec `%%odvc transfer <new owner>`\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
     joinRequest:
       notification:
         withPing: "%%, quelqu'un veut rejoindre ton salon !"
