@@ -774,7 +774,14 @@ const OnDemandVC = {
             return false;
         }
 
-        const channels = OnDemandVC.list[message.member.id].slice(0, 3).map(
+        const onDemandVCData = OnDemandVC.list[message.member.id];
+
+        if (!onDemandVCData) {
+            await message.reply(trans('model.command.onDemandVC.manualTransfer.notOwner'));
+            return false;
+        }
+
+        const channels = onDemandVCData.slice(0, 3).map(
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
 

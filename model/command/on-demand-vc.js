@@ -56,7 +56,7 @@ class OnDemandVC
                         break;
 
                     case 'transfer':
-                        OnDemandVCModel.manualChannelTransfer(message);
+                        success = await OnDemandVCModel.manualChannelTransfer(message);
                         break;
 
                     case 'limit':
@@ -78,7 +78,7 @@ class OnDemandVC
 
                 switch (action) {
                     case 'transfer':
-                        OnDemandVCModel.manualChannelTransfer(message);
+                        success = await OnDemandVCModel.manualChannelTransfer(message);
                         break;
 
                     case 'limit':
