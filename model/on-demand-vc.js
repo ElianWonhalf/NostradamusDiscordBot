@@ -698,9 +698,11 @@ const OnDemandVC = {
                 // No one left in the voice channel: delete on-demand VC
                 OnDemandVC.deletionHandler(hostMember, channels);
             } else {
+                let newHostMember = hostMember;
+
                 if (!channels[1].members.has(hostMember.id)) {
                     // Host member left the voice channel: transfer property
-                    const newHostMember = await OnDemandVC.propertyTransferHandler(hostMember, channels);
+                    newHostMember = await OnDemandVC.propertyTransferHandler(hostMember, channels);
 
                     if (channels[2]) {
                         // Late join request handling of members who joined waiting room during channel synchronization grace period
@@ -708,15 +710,16 @@ const OnDemandVC = {
                     }
                 }
 
-                OnDemandVC.fixChannelPermissions(channels);
+                OnDemandVC.fixChannelPermissions(newHostMember, channels);
             }
         }
     },
 
     /**
+     * @param {GuildMember} hostMember
      * @param {Array} channels
      */
-    fixChannelPermissions: async (channels) => {
+    fixChannelPermissions: async (hostMember, channels) => {
         if (!channels[2]) {
             channels.filter(channel => channel !== undefined).forEach(channel => channel.lockPermissions());
         } else {
@@ -724,9 +727,12 @@ const OnDemandVC = {
                 .filter(overwrite => overwrite.type !== 'role' && !channels[1].members.has(overwrite.id));
 
             await Promise.all([
-                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
                 ...outdatedOverwrites.map(overwrite => overwrite.delete()),
+                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
                 ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
+                channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
+                channels[1].updateOverwrite(hostMember, {MOVE_MEMBERS: true}),
+                channels[2].updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
             ]);
         }
     },
@@ -782,11 +788,17 @@ const OnDemandVC = {
      */
     transferChannelPermissions: async (channels, currentHostMember, newHostMember) => {
         const overwrites = channels[1].permissionOverwrites;
+        const hostMemberOverwrite = overwrites.get(currentHostMember.id);
+
         if (channels[2]) {
-            await Promise.all([
-                overwrites.get(currentHostMember.id).delete(),
-                channels[1].updateOverwrite(newHostMember, {MOVE_MEMBERS: true}),
-            ]);
+            if (hostMemberOverwrite) {
+                await Promise.all([
+                    hostMemberOverwrite.delete(),
+                    channels[1].updateOverwrite(newHostMember, {MOVE_MEMBERS: true}),
+                ]);
+            } else {
+                await channels[1].updateOverwrite(newHostMember, {MOVE_MEMBERS: true});
+            }
         }
     },
 
