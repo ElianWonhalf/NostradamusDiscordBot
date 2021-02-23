@@ -4,7 +4,6 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
 /**
- * 
  * @param {Array} members 
  * @param {int} amount 
  * 
@@ -15,11 +14,10 @@ function getMembersToDisplay(members, amount = 5) {
 }
 
 /**
- * 
  * @param {Message} message 
  * @param {Array} emojis 
  */
-function addReact(message, emojis) {
+function addReactions(message, emojis) {
     if (message && emojis.length > 0) {
         emojis.forEach(emoji => {
             message.react(emoji);
@@ -28,10 +26,9 @@ function addReact(message, emojis) {
 }
 
 /**
- * 
  * @param {Array} messages 
  */
-function deleteMessage(messages) {
+function deleteMessages(messages) {
     if (messages.length > 0) {
         messages.forEach(message => {
             message.delete();
@@ -79,7 +76,7 @@ class GetMemberId
 
             const acceptedReactEmojis = ['🗑'];
 
-            addReact(sentMessages[sentMessages.length - 1], acceptedReactEmojis);
+            addReactions(sentMessages[sentMessages.length - 1], acceptedReactEmojis);
             
             const reactFilter = (reaction, user) => user.id === message.author.id && acceptedReactEmojis.includes(reaction.emoji.name);
 
@@ -87,7 +84,7 @@ class GetMemberId
                 if (!collectedReactions.first()) {
                     sentMessages.reactions.removeAll();
                 } else {
-                    deleteMessage(sentMessages);
+                    deleteMessages(sentMessages);
                 }
             });
         } else {
