@@ -186,6 +186,13 @@ function changeLongfoxTo(arg) {
             setupNewEmojis();
             break;
 
+        case 'ribbon' :
+            emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'ribbon3');
+            emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'ribbon2');
+            emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'ribbon1');
+            setupNewEmojis();
+            break;
+
         default :
             return;
     }
