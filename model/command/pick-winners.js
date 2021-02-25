@@ -23,7 +23,7 @@ class pickWinners
 
         this.aliases = ['pickwinners', 'pickw'];
         this.category = CommandCategory.RESOURCE;
-        this.isAllowedForContext = CommandPermission.isMemberModOrSoftOrAnimator;//isMommy;//TODO
+        this.isAllowedForContext = CommandPermission.isMommy;
     }
 
     /**

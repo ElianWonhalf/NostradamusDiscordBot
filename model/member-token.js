@@ -8,8 +8,8 @@ const MemberToken = {
      * 
      * @returns {Promise}
      */
-    createMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`INSERT INTO ${MemberToken.TABLE_NAME} (user_id) VALUES (?)`, [snowflake]);
+    createMemberTokenInfo: (snowflake, amount = 1) => {
+        return db.asyncQuery(`INSERT INTO ${MemberToken.TABLE_NAME} (user_id, amount, all_time_amount) VALUES (?, ?, ?)`, [snowflake, amount, amount]);
     },
 
     /**
@@ -23,20 +23,21 @@ const MemberToken = {
 
     /**
      * @param {Array<Snowflake>} snowflakes
+     * @param {int} amount
      * 
      * @returns {Promise}
      */
-    add: async (snowflakes) => {
+    add: async (snowflakes, amount = 1) => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         for (let i = 0; i < snowflakes.length; i++) {
             let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflakes[i]);
 
             if (!membersTokenInfo[0]) {
-                MemberToken.createMemberTokenInfo(snowflakes[i]);
+                MemberToken.createMemberTokenInfo(snowflakes[i], amount);
             } else {
-                const newCurrentAmount = membersTokenInfo[0].amount + 1;
-                const newAllTimeAmount = membersTokenInfo[0].all_time_amount + 1;
+                const newCurrentAmount = membersTokenInfo[0].amount + amount;
+                const newAllTimeAmount = membersTokenInfo[0].all_time_amount + amount;
 
                 await db.asyncQuery(
                     `
