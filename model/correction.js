@@ -10,6 +10,11 @@ const Correction = {
     handleReaction: async (messageReaction, user) => {
         if (!user.bot) {
             const member = await Guild.discordGuild.member(user);
+
+            if (!member) {
+                return;
+            }
+            
             const message = messageReaction.message;
             const messageHasEmbeds = message.embeds && message.embeds.length > 0;
             const messageIsCorrectionResponse = messageHasEmbeds && /\[\]\(correction\)/gu.test(message.embeds[0].description);

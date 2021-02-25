@@ -143,7 +143,6 @@ class TokenBoard
         for (let row of tokenRanking) {
             row.member = await Guild.discordGuild.members.fetch(row.user_id).catch(exception => {
                 Logger.error(exception.toString());
-
                 return null;
             });
         }

@@ -22,6 +22,59 @@ const MemberToken = {
     },
 
     /**
+     * @param {Array<Snowflake>} snowflakes
+     * 
+     * @returns {Promise}
+     */
+    add: async (snowflakes) => {
+        await db.asyncQuery('SET NAMES utf8mb4');
+
+        for (let i = 0; i < snowflakes.length; i++) {
+            let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflakes[i]);
+
+            if (!membersTokenInfo[0]) {
+                MemberToken.createMemberTokenInfo(snowflakes[i]);
+            } else {
+                const newCurrentAmount = membersTokenInfo[0].amount + 1;
+                const newAllTimeAmount = membersTokenInfo[0].all_time_amount + 1;
+
+                await db.asyncQuery(
+                    `
+                        UPDATE ${MemberToken.TABLE_NAME}
+                        SET amount = ?, all_time_amount = ?
+                        WHERE user_id = ?
+                    `,
+                    [newCurrentAmount, newAllTimeAmount, snowflakes[i]]
+                );
+            }
+        };
+    },
+
+    /**
+     * @param {Snowflake} snowflake
+     * @param {int} amount
+     *
+     * @returns {Promise}
+     */
+    remove: async (snowflake, amount) => {
+        await db.asyncQuery('SET NAMES utf8mb4');
+
+        let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflake);
+
+        if (membersTokenInfo[0] && amount > 0) {
+            const newCurrentAmount = membersTokenInfo[0].amount - amount;
+            await db.asyncQuery(
+                `
+                    UPDATE ${MemberToken.TABLE_NAME}
+                    SET amount = ?
+                    WHERE user_id = ?
+                `,
+                [newCurrentAmount, snowflake]
+            );
+        }
+    },
+
+    /**
      * @param {Snowflake|null} snowflake
      * 
      * @returns {Promise<Array>}
@@ -43,61 +96,12 @@ const MemberToken = {
     },
 
     /**
-     * @param {Array<Snowflake>} snowflakes
-     * 
-     * @returns {Promise}
-     */
-    add: async (snowflakes) => {
-        await db.asyncQuery('SET NAMES utf8mb4');
-
-        for (let i = 0; i < snowflakes.length; i++) {
-            let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflakes[i]);
-
-            if (!membersTokenInfo[0]) {
-                MemberToken.createMemberTokenInfo(snowflakes[i]);
-            } else {
-                const newCurrentAmount = membersTokenInfo[0].amount + 1;
-                const newAllTimeAmount = membersTokenInfo[0].all_time_amount + 1;
-
-                await db.asyncQuery(
-                    `UPDATE ${MemberToken.TABLE_NAME}
-                    SET amount = ?, all_time_amount = ?
-                    WHERE user_id = ?`,
-                    [newCurrentAmount, newAllTimeAmount, snowflakes[i]]
-                );
-            }
-        };
-    },
-
-    /**
-     * @param {Snowflake} snowflake
-     * @param {int} amount
-     *
-     * @returns {Promise}
-     */
-    remove: async (snowflake, amount) => {
-        await db.asyncQuery('SET NAMES utf8mb4');
-
-        let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflake);
-
-        if (membersTokenInfo[0] && amount > 0) {
-            const newCurrentAmount = membersTokenInfo[0].amount - amount;
-            await db.asyncQuery(
-                `UPDATE ${MemberToken.TABLE_NAME}
-                SET amount = ?
-                WHERE user_id = ?`,
-                [newCurrentAmount, snowflake]
-            );
-        }
-    },
-
-    /**
     * @param {Snowflake} snowflake
     * @param {int} amount
     *
     * @returns {Promise}
     */
-   canApply: async (snowflake, amount) => {
+    canApply: async (snowflake, amount) => {
        await db.asyncQuery('SET NAMES utf8mb4');
 
        let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflake);
@@ -111,7 +115,7 @@ const MemberToken = {
        }
 
        return true;
-   },
+    },
 
     /**
      * @param {Snowflake} snowflake
@@ -129,12 +133,29 @@ const MemberToken = {
             const newAppliedAmount = membersTokenInfo[0].amount_applied + amount;
 
             await db.asyncQuery(
-                `UPDATE ${MemberToken.TABLE_NAME}
-                SET amount = ?, amount_applied = ?
-                WHERE user_id = ?`,
+                `
+                    UPDATE ${MemberToken.TABLE_NAME}
+                    SET amount = ?, amount_applied = ?
+                    WHERE user_id = ?
+                `,
                 [newCurrentAmount, newAppliedAmount, snowflake]
             );
         }
+    },
+
+    /**
+     * @returns {Promise<Array>}
+     */
+    getAppliedTokens: async () => {
+        await db.asyncQuery('SET NAMES utf8mb4');
+
+        return db.asyncQuery(
+            `
+                SELECT user_id, amount_applied
+                FROM ${MemberToken.TABLE_NAME}
+                WHERE amount_applied > 0
+            `
+        );
     },
 
     /**
@@ -165,9 +186,11 @@ const MemberToken = {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         await db.asyncQuery(
-            `UPDATE ${MemberToken.TABLE_NAME}
-            SET amount_applied = 0
-            WHERE amount_applied > 0`
+            `
+                UPDATE ${MemberToken.TABLE_NAME}
+                SET amount_applied = 0
+                WHERE amount_applied > 0
+            `
         );
     },
 }

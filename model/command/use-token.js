@@ -1,9 +1,7 @@
 const Logger = require('@lilywonhalf/pretty-logger');
-const { Permissions } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
-const Guild = require('../guild');
 
 class useToken
 {
