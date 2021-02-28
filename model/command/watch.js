@@ -50,17 +50,27 @@ class Watch
                     });
                 }
 
-                args.splice(0, foundMembers.length);
+                const sortedFoundMembers = [];
+
+                foundMembers.forEach(memberOrUser => {
+                    if (args.includes(memberOrUser.id) && !sortedFoundMembers.includes(memberOrUser)) {
+                        sortedFoundMembers.push(memberOrUser);
+                    }
+                });
+
+                while (args.length > 1 && args[0].match(/^[0-9]{16,18}$/u)) {
+                    args.shift();
+                }
 
                 switch (action) {
                     case 'delete':
-                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), foundMembers);
+                        (cachelessRequire('./watch/remove.js'))(message, args.join(' '), sortedFoundMembers);
                         break;
 
                     case 'add':
                     case 'remove':
                     case 'edit':
-                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), foundMembers);
+                        (cachelessRequire('./watch/' + action + '.js'))(message, args.join(' '), sortedFoundMembers);
                 }
             } else {
                 message.reply(trans('model.command.watch.error', [], 'en'));
