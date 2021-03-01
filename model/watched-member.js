@@ -7,6 +7,7 @@ const ONE_HOUR = 60 * 60 * 1000;
 const DEFAULT_OBJECT = {
     reason: null,
     lastActive: null,
+    timestamp: null,
 };
 
 const WatchedMember = {
@@ -17,9 +18,10 @@ const WatchedMember = {
      * @returns {Promise}
      */
     init: () => {
-        db.query('SELECT id, reason FROM watchedMember WHERE active = 1').on('result', row => {
+        db.query('SELECT id, reason, timestamp FROM watchedMember WHERE active = 1').on('result', row => {
             WatchedMember.list[row.id] = Object.assign({}, DEFAULT_OBJECT);
             WatchedMember.list[row.id].reason = row.reason;
+            WatchedMember.list[row.id].timestamp = row.timestamp;
         }).on('error', (error) => {
             Logger.error(`Error loading watched members: ${error}`);
         });
@@ -122,12 +124,13 @@ const WatchedMember = {
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
         const embed = new Discord.MessageEmbed()
             .setAuthor(
-                `${member.user.username}#${member.user.discriminator}${suffix}`, // username of undefined???
+                `${member.user.username}#${member.user.discriminator}${suffix}`,
                 member.user.displayAvatarURL({ dynamic: true })
             )
             .setColor(alertFinished ? 0xFF0000 : 0x00FF00)
             .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
-            .setFooter(WatchedMember.list[member.id].reason);
+            .addField('Watch reason :', WatchedMember.list[member.id].reason)
+            .setTimestamp(WatchedMember.list[member.id].timestamp);
 
         Guild.watchlistChannel.send(embed);
     },
@@ -151,12 +154,14 @@ const WatchedMember = {
         return new Promise((resolve, reject) => {
             WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
             WatchedMember.list[id].reason = reason;
+            const now = Date.now();
+            WatchedMember.list[id].timestamp = now;
 
             db.query('SET NAMES utf8mb4');
             db.query(
-                `INSERT INTO watchedMember (id, reason, active) VALUES (?, ?, ?)
-                ON DUPLICATE KEY UPDATE reason = ?, active = ?`,
-                [id, reason, 1, reason, 1],
+                `INSERT INTO watchedMember (id, reason, active, timestamp) VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE reason = ?, active = ?, timestamp = ?`,
+                [id, reason, 1, now, reason, 1, now],
                 error => error ? reject(error) : resolve()
             );
         });
@@ -169,13 +174,12 @@ const WatchedMember = {
      */
     edit: (id, reason) => {
         return new Promise((resolve, reject) => {
-            WatchedMember.list[id] = Object.assign({}, DEFAULT_OBJECT);
             WatchedMember.list[id].reason = reason;
 
             db.query('SET NAMES utf8mb4');
             db.query(
                 `UPDATE watchedMember SET reason = ? WHERE id = ?`,
-                [reason, id, 1],
+                [reason, id],
                 error => error ? reject(error) : resolve()
             );
         });
