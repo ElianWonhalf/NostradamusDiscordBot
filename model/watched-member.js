@@ -119,7 +119,7 @@ const WatchedMember = {
      */
     logEvent: async (member, log, alertFinished) => {
         alertFinished = alertFinished || false;
-
+        WatchedMember.list[member.id].timestamp = parseInt(WatchedMember.list[member.id].timestamp) || Date.now();
         const alertEmoji = alertFinished ? '😌' : '🙀';
         const suffix = member !== null && member.nickname !== null ? ` aka ${member.nickname}` : '';
         const embed = new Discord.MessageEmbed()
@@ -127,10 +127,10 @@ const WatchedMember = {
                 `${member.user.username}#${member.user.discriminator}${suffix}`,
                 member.user.displayAvatarURL({ dynamic: true })
             )
+            .setTimestamp(WatchedMember.list[member.id].timestamp)
             .setColor(alertFinished ? 0xFF0000 : 0x00FF00)
             .setDescription(`👀 ${member} ${alertEmoji} ${log}`)
-            .addField('Watch reason :', WatchedMember.list[member.id].reason)
-            .setTimestamp(WatchedMember.list[member.id].timestamp);
+            .addField('Watch reason :', WatchedMember.list[member.id].reason);
 
         Guild.watchlistChannel.send(embed);
     },
