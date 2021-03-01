@@ -102,7 +102,7 @@ const MemberToken = {
     *
     * @returns {Promise}
     */
-    canApply: async (snowflake, amount) => {
+    hasEnoughTokens: async (snowflake, amount) => {
        await db.asyncQuery('SET NAMES utf8mb4');
 
        let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflake);
@@ -124,7 +124,7 @@ const MemberToken = {
      *
      * @returns {Promise}
      */
-    apply: async (snowflake, amount) => {
+    useTokens: async (snowflake, amount) => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         let membersTokenInfo = await MemberToken.getMemberTokenInfo(snowflake);

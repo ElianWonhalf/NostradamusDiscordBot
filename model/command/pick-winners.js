@@ -52,9 +52,7 @@ class pickWinners
             });
 
             if (member) {
-                for (let i = 0; i < memberAppliedTokens.amount_applied; i++) {
-                    lotteryBox.push(member.user);
-                }
+                lotteryBox = lotteryBox.concat(new Array(memberAppliedTokens.amount_applied).fill(member.user));
             }
         }));
 
@@ -68,10 +66,11 @@ class pickWinners
             }
 
             let winner = lotteryBox[Math.floor(Math.random() * lotteryBox.length)];
+
             winners.push(winner);
 
             lotteryBox = lotteryBox.filter(token => token !== winner);
-        }
+        };
 
         if (winners.length < 1) {
             return await message.react(emojiPollNo);
@@ -88,23 +87,27 @@ class pickWinners
 
         await message.channel.send(winnersEmbed);
 
-        await message.channel.send(`Empty the lottery box ?`).then(async sentMessage => {
-            await sentMessage.react(emojiPollYes);
-            await sentMessage.react(emojiPollNo);
+        const sentMessage = await message.channel.send(`Empty the lottery box ?`);
+        
+        await sentMessage.react(emojiPollYes);
+        await sentMessage.react(emojiPollNo);
+        
+        const reactFilter = (reaction, user) => user.id === message.author.id && (reaction.emoji === emojiPollYes || reaction.emoji === emojiPollNo);
+        
+        sentMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15 * MINUTE }).then(async collectedReactions => {
+            if (!collectedReactions.first()) {
+                sentMessage.reactions.removeAll();
+                sentMessage.edit('the lottery box has not been emptied');
+            } else {
+                await sentMessage.reactions.removeAll();
 
-            const reactFilter = (reaction, user) => user.id === message.author.id && (reaction.emoji === emojiPollYes || reaction.emoji === emojiPollNo);
-
-            sentMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 900000 }).then(async collectedReactions => {
-                if (!collectedReactions.first()) {
-                    sentMessage.reactions.removeAll();
+                if (collectedReactions.first().emoji === emojiPollYes) {
+                    await MemberToken.resetAppliedTokens();
+                    sentMessage.edit('The lottery box has been emptied');
                 } else {
-                    await sentMessage.reactions.removeAll().then(() => {
-                        if (collectedReactions.first().emoji === emojiPollYes) {
-                            MemberToken.resetAppliedTokens().then(sentMessage.react(emojiPollYes));
-                        }
-                    });
+                    sentMessage.edit('the lottery box has not been emptied');
                 }
-            });
+            }
         });
     }
 }

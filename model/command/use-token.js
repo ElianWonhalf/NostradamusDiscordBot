@@ -30,22 +30,21 @@ class useToken
         }
 
         args[0] = parseInt(args[0]);
-        const canApply = await MemberToken.canApply(message.author.id, args[0]);
+        const hasEnoughTokens = await MemberToken.hasEnoughTokens(message.author.id, args[0]);
 
-        if (!canApply) {
+        if (!hasEnoughTokens) {
             await message.react(emojiPollNo);
-            return message.channel.send(`${trans('model.command.useToken.argError')}`);
+
+            return message.channel.send(trans('model.command.useToken.argError'));
         }
 
-        await MemberToken.apply(message.author.id, args[0]).then(async () => {
-            const appliedTokenInfo = await MemberToken.getAppliedCount(message.author.id);
+        await MemberToken.useTokens(message.author.id, args[0]);
 
-            await message.react(emojiPollYes);
-            message.channel.send(`${trans('model.command.useToken.amountAppliedTokens', [appliedTokenInfo[0].amount_applied])}`);
-        }).catch(async (error) => {
-            await message.react(emojiPollNo);
-            Logger.exception(error);
-        });
+        const appliedTokenInfo = await MemberToken.getAppliedCount(message.author.id);
+
+        await message.react(emojiPollYes);
+
+        message.channel.send(trans('model.command.useToken.amountAppliedTokens', [appliedTokenInfo[0].amount_applied]));
     }
 }
 
