@@ -41,7 +41,7 @@ model:
       description: "Lists the current members of the animation team"
       answer: "There are currently %% animators:"
     anonymous:
-      description: "Allows members to send anonymous messages to the moderation team"
+      description: "Allows members to send anonymous messages to the moderation team. Send '.anonymous' via DM to Nostradamus to start the process"
       publicWarn: "to submit an anonymous request, send this command as a direct message!"
       firstStep: "\nShould I speak French or English? (click on the right reaction below)\n\n:one: English\n:two: French\n"
       secondStep: "Gotcha! You can now write your message. I will only send the first one, though, so make sure to put everything in one message. Also, the recipients will not be able to respond since it's anonymous. If you need an answer, you should explain how they can reply in your message, keeping in mind that they don't know who you are. You have thirty minutes to write it :)."

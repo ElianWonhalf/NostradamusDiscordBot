@@ -25,7 +25,7 @@ model:
       description: "Liste les membres actuels de l'équipe d'animation"
       answer: "Il y a en ce moment %% animateurs :"
     anonymous:
-      description: "Envoie un message anonyme à l'équipe de modération"
+      description: "Permet d'envoyer un message anonyme à l'équipe de modération. Envoie '.anonymous' en DM à Nostradamus pour lancer le processus"
       publicWarn: "pour envoyer une requête anonyme, envoie cette commande dans mes MPs !"
       firstStep: "\nEst-ce que je devrais parler français ou anglais ? (clique sur la bonne réaction ci-dessous)\n\n:one: Anglais\n:two: Français\n"
       secondStep: "Pigé ! Tu peux maintenant écrire ton message. Je n'enverrai cependant que le premier ! Assure-toi de dire tout ce que tu as à dire en un seul message. Aussi, les destinataires ne seront pas capables de te répondre étant donné que c'est anonyme. Si tu as besoin d'une réponse, tu devrais expliquer dans ton message comment ils peuvent te répondre, sachant qu'ils ne savent pas qui tu es. Tu as trente minutes pour l'écrire :) ."
