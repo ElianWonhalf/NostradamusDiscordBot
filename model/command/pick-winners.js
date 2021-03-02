@@ -58,21 +58,17 @@ class pickWinners
 
         shuffle(lotteryBox);
 
-        const winners = [];
+        const winners = new Array(amountToPick).fill('').map(() => {
+            if (lotteryBox.length > 0) {
+                let winner = lotteryBox[Math.floor(Math.random() * lotteryBox.length)];
 
-        for (let i = 0; i < amountToPick; i++) {
-            if (lotteryBox.length < 1) {
-                break;
+                lotteryBox = lotteryBox.filter(token => token !== winner);
+
+                return winner;
             }
+        });
 
-            let winner = lotteryBox[Math.floor(Math.random() * lotteryBox.length)];
-
-            winners.push(winner);
-
-            lotteryBox = lotteryBox.filter(token => token !== winner);
-        };
-
-        if (winners.length < 1) {
+        if (!winners[0]) {
             return await message.react(emojiPollNo);
         }
 
@@ -82,8 +78,10 @@ class pickWinners
             .setTimestamp(new Date());
 
         for (let i = 0; i < winners.length; i++) {
-            winnersEmbed.addField(`( ${i + 1} )`, `<@${winners[i].id}> - ${winners[i].username}#${winners[i].discriminator}`);
-        };
+            if (winners[i]) {
+                winnersEmbed.addField(`( ${i + 1} )`, `<@${winners[i].id}> - ${winners[i].username}#${winners[i].discriminator}`);
+            }
+        }
 
         await message.channel.send(winnersEmbed);
 
