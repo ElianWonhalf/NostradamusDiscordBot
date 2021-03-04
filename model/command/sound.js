@@ -7,12 +7,13 @@ const CommandPermission = require('../command-permission');
 const FILES = {
     'ah bin calisse': ['ahbincalisse'],
     'ahbincalisse': ['ahbincalisse'],
+    'calisse': ['ahbincalisse'],
     'bin la': ['binla'],
     'binla': ['binla'],
-    'calisse': ['ahbincalisse'],
     'damn': ['damn1', 'damn2', 'damn3', 'damn4', 'damn5', 'damn6', 'damn7', 'damn8', 'damn9', 'damn10', 'damn11', 'damn12', 'damn13'],
     'honey': ['honey1', 'honey2', 'honey3', 'honey4'],
-    'whisky': ['whisky1', 'whisky2', 'whisky3', 'whisky4']
+    'whisky': ['whisky1', 'whisky2', 'whisky3', 'whisky4'],
+    'gah': ['gah'],
 };
 
 class Sound
