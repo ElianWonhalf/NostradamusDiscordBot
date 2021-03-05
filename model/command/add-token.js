@@ -27,6 +27,11 @@ class AddToken
         const emojiPollNo = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
         const member = await Guild.getMemberFromMessage(message);
         let searchResult;
+        let amount = 1;
+
+        if (args[0] && parseInt(args[0]) && parseInt(args[0]) < 10000) {
+            amount = parseInt(args.shift());
+        }
 
         if (args.length > 0) {
             searchResult = Guild.findDesignatedMemberInMessage(message).foundMembers.filter(member => member.user);
@@ -53,7 +58,7 @@ class AddToken
             return message.react(emojiPollNo);
         }
 
-        await MemberToken.add(searchResult.map(member => member.id)).then(async () => {
+        await MemberToken.add(searchResult.map(member => member.id), amount).then(async () => {
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
             const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 
@@ -61,7 +66,7 @@ class AddToken
                 searchResult = searchResult.map(member => member.displayName);
 
                 await Guild.eventChatChannel.send(
-                    `${trans('model.command.addToken.notification')}\n${searchResult.join(', ')}`
+                    `${trans('model.command.addToken.notification', [amount])}\n${searchResult.join(', ')}`
                 );
             }
 

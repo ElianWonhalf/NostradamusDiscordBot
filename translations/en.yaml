@@ -33,7 +33,7 @@ model:
       error: "The alias could not be added! Check the log for more info."
     addToken:
       description: "Give a token to one or multiple people"
-      notification: "Congratulations to the following for winning a token!"
+      notification: "Congratulations to the following for winning **%%** token(s)!"
     adminList:
       description: "Lists the current members of the administration team"
       answer: "There are currently %% administrators:"
@@ -378,6 +378,10 @@ model:
     tutors:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
+    useToken:
+      description: "Allows you to use your tokens to participate in a prize draw"
+      amountAppliedTokens: "You have used **%% token(s)** for the upcoming draw. Good luck!"
+      argError: "The amount of tokens given is not correct. Check your token count with **. Token-info **"
     voiceMove:
       description: "Move all members of one voice chat to another"
       timeout: "sorry, too slow!"

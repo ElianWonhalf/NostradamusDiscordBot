@@ -17,7 +17,7 @@ model:
       description: "Ajoute un nouvel alias à un rôle de langue existant"
     addToken:
       description: "Donne un jeton à une ou plusieurs personnes"
-      notification: "Félicitations ! Voici un jeton !"
+      notification: "Félicitations ! Voici **%%** jeton(s) !"
     adminList:
       description: "Liste les membres actuels de l'équipe d'administration"
       answer: "Il y a en ce moment %% administrateurs :"
@@ -282,6 +282,10 @@ model:
       answer: "Il y a en ce moment %% tuteurs :"
     unwatch:
       description: "Retire un membre de la liste des membres surveillés"
+    useToken:
+      description: "Vous permet d'utiliser vos jetons pour participer à un tirage au sort"
+      amountAppliedTokens: "Tu as utilisé **%% jeton(s)** pour le prochain tirage au sort. Bonne chance !"
+      argError: "La quantité de jetons donné n'est pas correcte. Vérifiez votre nombre de jeton avec **.token-info**"
     voiceMove:
       description: "Déplace tous les membres d'un channel vocal à un autre"
     warntroll:
