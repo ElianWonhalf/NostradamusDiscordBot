@@ -354,6 +354,7 @@ model:
         tokenInfo: "To see how many tokens you have"
         tokenHelp: "You are here"
         luckyFox: "To try and win tokens"
+        tokenUse: "Use your tokens to participate in the next drawing"
     tokenInfo:
       description: "To see how many tokens you have"
       memberNotFound: "I... Have no idea who that could be, sorry."
@@ -365,6 +366,13 @@ model:
         currentTokenAmount: "You have **%%** token(s)!"
         allTimeTokenTitle: "In total"
         allTimeTokenAmount: "You won **%%** token(s)!"
+        usedTokenTitle: "Next drawing"
+        usedTokenAmount: "You used **%%** token(s) for the next drawing!"
+    tokenRain:
+      description: "Offer tokens to those who react to the message"
+      begin: "Token's rain!!! React with Kwiziq"
+      incoming: "Token's rain in **%%sec**"
+      win: "**%%** win **%%** token(s)"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
       noAction: "You have to enter an action"
@@ -380,7 +388,7 @@ model:
       answer: "There are currently %% tutors:"
     useToken:
       description: "Allows you to use your tokens to participate in a prize draw"
-      amountAppliedTokens: "You have used **%% token(s)** for the upcoming draw. Good luck!"
+      amountUsedTokens: "You have used **%% token(s)** for the upcoming draw. Good luck!"
       argError: "The amount of tokens given is not correct. Check your token count with **. Token-info **"
     voiceMove:
       description: "Move all members of one voice chat to another"

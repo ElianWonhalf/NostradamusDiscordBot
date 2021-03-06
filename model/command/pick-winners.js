@@ -43,16 +43,16 @@ class pickWinners
             return await message.react(emojiPollNo);
         }
 
-        const appliedTokens = await MemberToken.getAppliedTokens();
+        const usedTokens = await MemberToken.getUsedTokens();
         let lotteryBox = [];
 
-        await Promise.all(appliedTokens.map(async memberAppliedTokens => {
-            const member = await Guild.discordGuild.members.fetch(memberAppliedTokens.user_id).catch(exception => {
+        await Promise.all(usedTokens.map(async memberUsedTokens => {
+            const member = await Guild.discordGuild.members.fetch(memberUsedTokens.user_id).catch(exception => {
                 Logger.error(exception.toString());
             });
 
             if (member) {
-                lotteryBox = lotteryBox.concat(new Array(memberAppliedTokens.amount_applied).fill(member.user));
+                lotteryBox = lotteryBox.concat(new Array(memberUsedTokens.amount_used).fill(member.user));
             }
         }));
 
@@ -77,11 +77,12 @@ class pickWinners
             .setTitle(`🏆 [Winners] 🏆`)
             .setTimestamp(new Date());
 
-        for (let i = 0; i < winners.length; i++) {
-            if (winners[i]) {
-                winnersEmbed.addField(`( ${i + 1} )`, `<@${winners[i].id}> - ${winners[i].username}#${winners[i].discriminator}`);
+
+        winners.forEach((winner, i) => {
+            if (winner) {
+                winnersEmbed.addField(`( ${i + 1} )`, `<@${winner.id}> - ${winner.username}#${winner.discriminator}`);
             }
-        }
+        });
 
         await message.channel.send(winnersEmbed);
 
@@ -100,7 +101,7 @@ class pickWinners
                 await sentMessage.reactions.removeAll();
 
                 if (collectedReactions.first().emoji === emojiPollYes) {
-                    await MemberToken.resetAppliedTokens();
+                    await MemberToken.resetUsedTokens();
                     sentMessage.edit('The lottery box has been emptied');
                 } else {
                     sentMessage.edit('the lottery box has not been emptied');

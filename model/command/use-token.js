@@ -1,4 +1,3 @@
-const Logger = require('@lilywonhalf/pretty-logger');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
@@ -40,11 +39,11 @@ class useToken
 
         await MemberToken.useTokens(message.author.id, args[0]);
 
-        const appliedTokenInfo = await MemberToken.getAppliedCount(message.author.id);
+        const usedTokenInfo = await MemberToken.getUsedCount(message.author.id);
 
         await message.react(emojiPollYes);
 
-        message.channel.send(trans('model.command.useToken.amountAppliedTokens', [appliedTokenInfo[0].amount_applied]));
+        message.channel.send(trans('model.command.useToken.amountUsedTokens', [usedTokenInfo[0].amount_used]));
     }
 }
 

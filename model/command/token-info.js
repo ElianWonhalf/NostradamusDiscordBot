@@ -47,6 +47,7 @@ class TokenInfo
         const tokenInfo = await MemberToken.getMemberTokenInfo(user.id);
         const currentTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].amount ?? 0) : 0;
         const allTimeTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].all_time_amount ?? 0) : 0;
+        const usedTokenAmount = tokenInfo.length > 0 ? (tokenInfo[0].amount_used ?? 0) : 0;
 
         const boardEmbed = new MessageEmbed()
             .setColor('#ffb8e6')
@@ -56,6 +57,7 @@ class TokenInfo
             .setDescription(trans('model.command.tokenInfo.reward'))
             .addField(trans('model.command.tokenInfo.tokens.currentTokenTitle'), trans('model.command.tokenInfo.tokens.currentTokenAmount', [currentTokenAmount]))
             .addField(trans('model.command.tokenInfo.tokens.allTimeTokenTitle'), trans('model.command.tokenInfo.tokens.allTimeTokenAmount', [allTimeTokenAmount]))
+            .addField(trans('model.command.tokenInfo.tokens.usedTokenTitle'), trans('model.command.tokenInfo.tokens.usedTokenAmount', [usedTokenAmount]))
             .addField(trans('model.command.tokenInfo.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setFooter(trans('model.command.tokenInfo.footerInfo'))
             .setTimestamp(new Date());
