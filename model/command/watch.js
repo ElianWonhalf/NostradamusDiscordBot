@@ -44,7 +44,7 @@ class Watch
 
                     args.forEach(arg => {
                         if (arg.match(/^[0-9]{16,18}$/u) !== null && !foundMemberIds.includes(arg)) {
-                            const user = new User(bot, { arg, bot: false });
+                            const user = new User(bot, { id: arg, bot: false });
                             foundMembers.push(user);
                         }
                     });
