@@ -370,7 +370,7 @@ model:
         usedTokenAmount: "You used **%%** token(s) for the next drawing!"
     tokenRain:
       description: "Offer tokens to those who react to the message"
-      begin: "Token's rain!!! React with Kwiziq"
+      begin: "Token rain! React with :kwiziq:"
       incoming: "Token's rain in **%%sec**"
       win: "**%%** win **%%** token(s)"
     trello:

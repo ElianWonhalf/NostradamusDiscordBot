@@ -279,8 +279,8 @@ model:
         usedTokenAmount: "T'as utilisé **%%** jeton(s) pour le prochain tirage au sort !"
     tokenRain:
       description: "Offre des jetons à ceux qui réagissent au message"
-      begin: "Pluie de jetons !!! Réagit avec Kwiziq"
-      incoming: "Pluie de jetons dans **%%sc**"
+      begin: "Pluie de jetons ! Réagit avec :kwiziq:"
+      incoming: "Pluie de jetons dans **%%s**"
       win: "**%%** a gagné **%%** jeton(s)"
     trombinoscope:
       description: "Explication du channel trombinoscope"
