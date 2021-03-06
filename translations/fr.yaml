@@ -263,6 +263,7 @@ model:
         tokenInfo: "Pour voir combien de jetons tu as gagnés"
         tokenHelp: "Tu es ici"
         luckyFox: "Pour essayer de gagner des jetons"
+        tokenUse: "Utilise tes jetons pour participer au prochain tirage au sort"
     tokenInfo:
       description: "Pour voir combien de jetons tu as gagnés"
       memberNotFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
@@ -274,6 +275,8 @@ model:
         currentTokenAmount: "T'as **%%** jeton(s) !"
         allTimeTokenTitle: "Au total"
         allTimeTokenAmount: "T'as gagné **%%** jeton(s) !"
+        usedTokenTitle: "Prochain tirage au sort"
+        usedTokenAmount: "T'as utilisé **%%** jeton(s) pour le prochain tirage au sort !"
     trombinoscope:
       description: "Explication du channel trombinoscope"
       reply: "\n**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies.\n"
@@ -284,7 +287,7 @@ model:
       description: "Retire un membre de la liste des membres surveillés"
     useToken:
       description: "Vous permet d'utiliser vos jetons pour participer à un tirage au sort"
-      amountAppliedTokens: "Tu as utilisé **%% jeton(s)** pour le prochain tirage au sort. Bonne chance !"
+      amountUsedTokens: "Tu as utilisé **%% jeton(s)** pour le prochain tirage au sort. Bonne chance !"
       argError: "La quantité de jetons donné n'est pas correcte. Vérifiez votre nombre de jeton avec **.token-info**"
     voiceMove:
       description: "Déplace tous les membres d'un channel vocal à un autre"

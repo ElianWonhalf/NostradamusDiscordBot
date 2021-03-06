@@ -18,7 +18,7 @@ const MemberToken = {
      * @returns {Promise}
      */
     getMemberTokenInfo: (snowflake) => {
-        return db.asyncQuery(`SELECT user_id, amount, all_time_amount, amount_applied FROM ${MemberToken.TABLE_NAME} WHERE user_id = ?`, [snowflake]);
+        return db.asyncQuery(`SELECT user_id, amount, all_time_amount, amount_used FROM ${MemberToken.TABLE_NAME} WHERE user_id = ?`, [snowflake]);
     },
 
     /**
@@ -131,15 +131,15 @@ const MemberToken = {
 
         if (membersTokenInfo[0] && amount > 0) {
             const newCurrentAmount = membersTokenInfo[0].amount - amount;
-            const newAppliedAmount = membersTokenInfo[0].amount_applied + amount;
+            const newUsedAmount = membersTokenInfo[0].amount_used + amount;
 
             await db.asyncQuery(
                 `
                     UPDATE ${MemberToken.TABLE_NAME}
-                    SET amount = ?, amount_applied = ?
+                    SET amount = ?, amount_used = ?
                     WHERE user_id = ?
                 `,
-                [newCurrentAmount, newAppliedAmount, snowflake]
+                [newCurrentAmount, newUsedAmount, snowflake]
             );
         }
     },
@@ -147,14 +147,14 @@ const MemberToken = {
     /**
      * @returns {Promise<Array>}
      */
-    getAppliedTokens: async () => {
+     getUsedTokens: async () => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         return db.asyncQuery(
             `
-                SELECT user_id, amount_applied
+                SELECT user_id, amount_used
                 FROM ${MemberToken.TABLE_NAME}
-                WHERE amount_applied > 0
+                WHERE amount_used > 0
             `
         );
     },
@@ -164,12 +164,12 @@ const MemberToken = {
      * 
      * @returns {Promise<Array>}
      */
-    getAppliedCount: async (snowflake) => {
+     getUsedCount: async (snowflake) => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         return db.asyncQuery(
             `
-                SELECT amount_applied
+                SELECT amount_used
                 FROM ${MemberToken.TABLE_NAME}
                 WHERE user_id = ?
             `,
@@ -183,14 +183,14 @@ const MemberToken = {
      *
      * @returns {Promise}
      */
-    resetAppliedTokens: async () => {
+     resetUsedTokens: async () => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         await db.asyncQuery(
             `
                 UPDATE ${MemberToken.TABLE_NAME}
-                SET amount_applied = 0
-                WHERE amount_applied > 0
+                SET amount_used = 0
+                WHERE amount_used > 0
             `
         );
     },
