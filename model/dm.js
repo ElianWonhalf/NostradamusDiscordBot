@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const Config = require('../config.json');
 const Guild = require('./guild');
 const Correspondence = require('./correspondence');
+const LogLevel = require('@lilywonhalf/pretty-logger/LogLevel');
 
 const GREETINGS = [
     'bonjour',
@@ -59,6 +60,11 @@ const DM = {
     parseMessage: async (message, isCommand, edit = false) => {
         if (message.guild === null && !isCommand && !DM.ignoredUserDMs.includes(message.author.id)) {
             const member = await Guild.getMemberFromMessage(message);
+
+            if (!member) {
+                return; 
+            }
+
             const embed = await Guild.messageToEmbed(message);
             const translationKey = edit ? 'model.dm.editNotification' : 'model.dm.notification';
             const needToCheckCorrespondence = !member.roles.cache.has(Config.roles.corresponding)

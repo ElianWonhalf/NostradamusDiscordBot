@@ -36,6 +36,7 @@ class TokenHelp
             .addField('.token-info', (trans('model.command.tokenHelp.commands.tokenInfo')))
             .addField('.token-help', (trans('model.command.tokenHelp.commands.tokenHelp')))
             .addField('.lucky-fox', (trans('model.command.tokenHelp.commands.luckyFox')))
+            .addField('.use-token', (trans('model.command.tokenHelp.commands.tokenUse')))
             .addField(trans('model.command.tokenHelp.announcementsInfo'), `➡${Guild.eventAnnouncementsChannel.toString()}⬅`)
             .setTimestamp(new Date());
 

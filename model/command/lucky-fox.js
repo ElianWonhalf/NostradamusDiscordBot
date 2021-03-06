@@ -186,6 +186,13 @@ function changeLongfoxTo(arg) {
             setupNewEmojis();
             break;
 
+        case 'ribbon' :
+            emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'ribbon3');
+            emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'ribbon2');
+            emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'ribbon1');
+            setupNewEmojis();
+            break;
+
         default :
             return;
     }
@@ -591,9 +598,7 @@ class LuckyFox
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
 
             if (totalToken > 0) {
-                for (let i = 0; i < totalToken; i++) {
-                    await MemberToken.add([message.author.id]);
-                }
+                await MemberToken.add([message.author.id], totalToken);
 
                 const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 
