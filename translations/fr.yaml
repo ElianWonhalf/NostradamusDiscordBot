@@ -277,6 +277,11 @@ model:
         allTimeTokenAmount: "T'as gagné **%%** jeton(s) !"
         usedTokenTitle: "Prochain tirage au sort"
         usedTokenAmount: "T'as utilisé **%%** jeton(s) pour le prochain tirage au sort !"
+    tokenRain:
+      description: "Offre des jetons à ceux qui réagissent au message"
+      begin: "Pluie de jetons !!! Réagit avec Kwiziq"
+      incoming: "Pluie de jetons dans **%%sc**"
+      win: "**%%** a gagné **%%** jeton(s)"
     trombinoscope:
       description: "Explication du channel trombinoscope"
       reply: "\n**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies.\n"

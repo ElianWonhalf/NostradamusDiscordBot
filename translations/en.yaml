@@ -368,6 +368,11 @@ model:
         allTimeTokenAmount: "You won **%%** token(s)!"
         usedTokenTitle: "Next drawing"
         usedTokenAmount: "You used **%%** token(s) for the next drawing!"
+    tokenRain:
+      description: "Offer tokens to those who react to the message"
+      begin: "Token's rain!!! React with Kwiziq"
+      incoming: "Token's rain in **%%sec**"
+      win: "**%%** win **%%** token(s)"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
       noAction: "You have to enter an action"
