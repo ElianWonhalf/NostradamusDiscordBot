@@ -4,6 +4,7 @@ const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const MemberToken = require('../member-token');
 const Guild = require('../guild');
+const Config = require('../../config.json');
 
 const emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'foxlong3');
 const emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'foxlong2');
@@ -133,7 +134,8 @@ class TokenBoard
     /**
      * @param {Message} message
      */
-    async process(message) {
+    async process(message, args) {
+        const acceptedArgsValues = ['mod', 'mods', 'modo', 'modos', 'modérateur', 'modérateurs', 'moderator', 'moderators'];
         let tokenRanking = await MemberToken.getCount();
 
         if (!tokenRanking) {
@@ -149,6 +151,11 @@ class TokenBoard
         }
 
         tokenRanking = tokenRanking.filter(row => row && row.member);
+
+        if (!args[0] || !acceptedArgsValues.includes(args[0])) {
+            tokenRanking = tokenRanking.filter(row => !row.member.roles.cache.has(Config.roles.mod));
+        }
+        
         maxPages = Math.ceil(tokenRanking.length / rowByPage);
 
         const boardEmbed = getEmbed(message, tokenRanking);

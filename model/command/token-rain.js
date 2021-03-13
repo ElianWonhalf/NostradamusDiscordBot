@@ -27,9 +27,12 @@ class TokenRain
      * @param {Message} message
      */
     async process(message) {
+        if (message.channel.type === 'dm') {
+            return;
+        }
+
         const emojiKwiziq = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
         let amountRepeat = 5;
-
         const sentMessage = await message.channel.send(trans('model.command.tokenRain.incoming', [amountRepeat]));
 
         for (let i = amountRepeat - 1; i > 0; i--) {
@@ -37,14 +40,18 @@ class TokenRain
         }
 
         await sentMessage.edit(trans('model.command.tokenRain.begin'));
-
         await sentMessage.react(emojiKwiziq);
 
         const reactFilter = (reaction) => reaction.emoji.name === emojiKwiziq.name;
 
-        sentMessage.awaitReactions(reactFilter, { time: 15 * SECOND }).then(collected => {
-            if (collected.size < 1) {
-                return;
+        sentMessage.awaitReactions(reactFilter, { time: 15 * SECOND }).then(async collected => {
+            await sentMessage.edit(trans('model.command.tokenRain.over'));
+
+            let acceptedReactionsCollected = collected.first().users.cache.filter(user => user.id !== sentMessage.author.id);
+
+            if (acceptedReactionsCollected.size < 1) {
+                sentMessage.reactions.removeAll();
+                return message.channel.send(trans('model.command.tokenRain.noWin'));
             }
 
             collected.first().users.cache.filter(user => user.id !== sentMessage.author.id).forEach(async user => {
