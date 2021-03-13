@@ -24,13 +24,17 @@ class AddToken
      * @param {Array} args
      */
     async process(message, args) {
+        if (message.channel.type === 'dm') {
+            return;
+        }
+        
         const emojiPollNo = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
         const member = await Guild.getMemberFromMessage(message);
         let searchResult;
         let amount = 1;
 
-        if (args[0] && parseInt(args[0]) && parseInt(args[0]) < 10000) {
-            amount = parseInt(args.shift());
+        if (args[args.length - 1] && parseInt(args[args.length - 1]) && parseInt(args[args.length - 1]) < 10000) {
+            amount = parseInt(args[args.length - 1]);
         }
 
         if (args.length > 0) {

@@ -238,7 +238,7 @@ model:
         longFoxSmall: "This longfox earned you **1** token!"
         longFoxMedium: "This longerfox earned you **2** tokens!!"
         longFoxLarge: "This superlongfox earned you **4** tokens!!!!"
-        luckyLeaf: "The four leaf clovers earned you **%%** token(s)!"
+        luckyLeaf: "The four-leaf clovers earned you **%%** token(s)!"
     modList:
       description: "Lists the current members of the moderation team"
       answer: "There are currently %% moderators:"
@@ -340,13 +340,13 @@ model:
         done: "Messages stat backfilling complete!"
     tokenBoard:
       description: "Check the token leaderboard"
-      reward: "Every token give you a chance to get picked!"
+      reward: "Every token gives you a chance to get picked!"
       announcementsInfo: "Check out the announcements!"
       footerInfo: "You're lost? [ .token-help ]"
       tokenRanking: "%% token(s)"
     tokenHelp:
       description: "For help with commands related to tokens"
-      reward: "Every token give you a chance to get picked!"
+      reward: "Every token gives you a chance to get picked!"
       announcementsInfo: "Check out the announcements!"
       commandList: "Here is the list of the commands related to tokens"
       commands:
@@ -358,11 +358,11 @@ model:
     tokenInfo:
       description: "To see how many tokens you have"
       memberNotFound: "I... Have no idea who that could be, sorry."
-      reward: "Every token give you a chance to get picked!"
+      reward: "Every token gives you a chance to get picked!"
       announcementsInfo: "Check out the announcements!"
       footerInfo: "You're lost? [ .token-help ]"
       tokens:
-        currentTokenTitle: "Actually"
+        currentTokenTitle: "Currently"
         currentTokenAmount: "You have **%%** token(s)!"
         allTimeTokenTitle: "In total"
         allTimeTokenAmount: "You won **%%** token(s)!"
@@ -371,7 +371,9 @@ model:
     tokenRain:
       description: "Offer tokens to those who react to the message"
       begin: "Token rain! React with :kwiziq:"
-      incoming: "Token's rain in **%%sec**"
+      incoming: "Token rain in **%%sec**"
+      noWin: "No one noticed the token rain :cat_sad:"
+      over: "The token rain is over."
       win: "**%%** win **%%** token(s)"
     trello:
       description: "Interact with Trello! %%trello (todo/vote/ping)"
@@ -387,7 +389,7 @@ model:
       description: "Lists the current tutors"
       answer: "There are currently %% tutors:"
     useToken:
-      description: "Allows you to use your tokens to participate in a prize draw"
+      description: "Allows tokens to be used to participate in a prize draw"
       amountUsedTokens: "You have used **%% token(s)** for the upcoming draw. Good luck!"
       argError: "The amount of tokens given is not correct. Check your token count with **. Token-info **"
     voiceMove:

@@ -560,6 +560,10 @@ class LuckyFox
      * @param {Message} message
      */
     async process(message, args) {
+        if (message.channel.type === 'dm') {
+            return;
+        }
+
         if (args.length > 0) {
             changeLongfoxTo(args[0]);
         }
