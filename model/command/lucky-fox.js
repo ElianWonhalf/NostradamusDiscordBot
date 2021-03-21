@@ -193,35 +193,35 @@ function changeLongfoxTo(arg) {
             setupNewEmojis();
             break;
 
-        case 'bath' :
+        case 'bath':
             emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'bath1');
             emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'bath2');
             emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'bath3');
             setupNewEmojis();
             break;
 
-        case 'honhon' :
+        case 'honhon':
             emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'honhon1');
             emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'honhon2');
             emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'honhon3');
             setupNewEmojis();
             break;
 
-        case 'peek' :
+        case 'peek':
             emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'peekfox1');
             emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'peekfox2');
             emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'peekfox3');
             setupNewEmojis();
             break;
 
-        case 'invader' :
+        case 'invader':
             emojiFoxBottom = bot.emojis.cache.find(emoji => emoji.name === 'invader1');
             emojiFoxBody = bot.emojis.cache.find(emoji => emoji.name === 'invader2');
             emojiFoxHead = bot.emojis.cache.find(emoji => emoji.name === 'invader3');
             setupNewEmojis();
             break;
 
-        default :
+        default:
             return;
     }
 }
