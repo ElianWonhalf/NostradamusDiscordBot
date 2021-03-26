@@ -1,3 +1,4 @@
+const Config = require('../../config.json');
 const Guild = require('../guild');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
