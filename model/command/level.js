@@ -52,6 +52,10 @@ class Level
             await member.roles.remove(levelRoles);
             await member.roles.add(targetRoleId);
 
+            if (!member.roles.cache.has(Config.roles.officialMember)) {
+                await member.roles.add(Config.roles.officialMember);
+            }
+
             Guild.memberModificationLogChannel.send(trans('model.command.level.logAction', [authorMember.user.username, member.id, targetRole.name], 'en'));
         }));
 
