@@ -20,7 +20,6 @@ module.exports = (oldPresence, newPresence) => {
 
     if (ActivityManager.hasNewActivity(newPresence)) {
         const state = newCustomStatus.state ? newCustomStatus.state : '';
-        const semiWords = Blacklist.getSemiWordsInString(state);
         const fullWords = Blacklist.getFullWordsInString(state);
         const formattedState = Blacklist.formatWordsInString(state);
 
@@ -36,14 +35,6 @@ module.exports = (oldPresence, newPresence) => {
             Guild.automodChannel.send(
                 trans(
                     'model.guild.customStatusFullBlacklist',
-                    [member.toString(), formattedState],
-                    'en'
-                )
-            )
-        } else if (semiWords.length > 0) {
-            Guild.automodChannel.send(
-                trans(
-                    'model.guild.customStatusSemiBlacklist',
                     [member.toString(), formattedState],
                     'en'
                 )

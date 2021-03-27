@@ -14,7 +14,6 @@ module.exports = (oldUser, newUser) => {
             { type: StatProfileChange.constructor.TYPE_USERNAME }
         );
 
-        const semiWords = Blacklist.getSemiWordsInString(newUser.username);
         const fullWords = Blacklist.getFullWordsInString(newUser.username);
         const formattedUsername = Blacklist.formatWordsInString(newUser.username);
 
@@ -22,14 +21,6 @@ module.exports = (oldUser, newUser) => {
             Guild.automodChannel.send(
                 trans(
                     'model.guild.usernameFullBlacklist',
-                    [newUser.toString(), formattedUsername],
-                    'en'
-                )
-            )
-        } else if (semiWords.length > 0) {
-            Guild.automodChannel.send(
-                trans(
-                    'model.guild.usernameSemiBlacklist',
                     [newUser.toString(), formattedUsername],
                     'en'
                 )
