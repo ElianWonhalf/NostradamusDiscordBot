@@ -89,6 +89,10 @@ model:
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
     edit:
       description: "Modifie un message envoyé par le bot"
+    englishLessMode:
+      description: "Pour activer/désactiver au salon anglais."
+      enabled: "Tu n'as maintenant plus accès à %%."
+      disabled: "Tu as de nouveau accès à %%."
     eval:
       description: "Exécute du code JavaScript ! Spoopy ! 🎃 🦇 👻 ☠ 🕷"
     events:
