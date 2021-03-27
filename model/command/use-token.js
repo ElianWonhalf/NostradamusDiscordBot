@@ -11,7 +11,7 @@ class useToken
             return useToken.instance;
         }
 
-        this.aliases = ['usetoken', 'uset'];
+        this.aliases = ['usetoken', 'uset', 'use-tokens', 'usetokens'];
         this.category = CommandCategory.RESOURCE;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
