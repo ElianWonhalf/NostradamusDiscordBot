@@ -11,7 +11,6 @@ const nicknameChangedHandler = (oldMember, newMember) => {
         {type: StatProfileChange.constructor.TYPE_NICKNAME}
     );
 
-    const semiWords = Blacklist.getSemiWordsInString(newMember.nickname);
     const fullWords = Blacklist.getFullWordsInString(newMember.nickname);
     const formattedNickname = Blacklist.formatWordsInString(newMember.nickname);
 
@@ -19,14 +18,6 @@ const nicknameChangedHandler = (oldMember, newMember) => {
         Guild.automodChannel.send(
             trans(
                 'model.guild.nicknameFullBlacklist',
-                [newMember.toString(), formattedNickname],
-                'en'
-            )
-        )
-    } else if (semiWords.length > 0) {
-        Guild.automodChannel.send(
-            trans(
-                'model.guild.nicknameSemiBlacklist',
                 [newMember.toString(), formattedNickname],
                 'en'
             )

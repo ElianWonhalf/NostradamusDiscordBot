@@ -441,11 +441,8 @@ model:
     notification: "%% sent a DM:"
   guild:
     customStatusUpdate: ":status: %%: %%"
-    customStatusSemiBlacklist: ":roocop: %% updated their custom status and it triggered the **semi** blacklist: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
-    usernameSemiBlacklist: ":roocop: %% updated their username and it triggered the **semi** blacklist: %%"
     usernameFullBlacklist: ":ban: %% updated their username and it triggered the **full** blacklist: %%"
-    nicknameSemiBlacklist: ":roocop: %% updated their nickname and it triggered the **semi** blacklist: %%"
     nicknameFullBlacklist: ":ban: %% updated their nickname and it triggered the **full** blacklist: %%"
     patreonBoosterAnnouncement: "\n:aww: %% just boosted the server via Patreon :yay: !"
   hardcoreLearning:
