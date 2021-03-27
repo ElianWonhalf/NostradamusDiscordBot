@@ -310,6 +310,13 @@ const Guild = {
     /**
      * @param {GuildMember} member
      */
+    isMemberSubredditMod: (member) => {
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.rfrench);
+    },
+
+    /**
+     * @param {GuildMember} member
+     */
     isMemberSoft: (member) => {
         return member !== undefined && member !== null && member.roles.cache.has(Config.roles.soft);
     },

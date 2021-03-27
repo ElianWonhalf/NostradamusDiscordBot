@@ -3,6 +3,22 @@ const Guild = require('./guild');
 
 const CommandPermission = {
     /**
+     * @param {Array<Promise>} comparators
+     * @returns {Function}
+     */
+    or: (...comparators) => {
+        return async (message) => {
+            let result = false;
+
+            for (const comparator of comparators) {
+                result |= await comparator(message.member);
+            }
+
+            return result;
+        };
+    },
+
+    /**
      * @param {Message} message
      * @returns {Promise.<boolean>}
      */
