@@ -16,7 +16,7 @@ class AddToken
 
         this.aliases = ['addtoken', 'addt'];
         this.category = CommandCategory.RESOURCE;
-        this.isAllowedForContext = CommandPermission.isMommy;
+        this.isAllowedForContext = CommandPermission.or(CommandPermission.isMommy, CommandPermission.isMemberTokensMastery);
     }
 
     /**
@@ -62,7 +62,7 @@ class AddToken
             return message.react(emojiPollNo);
         }
 
-        await MemberToken.add(searchResult.map(member => member.id), amount).then(async () => {
+        await MemberToken.add(searchResult.map(member => member.id), true, amount).then(async () => {
             const emoji = bot.emojis.cache.find(emoji => emoji.name === 'kwiziq');
             const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 

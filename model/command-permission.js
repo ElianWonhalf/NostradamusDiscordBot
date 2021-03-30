@@ -82,6 +82,16 @@ const CommandPermission = {
      * @param {Message} message
      * @returns {Promise.<boolean>}
      */
+    isMemberTokensMastery: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberTokensMastery(member);
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
     isMemberAnimator: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
