@@ -617,20 +617,20 @@ class LuckyFox
             .setFooter(trans('model.command.luckyFox.footerInfo'))
             .setTimestamp(new Date());
 
-        message.channel.send(embed).then(async botMessage => {
+        message.channel.send(initialRandomEmojis.shift(), embed).then(async botMessage => {
+            initialRandomEmojis.pop();
             for (let emoji of initialRandomEmojis) {
                 await displayEmoji(botMessage, emoji);
             }
 
             const editedEmbed = await editEmbedWithResult(message, result);
 
-            await botMessage.edit(editedEmbed);
-            await botMessage.edit(`${randomEmojis[0]}${randomEmojis[1]}${randomEmojis[2]}${randomEmojis[3]}${randomEmojis[4]}`);
+            await botMessage.edit(`${randomEmojis[0]}${randomEmojis[1]}${randomEmojis[2]}${randomEmojis[3]}${randomEmojis[4]}`, editedEmbed);
 
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
 
             if (totalToken > 0) {
-                await MemberToken.add([message.author.id], totalToken);
+                await MemberToken.add([message.author.id], true, totalToken);
 
                 const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 
