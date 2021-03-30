@@ -11,7 +11,7 @@ const CommandPermission = {
             let result = false;
 
             for (const comparator of comparators) {
-                result |= await comparator(message.member);
+                result |= await comparator(message);
             }
 
             return result;
@@ -72,6 +72,16 @@ const CommandPermission = {
      * @param {Message} message
      * @returns {Promise.<boolean>}
      */
+    isMemberSoft: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberSoft(member);
+    },
+
+    /**
+     * @param {Message} message
+     * @returns {Promise.<boolean>}
+     */
     isMemberAnimator: async (message) => {
         const member = await Guild.getMemberFromMessage(message);
 
@@ -86,6 +96,16 @@ const CommandPermission = {
         const member = await Guild.getMemberFromMessage(message);
 
         return await Guild.isMemberMod(member) || await Guild.isMemberSoft(member) || await Guild.isMemberAnimator(member);
+    },
+
+    /**
+     * @param {Message} permission
+     * @returns {Promise.<boolean>}
+     */
+    isMemberSubredditMod: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberSubredditMod(member);
     },
 
     /**
