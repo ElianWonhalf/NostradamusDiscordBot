@@ -124,7 +124,7 @@ const botProcess = () => {
 
         const minute = require('./event/system/minute');
 
-        setInterval(minute, 60 * 1000);
+        setInterval(minute, MINUTE);
         minute();
     });
 

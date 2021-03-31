@@ -1,5 +1,6 @@
 const Guild = require('../../model/guild');
 const StatVocal = require('../../model/stat-vocal');
+const Easter = require('../../model/easter');
 
 module.exports = () => {
     Guild.discordGuild.members.cache.filter(member => {
@@ -7,4 +8,6 @@ module.exports = () => {
     }).forEach(member => {
         StatVocal.save(member.id, '+1');
     });
+
+    Easter.minuteHandler();
 };

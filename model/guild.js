@@ -69,7 +69,13 @@ const Guild = {
     learntLanguageChannel: null,
 
     /** {TextChannel} */
+    learntLanguageCloneChannel: null,
+
+    /** {TextChannel} */
     otherLanguageChannel: null,
+
+    /** {TextChannel} */
+    otherLanguagesChannel: null,
 
     /** {TextChannel} */
     classroom1Channel: null,
@@ -146,7 +152,9 @@ const Guild = {
         Guild.automodChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.automod);
         Guild.beginnerChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.beginner);
         Guild.learntLanguageChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.learntLanguage);
+        Guild.learntLanguageCloneChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.learntLanguageClone);
         Guild.otherLanguageChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.otherLanguage);
+        Guild.otherLanguagesChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.otherLanguages);
         Guild.classroom1Channel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.classroom1);
         Guild.classroom2Channel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.classroom2);
         Guild.classroom3Channel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.classroom3);
