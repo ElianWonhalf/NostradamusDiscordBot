@@ -1,7 +1,6 @@
 const Logger = require('@lilywonhalf/pretty-logger');
 const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
-const { isMommy } = require('../command-permission');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
 const MemberToken = require('../member-token');
