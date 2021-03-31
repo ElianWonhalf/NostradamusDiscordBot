@@ -126,7 +126,7 @@ class TokenBoard
             return TokenBoard.instance;
         }
 
-        this.aliases = ['tokenboard', 'tboard'];
+        this.aliases = ['tokenboard', 'tboard', 'board-token', 'boardtoken'];
         this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }

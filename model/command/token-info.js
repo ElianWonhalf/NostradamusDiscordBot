@@ -18,7 +18,7 @@ class TokenInfo
             return TokenInfo.instance;
         }
 
-        this.aliases = ['tokeninfo', 'tinfo'];
+        this.aliases = ['tokeninfo', 'tinfo', 'info-token', 'infotoken'];
         this.category = CommandCategory.FUN;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
