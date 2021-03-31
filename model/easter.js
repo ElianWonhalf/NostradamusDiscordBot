@@ -18,7 +18,7 @@ class Easter
         }
 
         this.minuteIncrement = 0;
-        this.triggerTime = 0;
+        this.triggerTime = 5;
         this.emojiBunny = bot.emojis.cache.find(emoji => emoji.name === 'runningRabbit');
         this.emojiBunnyEars = bot.emojis.cache.find(emoji => emoji.name === 'bunny');
         this.possibleChannels = [
@@ -62,7 +62,7 @@ class Easter
      * 
      * @param {Int} amount
      * 
-     * @returns
+     * @returns {Object[Array channels,Array eggs]}
      */
     async getData(amount = 2) {
         let possibleChannels = this.possibleChannels.filter(() => true);
