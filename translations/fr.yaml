@@ -325,6 +325,12 @@ model:
     noTime: "*aucun*"
   dm:
     greetingsAnswer: "Salut ! Je ne suis qu'un bot, donc tu ne peux pas vraiment discuter avec moi. De plus, garde à l'esprit que chaque message que tu m'envoies est transmis aux modérateurs !"
+  easter:
+    bunnyLeave: "Peu importe ce que c'était, ça s'est enfui ..."
+    catchIt: "Attrapez-le en réagissant à ce message !"
+    eatEasterEgg: "En le mangeant, vous trouvez **%%** jeton(s) à l'intérieur !"
+    foundEasterEgg: "Vous avez trouvé un **œuf de Pâques** !"
+    somethingRunning: "Il y a quelque chose qui court ..."
   guild:
     patreonBoosterAnnouncement: "\n:aww: %% vient de booster le serveur via Patreon :yay: !"
   hardcoreLearning:

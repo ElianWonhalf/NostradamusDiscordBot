@@ -47,6 +47,11 @@ class TokenRain
         sentMessage.awaitReactions(reactFilter, { time: 15 * SECOND }).then(async collected => {
             await sentMessage.edit(trans('model.command.tokenRain.over'));
 
+            if (!collected.first() || !collected.first().users) {
+                sentMessage.reactions.removeAll();
+                return message.channel.send(trans('model.command.tokenRain.noWin'));
+            }
+
             let acceptedReactionsCollected = collected.first().users.cache.filter(user => user.id !== sentMessage.author.id);
 
             if (acceptedReactionsCollected.size < 1) {

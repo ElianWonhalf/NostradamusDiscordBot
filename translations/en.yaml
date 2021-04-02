@@ -443,6 +443,12 @@ model:
     greetingsAnswer: "Hello! I am only a bot, so you cannot really chat with me. Also, keep in mind that everything you send me is sent to the moderators!"
     greetingsAnswerSent: "I just told that person that I am just a bot and maybe just a greeting isn't very relevant."
     notification: "%% sent a DM:"
+  easter:
+    bunnyLeave: "Whatever it was, it ran away..."
+    catchIt: "Catch it by reacting to this message!"
+    eatEasterEgg: "While eating it, you found **%%** token(s) inside!"
+    foundEasterEgg: "You found an **Easter egg**!"
+    somethingRunning: "Something is running around..."
   guild:
     customStatusUpdate: ":status: %%: %%"
     customStatusFullBlacklist: ":ban: %% updated their custom status and it triggered the **full** blacklist: %%"
