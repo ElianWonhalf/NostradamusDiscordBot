@@ -18,7 +18,7 @@ class Easter
         }
 
         this.minuteIncrement = 0;
-        this.triggerTime = 0;//TODO 5;
+        this.triggerTime = 5;
         this.emojiBunny = bot.emojis.cache.find(emoji => emoji.name === 'runningRabbit');
         this.emojiBunnyEars = bot.emojis.cache.find(emoji => emoji.name === 'bunny');
         this.possibleChannels = [
@@ -51,7 +51,7 @@ class Easter
 
         if (this.minuteIncrement >= this.triggerTime) {
             this.minuteIncrement = 0;
-            this.triggerTime = 1;//TODO Math.ceil(Math.random() * 20) + 10;
+            this.triggerTime =Math.ceil(Math.random() * 20) + 10;
             const data = await this.getData();
 
             this.process(data);
