@@ -630,7 +630,7 @@ class LuckyFox
             const totalToken = result.tokenAmount + result.luckyLeafAmount;
 
             if (totalToken > 0) {
-                await MemberToken.add([message.author.id], totalToken);
+                await MemberToken.add([message.author.id], true, totalToken);
 
                 const chatPermissionOverwrites = Guild.eventChatChannel.permissionOverwrites.get(Guild.discordGuild.roles.everyone.id);
 
