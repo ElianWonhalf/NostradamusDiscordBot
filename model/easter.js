@@ -107,13 +107,18 @@ class Easter
                 }
     
                 const amountToken = Math.ceil(Math.random() * 3);
-    
-                await collected.first().users.cache.filter(user => user.id !== sentMessage.author.id).forEach(async user => {
+                let winnersName = '';
+
+                await acceptedReactionsCollected.forEach(async user => {
+                    winnersName += ` - ${user.username}`;
                     await MemberToken.add([user.id], amountToken);
                 });
-    
+
+                sentMessage.reactions.removeAll();
+
                 return sentMessage.edit(
                     new MessageEmbed()
+                        .setDescription(winnersName)
                         .addField(trans('model.easter.foundEasterEgg'), trans('model.easter.eatEasterEgg', [amountToken]))
                         .setThumbnail(data.eggs[i].url)
                 );
