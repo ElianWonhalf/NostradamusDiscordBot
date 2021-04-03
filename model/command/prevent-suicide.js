@@ -12,7 +12,7 @@ class PreventSuicide
             return PreventSuicide.instance;
         }
 
-        this.aliases = ['preventsuicide', 'ps', 'suicide'];
+        this.aliases = [];
         this.category = CommandCategory.BOT_MANAGEMENT;
         this.isAllowedForContext = CommandPermission.isMemberModOrSoft;
     }
