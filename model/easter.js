@@ -115,14 +115,13 @@ class Easter
                 }
     
                 const amountToken = Math.ceil(Math.random() * 3);
-                let winnersName = '';
+                let winnersName = acceptedReactionsCollected.map(user => user.username).join(' - ');
 
-                await acceptedReactionsCollected.forEach(async user => {
-                    winnersName += ` - ${user.username}`;
+                await acceptedReactionsCollected.map(async user => {
                     await MemberToken.add([user.id], amountToken);
                 });
 
-                sentMessage.reactions.removeAll();
+                await sentMessage.reactions.removeAll();
                 this.timeoutDeleteMessage(sentMessage, 30);
 
                 return sentMessage.edit(
