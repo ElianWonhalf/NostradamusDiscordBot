@@ -51,7 +51,7 @@ class Easter
 
         if (this.minuteIncrement >= this.triggerTime) {
             this.minuteIncrement = 0;
-            this.triggerTime =Math.ceil(Math.random() * 20) + 10;
+            this.triggerTime = Math.ceil(Math.random() * 20) + 10;
             const data = await this.getData();
 
             this.process(data);
