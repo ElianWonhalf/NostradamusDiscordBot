@@ -64,7 +64,7 @@ class Easter
      * 
      * @returns {Object[Array channels,Array eggs]}
      */
-    async getData(amount = 2) {
+    async getData(amount = 1) {
         let possibleChannels = this.possibleChannels.filter(() => true);
         let possibleEggs = this.possibleEggs.filter(() => true);
         const result = {
@@ -83,6 +83,12 @@ class Easter
         return result;
     }
 
+    timeoutDeleteMessage(message, seconde = 30) {
+        setTimeout(function() {
+            message.delete();
+        }, seconde * SECOND);
+    }
+
     /**
      * @param {Object} data
      */
@@ -96,6 +102,7 @@ class Easter
             sentMessage.awaitReactions(reactFilter, { time: 10 * SECOND }).then(async collected => {
                 if (!collected.first() || !collected.first().users) {
                     sentMessage.reactions.removeAll();
+                    this.timeoutDeleteMessage(sentMessage, 30);
                     return sentMessage.edit(this.embedTheBunnyRunAway);
                 }
 
@@ -103,6 +110,7 @@ class Easter
     
                 if (acceptedReactionsCollected.size < 1) {
                     sentMessage.reactions.removeAll();
+                    this.timeoutDeleteMessage(sentMessage, 30);
                     return sentMessage.edit(this.embedTheBunnyRunAway);
                 }
     
@@ -115,6 +123,7 @@ class Easter
                 });
 
                 sentMessage.reactions.removeAll();
+                this.timeoutDeleteMessage(sentMessage, 30);
 
                 return sentMessage.edit(
                     new MessageEmbed()
