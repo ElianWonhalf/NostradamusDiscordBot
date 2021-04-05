@@ -3,7 +3,7 @@ learntLanguage:
   french: "French"
 
 bot:
-  welcomeMessage: "\n\n**__English__**\n> Hello %% and welcome to the %% server! **React** to this message with :alogo:, like I just did! This will be our main method of interaction :) ."
+  welcomeMessage: "\n\n**__English__**\n> Hello %% and welcome to the %% server! **React** to this message with :alogo:, like I just did! This will be our main method of interaction :) .\nCannot react? Restart or update your app"
 model:
   command:
     notOnServer: "sorry, %learntLanguage.english% you do not seem to be on the server."

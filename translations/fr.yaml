@@ -3,7 +3,7 @@ learntLanguage:
   french: "français"
 
 bot:
-  welcomeMessage: "\n\n**__Français__**\n> Bonjour %% et bienvenue sur le serveur %% ! **Réagis** à ce message avec :alogo: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) ."
+  welcomeMessage: "\n\n**__Français__**\n> Bonjour %% et bienvenue sur le serveur %% ! **Réagis** à ce message avec :alogo: comme je viens de le faire ! Ce sera notre principale manière d'interagir :) .\nTu n'arrives pas à réagir ? Redémarre ou mets à jour ton application"
 model:
   command:
     notOnServer: "désolé, tu ne sembles pas être sur le serveur."
