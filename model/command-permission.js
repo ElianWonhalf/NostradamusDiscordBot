@@ -109,6 +109,16 @@ const CommandPermission = {
     },
 
     /**
+     * @param {Message} permission
+     * @returns {Promise.<boolean>}
+     */
+    isMemberTutor: async (message) => {
+        const member = await Guild.getMemberFromMessage(message);
+
+        return await Guild.isMemberTutor(member);
+    },
+
+    /**
      * @param {string} permission
      * @returns {function}
      */

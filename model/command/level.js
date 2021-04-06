@@ -14,7 +14,12 @@ class Level
 
         this.aliases = ['niveau'];
         this.category = CommandCategory.ROLE;
-        this.isAllowedForContext = CommandPermission.or(CommandPermission.isMemberMod, CommandPermission.isMemberSoft, CommandPermission.isMemberSubredditMod);
+        this.isAllowedForContext = CommandPermission.or(
+            CommandPermission.isMemberMod,
+            CommandPermission.isMemberSoft,
+            CommandPermission.isMemberSubredditMod,
+            CommandPermission.isMemberTutor,
+        );
     }
 
     /**
