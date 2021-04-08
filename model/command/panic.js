@@ -49,8 +49,10 @@ class Panic
 
         if (enabled) {
             permissions = permissions.remove('SEND_MESSAGES');
+            permissions = permissions.remove('SPEAK');
         } else {
             permissions = permissions.add('SEND_MESSAGES');
+            permissions = permissions.add('SPEAK');
         }
 
         officialMemberRole.setPermissions(permissions);
