@@ -4,7 +4,6 @@ const Blacklist = require('../../model/blacklist');
 const Command = require('../../model/command');
 const DM = require('../../model/dm');
 const HardcoreLearning = require('../../model/hardcore-learning');
-const SocialNetworkIntegration = require('../../model/social-network-integration');
 const WatchedMember = require('../../model/watched-member');
 const StatMessages = require('../../model/stat-messages');
 const Guild = require('../../model/guild');
@@ -34,7 +33,6 @@ module.exports = async (message) => {
         }
 
         if (message.guild !== null) {
-            SocialNetworkIntegration.handleMessage(message);
             Blacklist.parseMessage(message);
 
             StatMessages.save(message.author.id, '+1');

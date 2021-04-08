@@ -8,15 +8,6 @@
         "database": "",
         "charset": "utf8mb4_general_ci"
     },
-    "socialMedia": {
-        "twitter": {
-            "baseURL": "https://api.twitter.com/1.1/",
-            "apiKey": "",
-            "apiSecretKey": "",
-            "accessToken": "",
-            "accessTokenSecret": ""
-        }
-    },
     "trello": {
         "key": "",
         "token": ""

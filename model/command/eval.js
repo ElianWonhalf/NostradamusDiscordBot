@@ -15,9 +15,7 @@ const HardcoreLeaning = require('../hardcore-learning');
 const Language = require('../language');
 const MemberRolesFlow = require('../member-roles-flow');
 const ModerationLog = require('../moderation-log');
-const SocialNetworkIntegration = require('../social-network-integration');
 const Translator = require('../translator');
-const TwitterUtils = require('../twitter-utils');
 const VoiceSynthesizer = require('../voice-synthesizer');
 const WatchedMember = require('../watched-member');
 

@@ -22,7 +22,6 @@
     "mysql": "^2.18.1",
     "node-opus": "^0.3.3",
     "rss-parser": "^3.10.0",
-    "then-request": "^6.0.2",
-    "twit": "^2.2.11"
+    "then-request": "^6.0.2"
   }
 }
