@@ -1,3 +1,4 @@
+const { User } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
@@ -44,38 +45,39 @@ class Info
                 target = bot.users.cache.get(result.foundMembers[0].id);
             } catch (error) {
                 target = null;
+
+                if (message.content.match(/[0-9]{16,19}/u) !== null) {
+                    const ids = message.content.match(/[0-9]{16,19}/gu);
+                    target = new User(bot, { id: ids[0], bot: false });
+                }
             }
         }
 
-        if (target !== null) {
-            const action = args.length > 0 ? args.shift() : 'info';
+        const action = args.length > 0 ? args.shift() : 'info';
 
-            switch (action) {
-                case 'username':
-                    (cachelessRequire('./info/usernames.js'))(message, target);
-                    break;
+        switch (action) {
+            case 'username':
+                (cachelessRequire('./info/usernames.js'))(message, target);
+                break;
 
-                case 'nickname':
-                    (cachelessRequire('./info/nicknames.js'))(message, target);
-                    break;
+            case 'nickname':
+                (cachelessRequire('./info/nicknames.js'))(message, target);
+                break;
 
-                case 'avatar':
-                    (cachelessRequire('./info/nicknames.js'))(message, target);
-                    break;
+            case 'avatar':
+                (cachelessRequire('./info/avatars.js'))(message, target);
+                break;
 
-                case 'info':
-                case 'usernames':
-                case 'nicknames':
-                case 'avatars':
-                    (cachelessRequire('./info/' + action + '.js'))(message, target);
-                    break;
+            case 'info':
+            case 'usernames':
+            case 'nicknames':
+            case 'avatars':
+                (cachelessRequire('./info/' + action + '.js'))(message, target);
+                break;
 
-                default:
-                    (cachelessRequire('./info/info.js'))(message, target);
-                    break;
-            }
-        } else {
-            message.reply(trans('model.command.info.notFound'));
+            default:
+                (cachelessRequire('./info/info.js'))(message, target);
+                break;
         }
     }
 }
