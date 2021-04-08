@@ -132,6 +132,11 @@ const getMemberJoinedDate = async (member) => {
  * @param {User|GuildMember} target
  */
 module.exports = async (message, target) => {
+    if (target === null) {
+        message.reply(trans('model.command.info.info.notFound'));
+        return;
+    }
+
     const suffix = target.nickname !== null && target.nickname !== undefined ? ` aka ${target.nickname}` : '';
     const information = [];
     const user = target.user ? target.user : target;
