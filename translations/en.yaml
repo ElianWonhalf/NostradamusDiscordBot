@@ -131,10 +131,6 @@ model:
       notFound: "I... Have no idea who that could be, sorry."
     edit:
       description: "Edit a message sent by the bot"
-    englishLessMode:
-      description: "To toggle access to the anglais channel"
-      enabled: "You don't have access to %% anymore."
-      disabled: "You have access to %% again."
     eval:
       description: "Execute JavaScript code! Spoopy! 🎃 🦇 👻 ☠ 🕷"
     events:
