@@ -592,8 +592,14 @@ const OnDemandVC = {
         const memberPermissionLevels = new Discord.Collection();
         const permissionLevelRoles = Guild.permissionLevels.keyArray().map(roleID => Guild.discordGuild.roles.cache.get(roleID));
         let highestPermissionLevelRole;
+        let eligibleMembers = channels[1].members.filter(member => member.id !== currentHostMember.id);
+        const eligibleHearingMembers = eligibleMembers.filter(member => !member.voice.deaf);
 
-        channels[1].members.filter(member => member.id !== currentHostMember.id).each(member => {
+        if (eligibleHearingMembers.size > 0) {
+            eligibleMembers = eligibleHearingMembers;
+        }
+
+        eligibleMembers.each(member => {
             highestPermissionLevelRole = null;
             const memberPermissionLevelRoles = member.roles.cache.array().filter(role => permissionLevelRoles.includes(role));
 
