@@ -8,6 +8,4 @@ module.exports = () => {
     }).forEach(member => {
         StatVocal.save(member.id, '+1');
     });
-
-    Easter.minuteHandler();
 };
