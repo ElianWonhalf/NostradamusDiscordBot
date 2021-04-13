@@ -1,6 +1,5 @@
 const Guild = require('../../model/guild');
 const StatVocal = require('../../model/stat-vocal');
-const Easter = require('../../model/easter');
 
 module.exports = () => {
     Guild.discordGuild.members.cache.filter(member => {
