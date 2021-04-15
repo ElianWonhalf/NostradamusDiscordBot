@@ -168,7 +168,7 @@ model:
       embedTitle: "Help command"
     homework:
       description: "Explains rule 2 of our server"
-      reply: "\nThis server is for learning, and not meant as a tool for cheating on academic assignments. Homework help is not allowed. You can ask about concepts related to homework, but no specific homework questions should be discussed.\n"
+      reply: "\nThis server is for learning and is not meant as a tool for cheating on academic assignments. No one is going to do your homework for you; however, we can provide resources so you can correct your own mistakes.\n"
     info:
       description: "Get information about you (no parameter) or about another member"
       modIntroduction: "*\"Recently\"* implies *\"In the last two weeks\"*.\nPart of the data may not be representative of the reality if the member is old."
