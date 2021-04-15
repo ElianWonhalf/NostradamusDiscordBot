@@ -98,6 +98,9 @@ model:
         memberStats: "%%: Messages sent: %%; Joined: %%"
         confirm: "Does this seem right, should I post it in %%?"
         success: "Message successfully posted in %%!"
+        successDm:
+          content: "When you've chosen the person you'd like to correspond with, send a message to Nostradamus"
+          failure: "Could not send a DM to %%"
         cancelled: "Edit: :pollno: reaction detected, will not send."
       wait:
         dm: "\nOk, we’ll contact them and we’ll let you know!\n"
