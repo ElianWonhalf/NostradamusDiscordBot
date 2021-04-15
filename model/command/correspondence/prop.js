@@ -41,13 +41,13 @@ module.exports = async (message, args) => {
                     message.react(emojiWaitYes);
                 }).catch((exception) => {
                     message.react(emojiWaitNo);
-                    message.reply(trans('model.command.correspondence.prop.errorWait', [picker], 'en'));
+                    message.reply(trans('model.command.correspondence.error.wait', [picker], 'en'));
                     Logger.exception(exception);
                 });
             }).catch(async (exception) => {
                 const emojiPropNo = bot.emojis.cache.find(emoji => emoji.name === 'propno');
                 message.react(emojiPropNo);
-                const repliedMessage = await message.reply(trans('model.command.correspondence.prop.errorProp', [picked, picker], 'en'));
+                const repliedMessage = await message.reply(trans('model.command.correspondence.error.prop', [picked, picker], 'en'));
                 Logger.exception(exception);
 
                 const emojiPollYes = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
@@ -57,7 +57,7 @@ module.exports = async (message, args) => {
 
                 await repliedMessage.react(emojiPollYes);
                 await repliedMessage.react(emojiPollNo);
-                
+
                 repliedMessage.awaitReactions(reactFilter, { max: 1, maxEmojis: 1, time: 15 * MINUTE }).then(async collectedReactions => {
                     if (!collectedReactions.first()) {
                         repliedMessage.reactions.removeAll();
@@ -70,7 +70,7 @@ module.exports = async (message, args) => {
                                 message.react(emojiWaitYes);
                             }).catch((exception) => {
                                 message.react(emojiWaitNo);
-                                message.reply(trans('model.command.correspondence.prop.errorWait', [picker], 'en'));
+                                message.reply(trans('model.command.correspondence.error.wait', [picker], 'en'));
                                 Logger.exception(exception);
                             });
                         }
