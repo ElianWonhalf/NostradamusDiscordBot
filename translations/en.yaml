@@ -94,6 +94,8 @@ model:
       prop:
         dm: "\nHey there! %% would like to be your correspondent. Here’s a link to their introduction: <%%> (if the link doesn’t work for you, you can also find it in %%). Let us know if you accept. If you do, we will validate your correspondence.\n"
         dmWithoutLink: "\nHey there! %% would like to be your correspondent. You can find their introduction in %%. Let us know if you accept. If you do, we will validate your correspondence.\n"
+        errorProp: "Could not send proposition message by DM to %%. Send waiting message to %% anyway?"
+        errorWait: "Could not send waiting message by DM to %%."
       valid:
         memberStats: "%%: Messages sent: %%; Joined: %%"
         confirm: "Does this seem right, should I post it in %%?"
