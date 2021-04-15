@@ -4,7 +4,6 @@ const Config = require('../../../config.json');
 const CommandPermission = require('../../command-permission');
 const Guild = require('../../guild');
 const Correspondence = require('../../correspondence');
-const StatMessages = require('../../stat-messages');
 
 const confirmEmoji = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
 const cancelEmoji = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
@@ -27,6 +26,14 @@ const reactionHandler = (member, destChannel, toPost) => {
                     embed: reaction.message.embeds[0].setColor(0x00FF00)
                 }
             );
+
+            const lang = Guild.isMemberNative(member) || Guild.isMemberTutor(member) ? 'fr' : null;
+            member.send(
+                trans('model.command.correspondence.valid.successDm.content', [], lang)
+            ).catch((exception) => {
+                Guild.modDMsChannel.send(trans('model.command.correspondence.valid.successDm.failure', [member], 'en'));
+                Logger.exception(exception);
+            });
         } else {
             await reaction.message.reactions.removeAll();
             reaction.message.edit(
