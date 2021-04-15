@@ -108,6 +108,8 @@ model:
         missingAction: "You have to specify an action."
         notEnoughArgs: "Not enough arguments. Required: %%"
         dm: "Could not send a DM to %%"
+        prop: "Could not send proposition message by DM to %%. Send waiting message to %% anyway?"
+        wait: "Could not send waiting message by DM to %%."
         memberNotFound: "I... Have no idea who that could be, sorry."
         badFormat: "The command was incorrectly formatted."
         introductionNotFound: "The introduction for the member %% could not be found."
