@@ -11,7 +11,7 @@ module.exports = (oldPresence, newPresence) => {
     const newMember = newPresence !== undefined ? newPresence.member : null;
     const member = oldMember !== null ? oldMember : newMember;
 
-    if (!isRightGuild(member.guild.id) || Guild.isMemberMod(member)) {
+    if (!isRightGuild(member.guild.id) || Guild.isMemberMod(member) || Guild.isMemberSoft(member)) {
         return;
     }
     const newCustomStatus = newPresence !== undefined
