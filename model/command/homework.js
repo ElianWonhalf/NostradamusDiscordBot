@@ -1,6 +1,10 @@
 const Heat = require('../heat');
+const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
+
+const emojiFrench = bot.emojis.cache.find(emoji => emoji.name === 'afrench');
+const emojiAnglophonie = bot.emojis.cache.find(emoji => emoji.name === 'anglophonie');
 
 class Homework extends Heat
 {
@@ -24,7 +28,16 @@ class Homework extends Heat
         if (this.canCall()) {
             this.registerCall();
             message.delete();
-            message.channel.send(trans('model.command.homework.reply'));
+
+            const embed = new MessageEmbed()
+                .setDescription(
+                    `${emojiFrench} **French version**
+                    ${trans('model.command.homework.reply', [emojiFrench], 'fr')}
+                    ${emojiAnglophonie} **English version**
+                    ${trans('model.command.homework.reply', [emojiAnglophonie], 'en')}
+                    [Cliquez ici pour en savoir plus / Click here to know more](https://discord.com/channels/254463427949494292/557006102483435543/562069879922884608)`
+                );
+            message.channel.send(embed);
         } else {
             message.react('⌛');
         }

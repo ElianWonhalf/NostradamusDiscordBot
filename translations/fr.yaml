@@ -121,7 +121,7 @@ model:
       embedTitle: "Commande help"
     homework:
       description: "Explique la règle numéro 2 du serveur."
-      reply: "\nCe serveur est destiné à l'apprentissage et n'est pas un outil pour tricher sur les travaux académiques. Personne ne fera vos devoirs à votre place. En revanche, les membres du serveur pourront vous fournir des ressources afin que vous puissiez corriger par vous-même les principales erreurs de vos travaux.\n"
+      reply: "\nCe serveur est destiné à l'apprentissage et n'est pas un outil pour tricher sur les travaux académiques. Les membres n'ont pas le droit de faire vos devoirs à votre place. En revanche, ils peuvent vous guider et répondre à vos questions.\n"
     info:
       description: "Récupérez des informations à propos de vous (sans paramètres) ou à propos d'un autre membre"
       notFound: "J'ai... Aucune idée de qui ça pourrait être, désolé."
