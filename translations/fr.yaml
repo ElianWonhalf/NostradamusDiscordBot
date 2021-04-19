@@ -137,7 +137,7 @@ model:
       callMods: ":BongoKitteh: Tu dois demander aux modos si tu veux plus qu'une langue natale. Là, t'as \"%%\" qui est noté comme étant ta langue natale. Tu dois aussi demander aux modos si tu veux changer ça."
     languageHard:
       description: "Te rappelle un concept très important dans l'apprentissage de langues"
-      reply: "\nLa difficulté d'une langue dépend entièrement des langues que tu connais déjà et de tes propres sources de motivation\n"
+      reply: "\nLa complexité des langues est (en grande partie) une illusion, car la plupart d'entre nous ne peut juger de la complexité d'une langue qu'en la comparant avec celles qu'on connaît déjà. Plus une langue fait des choses qui ne nous sont pas familières, plus elle est difficile à apprendre, mais cela ne veut pas dire qu'elle est objectivement plus complexe. Il faut beaucoup de données et des études rigoureuses pour commencer de tirer des conclusions adéquates et scientifiques à ce sujet.\n"
     level:
       description: "Attribue le rôle de niveau à un ou plusieurs membres"
       invalidMemberMentions: "Je n'arrive pas à savoir quels membres ont besoin d'un changement de rôle."
