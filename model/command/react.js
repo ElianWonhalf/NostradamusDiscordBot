@@ -4,8 +4,10 @@ const CommandPermission = require('../command-permission');
 
 const emojiNameRegex = /^<?[^:]*:(?<name>[^:]+):[^>]*>?$/u;
 const stringEmojiMap = {
-    vote: ['pollno', 'pollslightno', 'pollneutral', 'pollslightyes', 'pollyes'],
-    votes: ['pollno', 'pollslightno', 'pollneutral', 'pollslightyes', 'pollyes']
+    vote: ['pollno', 'pollneutral', 'pollyes'],
+    votes: ['pollno', 'pollneutral', 'pollyes'],
+    '5vote': ['pollno', 'pollslightno', 'pollneutral', 'pollslightyes', 'pollyes'],
+    '5votes': ['pollno', 'pollslightno', 'pollneutral', 'pollslightyes', 'pollyes']
 };
 
 class React
