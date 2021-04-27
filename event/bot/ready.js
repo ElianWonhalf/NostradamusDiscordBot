@@ -7,6 +7,7 @@ const OnDemandVC = require('../../model/on-demand-vc');
 const WatchedMember = require('../../model/watched-member');
 const ActivityManager = require('../../model/activity-manager');
 const LawlessFrench = require('../../model/lawlessfrench');
+const VCTextVisibility = require('../../model/vc-text-visibility');
 
 module.exports = async () => {
     Logger.info('Logged in as ' + bot.user.username + '#' + bot.user.discriminator);
@@ -29,6 +30,11 @@ module.exports = async () => {
     Logger.info('Initialising countries...');
     await Country.init().catch(Logger.exception);
     Logger.info(`${Country.getRoleNameList().length} countries initialised.`);
+
+    Logger.info('--------');
+
+    Logger.info('Fixing VC text channels permissions...');
+    VCTextVisibility.fixPermissionsAtBoot();
 
     Logger.info('--------');
 
