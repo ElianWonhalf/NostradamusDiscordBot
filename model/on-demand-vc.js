@@ -207,7 +207,7 @@ const OnDemandVC = {
         const hasSingleEmbed = message.embeds.length === 1;
         const isByMe = message.author.id === bot.user.id;
         const requestorReacted = user.id !== bot.user.id && onDemandVCData && onDemandVCData[0] === message.channel.id;
-        const channelTypeReactionEmojis = ['🔒', '🔓'];
+        const channelTypeReactionEmojis = ['🔒', '🔓', '2️⃣', '4️⃣', '6️⃣'];
         const joinRequestReactionEmojis = ['pollyes', 'pollno'];
 
         if (hasSingleEmbed && isByMe && requestorReacted) {
@@ -218,7 +218,6 @@ const OnDemandVC = {
             }
 
             const channels = onDemandVCData.slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
-            const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
 
             // Let member knocking on door in or not?
             if (joinRequestReactionEmojis.includes(reaction.emoji.name)) {
@@ -249,78 +248,110 @@ const OnDemandVC = {
             // Make channel public or private
             if (channelTypeReactionEmojis.includes(reaction.emoji.name)) {
                 if (reaction.emoji.name === '🔓' && OnDemandVC.isPrivate(user.id)) {
-                    OnDemandVC.moveWaitingGuestsToVoiceChannel(channels[1]);
-                    await OnDemandVC.makePublic(user.id).then(async () => {
-                        await channels[2].delete();
-                        channels.pop();
+                    OnDemandVC.makeChannelsPublic(user);
 
-                        await channels.forEach(channel => channel.lockPermissions());
-                        await channels[0].send(trans('model.onDemandVC.channelType.complete.public', [user.toString()]));
-
-                        // If deleting waiting channel for target on-demand VC leaves room for two new channels,
-                        // unlock VC request channel.
-                        if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
-                            OnDemandVC.unlockRequestChannel();
-                        }
-                    }).catch(async exception => {
-                        Logger.exception(exception);
-                        await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [user.toString()], 'en'));
-                        await user.send(trans('model.onDemandVC.errors.modificationFailed.member'));
-
-                        // Kicking the host member from the voice chat will trigger deletion of channels.
-                        const hostMember = await Guild.discordGuild.member(user.id);
-                        await hostMember.voice.setChannel(null);
-                    });
+                    await channels[0].send(trans('model.onDemandVC.channelType.complete.public', [user.toString()]));
                 } else if (reaction.emoji.name === '🔒') {
-                    if (!OnDemandVC.isPrivate(user.id)) {
-                        let waitingChannel;
-
-                        try {
-                            waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.onDemandVC.waitingRoomLabel')}]`, {
-                                type: 'voice',
-                                parent: Guild.smallVoiceCategoryChannel,
-                                position: channels[1].rawPosition,
-                            });
-
-                            await Promise.all([
-                                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
-                                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
-                                channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
-                                channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
-                                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
-                            ]);
-
-                            await OnDemandVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
-                                exception.payload = [channels[0], channels[1], waitingChannel];
-                                throw exception;
-                            });
-                        } catch (exception) {
-                            const hostMember = await Guild.discordGuild.member(user.id);
-
-                            Logger.exception(exception);
-                            await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [member.toString()], 'en'));
-                            await hostMember.send(trans('model.onDemandVC.errors.modificationFailed.member'));
-                            await hostMember.voice.setChannel(oldVoiceState.channel);
-
-                            if (exception.payload) {
-                                exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
-                            }
-
-                            return;
-                        }
-
-                        // If fulfilling current on-demand VC request doesn't leave room for two new channels,
-                        // lock VC request channel.
-                        if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
-                            OnDemandVC.lockRequestChannel();
-                        }
-                    }
+                    OnDemandVC.makeChannelsPrivate(user);
 
                     await channels[0].send(trans('model.onDemandVC.channelType.complete.private', [user.toString()]));
+                } else if (['2️⃣', '4️⃣', '6️⃣'].includes(reaction.emoji.name)) {
+                    const participantsEmojiMapping = {'2️⃣': 2, '4️⃣': 4, '6️⃣': 6};
+
+                    OnDemandVC.makeChannelsPublic(user);
+                    await channels[1].setUserLimit(participantsEmojiMapping[reaction.emoji.name]);
+                    await channels[0].send(trans('model.onDemandVC.channelType.complete.nParticipants', [user.toString(), participantsEmojiMapping[reaction.emoji.name]]));
                 }
 
                 await reaction.users.remove(user);
             }
+        }
+    },
+
+    /**
+     * @param {User} user
+     */
+    makeChannelsPublic: async (user) => {
+        if (!OnDemandVC.isPrivate(user.id)) {
+            return;
+        }
+
+        const channels = OnDemandVC.list[user.id].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
+        OnDemandVC.moveWaitingGuestsToVoiceChannel(channels[1]);
+
+        await OnDemandVC.makePublic(user.id).then(async () => {
+            await channels[2].delete();
+            channels.pop();
+
+            await channels.forEach(channel => channel.lockPermissions());
+
+            // If deleting waiting channel for target on-demand VC leaves room for two new channels,
+            // unlock VC request channel.
+            if (voiceChannelsCount - 1 <= channelPerCategoryLimit - 2) {
+                OnDemandVC.unlockRequestChannel();
+            }
+        }).catch(async exception => {
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [user.toString()], 'en'));
+            await user.send(trans('model.onDemandVC.errors.modificationFailed.member'));
+
+            // Kicking the host member from the voice chat will trigger deletion of channels.
+            const hostMember = await Guild.discordGuild.member(user.id);
+            await hostMember.voice.setChannel(null);
+        });
+    },
+
+    /**
+     * @param {User} user
+     */
+    makeChannelsPrivate: async (user) => {
+        if (OnDemandVC.isPrivate(user.id)) {
+            return;
+        }
+
+        const channels = OnDemandVC.list[user.id].slice(0, 3).map(id => Guild.discordGuild.channels.cache.find(channel => channel.id === id));
+        const voiceChannelsCount = Guild.smallVoiceCategoryChannel.children.size;
+        let waitingChannel;
+
+        try {
+            waitingChannel = await Guild.discordGuild.channels.create(`⬆️ [${trans('model.onDemandVC.waitingRoomLabel')}]`, {
+                type: 'voice',
+                parent: Guild.smallVoiceCategoryChannel,
+                position: channels[1].rawPosition,
+            });
+
+            await Promise.all([
+                channels[0].updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: false}),
+                ...channels[1].members.map(member => channels[0].updateOverwrite(member, {VIEW_CHANNEL: true})),
+                channels[1].updateOverwrite(Guild.discordGuild.roles.everyone, {CONNECT: false}),
+                channels[1].updateOverwrite(user, {MOVE_MEMBERS: true}),
+                waitingChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {SPEAK: false, STREAM: false}),
+            ]);
+
+            await OnDemandVC.makePrivate(user.id, waitingChannel.id).catch(exception => {
+                exception.payload = [channels[0], channels[1], waitingChannel];
+                throw exception;
+            });
+        } catch (exception) {
+            const hostMember = await Guild.discordGuild.member(user.id);
+
+            Logger.exception(exception);
+            await Guild.botChannel.send(trans('model.onDemandVC.errors.modificationFailed.mods', [member.toString()], 'en'));
+            await hostMember.send(trans('model.onDemandVC.errors.modificationFailed.member'));
+            await hostMember.voice.setChannel(oldVoiceState.channel);
+
+            if (exception.payload) {
+                exception.payload.filter(channel => channel !== undefined).forEach(channel => channel.delete());
+            }
+
+            return;
+        }
+
+        // If fulfilling current on-demand VC request doesn't leave room for two new channels,
+        // lock VC request channel.
+        if (voiceChannelsCount + 1 > channelPerCategoryLimit - 2) {
+            OnDemandVC.lockRequestChannel();
         }
     },
 
@@ -437,6 +468,9 @@ const OnDemandVC = {
 
         const embed = new Discord.MessageEmbed()
             .addFields([
+                {name: '2️⃣', value: trans('model.onDemandVC.channelType.twoParticipants'), inline: true},
+                {name: '4️⃣', value: trans('model.onDemandVC.channelType.fourParticipants'), inline: true},
+                {name: '6️⃣', value: trans('model.onDemandVC.channelType.sixParticipants'), inline: true},
                 {name: '🔓', value: trans('model.onDemandVC.channelType.public'), inline: true},
                 {name: '🔒', value: trans('model.onDemandVC.channelType.private'), inline: true},
             ])
@@ -445,7 +479,13 @@ const OnDemandVC = {
             .setColor(0x00FF00);
 
         const sentPrompt = await textChannel.send(embed);
-        await Promise.all([sentPrompt.react('🔓'), sentPrompt.react('🔒')]);
+        await Promise.all([
+            sentPrompt.react('2️⃣'),
+            sentPrompt.react('4️⃣'),
+            sentPrompt.react('6️⃣'),
+            sentPrompt.react('🔓'),
+            sentPrompt.react('🔒')
+        ]);
         await sentPrompt.pin();
     },
 

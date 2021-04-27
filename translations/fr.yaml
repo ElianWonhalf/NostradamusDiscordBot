@@ -360,10 +360,13 @@ model:
         public: "%%, j'ai rendu ton salon vocal public !"
         private: "%%, j'ai rendu ton salon vocal privé !"
       embed:
-        title: "Salon public ou privé ?"
+        title: "Quel modèle de salon ?"
         footer: "Réagis en dessous !"
-      public: "Public"
+      twoParticipants: "2 personnes"
+      fourParticipants: "4 personnes"
+      sixParticipants: "6 personnes"
       private: "Privé"
+      public: "Public"
     errors:
       alreadyExists:
         member: "Tu es encore propriétaire d'un VC sur demande, je ne peux pas en créer un autre. Réessaie une fois qu'il aura été supprimé ou transféré à quelqu'un d'autre !"
@@ -372,7 +375,7 @@ model:
       memberNotFound: "Désolé, je ne reconnais pas le membre qui veut rejoindre le salon, je ne peux pas le faire rentrer."
       memberNotWaiting: "%% a quitté la salle d'attente, je ne vais pas le déplacer dans ton salon."
       modificationFailed:
-        member: "Je n'ai pas réussi à rendre ton VC public, j'ai paniqué et j'ai supprimé tes salons dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
+        member: "Je n'ai pas réussi à changer le type de tes salons, j'ai paniqué et je les ai supprimés dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
       renameFailed:
         member: "Désolé, je n'ai pas pu renommer ton salon."
     introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: transférer la propriété avec `%%odvc transfer <new owner>`\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"

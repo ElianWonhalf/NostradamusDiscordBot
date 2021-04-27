@@ -496,13 +496,17 @@ model:
   onDemandVC:
     channelType:
       complete:
-        public: "%%, I made your voice chat public!"
         private: "%%, I made your voice chat private!"
+        public: "%%, I made your voice chat public!"
+        nParticipants: "%%, I made your voice chat a %%-people one!"
       embed:
-        title: "Public or private channel?"
+        title: "Which channel template?"
         footer: "React below!"
-      public: "Public"
+      twoParticipants: "2 people"
+      fourParticipants: "4 people"
+      sixParticipants: "6 people"
       private: "Private"
+      public: "Public"
     errors:
       alreadyExists:
         member: "You're still the owner of an on-demand VC, I cannot create another one. Please retry once it is deleted or given to someone else!"
