@@ -7,7 +7,7 @@ const VCTextVisibility = {
      * @param {VoiceState} newVoiceState
      */
     voiceStateUpdateHandler: async (oldVoiceState, newVoiceState) => {
-        const voiceChannels = [oldVoiceState.channel, newVoiceState.channel].filter(channel => channel);
+        const voiceChannels = [oldVoiceState.channel, newVoiceState.channel].filter(channel => channel && Config.voiceTextChannelMappings[channel.id]);
 
         await Promise.all(voiceChannels.map(voiceChannel => {
             const textChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.voiceTextChannelMappings[voiceChannel.id]);
