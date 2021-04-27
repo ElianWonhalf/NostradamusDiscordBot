@@ -2,6 +2,7 @@ const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../../config.json');
 const Guild = require('../../model/guild');
 const OnDemandVC = require('../../model/on-demand-vc');
+const VCTextVisibility = require('../../model/vc-text-visibility');
 const WatchedMember = require('../../model/watched-member');
 
 /**
@@ -39,6 +40,7 @@ module.exports = async (oldVoiceState, newVoiceState) => {
         }
 
         OnDemandVC.onDemandVCHandler(member, oldVoiceState, newVoiceState);
+        VCTextVisibility.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
         WatchedMember.voiceStateUpdateHandler(oldVoiceState, newVoiceState);
     }
 };

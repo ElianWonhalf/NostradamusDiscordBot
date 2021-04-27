@@ -92,6 +92,7 @@
         "smallVoiceText": "",
         "vocal": []
     },
+    "voiceTextChannelMappings": {},
     "warnCommand": "!warn %id %reason",
     "unbanCommand": "!unban %id %reason",
     "levelCommand": "",
