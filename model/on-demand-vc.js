@@ -481,13 +481,9 @@ const OnDemandVC = {
             .setColor(0x00FF00);
 
         const sentPrompt = await textChannel.send(embed);
-        await Promise.all([
-            sentPrompt.react('2️⃣'),
-            sentPrompt.react('4️⃣'),
-            sentPrompt.react('6️⃣'),
-            sentPrompt.react('🔓'),
-            sentPrompt.react('🔒')
-        ]);
+        for (const emoji of ['2️⃣', '4️⃣', '6️⃣', '🔓', '🔒']) {
+            await sentPrompt.react(emoji);
+        }
         await sentPrompt.pin();
     },
 
