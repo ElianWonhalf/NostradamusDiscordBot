@@ -393,11 +393,13 @@ model:
       reply: "\n**Trombine** is a slang term meaning \"face\".\n**-Scope** is a suffix that refers to an instrument used for viewing.\n\nA **Trombinoscope** is essentially something that allows one to view faces.\nUsually, this would be a photo book.\nHere, it refers to a selfie channel.\n"
     trombinoscopePurge:
       beforeDelete: "Deleting %% message(s)..."
+      midDelete: "%% message(s) left to delete, deleting manually..."
       afterDelete: "Deleted %% message(s)."
       beforeRoleRemove: "Removing role from %% member(s)..."
       afterRoleRemove: "Removed role from %% member(s)."
       beforeDM: "Sending %% message(s)..."
       afterDM: "Sent %% message(s)."
+      done: "Tombinoscope purged! :yay:"
       dm: "Due to your inactivity on French, we deleted your pictures and removed the role trombinoscope from your profile. Don't hesitate to ask for it if you become active again."
       publicNotification: "\nThe following members have been removed from this channel (and their photos deleted) due to inactivity on the server: %%\n"
     tutors:

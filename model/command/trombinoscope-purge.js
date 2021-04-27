@@ -27,6 +27,8 @@ class TrombinoscopePurge
     async process(message, args) {
         if (!TrombinoscopePurge.running) {
             TrombinoscopePurge.running = true;
+            await message.react(bot.emojis.cache.find(emoji => emoji.name === 'alogo'));
+            await message.react(bot.emojis.cache.find(emoji => emoji.name === 'ThirstyKitteh'));
 
             const dryRun = args.some(arg => arg.toLowerCase() === '-d' || arg.toLowerCase() === '--dry-run');
             const messagesToDelete = [];
@@ -82,8 +84,26 @@ class TrombinoscopePurge
             ));
 
             if (!dryRun) {
-                await channel.bulkDelete(messagesToDelete);
-                await Promise.all(messagesToDelete.map(message => !message.deleted ? message.delete() : null));
+                await channel.bulkDelete(messagesToDelete).catch(error => Logger.warning(error.message));
+                const messagesLeftToDelete = messagesToDelete.filter(message => !message.deleted);
+
+                const midDeleteMessage = await message.channel.send(trans(
+                    'model.command.trombinoscopePurge.midDelete',
+                    [messagesLeftToDelete.length],
+                    'en'
+                ));
+
+                for (let i = 0; i < messagesLeftToDelete.length; i++) {
+                    await messagesLeftToDelete[i].delete();
+
+                    if ((messagesLeftToDelete.length - i - 1) % 5 === 0) {
+                        await midDeleteMessage.edit(trans(
+                            'model.command.trombinoscopePurge.midDelete',
+                            [messagesLeftToDelete.length - i - 1],
+                            'en'
+                        ));
+                    }
+                }
             }
 
             await message.channel.send(trans(
@@ -120,7 +140,9 @@ class TrombinoscopePurge
 
             if (!dryRun) {
                 await Promise.all(foundMembers.map(async member => {
-                    return member.send(trans('model.command.trombinoscopePurge.dm'))
+                    return member.send(trans('model.command.trombinoscopePurge.dm')).catch(
+                        error => Logger.warning(error.message)
+                    )
                 }));
             }
 
@@ -130,11 +152,21 @@ class TrombinoscopePurge
                 'en'
             ));
 
-            channel.send(trans(
-                'model.command.trombinoscopePurge.publicNotification',
-                [foundMembers.join(', ')]
+            if (!dryRun) {
+                channel.send(trans(
+                    'model.command.trombinoscopePurge.publicNotification',
+                    [foundMembers.join(', ')]
+                ));
+            }
+
+            await message.channel.send(trans(
+                'model.command.trombinoscopePurge.done',
+                [foundMembers.length],
+                'en'
             ));
 
+            await message.reactions.removeAll();
+            await message.react(bot.emojis.cache.find(emoji => emoji.name === 'pollyes'));
             TrombinoscopePurge.running = false;
         } else {
             return message.react('⌛');
