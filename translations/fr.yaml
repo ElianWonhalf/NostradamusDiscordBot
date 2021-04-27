@@ -359,6 +359,7 @@ model:
       complete:
         public: "%%, j'ai rendu ton salon vocal public !"
         private: "%%, j'ai rendu ton salon vocal privé !"
+        nParticipants: "%%, j'ai fait de ton salon un salon à %% personnes !"
       embed:
         title: "Quel modèle de salon ?"
         footer: "Réagis en dessous !"
@@ -378,7 +379,7 @@ model:
         member: "Je n'ai pas réussi à changer le type de tes salons, j'ai paniqué et je les ai supprimés dans la précipitation :( Tu peux redemander des salons, s'il te plaît ?"
       renameFailed:
         member: "Désolé, je n'ai pas pu renommer ton salon."
-    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: transférer la propriété avec `%%odvc transfer <new owner>`\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
+    introMessage: "\nBienvenue %% dans ton salon vocal sur demande ! N'oublie pas de répondre à la question en dessous pour rendre tes salons publics ou privés.\nEn tant que propriétaire, tu peux :\n:item2: rendre tes salons publics ou privés avec la commande `%%odvc public|private`\n:item2: renommer tes salons avec la commande `%%odvc rename <new name>` (limité à 2 fois toutes les 10 minutes)\n:item2: transférer la propriété avec `%%odvc transfer <new owner>`\n:item2: dans des salons publics, définir une limite d'utilisateurs avec `%%odvc limit <max users>`\n:item2: dans des salons privés, déconnecter les membres\n"
     joinRequest:
       notification:
         withPing: "%%, quelqu'un veut rejoindre ton salon !"

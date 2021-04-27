@@ -463,7 +463,9 @@ const OnDemandVC = {
             OnDemandVC.lockRequestChannel();
         }
 
-        const sentIntroMessage = await textChannel.send(trans('model.onDemandVC.introMessage', [member.toString(), Config.prefix, Config.prefix, Config.prefix]));
+        const sentIntroMessage = await textChannel.send(trans('model.onDemandVC.introMessage', [
+            member.toString(), Config.prefix, Config.prefix, Config.prefix, Config.prefix
+        ]));
         OnDemandVC.introMessages[member.id] = sentIntroMessage;
 
         const embed = new Discord.MessageEmbed()
