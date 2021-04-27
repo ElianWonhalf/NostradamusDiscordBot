@@ -131,6 +131,9 @@ const Guild = {
     /** {TextChannel} */
     eventChatChannel: null,
 
+    /** {TextChannel} */
+    trombinoscopeChannel: null,
+
     /**
      * @param {Client} bot
      */
@@ -173,6 +176,7 @@ const Guild = {
         Guild.selfieChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.selfie);
         Guild.eventCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventCategory);
         Guild.eventChatChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.eventChat);
+        Guild.trombinoscopeChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channels.trombinoscope);
 
         // Categories
         Guild.smallVoiceCategoryChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.channelCategories.smallVoice);

@@ -290,6 +290,9 @@ model:
     trombinoscope:
       description: "Explication du channel trombinoscope"
       reply: "\n**Trombine**, c'est de l'argot, ça désigne \"le visage\".\n**-Scope**, c'est un suffixe qui décrit un instrument qui permet de \"voir\".\n\nUn **Trombinoscope**, c'est quelque chose grâce auquel on peut voir des visages, littéralement.\nGénéralement, c'est un livre de photos.\nIci, c'est un channel où les gens postent des selfies.\n"
+    trombinoscopePurge:
+      dm: "Dû à ton manque d'activité sur le serveur, nous avons supprimé tes photos et t'avons retiré le rôle trombinoscope. N'hésite pas à le redemander si tu redeviens plus actif prochainement."
+      publicNotification: "\nLes membres suivants ont été retirés de ce canal (et leurs photos supprimées) pour cause d'inactivité sur le serveur : %%\n"
     tutors:
       description: "Liste les tuteurs actuels"
       answer: "Il y a en ce moment %% tuteurs :"
