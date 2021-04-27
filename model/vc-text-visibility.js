@@ -7,10 +7,14 @@ const VCTextVisibility = {
      * @param {VoiceState} newVoiceState
      */
     voiceStateUpdateHandler: async (oldVoiceState, newVoiceState) => {
-        const voiceChannel = oldVoiceState.channel ? oldVoiceState.channel : newVoiceState.channel;
-        const textChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.voiceTextChannelMappings[voiceChannel.id]);
-        const viewable = voiceChannel.members.size > 0 ? null : false;
-        await textChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: viewable});
+        const voiceChannels = [oldVoiceState.channel, newVoiceState.channel].filter(channel => channel);
+
+        await Promise.all(voiceChannels.map(voiceChannel => {
+            const textChannel = Guild.discordGuild.channels.cache.find(channel => channel.id === Config.voiceTextChannelMappings[voiceChannel.id]);
+            const viewable = voiceChannel.members.size > 0 ? null : false;
+
+            return textChannel.updateOverwrite(Guild.discordGuild.roles.everyone, {VIEW_CHANNEL: viewable});
+        }));
     }
 }
 
