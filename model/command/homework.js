@@ -30,23 +30,23 @@ class Homework extends Heat
             message.delete();
 
             if (Math.random() < 0.09) {
-                message.channel.send({
+                await message.channel.send({
                     files: [{
                         attachment: 'static/images/homework-rule.png',
                         name: 'homework-rule.png'
                     }]
                 })
-            } else {
-                const embed = new MessageEmbed()
-                    .setDescription(
-                        `${emojiFrench} **French version**
-                        ${trans('model.command.homework.reply', [emojiFrench], 'fr')}
-                        ${emojiAnglophonie} **English version**
-                        ${trans('model.command.homework.reply', [emojiAnglophonie], 'en')}
-                        [Cliquez ici pour en savoir plus / Click here to know more](https://discord.com/channels/254463427949494292/557006102483435543/832654588326445056)`
-                    );
-                message.channel.send(embed);
             }
+
+            const embed = new MessageEmbed()
+                .setDescription(
+                    `${emojiFrench} **French version**
+                    ${trans('model.command.homework.reply', [emojiFrench], 'fr')}
+                    ${emojiAnglophonie} **English version**
+                    ${trans('model.command.homework.reply', [emojiAnglophonie], 'en')}
+                    [Cliquez ici pour en savoir plus / Click here to know more](https://discord.com/channels/254463427949494292/557006102483435543/832654588326445056)`
+                );
+            await message.channel.send(embed);
         } else {
             message.react('⌛');
         }
