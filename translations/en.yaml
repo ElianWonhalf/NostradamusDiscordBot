@@ -414,6 +414,10 @@ model:
       timeout: "sorry, too slow!"
       ready: "you can connect to another channel and I'll move the members for you."
       notConnected: "you have to be connected in a channel to be able to run this command."
+    voiceTextVisibility:
+      description: "To toggle visibility of all voice text channels"
+      hidden: "You now don't have access to text channels associated to empty voice chats."
+      visible: "You now have access to text channels associated to empty voice chats."
     warntroll:
       description: "Provides instructions to warn a troll"
       warnMessage: "trolling on the %% server. If you do not change your behaviour, you will be banned."

@@ -304,6 +304,10 @@ model:
       argError: "La quantité de jetons donné n'est pas correcte. Vérifie ton nombre de jetons avec **.token-info**"
     voiceMove:
       description: "Déplace tous les membres d'un channel vocal à un autre"
+    voiceTextVisibility:
+      description: "Pour attribuer/retirer le rôle de visibilité des salons vocal texte vides"
+      hidden: "Tu n'as maintenant plus accès aux salons texte associés aux salons vocaux vides."
+      visible: "Tu as maintenant accès aux salons texte associés aux salons vocaux vides."
     warntroll:
       description: "Donne des instructions pour avertir un troll"
       warnMessage: "troll sur le serveur %%. Si vous ne changez pas de comportement, vous serez banni."
