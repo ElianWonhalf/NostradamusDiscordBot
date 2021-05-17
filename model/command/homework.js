@@ -16,7 +16,7 @@ class Homework extends Heat
         }
 
         super(10 * SECOND);
-        this.aliases = ['homeworkhelp', 'devoirs'];
+        this.aliases = ['homeworkhelp', 'devoirs', 'hw'];
         this.category = CommandCategory.RESOURCE;
         this.isAllowedForContext = CommandPermission.notInWelcome;
     }
