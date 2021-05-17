@@ -46,7 +46,8 @@
         "he": "",
         "she": "",
         "they": "",
-        "trombinoscope": ""
+        "trombinoscope": "",
+        "voiceTextVisibility": ""
     },
     "channels": {
         "welcome": "",
