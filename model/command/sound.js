@@ -8,6 +8,7 @@ const FILES = {
     'ah bin calisse': ['ahbincalisse'],
     'ahbincalisse': ['ahbincalisse'],
     'awwwh': ['awwwh', 'awwwh2'],
+    'bonchour': ['bonchour'],
     'calisse': ['ahbincalisse'],
     'bin la': ['binla'],
     'binla': ['binla'],
