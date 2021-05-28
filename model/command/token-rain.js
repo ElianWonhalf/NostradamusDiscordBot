@@ -20,7 +20,7 @@ class TokenRain
 
         this.aliases = ['tokenRain', 'train'];
         this.category = CommandCategory.FUN;
-        this.isAllowedForContext = CommandPermission.isMemberModOrSoftOrAnimator;
+        this.isAllowedForContext = CommandPermission.or(CommandPermission.isMommy, CommandPermission.isMemberTokensMastery);
     }
 
     /**

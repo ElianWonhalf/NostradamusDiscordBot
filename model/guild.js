@@ -348,6 +348,13 @@ const Guild = {
     },
 
     /**
+     * @param {GuildMember} member
+     */
+     isMemberTokensMastery: (member) => {
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.tokensMastery);
+    },
+
+    /**
      * @param {string} roleName
      * @returns {Role|null}
      */

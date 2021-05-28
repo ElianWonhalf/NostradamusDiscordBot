@@ -5,11 +5,58 @@ const CommandPermission = require('../command-permission');
 const Guild = require('../guild');
 const MemberToken = require('../member-token');
 
+/**
+ *
+ * @param {Array} array 
+ */
 const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+}
+
+/**
+ * 
+ * @param {Int} amountToken
+ * 
+ * @returns {Array[amountTicket, tokenToReturn]}
+ */
+async function tokenToTicket(amountToken) {
+    let amountTicket = 0;
+    let tokenToReturn = 0;
+    let incrValue = 2;
+
+    // 20 first tickets cost 1 token each
+    if (amountToken >= 20) {
+        amountTicket += 20;
+        amountToken -= 20;
+    } else if (amountToken > 0) {
+        amountTicket += amountToken;
+        amountToken = 0;
+    }
+
+    // Then ticket cost increase by 1 every 10 tickets (max cost : 3)
+    while (amountToken > 0) {
+        if (amountToken >= (10 * incrValue)) {
+            amountTicket += 10;
+            amountToken -= (10 * incrValue);
+        } else if (amountToken > 0) {
+            amountTicket += Math.floor(amountToken / incrValue);
+            tokenToReturn = Math.ceil(amountToken % incrValue);
+            amountToken = 0;
+        }
+
+        if (incrValue < 3) {
+            incrValue++;
+        }
+
+        if (amountTicket >= 80) {
+            incrValue++;
+        }
+    }
+
+    return {'amountTicket': amountTicket, 'tokenToReturn': tokenToReturn};
 }
 
 class pickWinners
@@ -23,7 +70,7 @@ class pickWinners
 
         this.aliases = ['pickwinners', 'pickw'];
         this.category = CommandCategory.RESOURCE;
-        this.isAllowedForContext = CommandPermission.isMommy;
+        this.isAllowedForContext = CommandPermission.or(CommandPermission.isMommy, CommandPermission.isMemberTokensMastery);
     }
 
     /**
@@ -32,6 +79,7 @@ class pickWinners
     async process(message, args) {
         const emojiPollYes = bot.emojis.cache.find(emoji => emoji.name === 'pollyes');
         const emojiPollNo = bot.emojis.cache.find(emoji => emoji.name === 'pollno');
+        const arrayTokenToReturn = [];
 
         if (arguments.length < 1) {
             return await message.react(emojiPollNo);
@@ -51,8 +99,11 @@ class pickWinners
                 Logger.error(exception.toString());
             });
 
+            const result = await tokenToTicket(memberUsedTokens.amount_used);
+            arrayTokenToReturn.push({userId: memberUsedTokens.user_id, amount: result.tokenToReturn});
+
             if (member) {
-                lotteryBox = lotteryBox.concat(new Array(memberUsedTokens.amount_used).fill(member.user));
+                lotteryBox = lotteryBox.concat(new Array(result.amountTicket).fill(member.user));
             }
         }));
 
@@ -102,6 +153,11 @@ class pickWinners
 
                 if (collectedReactions.first().emoji === emojiPollYes) {
                     await MemberToken.resetUsedTokens();
+                    
+                    arrayTokenToReturn.forEach(tokenToReturn => {
+                        MemberToken.add([tokenToReturn.userId], false, tokenToReturn.amount);
+                    });
+                    
                     sentMessage.edit('The lottery box has been emptied');
                 } else {
                     sentMessage.edit('the lottery box has not been emptied');

@@ -27,7 +27,7 @@ const MemberToken = {
      * 
      * @returns {Promise}
      */
-    add: async (snowflakes, amount = 1) => {
+    add: async (snowflakes, addToAllTimeAmount = true, amount = 1) => {
         await db.asyncQuery('SET NAMES utf8mb4');
 
         for (let i = 0; i < snowflakes.length; i++) {
@@ -37,7 +37,7 @@ const MemberToken = {
                 MemberToken.createMemberTokenInfo(snowflakes[i], amount);
             } else {
                 const newCurrentAmount = membersTokenInfo[0].amount + amount;
-                const newAllTimeAmount = membersTokenInfo[0].all_time_amount + amount;
+                const newAllTimeAmount = addToAllTimeAmount ? membersTokenInfo[0].all_time_amount + amount : membersTokenInfo[0].all_time_amount;
 
                 await db.asyncQuery(
                     `
