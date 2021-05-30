@@ -188,8 +188,8 @@ model:
         misused: "Pas besoin d'utiliser de commande pour créer de salon vocal sur demande ! Tu as juste besoin de rejoindre le salon nommé « %% »."
       manualTransfer:
         invalidMemberMentions: "Je n'arrive pas à savoir à quel membre transférer la propriété."
+        noChannelsFound: "Aucune donnée de salons vocaux sur demande n'a été trouvée pour le propriétaire actuel ou celui indiqué, il n'y a aucune propriété à transférer."
         noMembersGiven: "Tu n'as donné aucun membre à qui transférer les salons."
-        notOwner: "Tu n'es pas le propriétaire de salons vocaux sur demande, il n'y a aucune propriété à transférer."
         tooManyMembersGiven: "La propriété ne peut être donnée qu'à un seul membre."
       userLimit:
         incorrectSyntax: "Tu dois donner la limite sous forme de nombre, par exemple `%%odvc limit 10`."

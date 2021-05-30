@@ -269,8 +269,8 @@ model:
         misused: "No need to use a command to create an on-demand voice chat! You simply need to join the room named \"%%\"."
       manualTransfer:
         invalidMemberMentions: "I cannot determine who the new owner should be."
+        noChannelsFound: "No on-demand VC channel data was found for current or specified owner, there's no property to transfer."
         noMembersGiven: "You did not give any member to transfer property to."
-        notOwner: "You're not the owner of any on-demand voice channels, there's no property to transfer."
         tooManyMembersGiven: "Property can only be given to one member."
       userLimit:
         incorrectSyntax: "You need to provide the limit as a number, e.g. `%%odvc limit 10`."
