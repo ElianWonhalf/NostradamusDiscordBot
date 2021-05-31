@@ -93,14 +93,14 @@ const WatchedMember = {
     voiceStateUpdateHandler: (oldVoiceState, newVoiceState) => {
         if (WatchedMember.isMemberWatched(oldVoiceState.member.id)) {
             switch (true) {
-                case !oldVoiceState.channelID && newVoiceState.channelID:
+                case !oldVoiceState.channelID && !!newVoiceState.channelID:
                     WatchedMember.logEvent(
                         newVoiceState.member,
                         trans('model.watchedMember.joinedVocal', [newVoiceState.channel.name], 'en')
                     );
                     break;
 
-                case oldVoiceState.channelID && !newVoiceState.channelID:
+                case !!oldVoiceState.channelID && !newVoiceState.channelID:
                     WatchedMember.logEvent(
                         newVoiceState.member,
                         trans('model.watchedMember.leftVocal', [oldVoiceState.channel.name], 'en'),
