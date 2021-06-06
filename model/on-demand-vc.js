@@ -3,6 +3,7 @@ const Logger = require('@lilywonhalf/pretty-logger');
 const Config = require('../config.json');
 const db = require('./db');
 const Guild = require('./guild');
+const CommandPermission = require('./command-permission');
 
 const OnDemandVC = {
     /** {Object} */
@@ -813,15 +814,18 @@ const OnDemandVC = {
             return false;
         }
 
-        if (foundMembers.length > 1) {
+        const maxMembersAmount = await CommandPermission.isMemberModOrSoft(message) ? 2 : 1;
+        if (foundMembers.length > maxMembersAmount) {
             await message.reply(trans('model.command.onDemandVC.manualTransfer.tooManyMembersGiven'));
             return false;
         }
 
-        const onDemandVCData = OnDemandVC.list[message.member.id];
+        const currentOwner = foundMembers.length === 2 ? foundMembers[0] : message.member;
+        const newOwner = foundMembers.length === 2 ? foundMembers[1] : foundMembers[0];
+        const onDemandVCData = OnDemandVC.list[currentOwner.id];
 
         if (!onDemandVCData) {
-            await message.reply(trans('model.command.onDemandVC.manualTransfer.notOwner'));
+            await message.reply(trans('model.command.onDemandVC.manualTransfer.noChannelsFound'));
             return false;
         }
 
@@ -829,7 +833,7 @@ const OnDemandVC = {
             id => Guild.discordGuild.channels.cache.find(channel => channel.id === id)
         );
 
-        await OnDemandVC.propertyTransferHandler(channels, message.member, foundMembers[0]);
+        await OnDemandVC.propertyTransferHandler(channels, currentOwner, newOwner);
         return true;
     },
 
