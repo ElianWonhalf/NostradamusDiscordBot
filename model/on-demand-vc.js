@@ -754,8 +754,8 @@ const OnDemandVC = {
      */
     synchronizeChannels: async (hostMember, channels) => {
         if (channels[1]) {
-            if (channels[1].members.size === 0) {
-                // No one left in the voice channel: delete on-demand VC
+            if (channels[1].members.filter(member => !member.user.bot).size === 0) {
+                // No one left in the voice channel aside from bots: delete on-demand VC
                 OnDemandVC.deletionHandler(hostMember, channels);
             } else {
                 let newHostMember = hostMember;
