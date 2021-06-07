@@ -814,17 +814,24 @@ const OnDemandVC = {
             return false;
         }
 
-        const maxMembersAmount = await CommandPermission.isMemberModOrSoft(message) ? 2 : 1;
-        if (foundMembers.length > maxMembersAmount) {
+        if (foundMembers.length > 1) {
             await message.reply(trans('model.command.onDemandVC.manualTransfer.tooManyMembersGiven'));
             return false;
         }
 
-        const currentOwner = foundMembers.length === 2 ? foundMembers[0] : message.member;
-        const newOwner = foundMembers.length === 2 ? foundMembers[1] : foundMembers[0];
-        const onDemandVCData = OnDemandVC.list[currentOwner.id];
+        const issuedByMod = await CommandPermission.isMemberModOrSoft(message);
+        const newOwner = foundMembers[0];
+        let currentOwner = message.member;
+        let onDemandVCData = OnDemandVC.list[currentOwner.id];
 
-        if (!onDemandVCData) {
+        if (!onDemandVCData && issuedByMod) {
+            const voiceChannel = message.member.voice.channel;
+            const currentOwnerID = Object.keys(OnDemandVC.list).find(
+                id => OnDemandVC.list[id][1] === voiceChannel.id
+            );
+            currentOwner = Guild.discordGuild.member(currentOwnerID);
+            onDemandVCData = OnDemandVC.list[currentOwnerID];
+        } else if (!onDemandVCData) {
             await message.reply(trans('model.command.onDemandVC.manualTransfer.noChannelsFound'));
             return false;
         }
