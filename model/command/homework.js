@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const CommandCategory = require('../command-category');
 const CommandPermission = require('../command-permission');
 
-const emojiFrench = bot.emojis.cache.find(emoji => emoji.name === 'afrench');
+const emojiFrench = bot.emojis.cache.find(emoji => emoji.name === 'afrancophonie');
 const emojiAnglophonie = bot.emojis.cache.find(emoji => emoji.name === 'anglophonie');
 
 class Homework extends Heat
