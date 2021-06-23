@@ -784,7 +784,9 @@ const OnDemandVC = {
             channels.filter(channel => channel !== undefined).forEach(channel => channel.lockPermissions());
         } else {
             const outdatedOverwrites = channels[0].permissionOverwrites
-                .filter(overwrite => overwrite.type !== 'role' && !channels[1].members.has(overwrite.id));
+                .filter(overwrite => overwrite.type !== 'role'
+                    && !channels[1].members.has(overwrite.id)
+                    && !Guild.discordGuild.member(overwrite.id).user.bot);
 
             await Promise.all([
                 ...outdatedOverwrites.map(overwrite => overwrite.delete()),
