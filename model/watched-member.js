@@ -91,7 +91,7 @@ const WatchedMember = {
     },
 
     voiceStateUpdateHandler: (oldVoiceState, newVoiceState) => {
-        if (WatchedMember.isMemberWatched(oldVoiceState.member.id)) {
+        if (newVoiceState.channel && WatchedMember.isMemberWatched(oldVoiceState.member.id)) {
             switch (true) {
                 case !oldVoiceState.channelID && !!newVoiceState.channelID:
                     WatchedMember.logEvent(

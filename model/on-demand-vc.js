@@ -187,7 +187,7 @@ const OnDemandVC = {
         let deletedMessages;
 
         do {
-            deletedMessages = await channel.bulkDelete(100);
+            deletedMessages = await channel.bulkDelete(100).catch(Logger.exception);
         } while (deletedMessages.size > 0);
     },
 
@@ -282,7 +282,10 @@ const OnDemandVC = {
         OnDemandVC.moveWaitingGuestsToVoiceChannel(channels[1]);
 
         await OnDemandVC.makePublic(user.id).then(async () => {
-            await channels[2].delete();
+            if (channels[2]) {
+                await channels[2].delete();
+            }
+
             channels.pop();
 
             await channels.forEach(channel => channel.lockPermissions());
