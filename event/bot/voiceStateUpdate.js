@@ -20,7 +20,7 @@ module.exports = async (oldVoiceState, newVoiceState) => {
         newVoiceState.channelID = null;
     }
 
-    if (isRightGuild(member.guild.id)) {
+    if (member !== null && isRightGuild(member.guild.id)) {
         if (oldVoiceState.channel !== undefined && newVoiceState.channel !== undefined) {
             const memberCalledVoiceMove = Object.keys(Guild.voiceMoveMembers).indexOf(member.id) > -1;
             const sourceChannel = oldVoiceState.channel;

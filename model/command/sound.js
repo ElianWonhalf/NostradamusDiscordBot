@@ -17,7 +17,7 @@ const FILES = {
     'gah': ['gah'],
     'pute': ['pute'],
     'rru': ['rru'],
-    'whisky': ['whisky1', 'whisky2', 'whisky3', 'whisky4']
+    'whisky': ['whisky1', 'whisky2', 'whisky3', 'whisky4', 'whisky5']
 };
 
 class Sound
