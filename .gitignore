@@ -2,13 +2,13 @@
 *.iml
 .vscode
 node_modules
-deploy.sh
-change-env.sh
+scripts/*
+!scripts/.gitkeep
 config.json*
 _config.json*
-!config.json.sample
+!config.sample.json
 blacklist.json*
-!blacklist.json.sample
+!blacklist.sample.json
 .env
 cache
 debug

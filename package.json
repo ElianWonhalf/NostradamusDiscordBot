@@ -4,7 +4,10 @@
   "description": "Nostradamus bot for French Discord server",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "scripts/deploy.sh",
+    "check-config-files": "node scripts/check-config-files.js",
+    "ccf": "npm run check-config-files",
+    "test": "npm run check-config-files"
   },
   "author": "Lily Wonhalf <lilywonhalf@gmail.com>",
   "license": "MIT",
