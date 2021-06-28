@@ -135,7 +135,17 @@ class TokenBoard
      * @param {Message} message
      */
     async process(message, args) {
-        const acceptedArgsValues = ['mod', 'mods', 'modo', 'modos', 'modérateur', 'modérateurs', 'moderator', 'moderators'];
+        const acceptedArgsValues = [
+            'mod',
+            'mods',
+            'modo',
+            'modos',
+            'modérateur',
+            'modérateurs',
+            'moderator',
+            'moderators',
+        ];
+
         let tokenRanking = await MemberToken.getCount();
 
         if (!tokenRanking) {
@@ -143,11 +153,7 @@ class TokenBoard
         }
 
         for (let row of tokenRanking) {
-            row.member = await Guild.discordGuild.members.fetch(row.user_id).catch(exception => {
-                Logger.error(exception.toString());
-
-                return null;
-            });
+            row.member = await Guild.discordGuild.members.cache.get(row.user_id);
         }
 
         tokenRanking = tokenRanking.filter(row => row && row.member);
