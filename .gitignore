@@ -5,6 +5,7 @@ node_modules
 scripts/*
 !scripts/.gitkeep
 config.json*
+config.french.json*
 _config.json*
 !config.sample.json
 blacklist.json*
