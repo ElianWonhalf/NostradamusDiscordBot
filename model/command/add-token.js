@@ -16,7 +16,7 @@ class AddToken
 
         this.aliases = ['addtoken', 'addt'];
         this.category = CommandCategory.RESOURCE;
-        this.isAllowedForContext = CommandPermission.isMommy;
+        this.isAllowedForContext = CommandPermission.or(CommandPermission.isMommy, CommandPermission.isTokenMaster);
     }
 
     /**

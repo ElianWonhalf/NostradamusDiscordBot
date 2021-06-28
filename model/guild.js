@@ -348,6 +348,13 @@ const Guild = {
     },
 
     /**
+     * @param {GuildMember} member
+     */
+    isMemberTokenMaster: (member) => {
+        return member !== undefined && member !== null && member.roles.cache.has(Config.roles.tokenMaster);
+    },
+
+    /**
      * @param {string} roleName
      * @returns {Role|null}
      */
