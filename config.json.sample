@@ -41,7 +41,6 @@
         "corresponding": "",
         "offers": "",
         "eventSubscribed": "",
-        "tokensMastery": "",
         "animator": "",
         "linguist": "",
         "he": "",
@@ -49,7 +48,7 @@
         "they": "",
         "trombinoscope": "",
         "voiceTextVisibility": "",
-        "tokenMaster": "826126912346652682"
+        "tokenMastery": ""
     },
     "channels": {
         "welcome": "",
@@ -99,7 +98,7 @@
     "warnCommand": "!warn %id %reason",
     "unbanCommand": "!unban %id %reason",
     "levelCommand": "",
-    "learntLanguage": "learntLanguage.",
+    "learntLanguage": "learntLanguage.french",
     "learntLanguagePrefix": "",
     "otherLanguagePrefix": "",
     "disabledCommands": [],
