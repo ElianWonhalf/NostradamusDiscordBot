@@ -502,7 +502,7 @@ model:
       complete:
         private: "%%, I made your voice chat private!"
         public: "%%, I made your voice chat public!"
-        nParticipants: "%%, I made your voice chat a %%-people one!"
+        nParticipants: "%%, I made your voice chat a %%-person one!"
       embed:
         title: "Which channel template?"
         footer: "React below!"
